@@ -1,12 +1,22 @@
 import express from "express";
 import dotenv from 'dotenv';
-
-
+import mongoose from 'mongoose';
+import { CategoryRoutes } from "./routes/index.js";
 const app = express();
 dotenv.config();
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+// Mongoose
+mongoose.connect(process.env.DB_URL);
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error"));
+db.once("open", () => {
+    console.log("data connected");
+})
+
+app.use('/category', CategoryRoutes);
 
 app.get('/home', (req, res)=>{
     res.send('HOME');
