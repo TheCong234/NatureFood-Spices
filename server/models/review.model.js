@@ -24,4 +24,5 @@ const ReviewSchema = Schema({
     feedback: String
 })
 
-module.exports = mongoose.model('Review', ReviewSchema);
+const ReviewModel = mongoose.model('Review', ReviewSchema);
+export default ReviewModel;

@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { CategoryRoutes } from "./routes/index.js";
+import { CategoryRoutes, ProductRoutes } from "./routes/index.js";
 const app = express();
 dotenv.config();
 
@@ -17,6 +17,7 @@ db.once("open", () => {
 })
 
 app.use('/category', CategoryRoutes);
+app.use('/product', ProductRoutes);
 
 app.get('/home', (req, res)=>{
     res.send('HOME');

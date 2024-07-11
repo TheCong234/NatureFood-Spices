@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+import ReviewModel from '../models/review.model.js'
 const Schema = mongoose.Schema;
-const ReviewSchema = require('./review.model');
+
 
 const ImageSchema = new Schema({
     url:{
@@ -20,7 +21,8 @@ const ProductSchema = mongoose.Schema({
     weight: Number,
     category: {
         type: Schema.Types.ObjectId,
-        ref: 'Category'
+        ref: 'Category',
+        required: true
     },
     inventory: Number,
     reviews:[
@@ -35,8 +37,9 @@ const ProductSchema = mongoose.Schema({
 //xóa liên quan đến sản phẩm (reviews)
 ProductSchema.post('findOneAndDelete', async function(doc){
     if(doc){
-        await ReviewSchema.deleteMany({ _id: {$in: doc.reviews}});
+        await ReviewModel.deleteMany({ _id: {$in: doc.reviews}});
     }
 })
 
-module.exports = mongoose.model('Product', ProductSchema);
+const ProductModel = mongoose.model('Product', ProductSchema);
+export default ProductModel;
