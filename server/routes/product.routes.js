@@ -1,5 +1,6 @@
 import express from 'express';
-import ProductController from '../controllers/product.controller.js';
+import ProductController from '../controllers/product.controllers.js';
+import ReviewController from '../controllers/review.controllers.js';
 import { storage } from '../config/cloudinary.config.js';
 import multer from 'multer';
 const upload = multer({storage: storage});
@@ -10,7 +11,9 @@ router.get('/:id', ProductController.getProductById);
 router.get('/all',ProductController.getAllProduct);
 
 
+router.post('/:id/review', ReviewController.createReview);
 router.post('/',upload.array('images'), ProductController.createProduct);
+
 
 router.put('/:id/image/:idImage', ProductController.deleteImageProduct);
 router.put('/:id/image', upload.array('images'), ProductController.addImagesProduct);
