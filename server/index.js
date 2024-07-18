@@ -6,13 +6,8 @@ import session from "express-session";
 import passport from "passport";
 import MongoStore from "connect-mongo";
 
-
-//
-
-
-
-//
 const app = express();
+const apiVersion = '/api/v1';
 dotenv.config();
 
 app.use(express.json());
@@ -54,9 +49,9 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 
 //routes
-app.use('/category', CategoryRoutes);
-app.use('/product', ProductRoutes);
-app.use('/user', UserRoutes);
+app.use(`${apiVersion}/category`, CategoryRoutes);
+app.use(`${apiVersion}/product`, ProductRoutes);
+app.use(`${apiVersion}/user`, UserRoutes);
 
 
 app.get('/home', (req, res)=>{

@@ -104,6 +104,7 @@ UserSchema.pre("save", function (next) {
   }
   return next();
 });
+
 UserSchema.methods = {
     _hashPassword(password) {
         return hashSync(password, 10);
@@ -124,8 +125,7 @@ UserSchema.methods = {
 
     toJSON() {
         return {
-        _id: this._id,
-        username: this.username,
+        data: this._doc,
         token: `JWT ${this.createToken()}`,
         };
     },
