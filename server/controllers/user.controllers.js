@@ -18,6 +18,16 @@ const UserController = {
         return res.status(statusCode.OK).json(BaseResponse.success('Đăng nhập thành công', req.user));
     },
 
+    async getAll(req, res){
+        try {
+            const users = await UserModel.find({});
+            return res.status(statusCode.OK).json(BaseResponse.success('Thành công', users));
+        } catch (error) {
+            console.log("Get all: ", error);
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).json('THất bại', error);
+        }
+    },
+
     async getUserById(req, res){
         try {
             const {id} = req.params;
@@ -30,13 +40,37 @@ const UserController = {
         }
     },
 
+    async updateUser(req, res){
+        try {
+            if(req.user){
+                const updatedUser = await UserModel.findByIdAndUpdate(req.user._id, req.body, {new: true});
+                return res.status(statusCode.OK).json(BaseResponse.success('Cập nhật người dùng thành công', updatedUser));
+            }
+            return res.status(statusCode.UNAUTHORIZED).json(BaseResponse.error('Yêu cầu đăng nhập', 'CHưa đăng nhập'));
+        } catch (error) {
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).json(BaseResponse.error('Cập nhật thất bại', error));
+            
+        }
+    },
+
+    async updateUserImage(req, res){
+        try {
+            const user = await UserModel.findById(req.user._id);
+            user.image = {url: req.file.path, filename: req.file.filename};
+            await user.save();
+            return res.status(statusCode.OK).json(BaseResponse.success('Cập nhật ảnh người dùng thành công', null));
+            
+        } catch (error) {
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).json(BaseResponse.error('Cập nhật thất bại', error));
+            
+        }
+    },
+
     async changePassword(req, res){
         try {
             const {email} = req.params;
             const {password} = req.body;
             const user = await UserModel.findOne({email: email});
-            // return console.log(user.password);
-            // const passwordHashed = hashSync(password, 10);
             user.password = password;
             const updatedUser = await user.save();
             return res.status(statusCode.OK).json(BaseResponse.success('Cập nhật mật khẩu mới thành công', updatedUser));
@@ -44,7 +78,8 @@ const UserController = {
             console.log("change password: ", error);
             return res.status(statusCode.NOT_FOUND).json(BaseResponse.success('Không tìm thấy người dùng'), error);
         }
-    }
+    },
+
 }
 
 

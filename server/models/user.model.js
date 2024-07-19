@@ -117,7 +117,7 @@ UserSchema.methods = {
     createToken() {
         return jwt.sign(
         {
-            _id: this._id,
+          _id: this._id,
         },
         "thisisasecret"
         );

@@ -12,7 +12,7 @@ const localOpts = {
 
 // Jwt strategy
 const jwtOpts = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('authorization'),
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken('authorization'),
   secretOrKey: 'thisisasecret',
 };
 
@@ -24,7 +24,6 @@ const localStrategy = new LocalStrategy(localOpts, async (email, password, done)
     } else if (!user.authenticateUser(password)) {
         return done(null, false);
     }
-    console.log('done if else');
     return done(null, user);
   } catch (e) {
     console.log(e);
@@ -36,12 +35,12 @@ const jwtStrategy = new JWTStrategy(jwtOpts, async (payload, done) => {
   try {
     // Identify user by ID
     const user = await UserModel.findById(payload._id);
-
     if (!user) {
       return done(null, false);
     }
     return done(null, user);
   } catch (e) {
+    console.log("jwt stratege");
     return done(e, false);
   }
 });
