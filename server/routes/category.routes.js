@@ -6,8 +6,8 @@ import multer from 'multer';
 const upload = multer({storage: storage});
 
 
-router.get('/:id', CategoryController.getCategoryById);
 router.get('/all', CategoryController.getAllCategory);
+router.get('/:id', CategoryController.getCategoryById);
 
 router.post('/', upload.single('image'), CategoryController.createCategory);
 

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import ReviewModel from '../models/review.model.js'
+import ReviewModel from '../models/review.model.js';
+import CartModel from './cart.model.js';
 const Schema = mongoose.Schema;
 
 
@@ -38,6 +39,7 @@ const ProductSchema = mongoose.Schema({
 ProductSchema.post('findOneAndDelete', async function(doc){
     if(doc){
         await ReviewModel.deleteMany({ _id: {$in: doc.reviews}});
+        await CartModel.deleteMany({productId: _id});
     }
 })
 

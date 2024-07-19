@@ -1,10 +1,11 @@
 import express from "express";
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { CategoryRoutes, ProductRoutes, UserRoutes } from "./routes/index.js";
+import { CategoryRoutes, ProductRoutes, UserRoutes, ReviewRoutes } from "./routes/index.js";
 import session from "express-session";
 import passport from "passport";
 import MongoStore from "connect-mongo";
+
 
 const app = express();
 const apiVersion = '/api/v1';
@@ -52,6 +53,7 @@ app.use(session(sessionConfig));
 app.use(`${apiVersion}/category`, CategoryRoutes);
 app.use(`${apiVersion}/product`, ProductRoutes);
 app.use(`${apiVersion}/user`, UserRoutes);
+app.use(`${apiVersion}/review`, ReviewRoutes);
 
 
 app.get('/home', (req, res)=>{

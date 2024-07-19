@@ -7,13 +7,10 @@ const upload = multer({storage: storage});
 const router = express.Router();
 
 router.get('/category/:idCategory', ProductController.getProductByCategory);
-router.get('/:id', ProductController.getProductById);
 router.get('/all',ProductController.getAllProduct);
+router.get('/:id', ProductController.getProductById);
 
-
-router.post('/:id/review', ReviewController.createReview);
 router.post('/',upload.array('images'), ProductController.createProduct);
-
 
 router.put('/:id/image/:idImage', ProductController.deleteImageProduct);
 router.put('/:id/image', upload.array('images'), ProductController.addImagesProduct);
