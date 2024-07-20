@@ -2,11 +2,6 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const CartSchema = Schema({
-    userId: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        require: true,
-    },
     items: [
         {
             productId: {
@@ -16,7 +11,8 @@ const CartSchema = Schema({
             },
             quantity: {
                 type: Number,
-                default: 1
+                default: 1,
+                min: 1
             }
         }
     ],

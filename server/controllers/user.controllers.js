@@ -1,12 +1,17 @@
 import { statusCode } from "../config/statusCode.config.js";
 import { BaseResponse } from "../config/BaseResponse.config.js";
 import UserModel from "../models/user.model.js";
-import { hashSync } from "bcrypt";
+import CartModel from "../models/cart.model.js";
+
 const UserController = {
     async register(req, res){
         try {
             console.log('register data: ',req.body);
+            const cart = new CartModel();
+            const newCart = await cart.save();
             const user = await UserModel.create(req.body);
+            user.cart = newCart._id;
+            await user.save();
             return res.status(statusCode.CREATED).json(BaseResponse.success('Đăng ký tài khaonr thành công', user));
         } catch (error) {
             console.log('Register: ', error);

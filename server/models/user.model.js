@@ -76,6 +76,10 @@ const UserSchema = Schema({
     enum: ["admin", "user"],
     default: "user",
   },
+  cart:{
+    type: Schema.Types.ObjectId,
+    ref: 'Cart',
+  }
 });
 
 UserSchema.pre("save", function (next) {
