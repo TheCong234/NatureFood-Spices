@@ -27,7 +27,16 @@ const CartController = {
     },
 
     async deleteItem(req, res){
-        
+        try {
+            const {productId} = req.params;
+            const cart = await CartModel.findById(req.user.cart);
+            cart.items = cart.items.filter(item => item.productId != productId);
+            const newCart = await cart.save();
+            return res.status(statusCode.OK).json(BaseResponse.success('Xóa sản phẩm khỏi giỏ hàng thành công', newCart));
+        } catch (error) {
+            console.log('delete item: ', error);
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).json(BaseResponse.error('Xóa sản phẩm trong giỏ hàng thất bại', error));
+        }
     }
 
     

@@ -39,7 +39,7 @@ const ReviewController = {
             return res.status(statusCode.OK).json(BaseResponse.success('Xóa đánh giá thành công', null));
             
         } catch (error) {
-            console.log('delete feedback: ', error);
+            console.log('delete Review: ', error);
             return res.status(statusCode.INTERNAL_SERVER_ERROR).json(BaseResponse.error('Xóa đánh giá thất bại', error));
         }
     }
