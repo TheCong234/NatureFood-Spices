@@ -15,15 +15,20 @@ const TagController = {
         }
     },
 
+    async getProductsByTagId(req, res){
+        try {
+            const products = await ProductModel.find({tags: req.params.id});
+            return res.status(statusCode.OK).json(BaseResponse.success('Lấy sản phẩm thành công', products));
+        } catch (error) {
+            console.log('GET products by TAG id: ', error);
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).json(BaseResponse.error('Lấy sản phẩm thất bại', error));
+        }
+    },
+
     async createTags(req, res){
         try {
             const {names} = req.body;
-            // return console.log(names);
             const newTags = await TagModel.insertMany(names);
-
-
-            // const tag = new TagModel(req.body);
-            // const newTag = await tag.save(); 
             return res.status(statusCode.OK).json(BaseResponse.success('Thêm thẻ tags thành công', newTags));
             
         } catch (error) {
@@ -41,6 +46,16 @@ const TagController = {
         } catch (error) {
             console.log('ADD TAGs: ', error);
             return res.status(statusCode.INTERNAL_SERVER_ERROR).json(BaseResponse.error('Thêm thẻ tags vào sp thất bại', error));
+        }
+    },
+
+    async deleteTag(req, res){
+        try {
+            const tag = await TagModel.findByIdAndDelete(req.params.id);
+            return res.status(statusCode.OK).json(BaseResponse.success('Xóa tag thành công', null));
+        } catch (error) {
+            console.log('Delete TAGs: ', error);
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).json(BaseResponse.error('Xóa tag thất bại', error));
         }
     }
 }
