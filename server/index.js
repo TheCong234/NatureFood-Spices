@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { CategoryRoutes, ProductRoutes, UserRoutes, ReviewRoutes, CartRoutes, FavoriteRoutes } from "./routes/index.js";
+import { CategoryRoutes, ProductRoutes, UserRoutes, ReviewRoutes, CartRoutes, FavoriteRoutes, TagRoutes } from "./routes/index.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 
@@ -55,11 +55,9 @@ app.use(`${apiVersion}/user`, UserRoutes);
 app.use(`${apiVersion}/review`, ReviewRoutes);
 app.use(`${apiVersion}/cart`, CartRoutes);
 app.use(`${apiVersion}/favorite`, FavoriteRoutes);
+app.use(`${apiVersion}/tag`, TagRoutes);
 
 
-app.get('/home', (req, res)=>{
-    res.send('HOME');
-})
 
 app.listen(3000, ()=>{
     const PORT = process.env.PORT || 8888;

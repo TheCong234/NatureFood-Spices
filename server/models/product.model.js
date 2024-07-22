@@ -32,7 +32,13 @@ const ProductSchema = mongoose.Schema({
             ref: 'Review'
         }
     ],
-    images:[ImageSchema]
+    images:[ImageSchema],
+    tags:[
+        {
+        type: Schema.Types.ObjectId,
+        ref: 'Tag',
+        },
+    ],
 })
 
 //xóa liên quan đến sản phẩm (reviews)
