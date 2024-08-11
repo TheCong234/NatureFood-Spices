@@ -35,17 +35,17 @@ const Index = ()=>{
         <div className='flex items-center justify-center w-screen h-screen'>
             <Card sx={{minWidth:475}}>
                 <CardContent >
-                        <h1 className='text-4xl font-bold text-center'>Đăng nhập</h1>
-                        <p className='text-center my-2'>Vui lòng nhập tài khoản của bạn</p>
-                        
-                        <p className='mt-10 mb-2'>Email hoạc Tên đăng nhập</p>
-                        <Input placeholder="tranthecong99@gmail.com" variant="solid" onChange={handleChange} name='email'/>
+                    <h1 className='text-4xl font-bold text-center'>Đăng nhập</h1>
+                    <p className='text-center my-2'>Vui lòng nhập tài khoản của bạn</p>
+                    
+                    <p className='mt-10 mb-2'>Email hoạc Tên đăng nhập</p>
+                    <Input placeholder="tranthecong99@gmail.com" variant="solid" onChange={handleChange} name='email'/>
 
-                        <p className='mt-5 mb-2'>Mật khẩu</p>
-                        <Input placeholder="password" variant="solid" type='password' onChange={handleChange} name='password'/>
-                        <p className='text-end mt-2'>
-                            <Link href="/forgot">Quên mật khẩu?</Link>
-                        </p>
+                    <p className='mt-5 mb-2'>Mật khẩu</p>
+                    <Input placeholder="password" variant="solid" type='password' onChange={handleChange} name='password'/>
+                    <p className='text-end mt-2'>
+                        <Link href="/forgot">Quên mật khẩu?</Link>
+                    </p>
                 </CardContent>
 
                 <CardActions className='flex'>
