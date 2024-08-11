@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import { CategoryRoutes, ProductRoutes, UserRoutes, ReviewRoutes, CartRoutes, FavoriteRoutes, TagRoutes } from "./routes/index.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-
+import cors from 'cors';
 
 const app = express();
 const apiVersion = '/api/v1';
@@ -12,6 +12,10 @@ dotenv.config();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(cors({
+    origin: 'http://localhost:5173', // Chỉ định nguồn cho phép
+    credentials: true, // Cho phép gửi cookie nếu cần thiết
+}));
 
 // Mongoose
 mongoose.connect(process.env.DB_URL);
