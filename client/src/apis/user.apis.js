@@ -4,7 +4,7 @@ import { apiClient } from "./config.api"
 
 export const login = async (data) =>{
     try {
-        const user = await apiClient.post("/user/login", data,{
+        const user = await apiClient.post(UserV1.USER_LOGIN, data,{
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
@@ -13,6 +13,22 @@ export const login = async (data) =>{
         return user.data;
     } catch (error) {
         console.log("User login error: ", error);
+        return error;
+    }
+}
+
+export const register = async (data) =>{
+    try {
+        const user = await apiClient.post(UserV1.USER_REGISTER, data, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            withCredentials: true,
+        });
+        return user.data;
+        
+    } catch (error) {
+        console.log("User register error: ", error);
         return error;
     }
 }

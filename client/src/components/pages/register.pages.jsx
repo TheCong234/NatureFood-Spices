@@ -1,17 +1,73 @@
-import {Button, Link, TextField, Paper, Typography, Box, InputAdornment } from '@mui/material';
-import GoogleIcon from '@mui/icons-material/Google';
-import EmailIcon from '@mui/icons-material/Email';
+import {Button, Link, TextField, Paper, Typography, Box, InputAdornment, IconButton } from '@mui/material';
+import {Google, Email, Phone, Person, Password, RemoveRedEye, VisibilityOff, } from '@mui/icons-material'
 import { useState } from 'react';
+import { register } from '../../apis/user.apis';
 const Index = ()=>{
 
     const [formData, setFormData] = useState({email: "", phone: "", username: "", password: ""});
-    const [confirmPassword, serConfirmPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [isShowPassword, setIsShowPassword] = useState(true);
+    const [formErrors, setFormErrors] = useState({email: "", phone: "", username: "", password: "", confirmPassword: ""});
 
-    const handleChange = (evt)=>{
-        return {...formData, [evt.target.name] : evt.target.value}
+    //show password
+    const handleShowPassword = ()=>{
+      setIsShowPassword((show)=> !show);
     }
-    const handleSubmit = async()=>{
 
+    //handle confirm input change
+    const handleConfirmPasswordChange = (evt)=>{
+      setConfirmPassword(evt.target.value);
+      console.log(confirmPassword);
+      
+    }
+
+    //handle input change
+    const handleChange = (evt)=>{
+      setFormData((data) =>{
+        return {...data, [evt.target.name] : evt.target.value}
+      })
+    }
+
+    //validate form
+    const validate = ()=>{
+      let errors = {}
+      if(formData.email.length < 4){
+        errors.email = "Email hơn 4 kí tự"
+      }
+      if(formData.phone.length < 4){
+        errors.phone = "Phone hơn 4 kí tự"
+      }
+      if(formData.username.length < 4){
+        errors.username = "Username hơn 4 kí tự"
+      }
+      if(formData.password.length < 4){
+        errors.password = "password hơn 4 kí tự"
+      }
+      if(confirmPassword.length < 4){
+        errors.confirmPassword = "confirmPassword hơn 4 kí tự"
+      }
+      if(confirmPassword != formData.password){
+        errors.confirmPassword = "confirmPassword phải giống với password"
+      }
+      setFormErrors(errors);
+      return Object.keys(errors).length === 0
+    }
+
+    //handle register submit
+    const handleSubmit = async(evt)=>{
+      evt.preventDefault();
+      if(validate()){
+        try {
+          const user = await register(formData);
+          if(user){
+            alert('Đăng ký thành công')
+          }
+        } catch (error) {
+          alert(error)
+        }
+        
+      }
+      
     }
     return (
         <div className='h-screen w-screen grid place-items-center'>
@@ -25,7 +81,7 @@ const Index = ()=>{
                             InputProps={{
                                 startAdornment: (
                                   <InputAdornment position="start">
-                                    <EmailIcon />
+                                    <Email />
                                   </InputAdornment>
                                 ),
                               }}
@@ -37,12 +93,14 @@ const Index = ()=>{
                             fullWidth
                             name='email'
                             onChange={handleChange}
+                            error={!!formErrors.email}
+                            helperText={formErrors.email}
                         />
                         <TextField
                             InputProps={{
                                 startAdornment: (
                                   <InputAdornment position="start">
-                                    <EmailIcon />
+                                    <Phone />
                                   </InputAdornment>
                                 ),
                               }}
@@ -55,12 +113,14 @@ const Index = ()=>{
                             name='phone'
                             onChange={handleChange}
                             sx={{mt:2}}
+                            error={!!formErrors.phone}
+                            helperText={formErrors.phone}
                         />
                         <TextField
                             InputProps={{
                                 startAdornment: (
                                   <InputAdornment position="start">
-                                    <EmailIcon />
+                                    <Person />
                                   </InputAdornment>
                                 ),
                               }}
@@ -73,53 +133,73 @@ const Index = ()=>{
                             name='username'
                             onChange={handleChange}
                             sx={{mt:2}}
+                            error={!!formErrors.username}
+                            helperText={formErrors.username}
                         />
                         <TextField
                             InputProps={{
-                                startAdornment: (
-                                  <InputAdornment position="start">
-                                    <EmailIcon />
-                                  </InputAdornment>
-                                ),
-                              }}
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <Password />
+                                </InputAdornment>
+                              ),
+                              endAdornment:(
+                                <IconButton onClick={handleShowPassword}>
+                                  {isShowPassword ? <VisibilityOff/> : <RemoveRedEye/>}
+                                  
+                                </IconButton>
+                              )
+                            }}
                             id="password"
                             label="Mật khẩu"
-                            type="password"
+                            type={isShowPassword? "password" : "text"}
                             autoComplete="password"
                             required
                             fullWidth
                             name='password'
                             onChange={handleChange}
                             sx={{mt:2}}
+                            error={!!formErrors.password}
+                            helperText={formErrors.password}
                         />
                         <TextField
                             InputProps={{
                                 startAdornment: (
                                   <InputAdornment position="start">
-                                    <EmailIcon />
+                                    <Password />
                                   </InputAdornment>
                                 ),
+                                endAdornment:(
+                                  <IconButton onClick={handleShowPassword}>
+                                    {isShowPassword ? <VisibilityOff/> : <RemoveRedEye/>}
+                                    
+                                  </IconButton>
+                                )
                               }}
                             id="confirmPassword"
                             label="Mật khẩu xác thực"
-                            type="password"
+                            type={isShowPassword? "password" : "text"}
                             autoComplete="confirm-password"
                             required
                             fullWidth
                             name='confirmPassword'
-                            onChange={handleChange}
+                            onChange={handleConfirmPasswordChange}
                             sx={{mt:2}}
+                            error={!!formErrors.confirmPassword}
+                            helperText={formErrors.confirmPassword}
                         />
                         <Button
-                            
+                            size='large'
                             type="submit"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
+                            onClick={handleSubmit}
                         >Đăng ký</Button>
                         <Button
-                            endIcon={<GoogleIcon/>}
-                            type="submit"
+                        size='large'
+                            endIcon={<Google/>}
+                            type="button"
                             fullWidth
                             variant="contained"
                             color='warning'
