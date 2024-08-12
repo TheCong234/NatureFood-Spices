@@ -32,3 +32,14 @@ export const register = async (data) =>{
         return error;
     }
 }
+
+export const getCurrentUser = async ()=>{
+    try {
+        const user = await apiClient.get(UserV1.USER_CURRENT);
+        return console.log('Current user: ', user);
+        
+    } catch (error) {
+        console.log("User current error: ", error);
+        return error;
+    }
+}
