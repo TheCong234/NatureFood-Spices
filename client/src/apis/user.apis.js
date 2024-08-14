@@ -1,6 +1,7 @@
 import { UserV1 } from "../constants/endpoints.const"
 import { apiClient } from "./config.api"
-
+import Cookies from 'js-cookie';
+import axios from "axios";
 
 export const login = async (data) =>{
     try {
@@ -10,6 +11,8 @@ export const login = async (data) =>{
             },
             withCredentials: true,
         });
+        
+        Cookies.set('token', user.data.data.token, { expires: 7, secure: true });
         return user.data;
     } catch (error) {
         console.log("User login error: ", error);
@@ -36,8 +39,7 @@ export const register = async (data) =>{
 export const getCurrentUser = async ()=>{
     try {
         const user = await apiClient.get(UserV1.USER_CURRENT);
-        return console.log('Current user: ', user);
-        
+        return user.data.data;
     } catch (error) {
         console.log("User current error: ", error);
         return error;

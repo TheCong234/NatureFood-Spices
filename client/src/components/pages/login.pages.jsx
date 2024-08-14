@@ -1,4 +1,4 @@
-import { Button, TextField, Link} from '@mui/material';
+import { Button, Link} from '@mui/material';
 import {Card, CardContent, CardActions } from '@mui/material';
 import {Input} from '@mui/joy';
 import {useNavigate} from 'react-router-dom';
@@ -22,8 +22,8 @@ const Index = ()=>{
     const handleLogin = async()=>{
         try {
             const user = await login(formData);
-            if(user.success){
-                return navigate("/");
+            if(user?.success){
+                return window.location.href = '/';
             }
             return alert('sai tk');
         } catch (error) {
