@@ -33,6 +33,15 @@ const UserController = {
         }
     },
 
+    async getCurrentUser(req, res){
+        try {
+            return res.status(statusCode.OK).json(BaseResponse.success('Tìm thấy current user', req.user));
+        } catch (error) {
+            console.log("Controller Get current user: ", error);
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).json('THất bại', error);
+        }
+    },
+
     async getUserById(req, res){
         try {
             const {id} = req.params;

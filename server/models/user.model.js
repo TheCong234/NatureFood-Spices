@@ -130,7 +130,7 @@ UserSchema.methods = {
     toJSON() {
         return {
         data: this._doc,
-        token: `JWT ${this.createToken()}`,
+        token: this.createToken(),
         };
     },
 };
