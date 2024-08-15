@@ -1,5 +1,5 @@
 import { createBrowserRouter} from "react-router-dom";
-import { EmptyLayout, MainLayout } from "../components/layout";
+import { AdminLayout, EmptyLayout, MainLayout } from "../components/layout";
 import { FavoritePage, HomePage, LoginPage, RegisterPage } from "../components/pages";
 
 export const router = createBrowserRouter([
@@ -33,6 +33,13 @@ export const router = createBrowserRouter([
                         path: "/favorite",
                         element: <FavoritePage/>
                     }
+                ]
+            },
+            {
+                path:'/admin',
+                element: <AdminLayout/>,
+                children:[
+
                 ]
             }
         ]

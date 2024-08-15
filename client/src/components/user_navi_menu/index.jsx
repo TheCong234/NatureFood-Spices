@@ -1,11 +1,11 @@
-import { Badge, IconButton, Stack } from "@mui/material";
-import MessageIcon from '@mui/icons-material/Message';
+import { Badge, Button, Stack, Typography, Link } from "@mui/material";
+import ForumIcon from '@mui/icons-material/Forum';
 import { AccountCircle } from "@mui/icons-material";
 import { useState } from "react";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SelfDialog from "../Dialogs/self.dialogs";
 
-const UserNaviMenu = (props)=>{
+const UserNaviMenu = ({display, admin})=>{
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClickAccountIcon = (event) => {
@@ -17,31 +17,29 @@ const UserNaviMenu = (props)=>{
     };
     
     return (
-        <Stack spacing={1} direction={'row'} {...props}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+        <Stack spacing={1} direction={'row'} display={display} className="items-center">
+            <Typography display={admin} >
+                <Button component={Link} href='/admin' variant="contained" color="success" size="small" sx={{fontWeight:'bold'}} className="hover:text-white">
+                    ADMIN
+                </Button>
+            </Typography>
+            
+            <Typography className="text-pink-500">
                 <Badge badgeContent={4} color="error">
-                    <MessageIcon />
+                    <ForumIcon />
                 </Badge>
-            </IconButton>
-            <IconButton
-                size="large"
-                aria-label="show 17 new notifications"
-                color="inherit"
-                >
+            </Typography>
+            <Typography className="text-amber-500">
                 <Badge badgeContent={17} color="error">
                     <NotificationsIcon />
                 </Badge>
-            </IconButton>
-            <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-haspopup="true"
-                color="inherit"
+            </Typography>
+            <Typography
                 onClick={handleClickAccountIcon}
                 >
                 <AccountCircle />
-            </IconButton>
+            </Typography>
+            
             <SelfDialog open={true} anchorEl={anchorEl} handleCloseAccountIcon={handleCloseAccountIcon}/>
         </Stack>
     )

@@ -23,6 +23,7 @@ const Index = ()=>{
     },[])
 
     return (
+        
         <Box sx={{backgroundColor: '#bad1ab'}}>
             <Container sx={{display: 'flex', justifyContent: 'space-between', alignItems:'center'}}>
                 <img className="h-10 rounded" src="/src/assets/images/logo.jpg" width={80}/>
@@ -31,12 +32,11 @@ const Index = ()=>{
                     <Button sx={{fontWeight: 'bold'}} color="inherit" component={Link} to=''>Sản phẩm</Button>
                     <Button sx={{fontWeight: 'bold'}} color="inherit" component={Link} to=''>Danh mục</Button>
                     <Button sx={{fontWeight: 'bold'}} color="inherit" component={Link} to=''>Liên hệ</Button>
-                    <Button sx={{fontWeight: 'bold'}} color="inherit" component={Link} to=''>Hỗ trợ</Button>
                 </Stack>
 
                 <Toolbar spacing={1} direction={'row'}>
                     <SearchStyle/>
-                    <UserNaviMenu display={currentUser.data === undefined ? 'none' : ''}/>
+                    <UserNaviMenu display={currentUser.data === undefined ? 'none' : ''} admin={currentUser.data?.role === 'admin' ? 'flex' : 'none' }/>
                     <AuthActions display={currentUser.data !== undefined ? 'none' : ''}/>
                 </Toolbar>
             </Container>
