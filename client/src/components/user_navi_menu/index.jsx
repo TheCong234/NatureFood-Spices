@@ -1,13 +1,17 @@
 import { Badge, Button, Stack, Typography, Link } from "@mui/material";
-import ForumIcon from '@mui/icons-material/Forum';
+import ForumIcon from "@mui/icons-material/Forum";
 import { AccountCircle } from "@mui/icons-material";
 import { useState } from "react";
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import SelfDialog from "../Dialogs/self.dialogs";
+import { useNavigate } from "react-router-dom";
+import InputOTP from "../Modals/input.otp.modals";
 
-const UserNaviMenu = ({display, admin})=>{
+const UserNaviMenu = ({ display, role }) => {
+    const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
-
+    const [openOTPModel, setOpenOTPModel] = useState(false);
+    const handleClose = () => setOpenOTPModel(false);
     const handleClickAccountIcon = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -15,15 +19,46 @@ const UserNaviMenu = ({display, admin})=>{
     const handleCloseAccountIcon = () => {
         setAnchorEl(null);
     };
-    
+
     return (
-        <Stack spacing={1} direction={'row'} display={display} className="items-center">
-            <Typography display={admin} >
-                <Button component={Link} href='/admin' variant="contained" color="success" size="small" sx={{fontWeight:'bold'}} className="hover:text-white">
-                    ADMIN
+        <Stack
+            spacing={1}
+            direction={"row"}
+            display={display}
+            className="items-center"
+        >
+            <Typography display="block">
+                <Button
+                    variant="contained"
+                    color="success"
+                    size="small"
+                    sx={{
+                        fontWeight: "bold",
+                        display: role === "user" ? "block" : "none",
+                    }}
+                    className="hover:text-white"
+                    onClick={() => setOpenOTPModel(!openOTPModel)}
+                >
+                    Bán hàng
                 </Button>
+                <Button
+                    display={role !== "user" ? "block" : "none"}
+                    onClick={() => navigate(role)}
+                    variant="contained"
+                    color="success"
+                    size="small"
+                    sx={{
+                        fontWeight: "bold",
+                        display: role !== "user" ? "block" : "none",
+                    }}
+                    className="hover:text-white"
+                >
+                    {role}
+                </Button>
+
+                <InputOTP open={openOTPModel} handleClose={handleClose} />
             </Typography>
-            
+
             <Typography className="text-pink-500">
                 <Badge badgeContent={4} color="error">
                     <ForumIcon />
@@ -34,15 +69,17 @@ const UserNaviMenu = ({display, admin})=>{
                     <NotificationsIcon />
                 </Badge>
             </Typography>
-            <Typography
-                onClick={handleClickAccountIcon}
-                >
+            <Typography onClick={handleClickAccountIcon}>
                 <AccountCircle />
             </Typography>
-            
-            <SelfDialog open={true} anchorEl={anchorEl} handleCloseAccountIcon={handleCloseAccountIcon}/>
+
+            <SelfDialog
+                open={true}
+                anchorEl={anchorEl}
+                handleCloseAccountIcon={handleCloseAccountIcon}
+            />
         </Stack>
-    )
-}
+    );
+};
 
 export default UserNaviMenu;
