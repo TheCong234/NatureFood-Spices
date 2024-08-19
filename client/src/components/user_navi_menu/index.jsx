@@ -1,17 +1,23 @@
-import { Badge, Button, Stack, Typography, Link } from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Badge, Button, Stack, Typography } from "@mui/material";
 import ForumIcon from "@mui/icons-material/Forum";
 import { AccountCircle } from "@mui/icons-material";
-import { useState } from "react";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+
 import SelfDialog from "../Dialogs/self.dialogs";
-import { useNavigate } from "react-router-dom";
 import InputOTP from "../Modals/input.otp.modals";
 
-const UserNaviMenu = ({ display, role }) => {
+const UserNaviMenu = () => {
     const navigate = useNavigate();
+    const { data, loading, error } = useSelector((state) => state.user);
+
     const [anchorEl, setAnchorEl] = useState(null);
     const [openOTPModel, setOpenOTPModel] = useState(false);
+
     const handleClose = () => setOpenOTPModel(false);
+
     const handleClickAccountIcon = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -20,11 +26,28 @@ const UserNaviMenu = ({ display, role }) => {
         setAnchorEl(null);
     };
 
+    const menuItems = [
+        {
+            text_color: "text-amber-500",
+            color: "error",
+            icon: <ForumIcon />,
+        },
+        {
+            text_color: "text-amber-500",
+            color: "error",
+            icon: <NotificationsIcon />,
+        },
+        {
+            text_color: "",
+            color: "",
+            icon: <AccountCircle onClick={handleClickAccountIcon} />,
+        },
+    ];
     return (
         <Stack
             spacing={1}
             direction={"row"}
-            display={display}
+            display={data.data !== undefined ? "flex" : "none"}
             className="items-center"
         >
             <Typography display="block">
@@ -34,44 +57,41 @@ const UserNaviMenu = ({ display, role }) => {
                     size="small"
                     sx={{
                         fontWeight: "bold",
-                        display: role === "user" ? "block" : "none",
+                        display: data.data?.role === "user" ? "block" : "none",
                     }}
                     className="hover:text-white"
                     onClick={() => setOpenOTPModel(!openOTPModel)}
                 >
-                    Bán hàng
+                    Đăng ký bán hàng
                 </Button>
+
                 <Button
-                    display={role !== "user" ? "block" : "none"}
-                    onClick={() => navigate(role)}
+                    onClick={() => navigate(data.data && data.data.role)}
                     variant="contained"
                     color="success"
                     size="small"
                     sx={{
                         fontWeight: "bold",
-                        display: role !== "user" ? "block" : "none",
+                        display: data.data?.role !== "user" ? "block" : "none",
                     }}
                     className="hover:text-white"
                 >
-                    {role}
+                    {data.data && data.data.role}
                 </Button>
 
                 <InputOTP open={openOTPModel} handleClose={handleClose} />
             </Typography>
 
-            <Typography className="text-pink-500">
-                <Badge badgeContent={4} color="error">
-                    <ForumIcon />
-                </Badge>
-            </Typography>
-            <Typography className="text-amber-500">
-                <Badge badgeContent={17} color="error">
-                    <NotificationsIcon />
-                </Badge>
-            </Typography>
-            <Typography onClick={handleClickAccountIcon}>
-                <AccountCircle />
-            </Typography>
+            {menuItems.map((items, index) => (
+                <Typography className={items.text_color} key={index}>
+                    <Badge
+                        badgeContent={items.color === "" ? "" : 10}
+                        color={items.color}
+                    >
+                        {items.icon}
+                    </Badge>
+                </Typography>
+            ))}
 
             <SelfDialog
                 open={true}

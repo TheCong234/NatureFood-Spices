@@ -1,13 +1,13 @@
-import { Box, Button, Container, Link, Stack, Toolbar } from "@mui/material";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import { Box, Button, Container, Stack, Toolbar } from "@mui/material";
+import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
-import { getCurrentUser } from "../../apis/user.apis";
 import AuthActions from "../auth_actions";
 import UserNaviMenu from "../user_navi_menu";
 import SearchStyle from "../SearchStyle";
+
+import { useDispatch, useSelector } from "react-redux";
+import { currentUser } from "../../hooks/Redux/User/userAction";
 
 const items = [
     {
@@ -25,20 +25,17 @@ const items = [
 ];
 
 const Index = () => {
-    const navigate = useNavigate();
-    const [currentUser, setCurrentUser] = useState({});
+    const { data, loading, error } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        const getCurrentUserFunc = async () => {
-            if (Cookies.get("token")) {
-                const user = await getCurrentUser();
-                setCurrentUser({ ...user });
-            }
-            return;
-        };
-        getCurrentUserFunc();
-    }, []);
+        dispatch(currentUser());
+    }, [dispatch]);
 
+    console.log("header redux:", data);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
     return (
         <Box sx={{ backgroundColor: "#bad1ab" }}>
             <Container
@@ -80,13 +77,8 @@ const Index = () => {
 
                 <Toolbar spacing={1} direction={"row"}>
                     <SearchStyle />
-                    <UserNaviMenu
-                        display={currentUser.data === undefined ? "none" : ""}
-                        role={currentUser.data?.role}
-                    />
-                    <AuthActions
-                        display={currentUser.data !== undefined ? "none" : ""}
-                    />
+                    <UserNaviMenu />
+                    <AuthActions display={data.data ? "none" : "block"} />
                 </Toolbar>
             </Container>
         </Box>
