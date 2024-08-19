@@ -2,6 +2,7 @@ import { Button, ButtonGroup, Dialog, Popover, Typography } from "@mui/material"
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { useState } from "react";
 import Cookies from "js-cookie";
 import {useNavigate} from 'react-router-dom';
@@ -29,6 +30,7 @@ const SelfDialog = ({anchorEl, handleCloseAccountIcon})=>{
             <ButtonGroup variant="text" orientation="vertical" color="inherit">
                 <Button sx={{display: 'flex', justifyContent: 'left', textTransform:'none'}} startIcon={<AccountBoxIcon/>}>Cá nhân</Button>
                 <Button sx={{display: 'flex', justifyContent: 'left', textTransform:'none'}} startIcon={<SettingsIcon/>}>Cài đặt</Button>
+                <Button sx={{display: 'flex', justifyContent: 'left', textTransform:'none'}} startIcon={<HelpOutlineIcon/>}>Hỗ trợ</Button>
                 <Button sx={{display: 'flex', justifyContent: 'left', textTransform:'none'}} startIcon={<LogoutIcon/>} onClick={handleLogout}>Đăng xuất</Button>
             </ButtonGroup>
       </Popover>

@@ -73,7 +73,7 @@ const UserSchema = Schema({
   ],
   role: {
     type: String,
-    enum: ["admin", "user"],
+    enum: ["admin", "host", "user"],
     default: "user",
   },
   cart:{
