@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Badge, Button, Stack, Typography } from "@mui/material";
 import ForumIcon from "@mui/icons-material/Forum";
@@ -65,19 +65,27 @@ const UserNaviMenu = () => {
                     Đăng ký bán hàng
                 </Button>
 
-                <Button
-                    onClick={() => navigate(data.data && data.data.role)}
-                    variant="contained"
-                    color="success"
-                    size="small"
-                    sx={{
-                        fontWeight: "bold",
-                        display: data.data?.role !== "user" ? "block" : "none",
-                    }}
-                    className="hover:text-white"
+                <NavLink
+                    to={data.data?.role}
+                    className={data.data?.role !== "user" ? "block" : "hidden"}
                 >
-                    {data.data && data.data.role}
-                </Button>
+                    {({ isActive }) => (
+                        <Button
+                            size="small"
+                            sx={{
+                                color: "black",
+                                fontWeight: "bold",
+                                backgroundColor: isActive
+                                    ? "#196f3d"
+                                    : "inherit",
+                                border: "1px solid black",
+                            }}
+                            className="hover:text-white"
+                        >
+                            {data.data?.role}
+                        </Button>
+                    )}
+                </NavLink>
 
                 <InputOTP open={openOTPModel} handleClose={handleClose} />
             </Typography>

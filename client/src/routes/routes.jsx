@@ -1,11 +1,16 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AdminLayout, EmptyLayout, MainLayout } from "../components/layout";
 import {
+    CategoryHost,
+    DashboardHost,
+    EventHost,
     FavoritePage,
-    HomeHostPage,
+    HomeHost,
     HomePage,
     LoginPage,
+    ProductHost,
     RegisterPage,
+    SettingHost,
 } from "../components/pages";
 import { DashboardAdmin, ProductAdmin, StoresAdmin } from "../components/Admin";
 import ListProduct from "../components/Admin/Product/list.product";
@@ -43,7 +48,39 @@ export const router = createBrowserRouter([
                     },
                     {
                         path: "/host",
-                        element: <HomeHostPage />,
+                        element: <HomeHost />,
+                        children: [
+                            {
+                                path: "dashboard",
+                                element: <DashboardHost />,
+                            },
+                            {
+                                path: "product",
+                                element: <ProductHost />,
+                                children: [
+                                    {
+                                        path: "list",
+                                        element: <ListProduct />,
+                                    },
+                                    {
+                                        path: "new",
+                                        element: <CreateProduct />,
+                                    },
+                                ],
+                            },
+                            {
+                                path: "category",
+                                element: <CategoryHost />,
+                            },
+                            {
+                                path: "event",
+                                element: <EventHost />,
+                            },
+                            {
+                                path: "setting",
+                                element: <SettingHost />,
+                            },
+                        ],
                     },
                 ],
             },
