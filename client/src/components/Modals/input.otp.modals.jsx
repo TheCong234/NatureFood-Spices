@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import { useState } from "react";
+import { verifyEmail } from "../../apis/user.apis";
 
 const style = {
     position: "absolute",
@@ -18,6 +19,28 @@ const style = {
 
 export default function InputOTP({ open, handleClose }) {
     const [otp, setOtp] = useState("");
+    const [sendOTP, setSendOTP] = useState(false);
+    const [sendOtpStatus, setSendOtpStatus] = useState(false);
+
+    const handleSendOTP = async () => {
+        const randNumber = Math.floor(Math.random() * 90000) + 100000;
+        const data = {
+            subject: "Xác thực email",
+            otp: randNumber,
+        };
+        const result = await verifyEmail(data);
+        if (result.data.success) {
+            setSendOtpStatus(true);
+        }
+    };
+
+    const handleChangeInputOtp = (newValue) => {
+        setOtp(newValue);
+    };
+
+    const handleSubmit = () => {
+        console.log(otp);
+    };
     return (
         <Modal
             open={open}
@@ -37,12 +60,52 @@ export default function InputOTP({ open, handleClose }) {
                     length={6}
                     autoFocus
                     TextFieldsProps={{ placeholder: "-" }}
+                    value={otp}
+                    onChange={handleChangeInputOtp}
                 />
+                <Typography component="p">
+                    Bấm <strong>Gửi OTP</strong> để nhận mã xác thực: &nbsp;
+                    <button
+                        className={
+                            sendOTP
+                                ? "underline decoration-solid text-gray-400"
+                                : "underline decoration-solid text-blue-600"
+                        }
+                        onClick={() => {
+                            setSendOTP(true);
+                            handleSendOTP();
+                        }}
+                        disabled={sendOTP}
+                    >
+                        Gửi OTP
+                    </button>
+                </Typography>
+                <Box sx={{ display: sendOTP ? "block" : "none" }}>
+                    <p
+                        className={
+                            "text-green-500" + sendOtpStatus
+                                ? "block"
+                                : "hidden"
+                        }
+                    >
+                        Gửi OTP thành công tới email đã đăng ký của bạn, vui
+                        lòng nhập mã và "Xác thực"
+                    </p>
+                    <p
+                        className={
+                            "text-red-500" + sendOtpStatus ? "block" : "hidden"
+                        }
+                    >
+                        Gặp vấn đề khi Gửi OTP, vui lòng kiểm tra email và thử
+                        lại
+                    </p>
+                </Box>
                 <Box textAlign={"end"}>
                     <Button
                         variant="contained"
                         color="success"
                         sx={{ marginTop: 3 }}
+                        onClick={handleSubmit}
                     >
                         Xác thực
                     </Button>

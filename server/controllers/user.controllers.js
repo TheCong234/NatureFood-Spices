@@ -3,6 +3,9 @@ import { BaseResponse } from "../config/BaseResponse.config.js";
 import UserModel from "../models/user.model.js";
 import CartModel from "../models/cart.model.js";
 import ProductModel from "../models/product.model.js";
+import StoreModel from "../models/store.models.js";
+import { otpTemplate } from "../config/otp.template.config.js";
+import { sendMail } from "../utils/mailer.utils.js";
 
 const UserController = {
     async register(req, res) {
@@ -75,18 +78,6 @@ const UserController = {
         }
     },
 
-    async getProductsByAuthor(req, res) {
-        const products = await ProductModel.find({ author: req.params.userId });
-        return res
-            .status(statusCode.OK)
-            .json(
-                BaseResponse.success(
-                    "Tìm thấy sản phẩm của người dùng",
-                    products
-                )
-            );
-    },
-
     async updateUser(req, res) {
         try {
             if (req.user) {
@@ -157,6 +148,15 @@ const UserController = {
                 .status(statusCode.NOT_FOUND)
                 .json(BaseResponse.success("Không tìm thấy người dùng"), error);
         }
+    },
+
+    async sendOtpToEmail(req, res) {
+        const { subject, otp } = req.body;
+        const template = otpTemplate(req.user.email, otp);
+        await sendMail(req.user.email, subject, template);
+        return res
+            .status(statusCode.OK)
+            .json(BaseResponse.success("Gửi email thành công", null));
     },
 };
 

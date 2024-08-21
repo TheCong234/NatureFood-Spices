@@ -47,3 +47,10 @@ export const getCurrentUser = async () => {
         return error;
     }
 };
+
+export const verifyEmail = async (data) => {
+    try {
+        const result = await apiClient.post(UserV1.USER_SEND_OTP, data);
+        return result;
+    } catch (error) {}
+};

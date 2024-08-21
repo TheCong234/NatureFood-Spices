@@ -38,10 +38,9 @@ const ProductSchema = mongoose.Schema({
             ref: "Tag",
         },
     ],
-    author: {
+    store: {
         type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
+        ref: "Store",
     },
 });
 

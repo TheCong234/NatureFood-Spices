@@ -9,16 +9,18 @@ const upload = multer({ storage: storage });
 
 const router = express.Router();
 
-router.get(
-    "/products/:userId",
-    asyncHandler(UserController.getProductsByAuthor)
-);
 router.get("/all", UserController.getAll);
 router.get("/info", authJwt, UserController.getCurrentUser);
 router.get("/:id", UserController.getUserById);
 
 router.post("/register", UserController.register);
 router.post("/login", authLocal, UserController.login);
+
+router.post(
+    "/verify-email/otp",
+    authJwt,
+    asyncHandler(UserController.sendOtpToEmail)
+);
 
 router.put("/info", authJwt, UserController.updateUser);
 router.put(

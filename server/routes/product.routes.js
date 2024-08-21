@@ -5,18 +5,20 @@ import { storage } from "../config/cloudinary.config.js";
 import { authJwt } from "../services/auth.services.js";
 
 import multer from "multer";
+import asyncHandler from "../middlewares/async-handler.middleware.js";
 const upload = multer({ storage: storage });
 const router = express.Router();
 
 router.get("/category/:idCategory", ProductController.getProductByCategory);
 router.get("/all", ProductController.getAllProduct);
+router.get("/store/:id");
 router.get("/:id", ProductController.getProductById);
 
 router.post(
     "/",
     authJwt,
     upload.array("images"),
-    ProductController.createProduct
+    asyncHandler(ProductController.createProduct)
 );
 
 router.put("/:id/image/:idImage", ProductController.deleteImageProduct);

@@ -9,6 +9,7 @@ import {
     CartRoutes,
     FavoriteRoutes,
     TagRoutes,
+    StoreRoutes,
 } from "./routes/index.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
@@ -74,10 +75,11 @@ app.use(`${apiVersion}/review`, ReviewRoutes);
 app.use(`${apiVersion}/cart`, CartRoutes);
 app.use(`${apiVersion}/favorite`, FavoriteRoutes);
 app.use(`${apiVersion}/tag`, TagRoutes);
+app.use(`${apiVersion}/store`, StoreRoutes);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    return res.status(500).json(BaseResponse.error(err.name, err));
+    return res.status(500).json(BaseResponse.error(err.name, err.stack));
 });
 
 app.listen(3000, () => {
