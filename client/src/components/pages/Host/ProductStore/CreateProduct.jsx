@@ -7,3 +7,5 @@ const CreateProduct = () => {
         </Box>
     );
 };
+
+export default CreateProduct;

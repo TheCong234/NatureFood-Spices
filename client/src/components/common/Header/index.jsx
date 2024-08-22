@@ -3,10 +3,10 @@ import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import AuthActions from "../auth_actions";
-import UserNaviMenu from "../user_navi_menu";
-import SearchStyle from "../SearchStyle";
-import { currentUser } from "../../hooks/Redux/User/userAction";
+import AuthActions from "../../AuthActions";
+import UserNaviMenu from "../../UserNaviMenu";
+import SearchStyle from "../../SearchStyle";
+import { currentUser } from "../../../hooks/Redux/User/userAction";
 
 const items = [
     {
