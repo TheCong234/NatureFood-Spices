@@ -1,21 +1,21 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AdminLayout, EmptyLayout, MainLayout } from "../components/layout";
+import { DashboardAdmin, ProductAdmin, StoresAdmin } from "../components/Admin";
 import {
-    CategoryHost,
-    DashboardHost,
-    EventHost,
+    CategoryStore,
+    DashboardStore,
+    EventStore,
     FavoritePage,
-    HomeHost,
+    HomeStore,
     HomePage,
     LoginPage,
-    ProductHost,
+    ListProductStore,
     RegisterPage,
     RegisterStore,
-    SettingHost,
+    SettingStore,
+    CreateProductStore,
+    ProductStore,
 } from "../components/pages";
-import { DashboardAdmin, ProductAdmin, StoresAdmin } from "../components/Admin";
-import ListProduct from "../components/Admin/Product/list.product";
-import CreateProduct from "../components/Admin/Product/create.product";
 
 export const router = createBrowserRouter([
     {
@@ -54,37 +54,37 @@ export const router = createBrowserRouter([
 
                     {
                         path: "/host",
-                        element: <HomeHost />,
+                        element: <HomeStore />,
                         children: [
                             {
                                 path: "dashboard",
-                                element: <DashboardHost />,
+                                element: <DashboardStore />,
                             },
                             {
                                 path: "product",
-                                element: <ProductHost />,
+                                element: <ProductStore />,
                                 children: [
                                     {
                                         path: "list",
-                                        element: <ListProduct />,
+                                        element: <ListProductStore />,
                                     },
                                     {
                                         path: "new",
-                                        element: <CreateProduct />,
+                                        element: <CreateProductStore />,
                                     },
                                 ],
                             },
                             {
                                 path: "category",
-                                element: <CategoryHost />,
+                                element: <CategoryStore />,
                             },
                             {
                                 path: "event",
-                                element: <EventHost />,
+                                element: <EventStore />,
                             },
                             {
                                 path: "setting",
-                                element: <SettingHost />,
+                                element: <SettingStore />,
                             },
                         ],
                     },
@@ -105,16 +105,6 @@ export const router = createBrowserRouter([
                     {
                         path: "product",
                         element: <ProductAdmin />,
-                        children: [
-                            {
-                                path: "",
-                                element: <ListProduct />,
-                            },
-                            {
-                                path: "new",
-                                element: <CreateProduct />,
-                            },
-                        ],
                     },
                 ],
             },

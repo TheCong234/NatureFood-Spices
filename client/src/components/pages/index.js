@@ -1,11 +1,15 @@
-export { default as LoginPage } from "./login.pages";
-export { default as HomePage } from "./home.pages";
-export { default as FavoritePage } from "./favorite.pages";
-export { default as RegisterPage } from "./register.pages";
-export { default as HomeHost } from "./Host/home.host";
-export { default as ProductHost } from "./Host/product/tabs.product";
-export { default as DashboardHost } from "./Host/dashboard.host";
-export { default as CategoryHost } from "./Host/category.host";
-export { default as EventHost } from "./Host/event.host";
-export { default as SettingHost } from "./Host/setting.host";
-export { default as RegisterStore } from "./Host/Register";
+export { default as LoginPage } from "./LoginPage";
+export { default as HomePage } from "./HomePage";
+export { default as FavoritePage } from "./FavoritePage";
+export { default as RegisterPage } from "./RegisterPage";
+
+// store
+export { default as HomeStore } from "./Host/HomeStore";
+export { default as ProductStore } from "./Host/ProductStore";
+export { default as DashboardStore } from "./Host/DashboardStore";
+export { default as CategoryStore } from "./Host/category.host";
+export { default as EventStore } from "./Host/EventStore";
+export { default as SettingStore } from "./Host/SettingStore";
+export { default as RegisterStore } from "./Host/RegisterStore";
+export { default as ListProductStore } from "./Host/ProductStore/ListProduct";
+export { default as CreateProductStore } from "./Host/ProductStore/CreateProduct";

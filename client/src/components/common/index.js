@@ -1,2 +1,2 @@
-export { default as Header} from './header.common';
-export { default as Footer} from './footer.common';
+export { default as Header } from "./Header";
+export { default as Footer } from "./Footer";
