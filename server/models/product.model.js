@@ -1,18 +1,17 @@
-import mongoose from 'mongoose';
-import ReviewModel from '../models/review.model.js';
-import CartModel from './cart.model.js';
+import mongoose from "mongoose";
+import ReviewModel from "../models/review.model.js";
+import CartModel from "./cart.model.js";
 const Schema = mongoose.Schema;
 
-
 const ImageSchema = new Schema({
-    url:{
+    url: {
         type: String,
-        required: true
+        required: true,
     },
-    filename:{
+    filename: {
         type: String,
-        required: true
-    }
+        required: true,
+    },
 });
 
 const ProductSchema = mongoose.Schema({
@@ -22,32 +21,36 @@ const ProductSchema = mongoose.Schema({
     weight: Number,
     category: {
         type: Schema.Types.ObjectId,
-        ref: 'Category',
-        required: true
+        ref: "Category",
+        required: true,
     },
     inventory: Number,
-    reviews:[
+    reviews: [
         {
-            type:Schema.Types.ObjectId,
-            ref: 'Review'
-        }
-    ],
-    images:[ImageSchema],
-    tags:[
-        {
-        type: Schema.Types.ObjectId,
-        ref: 'Tag',
+            type: Schema.Types.ObjectId,
+            ref: "Review",
         },
     ],
-})
+    images: [ImageSchema],
+    tags: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Tag",
+        },
+    ],
+    store: {
+        type: Schema.Types.ObjectId,
+        ref: "Store",
+    },
+});
 
 //xóa liên quan đến sản phẩm (reviews)
-ProductSchema.post('findOneAndDelete', async function(doc){
-    if(doc){
-        await ReviewModel.deleteMany({ _id: {$in: doc.reviews}});
-        await CartModel.deleteMany({productId: _id});
+ProductSchema.post("findOneAndDelete", async function (doc) {
+    if (doc) {
+        await ReviewModel.deleteMany({ _id: { $in: doc.reviews } });
+        await CartModel.deleteMany({ productId: _id });
     }
-})
+});
 
-const ProductModel = mongoose.model('Product', ProductSchema);
+const ProductModel = mongoose.model("Product", ProductSchema);
 export default ProductModel;
