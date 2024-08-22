@@ -6,8 +6,8 @@ import ForumIcon from "@mui/icons-material/Forum";
 import { AccountCircle } from "@mui/icons-material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
-import SelfDialog from "../Dialogs/self.dialogs";
-import InputOTP from "../Modals/input.otp.modals";
+import AuthActions from "../Dialogs/AccountMenu";
+import InputOTP from "../Modals/InputOtpModal";
 
 const UserNaviMenu = () => {
     const navigate = useNavigate();
@@ -106,7 +106,7 @@ const UserNaviMenu = () => {
                 </Typography>
             ))}
 
-            <SelfDialog
+            <AuthActions
                 open={true}
                 anchorEl={anchorEl}
                 handleCloseAccountIcon={handleCloseAccountIcon}

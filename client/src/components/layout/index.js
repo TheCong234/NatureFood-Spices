@@ -1,3 +1,3 @@
-export{ default as EmptyLayout} from './empty.layout';
-export{ default as MainLayout} from './main.layout';
-export{ default as AdminLayout} from './admin.layout';
+export { default as EmptyLayout } from "./EmptyLayout";
+export { default as MainLayout } from "./MainLayout";
+export { default as AdminLayout } from "./AdminLayout";
