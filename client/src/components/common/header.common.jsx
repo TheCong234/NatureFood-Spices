@@ -1,12 +1,11 @@
 import { Box, Button, Container, Stack, Toolbar } from "@mui/material";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import AuthActions from "../auth_actions";
 import UserNaviMenu from "../user_navi_menu";
 import SearchStyle from "../SearchStyle";
-
-import { useDispatch, useSelector } from "react-redux";
 import { currentUser } from "../../hooks/Redux/User/userAction";
 
 const items = [
@@ -31,11 +30,7 @@ const Index = () => {
     useEffect(() => {
         dispatch(currentUser());
     }, [dispatch]);
-
     console.log("header redux:", data);
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
     return (
         <Box sx={{ backgroundColor: "#bad1ab" }}>
             <Container
@@ -78,7 +73,7 @@ const Index = () => {
                 <Toolbar spacing={1} direction={"row"}>
                     <SearchStyle />
                     <UserNaviMenu />
-                    <AuthActions display={data.data ? "none" : "block"} />
+                    <AuthActions display={data ? "none" : "block"} />
                 </Toolbar>
             </Container>
         </Box>

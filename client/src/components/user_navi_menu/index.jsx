@@ -47,7 +47,7 @@ const UserNaviMenu = () => {
         <Stack
             spacing={1}
             direction={"row"}
-            display={data.data !== undefined ? "flex" : "none"}
+            display={data !== undefined ? "flex" : "none"}
             className="items-center"
         >
             <Typography display="block">
@@ -57,17 +57,22 @@ const UserNaviMenu = () => {
                     size="small"
                     sx={{
                         fontWeight: "bold",
-                        display: data.data?.role === "user" ? "block" : "none",
+                        display: data?.role === "user" ? "block" : "none",
                     }}
                     className="hover:text-white"
-                    onClick={() => setOpenOTPModel(!openOTPModel)}
+                    onClick={() => {
+                        if (data.emailVerify) {
+                            return navigate("register-store");
+                        }
+                        setOpenOTPModel(!openOTPModel);
+                    }}
                 >
                     Đăng ký bán hàng
                 </Button>
 
                 <NavLink
-                    to={data.data?.role}
-                    className={data.data?.role !== "user" ? "block" : "hidden"}
+                    to={data?.role}
+                    className={data?.role !== "user" ? "block" : "hidden"}
                 >
                     {({ isActive }) => (
                         <Button
@@ -82,7 +87,7 @@ const UserNaviMenu = () => {
                             }}
                             className="hover:text-white"
                         >
-                            {data.data?.role}
+                            {data?.role}
                         </Button>
                     )}
                 </NavLink>

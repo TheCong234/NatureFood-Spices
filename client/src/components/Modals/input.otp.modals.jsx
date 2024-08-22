@@ -1,10 +1,9 @@
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import { MuiOtpInput } from "mui-one-time-password-input";
 import { useState } from "react";
-import { verifyEmail } from "../../apis/user.apis";
+import { useDispatch } from "react-redux";
+import { useSnackbar } from "notistack";
+import { Modal, Typography, Button, Box } from "@mui/material";
+import { MuiOtpInput } from "mui-one-time-password-input";
+import { updateEmailVerify } from "../../hooks/Redux/User/userAction";
 
 const style = {
     position: "absolute",
@@ -17,18 +16,21 @@ const style = {
     p: 4,
 };
 
+let randNumber = Math.floor(Math.random() * 90000) + 100000;
+
 export default function InputOTP({ open, handleClose }) {
     const [otp, setOtp] = useState("");
     const [sendOTP, setSendOTP] = useState(false);
     const [sendOtpStatus, setSendOtpStatus] = useState(false);
+    const dispatch = useDispatch();
+    const { enqueueSnackbar } = useSnackbar();
 
     const handleSendOTP = async () => {
-        const randNumber = Math.floor(Math.random() * 90000) + 100000;
-        const data = {
+        const dataOTP = {
             subject: "Xác thực email",
             otp: randNumber,
         };
-        const result = await verifyEmail(data);
+        const result = await verifyEmail(dataOTP);
         if (result.data.success) {
             setSendOtpStatus(true);
         }
@@ -38,8 +40,31 @@ export default function InputOTP({ open, handleClose }) {
         setOtp(newValue);
     };
 
-    const handleSubmit = () => {
-        console.log(otp);
+    const handleClickVariant = (variant) => (message) => {
+        // variant could be success, error, warning, info, or default
+        enqueueSnackbar(message, { variant });
+    };
+
+    const handleSubmit = async () => {
+        if (otp == randNumber) {
+            const dataUpdate = {
+                emailVerify: true,
+            };
+            const resultAction = await dispatch(updateEmailVerify(dataUpdate));
+            // Kiểm tra nếu dispatch thành công
+            if (updateEmailVerify.fulfilled.match(resultAction)) {
+                // Kiểm tra giá trị emailVerify trong state đã được cập nhật hay chưa
+                if (resultAction.payload.emailVerify) {
+                    handleClickVariant("success")("Xác thực email thành công");
+                } else {
+                    handleClickVariant("error")("Xác thực email thất bại");
+                }
+            } else {
+                handleClickVariant("error")("Xác thực email thất bại");
+            }
+        } else {
+            handleClickVariant("error")("Mã otp sai");
+        }
     };
     return (
         <Modal
@@ -82,19 +107,17 @@ export default function InputOTP({ open, handleClose }) {
                 </Typography>
                 <Box sx={{ display: sendOTP ? "block" : "none" }}>
                     <p
-                        className={
-                            "text-green-500" + sendOtpStatus
-                                ? "block"
-                                : "hidden"
-                        }
+                        className={`text-green-500 ${
+                            sendOtpStatus ? "block" : "hidden"
+                        }`}
                     >
                         Gửi OTP thành công tới email đã đăng ký của bạn, vui
                         lòng nhập mã và "Xác thực"
                     </p>
                     <p
-                        className={
-                            "text-red-500" + sendOtpStatus ? "block" : "hidden"
-                        }
+                        className={`text-red-500 ${
+                            sendOtpStatus ? "hidden" : "block"
+                        }`}
                     >
                         Gặp vấn đề khi Gửi OTP, vui lòng kiểm tra email và thử
                         lại

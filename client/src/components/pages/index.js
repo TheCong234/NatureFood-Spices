@@ -8,3 +8,4 @@ export { default as DashboardHost } from "./Host/dashboard.host";
 export { default as CategoryHost } from "./Host/category.host";
 export { default as EventHost } from "./Host/event.host";
 export { default as SettingHost } from "./Host/setting.host";
+export { default as RegisterStore } from "./Host/Register";

@@ -1,20 +1,11 @@
-import {
-    Button,
-    ButtonGroup,
-    Dialog,
-    Popover,
-    Typography,
-} from "@mui/material";
+import { Button, ButtonGroup, Popover } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import { useState } from "react";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 
 const SelfDialog = ({ anchorEl, handleCloseAccountIcon }) => {
-    const navigate = useNavigate();
     const open = Boolean(anchorEl);
     const id = open ? "simple-popover" : undefined;
 

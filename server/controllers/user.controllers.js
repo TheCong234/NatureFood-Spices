@@ -10,7 +10,6 @@ import { sendMail } from "../utils/mailer.utils.js";
 const UserController = {
     async register(req, res) {
         try {
-            console.log("register data: ", req.body);
             const cart = new CartModel();
             const newCart = await cart.save();
             const user = await UserModel.create(req.body);

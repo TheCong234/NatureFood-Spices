@@ -10,6 +10,7 @@ import {
     LoginPage,
     ProductHost,
     RegisterPage,
+    RegisterStore,
     SettingHost,
 } from "../components/pages";
 import { DashboardAdmin, ProductAdmin, StoresAdmin } from "../components/Admin";
@@ -46,6 +47,11 @@ export const router = createBrowserRouter([
                         path: "/favorite",
                         element: <FavoritePage />,
                     },
+                    {
+                        path: "/register-store",
+                        element: <RegisterStore />,
+                    },
+
                     {
                         path: "/host",
                         element: <HomeHost />,

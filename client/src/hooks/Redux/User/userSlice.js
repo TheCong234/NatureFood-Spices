@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { currentUser } from "./userAction";
+import { currentUser, updateEmailVerify } from "./userAction";
 
 const userSlice = createSlice({
     name: "user",
@@ -18,9 +18,24 @@ const userSlice = createSlice({
             })
             .addCase(currentUser.fulfilled, (state, action) => {
                 state.loading = false;
-                state.data = action.payload;
+                state.data = action.payload.data;
             })
             .addCase(currentUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+            //update user data
+            .addCase(updateEmailVerify.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateEmailVerify.fulfilled, (state, action) => {
+                state.loading = false;
+                console.log(action.payload);
+                state.data = { ...action.payload };
+            })
+            .addCase(updateEmailVerify.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });

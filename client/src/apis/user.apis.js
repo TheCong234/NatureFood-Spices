@@ -52,5 +52,22 @@ export const verifyEmail = async (data) => {
     try {
         const result = await apiClient.post(UserV1.USER_SEND_OTP, data);
         return result;
-    } catch (error) {}
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+};
+
+export const updateUser = async (data) => {
+    try {
+        const user = await apiClient.put(UserV1.USER_UPDATE, data, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        });
+        return user;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
 };
