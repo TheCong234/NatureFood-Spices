@@ -40,6 +40,10 @@ const StoreSchema = Schema({
             ref: "Product",
         },
     ],
+    address: {
+        type: Schema.Types.ObjectId,
+        ref: "Address",
+    },
     createdAt: {
         type: Date,
         default: Date.now,

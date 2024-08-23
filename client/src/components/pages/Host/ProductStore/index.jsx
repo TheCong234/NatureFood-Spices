@@ -18,6 +18,7 @@ const Index = () => {
                 value={value}
                 onChange={handleChange}
                 aria-label="disabled tabs example"
+                sx={{ pl: "24px" }}
             >
                 <Tab label="Danh sách" onClick={() => navigate("list")} />
                 <Tab label="Thêm mới" onClick={() => navigate("new")} />

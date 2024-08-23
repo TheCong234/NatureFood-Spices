@@ -121,7 +121,7 @@ const Index = () => {
                         {title}
                     </Typography>
                 </Toolbar>
-                <Box sx={{ px: "24px" }}>
+                <Box sx={{ backgroundColor: "#e9ecef" }}>
                     <Outlet />
                 </Box>
             </Box>
