@@ -11,6 +11,11 @@ const upload = multer({ storage: storage });
 const router = express.Router();
 router.get("/:id", asyncHandler(StoreControllers.getStoreById));
 
-router.post("/new", authJwt, asyncHandler(StoreControllers.createStore));
+router.post(
+    "/new",
+    authJwt,
+    upload.single("image"),
+    asyncHandler(StoreControllers.createStore)
+);
 
 export default router;
