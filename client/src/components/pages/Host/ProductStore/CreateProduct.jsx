@@ -1,9 +1,14 @@
 import {
     Box,
     Button,
+    Checkbox,
     FormControl,
+    FormHelperText,
+    InputAdornment,
     InputLabel,
+    ListItemText,
     MenuItem,
+    OutlinedInput,
     Paper,
     Select,
     styled,
@@ -29,6 +34,15 @@ const Item = styled(Paper)(({ theme }) => ({
     padding: "10px",
     borderRadius: "10px",
 }));
+
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: 48 * 4.5 + 8,
+            width: 250,
+        },
+    },
+};
 const CreateProduct = () => {
     const [imageValues, setImageValues] = useState({});
     const {
@@ -42,7 +56,9 @@ const CreateProduct = () => {
 
     const [category, setCategory] = useState("");
 
-    const onSubmitHandler = async (data) => {};
+    const onSubmitHandler = async (data) => {
+        console.log("data form: ", data);
+    };
     return (
         <Box sx={{ px: "24px", pb: "24px" }}>
             <Typography
@@ -77,6 +93,7 @@ const CreateProduct = () => {
                                 Tên sản phẩm
                             </label>
                             <InputJoy
+                                {...register("name")}
                                 className="mt-1"
                                 placeholder="Tên cửa hàng"
                                 variant="outlined"
@@ -91,13 +108,15 @@ const CreateProduct = () => {
                                 Mô tả sản phẩm
                             </label>
                             <TextareaJoy
+                                {...register("description")}
                                 color="neutral"
                                 disabled={false}
                                 minRows={4}
-                                placeholder=""
+                                placeholder="Giới thiệu về sản phẩm"
                                 size="sm"
                                 variant="outlined"
                                 className="mt-1"
+                                id="description"
                             />
                         </div>
                     </Item>
@@ -132,7 +151,7 @@ const CreateProduct = () => {
                             <SwiperSlide>Slide 8</SwiperSlide>
                             <SwiperSlide>Slide 9</SwiperSlide>
                         </Swiper>
-                        <Button
+                        {/* <Button
                             color="success"
                             variant="contained"
                             size="small"
@@ -146,8 +165,14 @@ const CreateProduct = () => {
                             }}
                             startIcon={<AddIcon />}
                         >
-                            Thêm ảnh
-                        </Button>
+                            
+                        </Button> */}
+                        <input
+                            {...register("images")}
+                            className="w-1/2 absolute bottom-6 left-1/2 z-50 -translate-x-1/2 "
+                            type="file"
+                            multiple
+                        />
                     </Item>
                 </Box>
 
@@ -164,18 +189,28 @@ const CreateProduct = () => {
                         </Typography>
                         <div className="">
                             <label
-                                htmlFor="name"
+                                htmlFor="price"
                                 className="text-base text-black "
                             >
                                 Giá
                             </label>
 
-                            <InputJoy
-                                className="mt-1"
-                                placeholder="Tên cửa hàng"
+                            <FormControl
                                 variant="outlined"
-                                id="name"
-                            />
+                                className="w-full pr-10"
+                            >
+                                <OutlinedInput
+                                    {...register("price")}
+                                    className="mt-1 w-1/2"
+                                    id="price"
+                                    size="small"
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            VNĐ
+                                        </InputAdornment>
+                                    }
+                                />
+                            </FormControl>
 
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="mt-4">
@@ -215,12 +250,48 @@ const CreateProduct = () => {
                                     >
                                         Cân nặng
                                     </label>
-                                    <InputJoy
-                                        className="mt-1"
-                                        placeholder="Kèm đơn vị (mg, g, kg, ...)"
+                                    <FormControl
                                         variant="outlined"
-                                        id="name"
-                                    />
+                                        className="w-full pr-10"
+                                    >
+                                        <OutlinedInput
+                                            {...register("weight")}
+                                            className="mt-1"
+                                            id="price"
+                                            size="small"
+                                            endAdornment={
+                                                <InputAdornment position="end">
+                                                    <Select
+                                                        value={2}
+                                                        label="Age"
+                                                        onChange={() => {}}
+                                                        className="mt-1"
+                                                        sx={{
+                                                            ".MuiOutlinedInput-notchedOutline":
+                                                                {
+                                                                    border: "none",
+                                                                },
+                                                            "&.Mui-focused .MuiOutlinedInput-notchedOutline":
+                                                                {
+                                                                    border: "none",
+                                                                },
+                                                        }}
+                                                        size="small"
+                                                    >
+                                                        <MenuItem value={0}>
+                                                            miligram
+                                                        </MenuItem>
+                                                        <MenuItem value={1}>
+                                                            gram
+                                                        </MenuItem>
+                                                        <MenuItem value={2}>
+                                                            kg
+                                                        </MenuItem>
+                                                    </Select>
+                                                </InputAdornment>
+                                            }
+                                        />
+                                    </FormControl>
                                 </div>
                             </div>
                         </div>
@@ -234,51 +305,39 @@ const CreateProduct = () => {
                             className="text-black font-bold py-2"
                             sx={{ fontWeight: "bold" }}
                         >
-                            Quảng bá sản phẩm
+                            Phân loại
                         </Typography>
                         <p className="text-base text-black">Danh mục</p>
-                        <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">
-                                Danh mục
-                            </InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={category}
-                                label="Age"
-                                onChange={(event) =>
-                                    setCategory(event.target.value)
-                                }
-                                className="mt-1"
-                                size="small"
-                            >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
-                            </Select>
-                        </FormControl>
+                        <Select
+                            {...register("category")}
+                            value={0}
+                            onChange={() => {}}
+                            className="mt-1 w-full"
+                            size="small"
+                        >
+                            <MenuItem value={0}>dm1</MenuItem>
+                            <MenuItem value={1}>dm2</MenuItem>
+                            <MenuItem value={2}>dm3</MenuItem>
+                        </Select>
 
                         <p className="text-base text-black mt-2">Thẻ</p>
-                        <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">
-                                Thẻ
-                            </InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={category}
-                                label="Age"
-                                onChange={(event) =>
-                                    setCategory(event.target.value)
-                                }
-                                className="mt-1"
-                                size="small"
-                            >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
-                            </Select>
-                        </FormControl>
+                        <Select
+                            multiple
+                            value={["cong"]}
+                            onChange={() => {}}
+                            input={<OutlinedInput label="Tag" />}
+                            // renderValue={(selected) => selected.join(", ")}
+                            MenuProps={MenuProps}
+                        >
+                            {["cong", "bình", "yên", "tâm"].map((name) => (
+                                <MenuItem key={name} value={name}>
+                                    <Checkbox
+                                    // checked={personName.indexOf(name) > -1}
+                                    />
+                                    <ListItemText primary={name} />
+                                </MenuItem>
+                            ))}
+                        </Select>
                     </Item>
                 </Box>
                 <Box className="mt-6">
