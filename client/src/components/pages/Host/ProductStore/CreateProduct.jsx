@@ -3,7 +3,6 @@ import {
     Button,
     Checkbox,
     FormControl,
-    FormHelperText,
     InputAdornment,
     InputLabel,
     ListItemText,
@@ -14,19 +13,21 @@ import {
     styled,
     Typography,
 } from "@mui/material";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CreateProductYup } from "../../../../validations/yup.validations";
 import InputJoy from "@mui/joy/Input";
 import TextareaJoy from "@mui/joy/Textarea";
-import AddIcon from "@mui/icons-material/Add";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCards } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-cards";
 import "../../../../assets/styles/swiper.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategoriesAction } from "../../../../hooks/Redux/Category/categoryAction";
+import { getTagsAction } from "../../../../hooks/Redux/Tag/tagAction";
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -44,6 +45,19 @@ const MenuProps = {
     },
 };
 const CreateProduct = () => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getCategoriesAction());
+        dispatch(getTagsAction());
+    }, []);
+
+    const { data, loading, error } = useSelector((state) => state.category);
+    const {
+        data: tagData,
+        loading: tagLoading,
+        error: tagError,
+    } = useSelector((state) => state.tag);
     const [imageValues, setImageValues] = useState({});
     const {
         register,
@@ -54,10 +68,20 @@ const CreateProduct = () => {
         resolver: yupResolver(CreateProductYup),
     });
 
-    const [category, setCategory] = useState("");
+    const [categorySelected, setCategorySelected] = useState(data?.[0]?._id);
+    const [tagsSelected, setTagsSelected] = useState([]);
 
-    const onSubmitHandler = async (data) => {
-        console.log("data form: ", data);
+    const handleTagSelectedChange = (event) => {
+        const {
+            target: { value },
+        } = event;
+        setTagsSelected(
+            // On autofill we get a stringified value.
+            typeof value === "string" ? value.split(",") : value
+        );
+    };
+    const onSubmitHandler = async (formData) => {
+        console.log("data form: ", formData);
     };
     return (
         <Box sx={{ px: "24px", pb: "24px" }}>
@@ -76,7 +100,7 @@ const CreateProduct = () => {
                 className="mt-6"
             >
                 <Box className="flex">
-                    <Item key={2} elevation={2} className="w-2/3 mr-6">
+                    <Item elevation={2} className="w-2/3 mr-6">
                         <Typography
                             component="h1"
                             variant="h6"
@@ -98,6 +122,9 @@ const CreateProduct = () => {
                                 placeholder="Tên cửa hàng"
                                 variant="outlined"
                                 id="name"
+                                error={!!errors.name}
+                                helperText={errors.name?.message}
+                                required
                             />
                         </div>
                         <div className="mt-6">
@@ -121,7 +148,6 @@ const CreateProduct = () => {
                         </div>
                     </Item>
                     <Item
-                        key={2}
                         elevation={2}
                         className="w-1/3 "
                         sx={{ position: "relative" }}
@@ -151,22 +177,7 @@ const CreateProduct = () => {
                             <SwiperSlide>Slide 8</SwiperSlide>
                             <SwiperSlide>Slide 9</SwiperSlide>
                         </Swiper>
-                        {/* <Button
-                            color="success"
-                            variant="contained"
-                            size="small"
-                            sx={{
-                                position: "absolute",
-                                bottom: "16px",
-                                left: "50%",
-                                zIndex: "9999",
-                                transform: "translateX(-50%)",
-                                textTransform: "none",
-                            }}
-                            startIcon={<AddIcon />}
-                        >
-                            
-                        </Button> */}
+
                         <input
                             {...register("images")}
                             className="w-1/2 absolute bottom-6 left-1/2 z-50 -translate-x-1/2 "
@@ -178,7 +189,7 @@ const CreateProduct = () => {
 
                 {/* PRICE - weight */}
                 <Box className="mt-6 flex">
-                    <Item key={2} elevation={2} className="w-2/3 mr-6">
+                    <Item elevation={2} className="w-2/3 mr-6">
                         <Typography
                             component="h1"
                             variant="h6"
@@ -225,11 +236,9 @@ const CreateProduct = () => {
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
-                                            value={category}
+                                            value={10}
                                             label="Age"
-                                            onChange={(event) =>
-                                                setCategory(event.target.value)
-                                            }
+                                            onChange={() => {}}
                                             className="mt-1"
                                             size="small"
                                         >
@@ -262,9 +271,9 @@ const CreateProduct = () => {
                                             endAdornment={
                                                 <InputAdornment position="end">
                                                     <Select
-                                                        value={2}
+                                                        value={0}
                                                         label="Age"
-                                                        onChange={() => {}}
+                                                        onChange={(event) => {}}
                                                         className="mt-1"
                                                         sx={{
                                                             ".MuiOutlinedInput-notchedOutline":
@@ -297,8 +306,8 @@ const CreateProduct = () => {
                         </div>
                     </Item>
 
-                    {/* Product media */}
-                    <Item key={2} elevation={2} className="w-1/3">
+                    {/* Product type */}
+                    <Item elevation={2} className="w-1/3">
                         <Typography
                             component="h1"
                             variant="h6"
@@ -310,38 +319,55 @@ const CreateProduct = () => {
                         <p className="text-base text-black">Danh mục</p>
                         <Select
                             {...register("category")}
-                            value={0}
-                            onChange={() => {}}
+                            value={categorySelected}
+                            onChange={(e) =>
+                                setCategorySelected(e.target.value)
+                            }
                             className="mt-1 w-full"
                             size="small"
                         >
-                            <MenuItem value={0}>dm1</MenuItem>
-                            <MenuItem value={1}>dm2</MenuItem>
-                            <MenuItem value={2}>dm3</MenuItem>
-                        </Select>
-
-                        <p className="text-base text-black mt-2">Thẻ</p>
-                        <Select
-                            multiple
-                            value={["cong"]}
-                            onChange={() => {}}
-                            input={<OutlinedInput label="Tag" />}
-                            // renderValue={(selected) => selected.join(", ")}
-                            MenuProps={MenuProps}
-                        >
-                            {["cong", "bình", "yên", "tâm"].map((name) => (
-                                <MenuItem key={name} value={name}>
-                                    <Checkbox
-                                    // checked={personName.indexOf(name) > -1}
-                                    />
-                                    <ListItemText primary={name} />
+                            {data.map((category, index) => (
+                                <MenuItem
+                                    key={`category-${index}`}
+                                    value={category._id}
+                                >
+                                    {category.name}
                                 </MenuItem>
                             ))}
                         </Select>
+
+                        <FormControl className="w-full" sx={{ mt: 4 }}>
+                            <InputLabel id="demo-multiple-checkbox-label">
+                                #HangTag
+                            </InputLabel>
+                            <Select
+                                multiple
+                                value={tagsSelected}
+                                onChange={handleTagSelectedChange}
+                                size="small"
+                                renderValue={(selected) => selected.join(", ")}
+                                MenuProps={MenuProps}
+                                input={<OutlinedInput label="#HangTag" />}
+                            >
+                                {tagData.map((tag) => (
+                                    <MenuItem
+                                        key={`tag-${tag.name}`}
+                                        value={tag.name}
+                                    >
+                                        <Checkbox
+                                            checked={
+                                                tagsSelected.indexOf(name) > -1
+                                            }
+                                        />
+                                        <ListItemText primary={tag.name} />
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Item>
                 </Box>
                 <Box className="mt-6">
-                    <Item key={2} elevation={2} className="w-2/3 mr-6">
+                    <Item elevation={2} className="w-2/3 mr-6">
                         <Typography
                             component="h1"
                             variant="h6"
@@ -366,6 +392,16 @@ const CreateProduct = () => {
                             />
                         </div>
                     </Item>
+                </Box>
+                <Box className="text-center">
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="success"
+                        sx={{ mt: "24px", textTransform: "none" }}
+                    >
+                        Tạo sản phẩm
+                    </Button>
                 </Box>
             </form>
         </Box>

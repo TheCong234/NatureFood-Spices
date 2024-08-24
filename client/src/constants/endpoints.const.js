@@ -9,3 +9,11 @@ export const UserV1 = {
 export const StoreV1 = {
     STORE_CREATE: "/store/new",
 };
+
+export const CategoryV1 = {
+    CATEGORY_GET_ALL: "/category/all",
+};
+
+export const TagV1 = {
+    TAG_GET_ALL: "/tag/all",
+};

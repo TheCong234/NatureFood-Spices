@@ -9,11 +9,9 @@ import {
     HomeStore,
     HomePage,
     LoginPage,
-    ListProductStore,
     RegisterPage,
     RegisterStore,
     SettingStore,
-    CreateProductStore,
     ProductStore,
 } from "../components/pages";
 
@@ -63,16 +61,6 @@ export const router = createBrowserRouter([
                             {
                                 path: "product",
                                 element: <ProductStore />,
-                                children: [
-                                    {
-                                        path: "list",
-                                        element: <ListProductStore />,
-                                    },
-                                    {
-                                        path: "new",
-                                        element: <CreateProductStore />,
-                                    },
-                                ],
                             },
                             {
                                 path: "category",

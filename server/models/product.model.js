@@ -15,7 +15,7 @@ const ImageSchema = new Schema({
 });
 
 const ProductSchema = mongoose.Schema({
-    title: String,
+    name: String,
     price: Number,
     description: String,
     weight: Number,
