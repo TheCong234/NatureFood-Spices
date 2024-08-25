@@ -3,6 +3,7 @@ import {
     Button,
     Checkbox,
     FormControl,
+    Input,
     InputAdornment,
     InputLabel,
     ListItemText,
@@ -11,14 +12,14 @@ import {
     Paper,
     Select,
     styled,
+    TextField,
     Typography,
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CreateProductYup } from "../../../../validations/yup.validations";
 import InputJoy from "@mui/joy/Input";
-import TextareaJoy from "@mui/joy/Textarea";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCards } from "swiper/modules";
@@ -44,6 +45,8 @@ const MenuProps = {
         },
     },
 };
+
+//main
 const CreateProduct = () => {
     const dispatch = useDispatch();
 
@@ -58,7 +61,8 @@ const CreateProduct = () => {
         loading: tagLoading,
         error: tagError,
     } = useSelector((state) => state.tag);
-    const [imageValues, setImageValues] = useState({});
+    const [images, setImages] = useState([]);
+    const [imagesData, setImagesData] = useState(null);
     const {
         register,
         handleSubmit,
@@ -68,7 +72,7 @@ const CreateProduct = () => {
         resolver: yupResolver(CreateProductYup),
     });
 
-    const [categorySelected, setCategorySelected] = useState(data?.[0]?._id);
+    const [categorySelected, setCategorySelected] = useState("");
     const [tagsSelected, setTagsSelected] = useState([]);
 
     const handleTagSelectedChange = (event) => {
@@ -80,16 +84,28 @@ const CreateProduct = () => {
             typeof value === "string" ? value.split(",") : value
         );
     };
+
+    const handleImageChange = (e) => {
+        const files = Array.from(e.target.files);
+        setImagesData(files);
+
+        const imagesArray = files.map((file) => URL.createObjectURL(file));
+        console.log(files);
+
+        setImages(imagesArray);
+    };
+
     const onSubmitHandler = async (formData) => {
-        console.log("data form: ", formData);
+        const formDataWithinImages = { ...formData, images: imagesData };
+        console.log("data form: ", formDataWithinImages);
+        setTagsSelected([]);
+        setCategorySelected("");
+        setImages([]);
+        reset();
     };
     return (
         <Box sx={{ px: "24px", pb: "24px" }}>
-            <Typography
-                component="p"
-                variant=""
-                sx={{ fontStyle: "italic", pt: 2 }}
-            >
+            <Typography component="p" sx={{ fontStyle: "italic", pt: 2 }}>
                 Điền đầy đủ thông tin của sản phẩm vào form để thêm sản phẩm vào
                 cửa hàng của bạn
             </Typography>
@@ -116,12 +132,13 @@ const CreateProduct = () => {
                             >
                                 Tên sản phẩm
                             </label>
-                            <InputJoy
+                            <TextField
                                 {...register("name")}
-                                className="mt-1"
+                                className="mt-1 w-full"
+                                id="name"
+                                size="small"
                                 placeholder="Tên cửa hàng"
                                 variant="outlined"
-                                id="name"
                                 error={!!errors.name}
                                 helperText={errors.name?.message}
                                 required
@@ -134,16 +151,18 @@ const CreateProduct = () => {
                             >
                                 Mô tả sản phẩm
                             </label>
-                            <TextareaJoy
+                            <TextField
                                 {...register("description")}
-                                color="neutral"
-                                disabled={false}
-                                minRows={4}
-                                placeholder="Giới thiệu về sản phẩm"
-                                size="sm"
+                                minRows={5}
+                                multiline
+                                size="small"
                                 variant="outlined"
-                                className="mt-1"
+                                placeholder="Giới thiệu sản phẩm ..."
+                                className="mt-1 w-full"
                                 id="description"
+                                error={!!errors.description}
+                                helperText={errors.description?.message}
+                                required
                             />
                         </div>
                     </Item>
@@ -167,23 +186,41 @@ const CreateProduct = () => {
                             modules={[EffectCards]}
                             className="mySwiper mt-1"
                         >
-                            <SwiperSlide>Slide 1</SwiperSlide>
-                            <SwiperSlide>Slide 2</SwiperSlide>
-                            <SwiperSlide>Slide 3</SwiperSlide>
-                            <SwiperSlide>Slide 4</SwiperSlide>
-                            <SwiperSlide>Slide 5</SwiperSlide>
-                            <SwiperSlide>Slide 6</SwiperSlide>
-                            <SwiperSlide>Slide 7</SwiperSlide>
-                            <SwiperSlide>Slide 8</SwiperSlide>
-                            <SwiperSlide>Slide 9</SwiperSlide>
+                            {images.map((image, index) => (
+                                <SwiperSlide key={`iamge-${index}`}>
+                                    <img
+                                        src={image}
+                                        alt={`upload-${index}`}
+                                        style={{
+                                            width: "100%",
+                                            objectFit: "cover",
+                                        }}
+                                    />
+                                </SwiperSlide>
+                            ))}
+
+                            {images.length < 1 ? (
+                                <SwiperSlide>
+                                    <p className="text-center text-black">
+                                        Chọn ảnh cho sản phẩm
+                                    </p>
+                                </SwiperSlide>
+                            ) : null}
                         </Swiper>
 
-                        <input
-                            {...register("images")}
-                            className="w-1/2 absolute bottom-6 left-1/2 z-50 -translate-x-1/2 "
+                        <Input
                             type="file"
                             multiple
+                            accept="image/*"
+                            inputProps={{ multiple: true }}
+                            onChange={handleImageChange}
+                            error={!!errors?.images}
                         />
+                        {errors?.images ? (
+                            <p className="text-red-500">
+                                {errors.images.message}
+                            </p>
+                        ) : null}
                     </Item>
                 </Box>
 
@@ -198,7 +235,7 @@ const CreateProduct = () => {
                         >
                             Giá thành - Đơn vị tính
                         </Typography>
-                        <div className="">
+                        <div>
                             <label
                                 htmlFor="price"
                                 className="text-base text-black "
@@ -215,12 +252,19 @@ const CreateProduct = () => {
                                     className="mt-1 w-1/2"
                                     id="price"
                                     size="small"
+                                    error={!!errors.price}
+                                    required
                                     endAdornment={
                                         <InputAdornment position="end">
                                             VNĐ
                                         </InputAdornment>
                                     }
                                 />
+                                <p className="text-red-500">
+                                    {errors?.price
+                                        ? errors.price.message
+                                        : null}
+                                </p>
                             </FormControl>
 
                             <div className="grid grid-cols-2 gap-6">
@@ -230,25 +274,20 @@ const CreateProduct = () => {
                                     </p>
 
                                     <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label">
-                                            Danh mục
-                                        </InputLabel>
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
-                                            value={10}
+                                            value={20}
                                             label="Age"
                                             onChange={() => {}}
                                             className="mt-1"
                                             size="small"
                                         >
-                                            <MenuItem value={10}>Ten</MenuItem>
-                                            <MenuItem value={20}>
-                                                Twenty
+                                            <MenuItem value={10}>
+                                                Thùng
                                             </MenuItem>
-                                            <MenuItem value={30}>
-                                                Thirty
-                                            </MenuItem>
+                                            <MenuItem value={20}>Chai</MenuItem>
+                                            <MenuItem value={30}>Gói</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </div>
@@ -268,6 +307,8 @@ const CreateProduct = () => {
                                             className="mt-1"
                                             id="price"
                                             size="small"
+                                            error={!!errors.weight}
+                                            required
                                             endAdornment={
                                                 <InputAdornment position="end">
                                                     <Select
@@ -300,6 +341,11 @@ const CreateProduct = () => {
                                                 </InputAdornment>
                                             }
                                         />
+                                        <p className="text-red-500">
+                                            {errors?.weight
+                                                ? errors.weight.message
+                                                : null}
+                                        </p>
                                     </FormControl>
                                 </div>
                             </div>
@@ -318,13 +364,17 @@ const CreateProduct = () => {
                         </Typography>
                         <p className="text-base text-black">Danh mục</p>
                         <Select
-                            {...register("category")}
-                            value={categorySelected}
-                            onChange={(e) =>
-                                setCategorySelected(e.target.value)
-                            }
+                            {...register("category", {
+                                required: "Category is required",
+                            })}
+                            value={categorySelected || ""}
+                            onChange={(e) => {
+                                setCategorySelected(e.target.value);
+                            }}
                             className="mt-1 w-full"
                             size="small"
+                            error={!!errors.category}
+                            required
                         >
                             {data.map((category, index) => (
                                 <MenuItem
@@ -335,28 +385,33 @@ const CreateProduct = () => {
                                 </MenuItem>
                             ))}
                         </Select>
+                        <p className="text-red-500">
+                            {errors?.category ? errors.category.message : null}
+                        </p>
 
                         <FormControl className="w-full" sx={{ mt: 4 }}>
                             <InputLabel id="demo-multiple-checkbox-label">
                                 #HangTag
                             </InputLabel>
                             <Select
+                                {...register("tags")}
                                 multiple
-                                value={tagsSelected}
+                                value={tagsSelected || ""}
                                 onChange={handleTagSelectedChange}
                                 size="small"
                                 renderValue={(selected) => selected.join(", ")}
                                 MenuProps={MenuProps}
                                 input={<OutlinedInput label="#HangTag" />}
                             >
-                                {tagData.map((tag) => (
+                                {tagData.map((tag, index) => (
                                     <MenuItem
-                                        key={`tag-${tag.name}`}
-                                        value={tag.name}
+                                        key={`tag-${index}`}
+                                        value={tag._id}
                                     >
                                         <Checkbox
                                             checked={
-                                                tagsSelected.indexOf(name) > -1
+                                                tagsSelected.indexOf(tag._id) >
+                                                -1
                                             }
                                         />
                                         <ListItemText primary={tag.name} />
@@ -376,19 +431,24 @@ const CreateProduct = () => {
                         >
                             Số lượng
                         </Typography>
-                        <div className="">
+                        <div>
                             <label
-                                htmlFor="name"
+                                htmlFor="inventory"
                                 className="text-base text-black "
                             >
-                                Giá
+                                Kho
                             </label>
 
-                            <InputJoy
-                                className="mt-1"
+                            <TextField
+                                {...register("inventory")}
+                                className="mt-1 w-full"
                                 placeholder="Tên cửa hàng"
                                 variant="outlined"
-                                id="name"
+                                id="inventory"
+                                size="small"
+                                error={!!errors.inventory}
+                                helperText={errors.inventory?.message}
+                                required
                             />
                         </div>
                     </Item>
