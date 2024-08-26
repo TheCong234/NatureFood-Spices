@@ -7,6 +7,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getStoreByIdAction } from "../../../../hooks/Redux/Store/storeAction";
+import { styled } from "@mui/material";
 
 const columns = [
     { id: "name", label: "Name", minWidth: 170 },
@@ -57,9 +61,26 @@ const rows = [
     createData("Brazil", "BR", 210147125, 8515767),
 ];
 
-export default function StickyHeadTable() {
+const Index = () => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const dispatch = useDispatch();
+    const {
+        data: storeData,
+        loading: storeLoading,
+        error: storeError,
+    } = useSelector((state) => state.store);
+
+    const {
+        data: userData,
+        loading: userLoading,
+        error: userError,
+    } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        const storeId = userData.store;
+        dispatch(getStoreByIdAction(storeId));
+    }, []);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -132,4 +153,5 @@ export default function StickyHeadTable() {
             />
         </Paper>
     );
-}
+};
+export default Index;

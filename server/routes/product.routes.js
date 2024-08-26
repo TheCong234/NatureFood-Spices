@@ -11,7 +11,6 @@ const router = express.Router();
 
 router.get("/category/:idCategory", ProductController.getProductByCategory);
 router.get("/all", ProductController.getAllProduct);
-router.get("/store/:id");
 router.get("/:id", ProductController.getProductById);
 
 router.post(

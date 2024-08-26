@@ -1,7 +1,9 @@
 import {
+    Backdrop,
     Box,
     Button,
     Checkbox,
+    CircularProgress,
     FormControl,
     Input,
     InputAdornment,
@@ -19,7 +21,6 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CreateProductYup } from "../../../../validations/yup.validations";
-import InputJoy from "@mui/joy/Input";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCards } from "swiper/modules";
@@ -50,7 +51,7 @@ const MenuProps = {
 };
 
 //main
-const CreateProduct = () => {
+const Index = () => {
     const { enqueueSnackbar } = useSnackbar();
     const dispatch = useDispatch();
 
@@ -69,6 +70,7 @@ const CreateProduct = () => {
     const [imagesData, setImagesData] = useState([{}]);
     const [categorySelected, setCategorySelected] = useState("");
     const [tagsSelected, setTagsSelected] = useState([]);
+    const [isOpenBackdrop, setisOpenBackdrop] = useState(false);
 
     const {
         register,
@@ -78,6 +80,10 @@ const CreateProduct = () => {
     } = useForm({
         resolver: yupResolver(CreateProductYup),
     });
+
+    const handleOpenBackdrop = () => {
+        setisOpenBackdrop(true);
+    };
 
     const handleTagSelectedChange = (event) => {
         const {
@@ -102,6 +108,7 @@ const CreateProduct = () => {
     };
 
     const onSubmitHandler = async (formData) => {
+        setisOpenBackdrop(true);
         const formDataToSend = new FormData();
         for (const key in formData) {
             if (key === "tags" && Array.isArray(formData[key])) {
@@ -122,6 +129,7 @@ const CreateProduct = () => {
         // }
 
         const result = await tryCatchWrapper(createProduct, formDataToSend);
+        setisOpenBackdrop(false);
         if (result.error === null) {
             setTagsSelected([]);
             setCategorySelected("");
@@ -134,6 +142,15 @@ const CreateProduct = () => {
     };
     return (
         <Box sx={{ px: "24px", pb: "24px" }}>
+            <Backdrop
+                sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                }}
+                open={isOpenBackdrop}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <Typography component="p" sx={{ fontStyle: "italic", pt: 2 }}>
                 Điền đầy đủ thông tin của sản phẩm vào form để thêm sản phẩm vào
                 cửa hàng của bạn
@@ -502,4 +519,4 @@ const CreateProduct = () => {
     );
 };
 
-export default CreateProduct;
+export default Index;

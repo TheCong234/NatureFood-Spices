@@ -18,16 +18,6 @@ const Index = () => {
 
     return (
         <Box>
-            {/* <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="disabled tabs example"
-                
-            >
-                <Tab label="Danh sách" onClick={() => navigate("list")} />
-                <Tab label="Thêm mới" onClick={() => navigate("new")} />
-            </Tabs>
-            <Outlet /> */}
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                     <TabList
