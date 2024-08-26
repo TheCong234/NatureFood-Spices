@@ -33,21 +33,22 @@ export const CreateProductYup = yup.object().shape({
     category: yup.string().required(),
     inventory: yup.number().min(0).max(1000000).required(),
     tags: yup.array().required(),
-    images: yup
-        .array()
-        .min(1, "Vui lòng chọn ít nhất một hình ảnh")
-        .max(5, "Bạn chỉ được phép chọn tối đa 5 hình ảnh")
-        .of(
-            yup.object().shape({
-                name: yup.string().required("Vui lòng nhập tên hình ảnh"),
-                size: yup
-                    .number()
-                    .positive("Kích thước hình ảnh không hợp lệ")
-                    .max(
-                        5 * 1024 * 1024,
-                        "Kích thước hình ảnh không được vượt quá 5MB"
-                    )
-                    .required("Vui lòng chọn hình ảnh"),
-            })
-        ),
+
+    // images: yup
+    //     .array()
+    //     .min(1, "Vui lòng chọn ít nhất một hình ảnh")
+    //     .max(5, "Bạn chỉ được phép chọn tối đa 5 hình ảnh")
+    //     .of(
+    //         yup.object().shape({
+    //             name: yup.string().required("Vui lòng nhập tên hình ảnh"),
+    //             size: yup
+    //                 .number()
+    //                 .positive("Kích thước hình ảnh không hợp lệ")
+    //                 .max(
+    //                     5 * 1024 * 1024,
+    //                     "Kích thước hình ảnh không được vượt quá 5MB"
+    //                 )
+    //                 .required("Vui lòng chọn hình ảnh"),
+    //         })
+    //     ),
 });

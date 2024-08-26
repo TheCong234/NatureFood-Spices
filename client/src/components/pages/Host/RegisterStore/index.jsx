@@ -35,6 +35,7 @@ const Index = () => {
 
     const onSubmitHandler = async (data) => {
         const storeData = { ...data, image: imageValue };
+
         const result = await createStore(storeData);
         if (result) {
             snackResultSubmit("success")("Tạo cửa hàng thành công");

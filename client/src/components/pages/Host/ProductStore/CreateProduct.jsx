@@ -29,6 +29,9 @@ import "../../../../assets/styles/swiper.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesAction } from "../../../../hooks/Redux/Category/categoryAction";
 import { getTagsAction } from "../../../../hooks/Redux/Tag/tagAction";
+import { tryCatchWrapper } from "../../../../utils/asyncHelper";
+import { createProduct } from "../../../../apis/product.api";
+import { useSnackbar } from "notistack";
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -48,6 +51,7 @@ const MenuProps = {
 
 //main
 const CreateProduct = () => {
+    const { enqueueSnackbar } = useSnackbar();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -62,7 +66,10 @@ const CreateProduct = () => {
         error: tagError,
     } = useSelector((state) => state.tag);
     const [images, setImages] = useState([]);
-    const [imagesData, setImagesData] = useState(null);
+    const [imagesData, setImagesData] = useState([{}]);
+    const [categorySelected, setCategorySelected] = useState("");
+    const [tagsSelected, setTagsSelected] = useState([]);
+
     const {
         register,
         handleSubmit,
@@ -71,9 +78,6 @@ const CreateProduct = () => {
     } = useForm({
         resolver: yupResolver(CreateProductYup),
     });
-
-    const [categorySelected, setCategorySelected] = useState("");
-    const [tagsSelected, setTagsSelected] = useState([]);
 
     const handleTagSelectedChange = (event) => {
         const {
@@ -88,20 +92,45 @@ const CreateProduct = () => {
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
         setImagesData(files);
+        const imagesUrl = files.map((file) => URL.createObjectURL(file));
+        setImages(imagesUrl);
+    };
 
-        const imagesArray = files.map((file) => URL.createObjectURL(file));
-        console.log(files);
-
-        setImages(imagesArray);
+    const snackResultSubmit = (variant) => (message) => {
+        // variant could be success, error, warning, info, or default
+        enqueueSnackbar(message, { variant });
     };
 
     const onSubmitHandler = async (formData) => {
-        const formDataWithinImages = { ...formData, images: imagesData };
-        console.log("data form: ", formDataWithinImages);
-        setTagsSelected([]);
-        setCategorySelected("");
-        setImages([]);
-        reset();
+        const formDataToSend = new FormData();
+        for (const key in formData) {
+            if (key === "tags" && Array.isArray(formData[key])) {
+                // Nếu tags là mảng, thêm từng phần tử vào FormData
+                formData[key].forEach((tag) =>
+                    formDataToSend.append("tags", tag)
+                );
+            } else {
+                formDataToSend.append(key, formData[key]);
+            }
+        }
+        imagesData.forEach((image, index) => {
+            formDataToSend.append(`images`, image);
+        });
+        // Log các giá trị trong FormData
+        // for (let [key, value] of formDataToSend.entries()) {
+        //     console.log(`${key}:`, value);
+        // }
+
+        const result = await tryCatchWrapper(createProduct, formDataToSend);
+        if (result.error === null) {
+            setTagsSelected([]);
+            setCategorySelected("");
+            setImages([]);
+            reset();
+            snackResultSubmit("success")("Tạo sản phẩm thành công");
+        } else {
+            snackResultSubmit("error")("Tạo sản phẩm thất bại");
+        }
     };
     return (
         <Box sx={{ px: "24px", pb: "24px" }}>
@@ -209,12 +238,16 @@ const CreateProduct = () => {
                         </Swiper>
 
                         <Input
+                            // {...register("image")}
                             type="file"
-                            multiple
-                            accept="image/*"
+                            // multiple
+                            // accept="image/*"
                             inputProps={{ multiple: true }}
+                            id="images"
+                            name="images"
                             onChange={handleImageChange}
-                            error={!!errors?.images}
+                            required
+                            // error={!!errors?.images}
                         />
                         {errors?.images ? (
                             <p className="text-red-500">
@@ -406,12 +439,13 @@ const CreateProduct = () => {
                                 {tagData.map((tag, index) => (
                                     <MenuItem
                                         key={`tag-${index}`}
-                                        value={tag._id}
+                                        value={tag._id.toString()}
                                     >
                                         <Checkbox
                                             checked={
-                                                tagsSelected.indexOf(tag._id) >
-                                                -1
+                                                tagsSelected.indexOf(
+                                                    tag._id.toString()
+                                                ) > -1
                                             }
                                         />
                                         <ListItemText primary={tag.name} />

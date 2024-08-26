@@ -17,3 +17,7 @@ export const CategoryV1 = {
 export const TagV1 = {
     TAG_GET_ALL: "/tag/all",
 };
+
+export const ProductV1 = {
+    PRODUCT_CREATE: "/product/new",
+};
