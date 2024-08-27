@@ -1,21 +1,12 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
-import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import { Box, Button, Rating, Stack, TextField } from "@mui/material";
 import { useState } from "react";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const bgColors = [
     "red",
@@ -27,7 +18,7 @@ const bgColors = [
     "orange",
 ];
 
-const ProductCard = () => {
+const ProductCard = ({ product }) => {
     const [expanded, setExpanded] = useState(false);
 
     const handleExpandClick = () => {
@@ -37,12 +28,24 @@ const ProductCard = () => {
     return (
         <Card
             sx={{
-                maxWidth: 345,
                 backgroundColor: bgColors[Math.floor(Math.random() * 6)],
-                borderRadius: "14px 14px 4px 4px",
+                borderRadius: "14px 14px 8px 8px",
+                transition: "transform 0.3s ease-in-out",
+                ":hover": {
+                    backgroundColor: "white",
+                    transform: "translateY(-6px)",
+                },
             }}
         >
-            <Box className="rounded-t-[50px] overflow-hidden mt-6 bg-white">
+            <Box className="rounded-t-[30px] overflow-hidden mt-4 bg-white relative hover:rounded-none hover:mt-0 hover:pt-4 transform transition-all duration-500 ease-in-out">
+                <FavoriteBorderIcon
+                    className="absolute right-4 top-2 text-red-500 hidden"
+                    fontSize="large"
+                />
+                <FavoriteIcon
+                    className="absolute right-4 top-2 text-red-500"
+                    fontSize="large"
+                />
                 <Box className="p-4">
                     <Typography
                         component="p"
@@ -54,7 +57,7 @@ const ProductCard = () => {
                         }}
                         noWrap
                     >
-                        Shrimp and Chorizo Paella Shrimp and Chorizo Paella
+                        {product.name}
                     </Typography>
 
                     <Typography
@@ -70,15 +73,13 @@ const ProductCard = () => {
                             textAlign: "center",
                         }}
                     >
-                        This impressive paella is a perfect party dish and a fun
-                        meal to cook together with your guests. Add 1 cup of
-                        frozen peas along with the mussels, if you like.
+                        {product.description}
                     </Typography>
                 </Box>
                 <CardMedia
                     component="img"
-                    height="194"
-                    image="/src/assets/images/paella.jpg"
+                    style={{ height: 120, width: "100%", objectFit: "contain" }}
+                    image={product.images?.[0].url}
                     alt="Paella dish"
                 />
                 <CardContent>
@@ -89,9 +90,10 @@ const ProductCard = () => {
                                 fontWeight: "bold",
                                 display: "grid",
                                 placeItems: "center",
+                                color: "red",
                             }}
                         >
-                            ₫234.389
+                            {`₫${product.price.toLocaleString("vi-VN")}`}
                         </Typography>
                         <Stack spacing={1}>
                             <Rating
@@ -127,6 +129,7 @@ const ProductCard = () => {
                             color: "black",
                         }}
                         variant="text"
+                        size="small"
                     >
                         Mua ngay
                     </Button>
