@@ -29,7 +29,9 @@ const StoreControllers = {
     },
 
     async getStoreById(req, res) {
-        const store = await StoreModel.findById(req.params.id);
+        const store = await StoreModel.findById(req.params.id).populate(
+            "products"
+        );
         if (store === null) {
             throw new Error("Không tìm thấy cửa hàng");
         }
