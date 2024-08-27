@@ -1,7 +1,6 @@
 import { UserV1 } from "../constants/endpoints.const";
 import { apiClient } from "./config.api";
 import Cookies from "js-cookie";
-import axios from "axios";
 
 export const login = async (data) => {
     try {

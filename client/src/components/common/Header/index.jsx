@@ -24,13 +24,13 @@ const items = [
 ];
 
 const Index = () => {
-    const { data, loading, error } = useSelector((state) => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(currentUser());
     }, [dispatch]);
-    console.log("header redux:", data);
+    const { data, loading, error } = useSelector((state) => state.user);
+    console.log("header redux:");
     return (
         <Box sx={{ backgroundColor: "#bad1ab" }}>
             <Container

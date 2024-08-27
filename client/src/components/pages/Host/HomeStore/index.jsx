@@ -10,16 +10,16 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { NavLink, Outlet } from "react-router-dom";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CategoryIcon from "@mui/icons-material/Category";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import EventIcon from "@mui/icons-material/Event";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { useDispatch, useSelector } from "react-redux";
+import { getStoreByIdAction } from "../../../../hooks/Redux/Store/storeAction";
 
 const drawerWidth = 240;
 
@@ -53,7 +53,19 @@ const items = [
 
 const Index = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const {
+        data: userData,
+        loading: userLoading,
+        error: userError,
+    } = useSelector((state) => state.user);
     const [title, setTitle] = useState("Bán hàng với Nature Food");
+    useEffect(() => {
+        const storeId = userData?.store;
+        if (storeId) {
+            dispatch(getStoreByIdAction(storeId));
+        }
+    });
     return (
         <Box sx={{ minHeight: "100vh", display: "flex" }}>
             <Box sx={{ width: 240 }}>
@@ -121,7 +133,7 @@ const Index = () => {
                         {title}
                     </Typography>
                 </Toolbar>
-                <Box sx={{ px: "24px" }}>
+                <Box sx={{ backgroundColor: "#e9ecef" }}>
                     <Outlet />
                 </Box>
             </Box>
