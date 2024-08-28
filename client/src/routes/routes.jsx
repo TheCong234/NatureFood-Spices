@@ -14,6 +14,7 @@ import {
     SettingStore,
     ProductStore,
 } from "../components/pages";
+import ProductDetail from "../components/pages/ProductDetail";
 
 export const router = createBrowserRouter([
     {
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
                     {
                         path: "/register-store",
                         element: <RegisterStore />,
+                    },
+                    {
+                        path: "product/detail/:productId",
+                        element: <ProductDetail />,
                     },
 
                     {
