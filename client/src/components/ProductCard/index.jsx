@@ -7,6 +7,8 @@ import { Box, Button, Rating, Stack, TextField } from "@mui/material";
 import { useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import EditGroup from "../EditGroup";
+import { useNavigate } from "react-router-dom";
 
 const bgColors = [
     "red",
@@ -18,13 +20,19 @@ const bgColors = [
     "orange",
 ];
 
-const ProductCard = ({ product }) => {
-    const [expanded, setExpanded] = useState(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
+const ProductCard = ({ product, role }) => {
+    const navigate = useNavigate();
+    const handleEditProduct = () => {
+        console.log(product._id, "edit");
     };
 
+    const handleDeleteProduct = () => {
+        console.log(product._id, "delete");
+    };
+
+    const handleCardClick = () => {
+        navigate(`/product/detail/${product._id}`);
+    };
     return (
         <Card
             sx={{
@@ -40,13 +48,13 @@ const ProductCard = ({ product }) => {
             <Box className="rounded-t-[30px] overflow-hidden mt-4 bg-white relative hover:rounded-none hover:mt-0 hover:pt-4 transform transition-all duration-500 ease-in-out">
                 <FavoriteBorderIcon
                     className="absolute right-4 top-2 text-red-500 hidden"
-                    fontSize="large"
+                    fontSize="medium"
                 />
                 <FavoriteIcon
                     className="absolute right-4 top-2 text-red-500"
-                    fontSize="large"
+                    fontSize="medium"
                 />
-                <Box className="p-4">
+                <Box className="px-4 pt-1" onClick={handleCardClick}>
                     <Typography
                         component="p"
                         sx={{
@@ -71,6 +79,7 @@ const ProductCard = ({ product }) => {
                             WebkitLineClamp: 2,
                             lineClamp: 2,
                             textAlign: "center",
+                            lineHeight: 1,
                         }}
                     >
                         {product.description}
@@ -82,9 +91,10 @@ const ProductCard = ({ product }) => {
                     image={product.images?.[0].url}
                     alt="Paella dish"
                 />
-                <CardContent>
+                <CardContent sx={{ py: 1 }} onClick={handleCardClick}>
                     <Box className="flex justify-between">
                         <Typography
+                            noWrap
                             variant="h5"
                             sx={{
                                 fontWeight: "bold",
@@ -120,20 +130,27 @@ const ProductCard = ({ product }) => {
                         <Typography variant="body2">Lê Quang Foods</Typography>
                     </Stack>
                 </CardContent>
-                <CardActions className="bg-green-500 hover:bg">
-                    <Button
-                        sx={{
-                            textAlign: "center",
-                            width: "100%",
-                            fontSize: "16px",
-                            color: "black",
-                        }}
-                        variant="text"
-                        size="small"
-                    >
-                        Mua ngay
-                    </Button>
-                </CardActions>
+                <Box className="bg-green-500 p-2">
+                    {role === "host" ? (
+                        <EditGroup
+                            onEditClick={handleEditProduct}
+                            onDeleteClick={handleDeleteProduct}
+                        />
+                    ) : (
+                        <Button
+                            sx={{
+                                textAlign: "center",
+                                width: "100%",
+                                fontSize: "16px",
+                                color: "black",
+                            }}
+                            variant="text"
+                            size="small"
+                        >
+                            Mua ngay
+                        </Button>
+                    )}
+                </Box>
             </Box>
         </Card>
     );
