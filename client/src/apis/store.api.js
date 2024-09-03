@@ -16,8 +16,6 @@ export const createStore = async (data) => {
             },
             withCredentials: true,
         });
-        console.log(store);
-
         return store.data;
     } catch (error) {
         return error;

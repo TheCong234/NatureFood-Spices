@@ -32,7 +32,6 @@ const userSlice = createSlice({
             })
             .addCase(updateEmailVerify.fulfilled, (state, action) => {
                 state.loading = false;
-                console.log(action.payload);
                 state.data = { ...action.payload };
             })
             .addCase(updateEmailVerify.rejected, (state, action) => {

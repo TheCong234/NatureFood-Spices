@@ -13,6 +13,7 @@ import {
     RegisterStore,
     SettingStore,
     ProductStore,
+    PromoteStore,
 } from "../components/pages";
 import ProductDetail from "../components/pages/ProductDetail";
 
@@ -78,6 +79,10 @@ export const router = createBrowserRouter([
                             {
                                 path: "setting",
                                 element: <SettingStore />,
+                            },
+                            {
+                                path: "promote",
+                                element: <PromoteStore />,
                             },
                         ],
                     },
