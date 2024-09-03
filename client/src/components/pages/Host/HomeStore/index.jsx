@@ -20,6 +20,7 @@ import EventIcon from "@mui/icons-material/Event";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useDispatch, useSelector } from "react-redux";
 import { getStoreByIdAction } from "../../../../hooks/Redux/Store/storeAction";
+import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
 
 const drawerWidth = 240;
 
@@ -48,6 +49,11 @@ const items = [
         name: "Thiết lập",
         to: "setting",
         icon: <SettingsIcon />,
+    },
+    {
+        name: "Quảng bá",
+        to: "promote",
+        icon: <ViewCarouselIcon />,
     },
 ];
 

@@ -23,10 +23,10 @@ const Index = () => {
                         sm={6}
                         md={4}
                         lg={3}
-                        xl={2}
+                        // xl={2}
                         key={`product-card-${index}`}
                     >
-                        <ProductCard product={product} />
+                        <ProductCard product={product} role={"host"} />
                     </Grid>
                 ))}
             </Grid>

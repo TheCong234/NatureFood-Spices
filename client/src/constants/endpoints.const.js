@@ -22,3 +22,9 @@ export const TagV1 = {
 export const ProductV1 = {
     PRODUCT_CREATE: "/product/new",
 };
+
+export const BannerV1 = {
+    BANNER_GET_ALL: "/banner/all",
+    BANNER_CREATE: "/banner/new",
+    BANNER_GET_BY_CURRENT_USER: "/banner/store",
+};

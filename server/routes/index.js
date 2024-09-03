@@ -7,3 +7,4 @@ export { default as FavoriteRoutes } from "./favorite.routes.js";
 export { default as TagRoutes } from "./tag.routes.js";
 export { default as BillRoutes } from "./bill.routes.js";
 export { default as StoreRoutes } from "./store.routes.js";
+export { default as BannerRoutes } from "./banner.routes.js";

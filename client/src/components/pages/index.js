@@ -13,3 +13,4 @@ export { default as SettingStore } from "./Host/SettingStore";
 export { default as RegisterStore } from "./Host/RegisterStore";
 export { default as ListProductStore } from "./Host/ProductStore/ListProduct";
 export { default as CreateProductStore } from "./Host/ProductStore/CreateProduct";
+export { default as PromoteStore } from "./Host/Promote/index";
