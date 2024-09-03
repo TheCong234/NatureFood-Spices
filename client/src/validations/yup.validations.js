@@ -52,3 +52,7 @@ export const CreateProductYup = yup.object().shape({
     //         })
     //     ),
 });
+
+export const CreateBannerYup = yup.object().shape({
+    url: yup.string().required("Vui lòng thêm đường dẫn cho banner của bạn"),
+});

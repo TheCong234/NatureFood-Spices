@@ -8,6 +8,11 @@ import multer from "multer";
 const upload = multer({ storage: storage });
 const router = express.Router();
 
+router.get(
+    "/store",
+    authJwt,
+    asyncHandler(BannerController.getBannersByCurrentUser)
+);
 router.get("/all", authJwt, asyncHandler(BannerController.getBanners));
 
 router.post(

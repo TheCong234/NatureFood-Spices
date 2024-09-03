@@ -21,9 +21,13 @@ const BannerSchema = new Schema(
             required: true,
         },
         image: ImageSchema,
-        createdAt: {
-            type: Date,
-            default: Date.now,
+        exprired: {
+            type: Boolean,
+            default: false,
+        },
+        url: {
+            type: String,
+            required: true,
         },
     },
     {

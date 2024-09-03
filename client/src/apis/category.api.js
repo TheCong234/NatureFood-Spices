@@ -1,4 +1,4 @@
-import { CategoryV1, UserV1 } from "../constants/endpoints.const";
+import { CategoryV1 } from "../constants/endpoints.const";
 import { apiClient } from "./config.api";
 
 export const getCategories = async () => {

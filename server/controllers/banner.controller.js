@@ -3,8 +3,15 @@ import { BaseResponse } from "../config/BaseResponse.config.js";
 import BannerModel from "../models/banner.model.js";
 
 const BannerController = {
-    async getBanners(req, res) {
+    async getBannersByCurrentUser(req, res) {
         const banners = await BannerModel.find({ storeId: req.user.store });
+        return res
+            .status(statusCode.OK)
+            .json(BaseResponse.success("Lấy banners thành công", banners));
+    },
+
+    async getBanners(req, res) {
+        const banners = await BannerModel.find();
         return res
             .status(statusCode.OK)
             .json(BaseResponse.success("Lấy banners thành công", banners));
@@ -13,6 +20,7 @@ const BannerController = {
         const banner = new BannerModel({
             storeId: req.user.store,
             image: { url: req.file.path, filename: req.file.filename },
+            url: req.body.url,
         });
         const newBanner = await banner.save();
         return res
