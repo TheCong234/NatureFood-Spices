@@ -4,35 +4,66 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "../../../assets/styles/home.css";
-import { Pagination, Navigation } from "swiper/modules";
-import { Box } from "@mui/material";
+import { Pagination, Navigation, Autoplay } from "swiper/modules";
+import { Box, Typography } from "@mui/material";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getBannersAction } from "../../../hooks/Redux/Banner/bannerAction";
+import { getCategoriesAction } from "../../../hooks/Redux/Category/categoryAction";
+import CategoryCarousel from "./CategoryCarousel";
 
 const Index = () => {
+    const dispatch = useDispatch();
+    const {
+        data: bannerData,
+        loading: bannerLoading,
+        error: bannerError,
+    } = useSelector((state) => state.banner);
+
+    useEffect(() => {
+        dispatch(getBannersAction());
+        dispatch(getCategoriesAction());
+    }, [dispatch]);
     return (
-        <Box className=" relative">
+        <Box className=" relative pb-4">
             <Swiper
                 slidesPerView={1}
                 spaceBetween={30}
                 loop={true}
+                autoplay={{
+                    delay: 2500,
+                    disableOnInteraction: false,
+                }}
                 pagination={{
                     clickable: true,
                 }}
                 navigation={true}
-                modules={[Pagination, Navigation]}
-                className="mySwiper h-96 w-full "
+                modules={[Autoplay, Pagination, Navigation]}
+                className="mySwiper h-[500px] w-full rounded-md"
             >
-                <SwiperSlide className="text-black bg-white border-none">
-                    Slide 1
-                </SwiperSlide>
-                <SwiperSlide>Slide 2</SwiperSlide>
-                <SwiperSlide>Slide 3</SwiperSlide>
-                <SwiperSlide>Slide 4</SwiperSlide>
-                <SwiperSlide>Slide 5</SwiperSlide>
-                <SwiperSlide>Slide 6</SwiperSlide>
-                <SwiperSlide>Slide 7</SwiperSlide>
-                <SwiperSlide>Slide 8</SwiperSlide>
-                <SwiperSlide>Slide 9</SwiperSlide>
+                {bannerData.map((banner, index) => (
+                    <SwiperSlide
+                        key={`swipperSlide-${index}`}
+                        className="text-black bg-white border-none"
+                    >
+                        <img
+                            src={banner.image.url}
+                            alt="banner image"
+                            width="100%"
+                        />
+                    </SwiperSlide>
+                ))}
             </Swiper>
+            <Box>
+                <Typography
+                    variant="h4"
+                    component="h2"
+                    sx={{ fontWeight: "bold", textAlign: "center", py: 4 }}
+                >
+                    Danh mục
+                </Typography>
+                <CategoryCarousel />
+            </Box>
         </Box>
     );
 };

@@ -30,9 +30,8 @@ const Index = () => {
         dispatch(currentUser());
     }, [dispatch]);
     const { data, loading, error } = useSelector((state) => state.user);
-    console.log("header redux:");
     return (
-        <Box sx={{ backgroundColor: "#bad1ab" }}>
+        <Box>
             <Container
                 sx={{
                     display: "flex",

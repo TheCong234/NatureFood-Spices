@@ -35,7 +35,7 @@ const Index = () => {
     const [isOpenCreateBanner, setIsOpenCreateBanner] = useState(false);
     useEffect(() => {
         dispatch(getBannersByCurrentUserAction());
-    }, []);
+    }, [dispatch]);
 
     return (
         <Box className="">
@@ -61,7 +61,6 @@ const Index = () => {
             ) : bannerData.length === 0 ? (
                 <NoData message="Bạn chưa đăng ký banner nào" />
             ) : (
-                // <h1>hheheheh</h1>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead sx={{ backgroundColor: "black" }}>
@@ -101,10 +100,6 @@ const Index = () => {
                                         {banner.updatedAt}
                                     </TableCell>
                                     <TableCell
-                                        component={Link}
-                                        href={banner.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
                                         align="right"
                                         sx={{
                                             textDecoration: "none",
@@ -114,7 +109,20 @@ const Index = () => {
                                             maxWidth: "150px", // Đặt chiều rộng tối đa để hiệu ứng ẩn hoạt động
                                         }}
                                     >
-                                        {banner.url}
+                                        <Link
+                                            href={banner.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            sx={{
+                                                textDecoration: "none",
+                                                whiteSpace: "nowrap",
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                maxWidth: "150px", // Đặt chiều rộng tối đa để hiệu ứng ẩn hoạt động
+                                            }}
+                                        >
+                                            {banner.url}
+                                        </Link>
                                     </TableCell>
                                     <TableCell align="right">
                                         <Box>

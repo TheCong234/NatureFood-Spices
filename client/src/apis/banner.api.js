@@ -6,6 +6,11 @@ export const getBannersByCurrentUser = async () => {
     return result.data;
 };
 
+export const getBanners = async () => {
+    const result = await apiClient.get(BannerV1.BANNER_GET_ALL);
+    return result.data;
+};
+
 export const createBanner = async (data) => {
     const result = await apiClient.post(BannerV1.BANNER_CREATE, data, {
         headers: {
