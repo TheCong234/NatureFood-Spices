@@ -11,6 +11,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { getBannersAction } from "../../../hooks/Redux/Banner/bannerAction";
 import { getCategoriesAction } from "../../../hooks/Redux/Category/categoryAction";
 import CategoryCarousel from "./CategoryCarousel";
+import NewProductSection from "./NewProductsSection";
+import { getNewestProductsAction } from "../../../hooks/Redux/NewestProducts/newestProductsAction";
 
 const Index = () => {
     const dispatch = useDispatch();
@@ -23,9 +25,10 @@ const Index = () => {
     useEffect(() => {
         dispatch(getBannersAction());
         dispatch(getCategoriesAction());
+        dispatch(getNewestProductsAction());
     }, [dispatch]);
     return (
-        <Box className=" relative pb-4">
+        <Box className=" relative pb-16">
             <Swiper
                 slidesPerView={1}
                 spaceBetween={30}
@@ -54,15 +57,78 @@ const Index = () => {
                     </SwiperSlide>
                 ))}
             </Swiper>
-            <Box>
+            <Box className="pb-16">
+                <Box className="flex justify-center">
+                    <Typography
+                        variant="h4"
+                        component="p"
+                        sx={{
+                            fontWeight: "bold",
+                            textAlign: "center",
+                            pt: 4,
+                        }}
+                    >
+                        Danh mục
+                    </Typography>
+                    <img
+                        src="/src/assets/icons/icon_fire.png"
+                        alt="icon fire"
+                        width="26px"
+                        className="self-auto object-contain pt-6 ml-2"
+                    />
+                </Box>
+                <Typography
+                    variant="body1"
+                    component="p"
+                    sx={{ textAlign: "center", pb: 4, mt: 1 }}
+                >
+                    Lựa chọn những danh mục sản phẩm ngon với ẩm thực của bạn
+                </Typography>
+                <CategoryCarousel />
+            </Box>
+
+            <Box sx={{ pb: 4, bgcolor: "#efefef" }}>
                 <Typography
                     variant="h4"
                     component="h2"
-                    sx={{ fontWeight: "bold", textAlign: "center", py: 4 }}
+                    sx={{
+                        fontWeight: "bold",
+                        textAlign: "center",
+                        py: 4,
+                    }}
                 >
-                    Danh mục
+                    Sản phẩm mới nhất
                 </Typography>
-                <CategoryCarousel />
+                <NewProductSection />
+            </Box>
+
+            <Box className="pb-16">
+                <Box className="flex justify-between items-center">
+                    <Typography
+                        variant="h4"
+                        component="p"
+                        sx={{
+                            fontWeight: "bold",
+                            py: 4,
+                            width: "50%",
+                            textAlign: "left",
+                            mr: 16,
+                        }}
+                    >
+                        Các bài viết của chúng tôi ản phẩm ngon vớ
+                    </Typography>
+                    <Typography
+                        variant="body1"
+                        component="p"
+                        sx={{ textAlign: "left", width: "50%", ml: 16 }}
+                    >
+                        Lựa chọn những danh mục sản phẩm ngon với ẩm thực của
+                        bạn ựa chọn những danh mục sản phẩm ngon với ẩm thực của
+                        bạn ựa chọn những danh mục sản phẩm ngon với ẩm thực của
+                        bạn
+                    </Typography>
+                </Box>
+                Nội dung
             </Box>
         </Box>
     );

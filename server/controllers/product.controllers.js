@@ -74,6 +74,15 @@ const ProductController = {
         }
     },
 
+    async getNewestProduct(req, res) {
+        const products = await ProductModel.find()
+            .sort({ createdAt: -1 })
+            .limit(10);
+        return res
+            .status(statusCode.OK)
+            .json(BaseResponse.success("Lấy sản phẩm thành công", products));
+    },
+
     async createProduct(req, res) {
         const product = new ProductModel(req.body);
         product.images = req.files.map((f) => ({
