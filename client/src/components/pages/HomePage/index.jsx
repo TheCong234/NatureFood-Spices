@@ -12,7 +12,7 @@ import { getBannersAction } from "../../../hooks/Redux/Banner/bannerAction";
 import { getCategoriesAction } from "../../../hooks/Redux/Category/categoryAction";
 import CategoryCarousel from "./CategoryCarousel";
 import NewProductSection from "./NewProductsSection";
-import { getNewestProductsAction } from "../../../hooks/Redux/NewestProducts/newestProductsAction";
+import { getNewestProductsAction } from "../../../hooks/Redux/Product/productAction";
 import BlogCarousel from "./BlogCarousel";
 
 const Index = () => {

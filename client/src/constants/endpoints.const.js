@@ -22,6 +22,7 @@ export const TagV1 = {
 export const ProductV1 = {
     PRODUCT_CREATE: "/product/new",
     PRODUCT_NEWEST: "/product/newest",
+    PRODUCT_DETAILS: "/product/",
 };
 
 export const BannerV1 = {

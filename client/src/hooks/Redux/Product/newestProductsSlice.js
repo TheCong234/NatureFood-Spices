@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getNewestProductsAction } from "./newestProductsAction";
+import { getNewestProductsAction } from "./productAction";
 
 const newestProductsSlice = createSlice({
     name: "newestProducts",
