@@ -5,7 +5,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "../../../assets/styles/home.css";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getBannersAction } from "../../../hooks/Redux/Banner/bannerAction";
@@ -13,6 +13,7 @@ import { getCategoriesAction } from "../../../hooks/Redux/Category/categoryActio
 import CategoryCarousel from "./CategoryCarousel";
 import NewProductSection from "./NewProductsSection";
 import { getNewestProductsAction } from "../../../hooks/Redux/NewestProducts/newestProductsAction";
+import BlogCarousel from "./BlogCarousel";
 
 const Index = () => {
     const dispatch = useDispatch();
@@ -112,7 +113,40 @@ const Index = () => {
                             py: 4,
                             width: "50%",
                             textAlign: "left",
-                            mr: 16,
+                            mr: 12,
+                        }}
+                    >
+                        Các bài viết của chúng tôi ản phẩm ngon vớ
+                    </Typography>
+                    <Typography
+                        variant="body2"
+                        component="p"
+                        sx={{ textAlign: "left", width: "50%", ml: 12 }}
+                    >
+                        Lựa chọn những danh mục sản phẩm ngon với ẩm thực của
+                        bạn ựa chọn những danh mục sản phẩm ngon với ẩm thực của
+                        bạn ựa chọn những danh mục sản phẩm ngon với
+                    </Typography>
+                </Box>
+                <BlogCarousel />
+            </Box>
+
+            <Box
+                sx={{
+                    backgroundImage:
+                        "url('https://spicesinc.com/sites/default/files/y/whitebowls.jpg')",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                }}
+            >
+                <Box className="py-16">
+                    <Typography
+                        variant="h4"
+                        component="p"
+                        sx={{
+                            fontWeight: "bold",
+                            pt: 4,
+                            textAlign: "left",
                         }}
                     >
                         Các bài viết của chúng tôi ản phẩm ngon vớ
@@ -120,15 +154,18 @@ const Index = () => {
                     <Typography
                         variant="body1"
                         component="p"
-                        sx={{ textAlign: "left", width: "50%", ml: 16 }}
+                        sx={{
+                            textAlign: "left",
+                            fontWeight: "bold",
+                            mt: 2,
+                        }}
                     >
-                        Lựa chọn những danh mục sản phẩm ngon với ẩm thực của
-                        bạn ựa chọn những danh mục sản phẩm ngon với ẩm thực của
-                        bạn ựa chọn những danh mục sản phẩm ngon với ẩm thực của
-                        bạn
+                        Lựa chọn những danh mục sản phẩm
                     </Typography>
+                    <Button variant="contained" color="warning" sx={{ mt: 2 }}>
+                        Bắt đầu
+                    </Button>
                 </Box>
-                Nội dung
             </Box>
         </Box>
     );
