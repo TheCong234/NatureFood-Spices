@@ -30,3 +30,7 @@ export const BannerV1 = {
     BANNER_CREATE: "/banner/new",
     BANNER_GET_BY_CURRENT_USER: "/banner/store",
 };
+
+export const ReviewV1 = {
+    REVIEW_CREATE: "/review/",
+};

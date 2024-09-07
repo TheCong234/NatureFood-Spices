@@ -74,7 +74,7 @@ const Index = () => {
     });
     return (
         <Box sx={{ minHeight: "100vh", display: "flex" }}>
-            <Box sx={{ width: 240 }}>
+            <Box sx={{ width: "20%" }}>
                 <Toolbar>
                     <Typography variant="h6" noWrap component="div">
                         Tên cửa hàng
@@ -122,7 +122,7 @@ const Index = () => {
                 </List>
                 <Divider />
             </Box>
-            <Box component="main" sx={{ width: "100%" }}>
+            <Box component="main" sx={{ width: "80%" }}>
                 <Toolbar
                     className="bg-inherit"
                     sx={{
@@ -139,7 +139,7 @@ const Index = () => {
                         {title}
                     </Typography>
                 </Toolbar>
-                <Box sx={{ backgroundColor: "#e9ecef" }}>
+                <Box sx={{ backgroundColor: "#e9ecef", width: "100%" }}>
                     <Outlet />
                 </Box>
             </Box>

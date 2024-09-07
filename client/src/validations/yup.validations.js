@@ -56,3 +56,7 @@ export const CreateProductYup = yup.object().shape({
 export const CreateBannerYup = yup.object().shape({
     url: yup.string().required("Vui lòng thêm đường dẫn cho banner của bạn"),
 });
+
+export const CreateReviewYup = yup.object().shape({
+    body: yup.string().required("Bạn cảm thấy chất lượng sản phẩm như thế nào"),
+});

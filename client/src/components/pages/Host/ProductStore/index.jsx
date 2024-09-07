@@ -19,10 +19,14 @@ const Index = () => {
     return (
         <Box>
             <TabContext value={value}>
-                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                <Box
+                    sx={{
+                        borderBottom: 1,
+                        borderColor: "divider",
+                    }}
+                >
                     <TabList
                         onChange={handleChange}
-                        sx={{ pl: "24px" }}
                         aria-label="lab API tabs example"
                     >
                         <Tab label="Danh sách" value="1" />

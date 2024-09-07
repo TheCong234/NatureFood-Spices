@@ -25,7 +25,12 @@ const ProductController = {
     },
 
     async getProductById(req, res) {
-        const product = await ProductModel.findById(req.params.id);
+        const product = await ProductModel.findById(req.params.id)
+            .populate("store")
+            .populate({
+                path: "reviews",
+                populate: { path: "author" },
+            });
         if (product) {
             return res
                 .status(statusCode.OK)

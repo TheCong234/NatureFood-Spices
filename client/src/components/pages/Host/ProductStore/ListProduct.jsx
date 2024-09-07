@@ -1,7 +1,8 @@
 import { useState } from "react";
 import ProductCard from "../../../ProductCard";
-import { Box, Grid } from "@mui/material";
+import { Box, Container, Grid, Paper, styled } from "@mui/material";
 import { useSelector } from "react-redux";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 const Index = () => {
     const {
@@ -10,20 +11,16 @@ const Index = () => {
         error: storeError,
     } = useSelector((state) => state.store);
     return (
-        <Box sx={{ width: "100%" }}>
-            <Grid
-                container
-                rowSpacing={{ xs: 1, sm: 2, md: 3 }}
-                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            >
+        <Box>
+            <Grid container spacing={{ xs: 1, md: 2 }}>
                 {storeData?.products?.map((product, index) => (
                     <Grid
                         item
                         xs={12}
                         sm={6}
                         md={4}
-                        lg={3}
-                        // xl={2}
+                        lg={4}
+                        xl={2}
                         key={`product-card-${index}`}
                     >
                         <ProductCard product={product} role={"host"} />
