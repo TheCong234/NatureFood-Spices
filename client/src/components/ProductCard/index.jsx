@@ -38,10 +38,8 @@ const ProductCard = ({ product, role }) => {
             sx={{
                 backgroundColor: bgColors[Math.floor(Math.random() * 6)],
                 borderRadius: "14px 14px 8px 8px",
-                transition: "transform 0.3s ease-in-out",
                 ":hover": {
                     backgroundColor: "white",
-                    transform: "translateY(-6px)",
                 },
             }}
         >
@@ -79,7 +77,8 @@ const ProductCard = ({ product, role }) => {
                             WebkitLineClamp: 2,
                             lineClamp: 2,
                             textAlign: "center",
-                            lineHeight: 1,
+                            lineHeight: 1.2,
+                            height: "2.4em",
                         }}
                     >
                         {product.description}
@@ -87,7 +86,7 @@ const ProductCard = ({ product, role }) => {
                 </Box>
                 <CardMedia
                     component="img"
-                    style={{ height: 120, width: "100%", objectFit: "contain" }}
+                    style={{ height: 120, objectFit: "contain" }}
                     image={product.images?.[0].url}
                     alt="Paella dish"
                 />

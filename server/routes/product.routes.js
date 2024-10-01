@@ -10,6 +10,7 @@ const upload = multer({ storage: storage });
 const router = express.Router();
 
 router.get("/category/:idCategory", ProductController.getProductByCategory);
+router.get("/newest", asyncHandler(ProductController.getNewestProduct));
 router.get("/all", ProductController.getAllProduct);
 router.get("/:id", ProductController.getProductById);
 

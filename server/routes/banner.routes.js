@@ -13,7 +13,7 @@ router.get(
     authJwt,
     asyncHandler(BannerController.getBannersByCurrentUser)
 );
-router.get("/all", authJwt, asyncHandler(BannerController.getBanners));
+router.get("/all", asyncHandler(BannerController.getBanners));
 
 router.post(
     "/new",
