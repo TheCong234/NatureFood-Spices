@@ -32,7 +32,7 @@ const productSlice = createSlice({
             })
             .addCase(createReviewAction.fulfilled, (state, action) => {
                 state.loading = false;
-                state.product.reviews.push(action.payload.data);
+                state.product.reviews.unshift(action.payload.data);
             })
             .addCase(createReviewAction.rejected, (state, action) => {
                 state.loading = false;

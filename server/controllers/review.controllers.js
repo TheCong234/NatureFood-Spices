@@ -11,10 +11,13 @@ const ReviewController = {
         review.author = req.user.id;
         product.reviews.push(review);
         const newReview = await review.save();
+        const newReviewPopulate = await newReview.populate("author");
         await product.save();
         return res
             .status(statusCode.CREATED)
-            .json(BaseResponse.success("Tạo review thành công", newReview));
+            .json(
+                BaseResponse.success("Tạo review thành công", newReviewPopulate)
+            );
     },
 
     async createFeedBack(req, res) {

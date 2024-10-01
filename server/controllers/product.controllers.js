@@ -30,6 +30,7 @@ const ProductController = {
             .populate({
                 path: "reviews",
                 populate: { path: "author" },
+                options: { sort: { createdAt: -1 } },
             });
         if (product) {
             return res
