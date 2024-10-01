@@ -25,27 +25,19 @@ const ProductController = {
     },
 
     async getProductById(req, res) {
-        try {
-            const { id } = req.params;
-            const product = await ProductModel.findById(id);
-            if (product) {
-                return res
-                    .status(statusCode.OK)
-                    .json(
-                        BaseResponse.success("Lấy sản phẩm thành công", product)
-                    );
-            } else {
-                return res
-                    .status(statusCode.NOT_FOUND)
-                    .json(
-                        BaseResponse.success("Không tìm thấy sản phẩm", product)
-                    );
-            }
-        } catch (error) {
-            console.log(`get all product: ${error}`);
+        const product = await ProductModel.findById(req.params.id)
+            .populate("store")
+            .populate({
+                path: "reviews",
+                populate: { path: "author" },
+                options: { sort: { createdAt: -1 } },
+            });
+        if (product) {
             return res
-                .status(statusCode.INTERNAL_SERVER_ERROR)
-                .json(BaseResponse.error(error.message, error));
+                .status(statusCode.OK)
+                .json(BaseResponse.success("Lấy sản phẩm thành công", product));
+        } else {
+            throw new Error("Không tìm thấy sản phẩm");
         }
     },
 
@@ -72,6 +64,15 @@ const ProductController = {
                 .status(statusCode.INTERNAL_SERVER_ERROR)
                 .json(BaseResponse.error(error.message, error));
         }
+    },
+
+    async getNewestProduct(req, res) {
+        const products = await ProductModel.find()
+            .sort({ createdAt: -1 })
+            .limit(10);
+        return res
+            .status(statusCode.OK)
+            .json(BaseResponse.success("Lấy sản phẩm thành công", products));
     },
 
     async createProduct(req, res) {

@@ -14,35 +14,40 @@ const ImageSchema = new Schema({
     },
 });
 
-const ProductSchema = mongoose.Schema({
-    name: String,
-    price: Number,
-    description: String,
-    weight: Number,
-    category: {
-        type: Schema.Types.ObjectId,
-        ref: "Category",
-        required: true,
-    },
-    inventory: Number,
-    reviews: [
-        {
+const ProductSchema = mongoose.Schema(
+    {
+        name: String,
+        price: Number,
+        description: String,
+        weight: Number,
+        category: {
             type: Schema.Types.ObjectId,
-            ref: "Review",
+            ref: "Category",
+            required: true,
         },
-    ],
-    images: [ImageSchema],
-    tags: [
-        {
+        inventory: Number,
+        reviews: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Review",
+            },
+        ],
+        images: [ImageSchema],
+        tags: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Tag",
+            },
+        ],
+        store: {
             type: Schema.Types.ObjectId,
-            ref: "Tag",
+            ref: "Store",
         },
-    ],
-    store: {
-        type: Schema.Types.ObjectId,
-        ref: "Store",
     },
-});
+    {
+        timestamps: true,
+    }
+);
 
 //xóa liên quan đến sản phẩm (reviews)
 ProductSchema.post("findOneAndDelete", async function (doc) {
