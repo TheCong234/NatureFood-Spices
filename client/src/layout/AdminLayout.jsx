@@ -1,3 +1,3 @@
 export default function AdminLayout() {
-  return <div>Admin layout</div>;
+  return <div>Admin layout Duonwg changed</div>;
 }
