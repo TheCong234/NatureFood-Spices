@@ -1,4 +1,3 @@
-import { Box } from "@mui/system";
 import Drawer from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -21,6 +20,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { useDispatch, useSelector } from "react-redux";
 import { getStoreByIdAction } from "../../../hooks/Redux/Store/storeAction";
 import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
+import { Box } from "@mui/material";
 
 const drawerWidth = 240;
 
