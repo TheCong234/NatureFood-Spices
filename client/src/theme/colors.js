@@ -62,3 +62,8 @@ export const white = {
   800: "#DADADA",
   900: "#CFCFCF",
 };
+
+export const rootColor = {
+  bg_blue: "#EDF2F9",
+  text: "#47484A"
+}
