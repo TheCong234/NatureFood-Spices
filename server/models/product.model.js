@@ -18,6 +18,7 @@ const ProductSchema = mongoose.Schema(
     {
         name: String,
         price: Number,
+        salePrice: Number,
         description: String,
         weight: Number,
         category: {
@@ -26,12 +27,6 @@ const ProductSchema = mongoose.Schema(
             required: true,
         },
         inventory: Number,
-        reviews: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Review",
-            },
-        ],
         images: [ImageSchema],
         tags: [
             {
@@ -39,23 +34,11 @@ const ProductSchema = mongoose.Schema(
                 ref: "Tag",
             },
         ],
-        store: {
-            type: Schema.Types.ObjectId,
-            ref: "Store",
-        },
     },
     {
         timestamps: true,
     }
 );
-
-//xóa liên quan đến sản phẩm (reviews)
-ProductSchema.post("findOneAndDelete", async function (doc) {
-    if (doc) {
-        await ReviewModel.deleteMany({ _id: { $in: doc.reviews } });
-        await CartModel.deleteMany({ productId: _id });
-    }
-});
 
 const ProductModel = mongoose.model("Product", ProductSchema);
 export default ProductModel;

@@ -20,75 +20,83 @@ const ImageSchema = new Schema({
     },
 });
 
-const UserSchema = Schema({
-    email: {
-        type: String,
-        unique: true,
-        lowercase: true,
-        trim: true,
-        validate: {
-            validator: function (v) {
-                return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
+const UserSchema = Schema(
+    {
+        email: {
+            type: String,
+            unique: true,
+            lowercase: true,
+            trim: true,
+            validate: {
+                validator: function (v) {
+                    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+                        v
+                    );
+                },
+                message: (props) =>
+                    `${props.value} is not a valid email address`,
             },
-            message: (props) => `${props.value} is not a valid email address`,
+            required: true,
         },
-        required: true,
-    },
-    username: {
-        type: String,
-        required: [true, "UserName is required!"],
-        trim: true,
-        unique: true,
-    },
-    password: {
-        type: String,
-        required: [true, "Password is required!"],
-        trim: true,
-        validate: {
-            validator(password) {
-                return /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(password);
+        username: {
+            type: String,
+            required: [true, "UserName is required!"],
+            trim: true,
+            unique: true,
+        },
+        password: {
+            type: String,
+            required: [true, "Password is required!"],
+            trim: true,
+            validate: {
+                validator(password) {
+                    return /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(password);
+                },
+                message: "{VALUE} is not a valid password!",
             },
-            message: "{VALUE} is not a valid password!",
         },
-    },
-    phone: {
-        type: String,
-        trim: true,
-        unique: true,
-    },
-    createAt: {
-        type: Date,
-        default: Date.now,
-    },
-    updateAt: {
-        type: Date,
-        default: Date.now,
-    },
-    image: ImageSchema,
-    favorite: [
-        {
+        phone: {
+            type: String,
+            trim: true,
+            unique: true,
+        },
+        createAt: {
+            type: Date,
+            default: Date.now,
+        },
+        updateAt: {
+            type: Date,
+            default: Date.now,
+        },
+        image: ImageSchema,
+        favorite: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Product",
+            },
+        ],
+        role: {
+            type: String,
+            enum: ["admin", "seller", "user"],
+            default: "user",
+        },
+        cart: {
             type: Schema.Types.ObjectId,
-            ref: "Product",
+            ref: "Cart",
         },
-    ],
-    role: {
-        type: String,
-        enum: ["admin", "host", "user"],
-        default: "user",
+        store: {
+            type: Schema.Types.ObjectId,
+            ref: "Store",
+        },
+        emailVerify: {
+            type: Boolean,
+            default: false,
+        },
     },
-    cart: {
-        type: Schema.Types.ObjectId,
-        ref: "Cart",
-    },
-    store: {
-        type: Schema.Types.ObjectId,
-        ref: "Store",
-    },
-    emailVerify: {
-        type: Boolean,
-        default: false,
-    },
-});
+    {
+        timestamps: true,
+    }
+);
 
 UserSchema.pre("save", function (next) {
     this.updateAt = new Date();

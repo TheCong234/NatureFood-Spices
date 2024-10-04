@@ -18,4 +18,6 @@ router.post(
     asyncHandler(StoreControllers.createStore)
 );
 
+router.put("/update-status", asyncHandler(StoreControllers.updateStoreStatus));
+
 export default router;
