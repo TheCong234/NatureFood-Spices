@@ -174,7 +174,7 @@ export default function AdminLayout() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Nature Food
+            Nature Food test
           </Typography>
           {/* Search Bar */}
           <div style={{ position: 'relative', marginRight: 16, marginLeft: '65px',}}>
