@@ -109,7 +109,12 @@ const UserController = {
     async updateUserImage(req, res) {
         try {
             const user = await UserModel.findById(req.user._id);
-            user.image = { url: req.file.path, filename: req.file.filename };
+            if (req.file) {
+                user.image = {
+                    url: req.file.path,
+                    filename: req.file.filename,
+                };
+            }
             await user.save();
             return res
                 .status(statusCode.OK)
