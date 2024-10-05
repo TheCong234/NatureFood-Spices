@@ -8,3 +8,5 @@ export { default as TagRoutes } from "./tag.routes.js";
 export { default as BillRoutes } from "./bill.routes.js";
 export { default as StoreRoutes } from "./store.routes.js";
 export { default as BannerRoutes } from "./banner.routes.js";
+export { default as StoreProductRoutes } from "./store.product.routes.js";
+export { default as OrderRoutes } from "./order.routes.js";

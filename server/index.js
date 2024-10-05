@@ -11,6 +11,8 @@ import {
     TagRoutes,
     StoreRoutes,
     BannerRoutes,
+    StoreProductRoutes,
+    OrderRoutes,
 } from "./routes/index.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
@@ -78,6 +80,8 @@ app.use(`${apiVersion}/favorite`, FavoriteRoutes);
 app.use(`${apiVersion}/tag`, TagRoutes);
 app.use(`${apiVersion}/store`, StoreRoutes);
 app.use(`${apiVersion}/banner`, BannerRoutes);
+app.use(`${apiVersion}/store-product`, StoreProductRoutes);
+app.use(`${apiVersion}/order`, OrderRoutes);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
