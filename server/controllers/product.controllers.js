@@ -2,6 +2,7 @@ import ProductModel from "../models/product.model.js";
 import { statusCode } from "../config/statusCode.config.js";
 import { BaseResponse } from "../config/BaseResponse.config.js";
 import { cloudinary } from "../config/cloudinary.config.js";
+import StoreProductModel from "../models/product.store.model.js";
 import StoreModel from "../models/store.models.js";
 
 const ProductController = {
@@ -81,15 +82,12 @@ const ProductController = {
             url: f.path,
             filename: f.filename,
         }));
-        product.store = req.user.store;
         const newProduct = await product.save();
-
-        const store = await StoreModel.findById(req.user.store);
-        store.products.push(newProduct._id);
-        await store.save();
         return res
             .status(statusCode.CREATED)
-            .json(BaseResponse.success("Tạo mới sản phẩm thành công", product));
+            .json(
+                BaseResponse.success("Tạo mới sản phẩm thành công", newProduct)
+            );
     },
 
     async updateProduct(req, res) {

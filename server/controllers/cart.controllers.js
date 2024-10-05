@@ -3,43 +3,60 @@ import { statusCode } from "../config/statusCode.config.js";
 import CartModel from "../models/cart.model.js";
 
 const CartController = {
-    async modifyItem(req, res){
-        try {
-            const {productId, quantity} = req.query;
-            const cart = await CartModel.findById(req.user.cart);
-            for(let item of cart.items){
-                if(item.productId == productId){
-                    item.quantity += parseInt(quantity);
-                    if(item.quantity < 1){
-                        item.quantity = 1;
-                    }
-                    const updatedCart = await cart.save();
-                    return res.status(statusCode.OK).json(BaseResponse.success('Thêm sl sản phẩm vào giỏ hàng thành công', updatedCart));
-                }
-            }
-            cart.items.push({productId, quantity});
-            const updatedCart = await cart.save();
-            return res.status(statusCode.OK).json(BaseResponse.success('Thêm sản phẩm vào giỏ hàng thành công', updatedCart));
-        } catch (error) {
-            console.log('Add item: ', error);
-            return res.status(statusCode.INTERNAL_SERVER_ERROR).json(BaseResponse.error('Thêm sản phầm vào giỏ hàng thất bại', error));
-        }
+    async getItemsCart(req, res) {
+        const cartItems = await CartModel.findOne(
+            { _id: req.user.cart },
+            { items: 1 }
+        );
+        return res
+            .status(statusCode.OK)
+            .json(
+                BaseResponse.success(
+                    "Lấy sản phẩm giỏ hàng thành công",
+                    cartItems
+                )
+            );
     },
 
-    async deleteItem(req, res){
-        try {
-            const {productId} = req.params;
-            const cart = await CartModel.findById(req.user.cart);
-            cart.items = cart.items.filter(item => item.productId != productId);
-            const newCart = await cart.save();
-            return res.status(statusCode.OK).json(BaseResponse.success('Xóa sản phẩm khỏi giỏ hàng thành công', newCart));
-        } catch (error) {
-            console.log('delete item: ', error);
-            return res.status(statusCode.INTERNAL_SERVER_ERROR).json(BaseResponse.error('Xóa sản phẩm trong giỏ hàng thất bại', error));
+    async addItem(req, res) {
+        const { productId, quantity } = req.body;
+        const cart = await CartModel.findOne({ _id: req.user.cart });
+        const existingItem = cart.items.find(
+            (item) => item.productId.toString() === productId.toString()
+        );
+        if (existingItem) {
+            existingItem.quantity =
+                parseInt(existingItem.quantity) + parseInt(quantity);
+        } else {
+            cart.items.push({ productId: productId, quantity: quantity });
         }
-    }
+        const updatedCart = await cart.save();
 
-    
-}
+        return res
+            .status(statusCode.OK)
+            .json(
+                BaseResponse.success(
+                    "Thêm sản phẩm vào giỏ hàng thành công",
+                    updatedCart
+                )
+            );
+    },
+
+    async removeItem(req, res) {
+        const response = await Cart.findOneAndUpdate(
+            { _id: req.user.cart },
+            { $pull: { items: { productId: req.body.productId } } },
+            { new: true }
+        );
+        return res
+            .status(statusCode.OK)
+            .json(
+                BaseResponse.success(
+                    "Xóa sản phẩm khỏi giỏ hàng thành công",
+                    response
+                )
+            );
+    },
+};
 
 export default CartController;

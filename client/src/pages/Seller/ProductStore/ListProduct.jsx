@@ -2,7 +2,6 @@ import { useState } from "react";
 import ProductCard from "../../../components/ProductCard";
 import { Box, Container, Grid, Paper, styled } from "@mui/material";
 import { useSelector } from "react-redux";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 const Index = () => {
   const {

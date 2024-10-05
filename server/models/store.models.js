@@ -18,41 +18,43 @@ const ImageSchema = new Schema({
     },
 });
 
-const StoreSchema = Schema({
-    name: {
-        type: String,
-        required: true,
-        min: 2,
-    },
-    owner: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    },
-    description: {
-        type: String,
-        required: true,
-    },
-    image: ImageSchema,
-    products: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Product",
+const StoreSchema = Schema(
+    {
+        name: {
+            type: String,
+            required: true,
+            min: 2,
         },
-    ],
-    address: {
-        type: Schema.Types.ObjectId,
-        ref: "Address",
+        owner: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+        description: {
+            type: String,
+            required: true,
+        },
+        image: ImageSchema,
+        products: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "StoreProduct",
+            },
+        ],
+        address: {
+            type: Schema.Types.ObjectId,
+            ref: "Address",
+        },
+        status: {
+            type: Number,
+            enum: [0, 1, 2],
+            default: 0,
+        },
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-    updateAt: {
-        type: Date,
-        default: Date.now,
-    },
-});
+    {
+        timestamps: true,
+    }
+);
 
 const StoreModel = mongoose.model("Store", StoreSchema);
 export default StoreModel;

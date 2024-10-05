@@ -1,6 +1,7 @@
 import { BaseResponse } from "../config/BaseResponse.config.js";
 import { statusCode } from "../config/statusCode.config.js";
 import AddressModel from "../models/address.model.js";
+import StoreProductModel from "../models/product.store.model.js";
 import StoreModel from "../models/store.models.js";
 import UserModel from "../models/user.model.js";
 
@@ -21,7 +22,7 @@ const StoreControllers = {
         //link store to user
         const user = await UserModel.findById(req.user._id);
         user.store = newStore._id;
-        user.role = "host";
+        user.role = "seller";
         await user.save();
         return res
             .status(statusCode.CREATED)
@@ -39,6 +40,22 @@ const StoreControllers = {
             .status(statusCode.OK)
             .json(
                 BaseResponse.success("Lấy thông tin cửa hàng thành công", store)
+            );
+    },
+
+    async updateStoreStatus(req, res) {
+        const updatedStore = await StoreModel.findByIdAndUpdate(
+            req.body.storeId,
+            req.body,
+            { new: true }
+        );
+        return res
+            .status(statusCode.OK)
+            .json(
+                BaseResponse.success(
+                    "Cập nhật trạng thái cửa hàng thành công",
+                    updatedStore
+                )
             );
     },
 };
