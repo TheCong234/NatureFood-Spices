@@ -18,7 +18,6 @@ import {
 import backgroundImagenaturefood from "/src/assets/images/bg-login-naturefood.jpg";
 import backgroundImage from "/src/assets/images/bg-login.jpg";
 import { blue } from "../../theme/colors";
-import { white } from "../../theme/colors";
 
 const LoginPage = () => {
     return (
@@ -59,37 +58,25 @@ const LoginPage = () => {
                                     color: "white",
                                     fontWeight: "bold",
                                     mb: 2,
-                                    paddingTop: "10px",
                                 }}
                             >
                                 falcon
                             </Typography>
                             <Typography
                                 variant="body1"
-                                sx={{
-                                    color: white[200],
-                                    mb: 3,
-                                    paddingTop: "20px",
-                                }}
+                                sx={{ color: "#5f6368", mb: 3 }}
                             >
                                 With the power of Falcon, you can now focus only
                                 on functionalities for your digital products,
                                 while leaving the UI design on us!
                             </Typography>
                             {/* Footer */}
-                            <Typography
-                                variant="body2"
-                                sx={{
-                                    mt: 3,
-                                    paddingTop: "110px",
-                                    color: white[200],
-                                }}
-                            >
+                            <Typography variant="body2" sx={{ mt: 3 }}>
                                 Don't have an account?{" "}
                                 <Link
-                                    href="/register"
+                                    href="#"
                                     sx={{
-                                        color: white[200],
+                                        color: "#1976d2",
                                         fontWeight: "bold",
                                         display: "flex",
                                         justifyContent: "center",
@@ -101,21 +88,10 @@ const LoginPage = () => {
                             <Typography
                                 variant="body2"
                                 color="textSecondary"
-                                sx={{
-                                    mt: 1,
-                                    paddingTop: "50px",
-                                    color: white[200],
-                                }}
+                                sx={{ mt: 1 }}
                             >
-                                Read our{" "}
-                                <Link href="#" color={"inherit"}>
-                                    terms
-                                </Link>{" "}
-                                and{" "}
-                                <Link href="#" color={"inherit"}>
-                                    conditions
-                                </Link>
-                                .
+                                Read our <Link href="#">terms</Link> and{" "}
+                                <Link href="#">conditions</Link>.
                             </Typography>
                         </Box>
                     </Grid>
@@ -184,10 +160,6 @@ const LoginPage = () => {
                                     sx={{
                                         borderColor: "#db4437",
                                         color: "#db4437",
-                                        "&:hover": {
-                                            backgroundColor: "#db4437",
-                                            color: "white",
-                                        },
                                     }}
                                 >
                                     Google
@@ -201,10 +173,6 @@ const LoginPage = () => {
                                     sx={{
                                         borderColor: "#4267B2",
                                         color: "#4267B2",
-                                        "&:hover": {
-                                            backgroundColor: blue[500],
-                                            color: "white",
-                                        },
                                     }}
                                 >
                                     Facebook
