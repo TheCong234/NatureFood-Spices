@@ -60,14 +60,6 @@ const UserSchema = Schema(
             trim: true,
             unique: true,
         },
-        createAt: {
-            type: Date,
-            default: Date.now,
-        },
-        updateAt: {
-            type: Date,
-            default: Date.now,
-        },
         image: ImageSchema,
         favorite: [
             {
