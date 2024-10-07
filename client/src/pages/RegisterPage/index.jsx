@@ -1,257 +1,228 @@
+import React from "react";
+import { red } from "../../theme/colors";
 import {
-  Button,
-  Link,
-  TextField,
-  Paper,
-  Typography,
-  Box,
-  InputAdornment,
-  IconButton,
+    TextField,
+    Button,
+    Checkbox,
+    FormControlLabel,
+    Typography,
+    Box,
+    Divider,
+    Container,
+    FormControl,
+    InputLabel,
+    OutlinedInput,
+    InputAdornment,
+    IconButton,
+    Link,
 } from "@mui/material";
-import {
-  Google,
-  Email,
-  Phone,
-  Person,
-  Password,
-  RemoveRedEye,
-  VisibilityOff,
-} from "@mui/icons-material";
-import { useState } from "react";
-import { register } from "../../apis/user.apis";
-const Index = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    phone: "",
-    username: "",
-    password: "",
-  });
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [isShowPassword, setIsShowPassword] = useState(true);
-  const [formErrors, setFormErrors] = useState({
-    email: "",
-    phone: "",
-    username: "",
-    password: "",
-    confirmPassword: "",
-  });
+import "./main.css";
+import { Mail, Visibility, VisibilityOff } from "@mui/icons-material";
 
-  //show password
-  const handleShowPassword = () => {
-    setIsShowPassword((show) => !show);
-  };
+const RegistrationForm = () => {
+    const [showPassword, setShowPassword] = React.useState(false);
 
-  //handle confirm input change
-  const handleConfirmPasswordChange = (evt) => {
-    setConfirmPassword(evt.target.value);
-    console.log(confirmPassword);
-  };
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  //handle input change
-  const handleChange = (evt) => {
-    setFormData((data) => {
-      return { ...data, [evt.target.name]: evt.target.value };
-    });
-  };
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
 
-  //validate form
-  const validate = () => {
-    let errors = {};
-    if (formData.email.length < 4) {
-      errors.email = "Email hơn 4 kí tự";
-    }
-    if (formData.phone.length < 4) {
-      errors.phone = "Phone hơn 4 kí tự";
-    }
-    if (formData.username.length < 4) {
-      errors.username = "Username hơn 4 kí tự";
-    }
-    if (formData.password.length < 4) {
-      errors.password = "password hơn 4 kí tự";
-    }
-    if (confirmPassword.length < 4) {
-      errors.confirmPassword = "confirmPassword hơn 4 kí tự";
-    }
-    if (confirmPassword != formData.password) {
-      errors.confirmPassword = "confirmPassword phải giống với password";
-    }
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
+    const handleMouseUpPassword = (event) => {
+        event.preventDefault();
+    };
 
-  //handle register submit
-  const handleSubmit = async (evt) => {
-    evt.preventDefault();
-    if (validate()) {
-      try {
-        const user = await register(formData);
-        if (user) {
-          alert("Đăng ký thành công");
-        }
-      } catch (error) {
-        alert(error);
-      }
-    }
-  };
-  return (
-    <div className="h-screen w-screen grid place-items-center">
-      <div className="w-1/2">
-        <Paper elevation={3} sx={{ padding: 6 }}>
-          <Typography
-            component="h1"
-            variant="h4"
-            align="center"
-            gutterBottom
-            sx={{ fontWeight: "bold" }}
-          >
-            Đăng ký
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 3 }}
-          >
-            <TextField
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Email />
-                  </InputAdornment>
-                ),
-              }}
-              id="email"
-              label="Email"
-              type="email"
-              autoComplete="email"
-              required
-              fullWidth
-              name="email"
-              onChange={handleChange}
-              error={!!formErrors.email}
-              helperText={formErrors.email}
-              size="small"
-            />
-            <TextField
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Phone />
-                  </InputAdornment>
-                ),
-              }}
-              id="phone"
-              label="Số điện thoại"
-              type="tel"
-              autoComplete="phone"
-              required
-              fullWidth
-              name="phone"
-              onChange={handleChange}
-              sx={{ mt: 2 }}
-              error={!!formErrors.phone}
-              helperText={formErrors.phone}
-              size="small"
-            />
-            <TextField
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Person />
-                  </InputAdornment>
-                ),
-              }}
-              id="username"
-              label="Tên người dùng"
-              type="text"
-              autoComplete="username"
-              required
-              fullWidth
-              name="username"
-              onChange={handleChange}
-              sx={{ mt: 2 }}
-              error={!!formErrors.username}
-              helperText={formErrors.username}
-              size="small"
-            />
-            <TextField
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Password />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <IconButton onClick={handleShowPassword}>
-                    {isShowPassword ? <VisibilityOff /> : <RemoveRedEye />}
-                  </IconButton>
-                ),
-              }}
-              id="password"
-              label="Mật khẩu"
-              type={isShowPassword ? "password" : "text"}
-              autoComplete="password"
-              required
-              fullWidth
-              name="password"
-              onChange={handleChange}
-              sx={{ mt: 2 }}
-              error={!!formErrors.password}
-              helperText={formErrors.password}
-              size="small"
-            />
-            <TextField
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Password />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <IconButton onClick={handleShowPassword}>
-                    {isShowPassword ? <VisibilityOff /> : <RemoveRedEye />}
-                  </IconButton>
-                ),
-              }}
-              id="confirmPassword"
-              label="Mật khẩu xác thực"
-              type={isShowPassword ? "password" : "text"}
-              autoComplete="confirm-password"
-              required
-              fullWidth
-              name="confirmPassword"
-              onChange={handleConfirmPasswordChange}
-              sx={{ mt: 2 }}
-              error={!!formErrors.confirmPassword}
-              helperText={formErrors.confirmPassword}
-              size="small"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleSubmit}
-            >
-              Đăng ký
-            </Button>
-            <Button
-              endIcon={<Google />}
-              type="button"
-              fullWidth
-              variant="contained"
-              color="warning"
-            >
-              Đăng nhập với Google
-            </Button>
-            <Box sx={{ textAlign: "end", mt: 2 }}>
-              <Link href="/login">Quay trở lại trang Đăng nhập</Link>
+    return (
+        <Container className="container-center">
+            <Box className="form-container">
+                <Box className="register-option">
+                    <Typography variant="h4" className="logo">
+                        falcon
+                    </Typography>
+                    <Typography className="tagline">
+                        With the power of Falcon, you can now focus only on
+                        functionalities for your digital products, while leaving
+                        the UI design on us!
+                    </Typography>
+                    <Box className="login-section pt-40">
+                        <Typography className="accout">
+                            Have an account?
+                        </Typography>
+                        <Button variant="text" className="login-btn">
+                            <Link href="/login">Log In</Link>
+                        </Button>
+                    </Box>
+                </Box>
+
+                <Box className="register-form">
+                    <Typography variant="h4" className="register-title">
+                        Register
+                    </Typography>
+                    <Typography variant="body1" className="" gutterBottom>
+                        Tên đăng nhập
+                    </Typography>
+                    <TextField
+                        id="outlined-basic"
+                        variant="outlined"
+                        size="small"
+                        fullWidth
+                    />
+                    <Typography variant="body1" className="pt-3" gutterBottom>
+                        Tên đăng nhập
+                    </Typography>
+                    <TextField
+                        id="outlined-basic"
+                        variant="outlined"
+                        size="small"
+                        fullWidth
+                    />
+                    <Box className="flex justify-between pt-3 pb-3">
+                        <Box className="w-full mr-3">
+                            <Typography
+                                variant="body1"
+                                className=""
+                                gutterBottom
+                            >
+                                Mật khẩu
+                            </Typography>
+                            <FormControl
+                                variant="outlined"
+                                size="small"
+                                fullWidth
+                            >
+                                <OutlinedInput
+                                    id="outlined-adornment-password"
+                                    type={showPassword ? "text" : "password"}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={
+                                                    handleClickShowPassword
+                                                }
+                                                onMouseDown={
+                                                    handleMouseDownPassword
+                                                }
+                                                onMouseUp={
+                                                    handleMouseUpPassword
+                                                }
+                                                edge="end"
+                                            >
+                                                {showPassword ? (
+                                                    <VisibilityOff />
+                                                ) : (
+                                                    <Visibility />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                />
+                            </FormControl>
+                        </Box>
+                        <Box className="w-full mr-3">
+                            <Typography
+                                variant="body1"
+                                className=""
+                                gutterBottom
+                            >
+                                Nhập lại mật khẩu
+                            </Typography>
+                            <FormControl
+                                variant="outlined"
+                                size="small"
+                                fullWidth
+                            >
+                                <OutlinedInput
+                                    id="outlined-adornment-password"
+                                    type={showPassword ? "text" : "password"}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={
+                                                    handleClickShowPassword
+                                                }
+                                                onMouseDown={
+                                                    handleMouseDownPassword
+                                                }
+                                                onMouseUp={
+                                                    handleMouseUpPassword
+                                                }
+                                                edge="end"
+                                            >
+                                                {showPassword ? (
+                                                    <VisibilityOff />
+                                                ) : (
+                                                    <Visibility />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                />
+                            </FormControl>
+                        </Box>
+                    </Box>
+
+                    <FormControlLabel
+                        control={<Checkbox color="primary" />}
+                        label={
+                            <Typography className="terms">
+                                I accept the{" "}
+                                <span className="terms-link">terms</span> and{" "}
+                                <span className="terms-link">
+                                    privacy policy
+                                </span>
+                            </Typography>
+                        }
+                        className="checkbox"
+                    />
+
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        className="register-btn"
+                    >
+                        Register
+                    </Button>
+
+                    <Divider className="divider">or register with</Divider>
+
+                    <Box className="flex pt-3">
+                        <Button
+                            variant="outlined"
+                            fullWidth
+                            className="text-transform-none"
+                            sx={{
+                                color: red[500],
+                                "&:hover": {
+                                    backgroundColor: "#db4437",
+                                    color: "white",
+                                },
+                            }}
+                        >
+                            <i class="fa-brands fa-google-plus-g text-xl"></i>
+                            &nbsp; Google
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            fullWidth
+                            className="social-btn facebook-btn"
+                            sx={{
+                                "&:hover": {
+                                    backgroundColor: "blue",
+                                    color: "white",
+                                },
+                            }}
+                        >
+                            <i className="fab fa-facebook text-xl"></i> &nbsp;
+                            Facebook
+                        </Button>
+                    </Box>
+                </Box>
             </Box>
-          </Box>
-        </Paper>
-      </div>
-    </div>
-  );
+        </Container>
+    );
 };
 
-export default Index;
+export default RegistrationForm;
