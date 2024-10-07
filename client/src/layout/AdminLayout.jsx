@@ -245,7 +245,7 @@ export default function AdminLayout() {
                 </Container>
             </AppBar>
 
-            {/* Main */}
+            {/* Main 2 */}
             <Container sx={{ display: "flex" }}>
                 <Drawer variant="permanent" open={open}>
                     <DrawerHeader>
