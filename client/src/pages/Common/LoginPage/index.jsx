@@ -17,8 +17,8 @@ import {
 } from "@mui/icons-material";
 import backgroundImagenaturefood from "/src/assets/images/bg-login-naturefood.jpg";
 import backgroundImage from "/src/assets/images/bg-login.jpg";
-import { blue } from "../../theme/colors";
-import { white } from "../../theme/colors";
+import { blue } from "../../../theme/colors";
+import { white } from "../../../theme/colors";
 
 const LoginPage = () => {
     return (
