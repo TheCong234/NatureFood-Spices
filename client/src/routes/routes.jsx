@@ -1,12 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AdminLayout, EmptyLayout, MainLayout } from "../layout";
+import { RegisterPage, LoginPage, ForgotPage } from "../pages/Common";
 import {
     CategoryStore,
     DashboardStore,
     EventStore,
     HomeStore,
-    LoginPage,
-    RegisterPage,
     RegisterStore,
     SettingStore,
     ProductStore,
@@ -46,10 +45,10 @@ export const router = createBrowserRouter([
                 path: "/register",
                 element: <RegisterPage />,
             },
-            // {
-            //     path: "/fogot",
-            //     element: <Fogot />,
-            // },
+            {
+                path: "/forgot",
+                element: <ForgotPage />,
+            },
 
             {
                 path: "/",

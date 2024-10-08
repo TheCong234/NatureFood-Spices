@@ -17,9 +17,9 @@ import {
 } from "@mui/icons-material";
 import backgroundImagenaturefood from "/src/assets/images/bg-login-naturefood.jpg";
 import backgroundImage from "/src/assets/images/bg-login.jpg";
-import { blue } from "../../theme/colors";
+import { blue } from "../../../theme/colors";
 
-const LoginPage = () => {
+const ForgotPage = () => {
     return (
         <Box
             sx={{
@@ -58,33 +58,27 @@ const LoginPage = () => {
                                     color: "white",
                                     fontWeight: "bold",
                                     mb: 2,
+                                    fontWeight: 900,
+                                    paddingTop: "30px",
+                                    paddingBottom: "20px",
                                 }}
                             >
                                 falcon
                             </Typography>
                             <Typography
                                 variant="body1"
-                                sx={{ color: "#5f6368", mb: 3 }}
+                                sx={{
+                                    color: "#5f6368",
+                                    mb: 3,
+                                    paddingBottom: "130px",
+                                }}
                             >
                                 With the power of Falcon, you can now focus only
                                 on functionalities for your digital products,
                                 while leaving the UI design on us!
                             </Typography>
                             {/* Footer */}
-                            <Typography variant="body2" sx={{ mt: 3 }}>
-                                Don't have an account?{" "}
-                                <Link
-                                    href="#"
-                                    sx={{
-                                        color: "#1976d2",
-                                        fontWeight: "bold",
-                                        display: "flex",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    Get started!
-                                </Link>
-                            </Typography>
+
                             <Typography
                                 variant="body2"
                                 color="textSecondary"
@@ -104,14 +98,22 @@ const LoginPage = () => {
                         lg={7}
                         style={{ padding: "2rem" }}
                     >
-                        <Box sx={{ textAlign: "center" }}>
+                        <Box
+                            sx={{
+                                paddingTop: "50px",
+                                fontWeight: 800,
+                            }}
+                        >
                             <Typography
                                 variant="h5"
                                 sx={{ mb: 2, fontWeight: "bold" }}
                             >
-                                Account Login
+                                Forgot Passwork
                             </Typography>
                         </Box>
+                        <span>
+                            Enter your email and we'll send you a reset link.
+                        </span>
                         {/* Login Form */}
                         <TextField
                             fullWidth
@@ -120,65 +122,22 @@ const LoginPage = () => {
                             margin="normal"
                             size="small"
                         />
-                        <TextField
-                            fullWidth
-                            label="Password"
-                            variant="outlined"
-                            margin="normal"
-                            type="password"
-                            size="small"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox defaultChecked color="primary" />
-                            }
-                            label="Remember me"
-                            sx={{ mt: 1 }}
-                        />
+
                         <Button
                             fullWidth
                             variant="contained"
                             color="primary"
-                            sx={{ my: 2 }}
+                            sx={{
+                                my: 2,
+                                fontWeight: 800,
+                                textTransform: "none",
+                            }}
                         >
-                            Log in
+                            Send reset link
                         </Button>
                         <Link href="#" underline="hover">
-                            Forgot Password?
+                            {"I cant recover my account using this page→"}
                         </Link>
-
-                        {/* Divider */}
-                        <Divider sx={{ my: 3 }}>or log in with</Divider>
-
-                        {/* Social Login */}
-                        <Grid container spacing={2}>
-                            <Grid item xs={6}>
-                                <Button
-                                    fullWidth
-                                    variant="outlined"
-                                    startIcon={<GoogleIcon />}
-                                    sx={{
-                                        borderColor: "#db4437",
-                                        color: "#db4437",
-                                    }}
-                                >
-                                    Google
-                                </Button>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Button
-                                    fullWidth
-                                    variant="outlined"
-                                    startIcon={<FacebookIcon />}
-                                    sx={{
-                                        borderColor: "#4267B2",
-                                        color: "#4267B2",
-                                    }}
-                                >
-                                    Facebook
-                                </Button>
-                            </Grid>
-                        </Grid>
                     </Grid>
                 </Grid>
             </Container>
@@ -186,4 +145,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default ForgotPage;
