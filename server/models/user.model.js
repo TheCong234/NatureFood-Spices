@@ -84,6 +84,11 @@ const UserSchema = Schema(
             type: Boolean,
             default: false,
         },
+        status: {
+            type: Number,
+            enum: [0, 1],
+            default: 0,
+        },
     },
     {
         timestamps: true,
@@ -125,12 +130,12 @@ UserSchema.methods = {
         );
     },
 
-    toJSON() {
-        return {
-            data: this._doc,
-            token: this.createToken(),
-        };
-    },
+    // toJSON() {
+    //     return {
+    //         data: this._doc,
+    //         token: this.createToken(),
+    //     };
+    // },
 };
 
 const UserModel = mongoose.model("User", UserSchema);

@@ -9,56 +9,38 @@ import { sendMail } from "../utils/mailer.utils.js";
 
 const UserController = {
     async register(req, res) {
-        try {
-            const cart = new CartModel();
-            const newCart = await cart.save();
-            const user = await UserModel.create(req.body);
-            user.cart = newCart._id;
-            await user.save();
-            return res
-                .status(statusCode.CREATED)
-                .json(
-                    BaseResponse.success("Đăng ký tài khaonr thành công", user)
-                );
-        } catch (error) {
-            console.log("Register: ", error);
-            return res
-                .status(statusCode.INTERNAL_SERVER_ERROR)
-                .json(BaseResponse.error("Đăng ký tài khoản thất bại", error));
-        }
+        const cart = new CartModel();
+        const newCart = await cart.save();
+        const user = await UserModel.create(req.body);
+        user.cart = newCart._id;
+        await user.save();
+        const token = user.createToken();
+        return res
+            .status(statusCode.CREATED)
+            .json(
+                BaseResponse.success("Đăng ký tài khaonr thành công", { token })
+            );
     },
 
     async login(req, res) {
+        const user = req.user;
+        const token = user.createToken();
         return res
             .status(statusCode.OK)
-            .json(BaseResponse.success("Đăng nhập thành công", req.user));
+            .json(BaseResponse.success("Đăng nhập thành công", { token }));
     },
 
     async getAll(req, res) {
-        try {
-            const users = await UserModel.find({});
-            return res
-                .status(statusCode.OK)
-                .json(BaseResponse.success("Thành công", users));
-        } catch (error) {
-            console.log("Get all: ", error);
-            return res
-                .status(statusCode.INTERNAL_SERVER_ERROR)
-                .json("THất bại", error);
-        }
+        const users = await UserModel.find({});
+        return res
+            .status(statusCode.OK)
+            .json(BaseResponse.success("Thành công", users));
     },
 
     async getCurrentUser(req, res) {
-        try {
-            return res
-                .status(statusCode.OK)
-                .json(BaseResponse.success("Tìm thấy current user", req.user));
-        } catch (error) {
-            console.log("Controller Get current user: ", error);
-            return res
-                .status(statusCode.INTERNAL_SERVER_ERROR)
-                .json("THất bại", error);
-        }
+        return res
+            .status(statusCode.OK)
+            .json(BaseResponse.success("Tìm thấy current user", req.user));
     },
 
     async getUserById(req, res) {
@@ -78,32 +60,19 @@ const UserController = {
     },
 
     async updateUser(req, res) {
-        try {
-            if (req.user) {
-                const updatedUser = await UserModel.findByIdAndUpdate(
-                    req.user._id,
-                    req.body,
-                    { new: true }
-                );
-                return res
-                    .status(statusCode.OK)
-                    .json(
-                        BaseResponse.success(
-                            "Cập nhật người dùng thành công",
-                            updatedUser
-                        )
-                    );
-            }
-            return res
-                .status(statusCode.UNAUTHORIZED)
-                .json(
-                    BaseResponse.error("Yêu cầu đăng nhập", "CHưa đăng nhập")
-                );
-        } catch (error) {
-            return res
-                .status(statusCode.INTERNAL_SERVER_ERROR)
-                .json(BaseResponse.error("Cập nhật thất bại", error));
-        }
+        const updatedUser = await UserModel.findByIdAndUpdate(
+            req.user._id,
+            req.body,
+            { new: true }
+        );
+        return res
+            .status(statusCode.OK)
+            .json(
+                BaseResponse.success(
+                    "Cập nhật người dùng thành công",
+                    updatedUser
+                )
+            );
     },
 
     async updateUserImage(req, res) {
@@ -129,6 +98,17 @@ const UserController = {
                 .status(statusCode.INTERNAL_SERVER_ERROR)
                 .json(BaseResponse.error("Cập nhật thất bại", error));
         }
+    },
+
+    async updateUserById(req, res) {
+        const { id } = req.params;
+        const user = await UserModel.findByIdAndUpdate(id, req.body, {
+            new: true,
+            runValidators: true,
+        });
+        return res
+            .status(statusCode.OK)
+            .json(BaseResponse.success("Cập nhật người dùng thành công", user));
     },
 
     async changePassword(req, res) {
