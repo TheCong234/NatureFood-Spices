@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { red } from "../../../theme/colors";
 import {
     TextField,
@@ -15,21 +15,50 @@ import {
     InputAdornment,
     IconButton,
     Link,
+    FormHelperText,
 } from "@mui/material";
 import "./main.css";
 import { Mail, Visibility, VisibilityOff } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import useSnackNotify from "../../../components/SnackNotify";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { RegisterYup } from "../../../validations/yup.validations";
+import { useDispatch, useSelector } from "react-redux";
+import { registerAction } from "../../../hooks/Redux/User/userAction";
 
 const RegistrationForm = () => {
-    const [showPassword, setShowPassword] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
+    const snackNotify = useSnackNotify();
+    const dispatch = useDispatch();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm({
+        resolver: yupResolver(RegisterYup),
+    });
+
+    const { data, error, loading } = useSelector((state) => state.user);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
+    const onSubmit = async (data) => {
+        const response = await dispatch(registerAction(data));
+        console.log(response);
 
-    const handleMouseUpPassword = (event) => {
-        event.preventDefault();
+        if (response?.payload?.token) {
+            snackNotify("success")("Đăng ký thành công!");
+            snackNotify("success")("Bạn được chuyển tới trang chủ!");
+            reset();
+            return navigate("/home");
+        }
+        if (!response?.payload?.response?.data?.success) {
+            snackNotify("error")(`Lỗi, email đã được sử dụng`);
+        }
     };
 
     return (
@@ -53,28 +82,36 @@ const RegistrationForm = () => {
                         </Button>
                     </Box>
                 </Box>
-
-                <Box className="register-form">
+                {/* <form onSubmit={handleSubmit(onSubmit)}> */}
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="register-form"
+                >
                     <Typography variant="h4" className="register-title">
                         Register
                     </Typography>
                     <Typography variant="body1" className="" gutterBottom>
-                        Tên đăng nhập
+                        Tên hiển thị
                     </Typography>
                     <TextField
-                        id="outlined-basic"
+                        {...register("username")}
                         variant="outlined"
                         size="small"
                         fullWidth
+                        error={!!errors.username}
+                        helperText={errors?.username?.message}
                     />
                     <Typography variant="body1" className="pt-3" gutterBottom>
-                        Tên đăng nhập
+                        Email
                     </Typography>
                     <TextField
-                        id="outlined-basic"
+                        {...register("email")}
+                        type="email"
                         variant="outlined"
                         size="small"
                         fullWidth
+                        error={!!errors.email}
+                        helperText={errors?.email?.message}
                     />
                     <Box className="flex justify-between pt-3 pb-3">
                         <Box className="w-full mr-3">
@@ -89,9 +126,10 @@ const RegistrationForm = () => {
                                 variant="outlined"
                                 size="small"
                                 fullWidth
+                                error={!!errors.password}
                             >
                                 <OutlinedInput
-                                    id="outlined-adornment-password"
+                                    {...register("password")}
                                     type={showPassword ? "text" : "password"}
                                     endAdornment={
                                         <InputAdornment position="end">
@@ -99,12 +137,6 @@ const RegistrationForm = () => {
                                                 aria-label="toggle password visibility"
                                                 onClick={
                                                     handleClickShowPassword
-                                                }
-                                                onMouseDown={
-                                                    handleMouseDownPassword
-                                                }
-                                                onMouseUp={
-                                                    handleMouseUpPassword
                                                 }
                                                 edge="end"
                                             >
@@ -117,6 +149,9 @@ const RegistrationForm = () => {
                                         </InputAdornment>
                                     }
                                 />
+                                <FormHelperText>
+                                    {errors?.password?.message}
+                                </FormHelperText>
                             </FormControl>
                         </Box>
                         <Box className="w-full mr-3">
@@ -131,9 +166,10 @@ const RegistrationForm = () => {
                                 variant="outlined"
                                 size="small"
                                 fullWidth
+                                error={!!errors.confirmPassword}
                             >
                                 <OutlinedInput
-                                    id="outlined-adornment-password"
+                                    {...register("confirmPassword")}
                                     type={showPassword ? "text" : "password"}
                                     endAdornment={
                                         <InputAdornment position="end">
@@ -141,12 +177,6 @@ const RegistrationForm = () => {
                                                 aria-label="toggle password visibility"
                                                 onClick={
                                                     handleClickShowPassword
-                                                }
-                                                onMouseDown={
-                                                    handleMouseDownPassword
-                                                }
-                                                onMouseUp={
-                                                    handleMouseUpPassword
                                                 }
                                                 edge="end"
                                             >
@@ -159,6 +189,9 @@ const RegistrationForm = () => {
                                         </InputAdornment>
                                     }
                                 />
+                                <FormHelperText>
+                                    {errors?.confirmPassword?.message}
+                                </FormHelperText>
                             </FormControl>
                         </Box>
                     </Box>
@@ -178,6 +211,7 @@ const RegistrationForm = () => {
                     />
 
                     <Button
+                        type="submit"
                         variant="contained"
                         color="primary"
                         fullWidth
@@ -201,7 +235,7 @@ const RegistrationForm = () => {
                                 },
                             }}
                         >
-                            <i class="fa-brands fa-google-plus-g text-xl"></i>
+                            <i className="fa-brands fa-google-plus-g text-xl"></i>
                             &nbsp; Google
                         </Button>
                         <Button
@@ -219,7 +253,7 @@ const RegistrationForm = () => {
                             Facebook
                         </Button>
                     </Box>
-                </Box>
+                </form>
             </Box>
         </Container>
     );

@@ -1,5 +1,6 @@
 import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
+// import { styled, useTheme } from "@mui/material/styles";
+
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -24,6 +25,8 @@ import {
     InputAdornment,
     InputBase,
     Stack,
+    styled,
+    useTheme,
 } from "@mui/material";
 import PeopleIcon from "@mui/icons-material/People";
 import ProductIcon from "@mui/icons-material/ShoppingCart";
@@ -51,7 +54,6 @@ import Avatar from "@mui/material/Avatar";
 
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { rootColor } from "../theme/colors";
-// import { Container, fontSize, fontStyle, Stack } from '@mui/system'; Đưng có import từ system
 import { Outlet } from "react-router-dom";
 
 const drawerWidth = 240;

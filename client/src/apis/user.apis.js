@@ -2,39 +2,38 @@ import { UserV1 } from "../constants/endpoints.const";
 import { apiClient } from "./config.api";
 import Cookies from "js-cookie";
 
-export const login = async (data) => {
-    try {
-        const user = await apiClient.post(UserV1.USER_LOGIN, data, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            withCredentials: true,
-        });
-
-        Cookies.set("token", user.data.data.token, {
+export const loginApi = async (data) => {
+    const response = await apiClient.post(UserV1.USER_LOGIN, data, {
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        withCredentials: true,
+    });
+    if (response.data.success) {
+        Cookies.set("token", response.data.data.token, {
             expires: 7,
             secure: true,
         });
-        return user.data;
-    } catch (error) {
-        console.log("User login error: ", error);
-        return error;
+        return response.data;
     }
+    return response;
 };
 
-export const register = async (data) => {
-    try {
-        const user = await apiClient.post(UserV1.USER_REGISTER, data, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            withCredentials: true,
+export const registerApi = async (data) => {
+    const response = await apiClient.post(UserV1.USER_REGISTER, data, {
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        withCredentials: true,
+    });
+    if (response.data.success) {
+        Cookies.set("token", response.data.data.token, {
+            expires: 7,
+            secure: true,
         });
-        return user.data;
-    } catch (error) {
-        console.log("User register error: ", error);
-        return error;
+        return response.data;
     }
+    return response;
 };
 
 export const getCurrentUser = async () => {

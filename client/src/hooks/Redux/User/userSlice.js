@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { currentUser, updateEmailVerify } from "./userAction";
+import {
+    currentUser,
+    updateEmailVerify,
+    loginAction,
+    registerAction,
+} from "./userAction";
 
 const userSlice = createSlice({
     name: "user",
@@ -11,6 +16,33 @@ const userSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            //post login
+            .addCase(loginAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(loginAction.fulfilled, (state, action) => {
+                state.loading = false;
+            })
+            .addCase(loginAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+            //post register
+            .addCase(registerAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(registerAction.fulfilled, (state, action) => {
+                state.loading = false;
+            })
+            .addCase(registerAction.rejected, (state, action) => {
+                console.log("action", action);
+                state.loading = false;
+                state.error = action.payload;
+            })
+
             //get data state
             .addCase(currentUser.pending, (state) => {
                 state.loading = true;

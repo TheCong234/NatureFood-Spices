@@ -13,7 +13,7 @@ router.get("/all", UserController.getAll);
 router.get("/info", authJwt, UserController.getCurrentUser);
 router.get("/:id", UserController.getUserById);
 
-router.post("/register", UserController.register);
+router.post("/register", asyncHandler(UserController.register));
 router.post("/login", authLocal, UserController.login);
 
 router.post(
