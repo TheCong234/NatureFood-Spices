@@ -29,5 +29,8 @@ router.put(
     upload.single("image"),
     UserController.updateUserImage
 );
+
+router.patch("/:id", asyncHandler(UserController.updateUserById));
+
 router.put("/change-password/:email", UserController.changePassword);
 export default router;
