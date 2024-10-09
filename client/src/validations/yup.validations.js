@@ -60,3 +60,38 @@ export const CreateBannerYup = yup.object().shape({
 export const CreateReviewYup = yup.object().shape({
     body: yup.string().required("Bạn cảm thấy chất lượng sản phẩm như thế nào"),
 });
+
+export const LoginYup = yup.object().shape({
+    email: yup
+        .string()
+        .email("Vui lòng nhập một địa chỉ email hợp lệ")
+        .required("Vui lòng nhập email"),
+    password: yup
+        .string()
+        .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+        .required("Vui lòng nhập mật khẩu"),
+});
+
+export const RegisterYup = yup.object().shape({
+    email: yup
+        .string()
+        .email("Vui lòng nhập một địa chỉ email hợp lệ")
+        .required("Vui lòng nhập email"),
+
+    username: yup
+        .string()
+        .required("Vui lòng nhập tên người dùng")
+        .min(3, "Tên người dùng phải có ít nhất 3 ký tự"), // Thay đổi theo yêu cầu của bạn
+
+    password: yup
+        .string()
+        .required("Vui lòng nhập mật khẩu")
+        .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+        .matches(/[A-Z]/, "Mật khẩu phải có ít nhất một chữ cái viết hoa") // Kiểm tra chữ cái viết hoa
+        .matches(/\d/, "Mật khẩu phải có ít nhất một chữ số"), // Kiểm tra chữ số
+
+    confirmPassword: yup
+        .string()
+        .required("Vui lòng xác nhận mật khẩu")
+        .oneOf([yup.ref("password"), null], "Mật khẩu xác nhận không khớp"), // So sánh với password
+});

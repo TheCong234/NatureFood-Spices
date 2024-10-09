@@ -1,28 +1,62 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { currentUser, updateEmailVerify } from "./userAction";
+import {
+    getcurrentUserAction,
+    updateEmailVerify,
+    loginAction,
+    registerAction,
+} from "./userAction";
 
 const userSlice = createSlice({
     name: "user",
     initialState: {
         data: [],
+        token: localStorage.getItem("token") || "",
         loading: false,
         error: null,
     },
     reducers: {},
     extraReducers: (builder) => {
         builder
-            //get data state
-            .addCase(currentUser.pending, (state) => {
+            //post login
+            .addCase(loginAction.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(currentUser.fulfilled, (state, action) => {
+            .addCase(loginAction.fulfilled, (state, action) => {
                 state.loading = false;
-                state.data = action.payload.data;
+                state.token = action.payload.token;
             })
-            .addCase(currentUser.rejected, (state, action) => {
+            .addCase(loginAction.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message;
+                state.error = action.payload;
+            })
+
+            //post register
+            .addCase(registerAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(registerAction.fulfilled, (state, action) => {
+                state.loading = false;
+            })
+            .addCase(registerAction.rejected, (state, action) => {
+                console.log("action", action);
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            //get current user
+            .addCase(getcurrentUserAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getcurrentUserAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = action.payload;
+            })
+            .addCase(getcurrentUserAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             })
 
             //update user data

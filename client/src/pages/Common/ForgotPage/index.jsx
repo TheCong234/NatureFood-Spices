@@ -56,7 +56,6 @@ const ForgotPage = () => {
                                 variant="h4"
                                 sx={{
                                     color: "white",
-                                    fontWeight: "bold",
                                     mb: 2,
                                     fontWeight: 900,
                                     paddingTop: "30px",

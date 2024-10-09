@@ -57,8 +57,6 @@ const UserSchema = Schema(
         },
         phone: {
             type: String,
-            trim: true,
-            unique: true,
         },
         image: ImageSchema,
         favorite: [
