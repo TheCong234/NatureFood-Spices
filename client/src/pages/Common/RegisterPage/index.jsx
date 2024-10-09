@@ -207,7 +207,7 @@ const RegistrationForm = () => {
                         <Button
                             variant="outlined"
                             fullWidth
-                            className="social-btn facebook-btn"
+                            className="social-btn facebook-btn text-transform-none"
                             sx={{
                                 "&:hover": {
                                     backgroundColor: "blue",
