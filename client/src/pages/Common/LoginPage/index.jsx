@@ -1,4 +1,5 @@
 import React from "react";
+import { LoginYup } from "../../../validations/yup.validations";
 import {
     TextField,
     Button,
@@ -19,8 +20,38 @@ import backgroundImagenaturefood from "/src/assets/images/bg-login-naturefood.jp
 import backgroundImage from "/src/assets/images/bg-login.jpg";
 import { blue } from "../../../theme/colors";
 import { white } from "../../../theme/colors";
+import { useDispatch, useSelector } from "react-redux";
+import { loginAction } from "../../../hooks/Redux/User/userAction";
+import useSnackNotify from "../../../components/SnackNotify";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+    const dispatch = useDispatch();
+    const snackNotify = useSnackNotify();
+    const navigate = useNavigate();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm({
+        resolver: yupResolver(LoginYup),
+    });
+
+    const onSubmit = async (data) => {
+        const response = await dispatch(loginAction(data));
+        if (response?.payload?.token) {
+            snackNotify("success")("Đăng nhập thành công!");
+            // navigate("/home");
+            reset();
+        } else {
+            snackNotify("error")(
+                `Lỗi, tài khoản hoạc mật khẩu không chính xác`
+            );
+        }
+    };
     return (
         <Box
             sx={{
@@ -136,37 +167,47 @@ const LoginPage = () => {
                                 Account Login
                             </Typography>
                         </Box>
+
                         {/* Login Form */}
-                        <TextField
-                            fullWidth
-                            label="Email address"
-                            variant="outlined"
-                            margin="normal"
-                            size="small"
-                        />
-                        <TextField
-                            fullWidth
-                            label="Password"
-                            variant="outlined"
-                            margin="normal"
-                            type="password"
-                            size="small"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox defaultChecked color="primary" />
-                            }
-                            label="Remember me"
-                            sx={{ mt: 1 }}
-                        />
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            sx={{ my: 2 }}
-                        >
-                            Log in
-                        </Button>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <TextField
+                                {...register("email")}
+                                fullWidth
+                                label="Email"
+                                variant="outlined"
+                                margin="normal"
+                                size="small"
+                                error={!!errors.email}
+                                helperText={errors?.email?.message}
+                            />
+                            <TextField
+                                {...register("password")}
+                                fullWidth
+                                label="Password"
+                                variant="outlined"
+                                margin="normal"
+                                type="password"
+                                size="small"
+                                error={!!errors.password}
+                                helperText={errors?.password?.message}
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox defaultChecked color="primary" />
+                                }
+                                label="Remember me"
+                                sx={{ mt: 1 }}
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                sx={{ my: 2 }}
+                            >
+                                Log in
+                            </Button>
+                        </form>
                         <Link href="#" underline="hover">
                             Forgot Password?
                         </Link>

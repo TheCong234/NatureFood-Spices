@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AuthActions from "../../AuthActions";
 import UserNaviMenu from "../../UserNaviMenu";
 import SearchStyle from "../../SearchStyle";
-import { currentUser } from "../../../hooks/Redux/User/userAction";
+// import { currentUser } from "../../../hooks/Redux/User/userAction";
 
 const items = [
     {
@@ -27,7 +27,7 @@ const Index = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(currentUser());
+        // dispatch(currentUser());
     }, [dispatch]);
     const { data, loading, error } = useSelector((state) => state.user);
     return (

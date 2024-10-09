@@ -2,49 +2,44 @@ import { UserV1 } from "../constants/endpoints.const";
 import { apiClient } from "./config.api";
 import Cookies from "js-cookie";
 
-export const login = async (data) => {
-    try {
-        const user = await apiClient.post(UserV1.USER_LOGIN, data, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            withCredentials: true,
-        });
+export const loginApi = async (data) => {
+    const response = await apiClient.post(UserV1.USER_LOGIN, data, {
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        withCredentials: true,
+    });
+    if (response.data.success) {
+        localStorage.setItem("token", response.data.data.token);
+        return response.data;
+    }
+    return response;
+};
 
-        Cookies.set("token", user.data.data.token, {
+export const registerApi = async (data) => {
+    const response = await apiClient.post(UserV1.USER_REGISTER, data, {
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        withCredentials: true,
+    });
+    if (response.data.success) {
+        Cookies.set("token", response.data.data.token, {
             expires: 7,
             secure: true,
         });
-        return user.data;
-    } catch (error) {
-        console.log("User login error: ", error);
-        return error;
+        return response.data;
     }
+    return response;
 };
 
-export const register = async (data) => {
-    try {
-        const user = await apiClient.post(UserV1.USER_REGISTER, data, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            withCredentials: true,
-        });
-        return user.data;
-    } catch (error) {
-        console.log("User register error: ", error);
-        return error;
-    }
-};
-
-export const getCurrentUser = async () => {
-    try {
-        const user = await apiClient.get(UserV1.USER_CURRENT);
-        return user.data.data;
-    } catch (error) {
-        console.log("User current error: ", error);
-        return error;
-    }
+export const getCurrentUserApi = async (data) => {
+    const response = await apiClient.get(UserV1.USER_CURRENT, {
+        headers: {
+            Authorization: `Bearer ${data}`,
+        },
+    });
+    return response.data;
 };
 
 export const verifyEmail = async (data) => {

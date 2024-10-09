@@ -57,8 +57,6 @@ const UserSchema = Schema(
         },
         phone: {
             type: String,
-            trim: true,
-            unique: true,
         },
         image: ImageSchema,
         favorite: [
@@ -83,6 +81,11 @@ const UserSchema = Schema(
         emailVerify: {
             type: Boolean,
             default: false,
+        },
+        status: {
+            type: Number,
+            enum: [0, 1],
+            default: 0,
         },
     },
     {
@@ -125,12 +128,12 @@ UserSchema.methods = {
         );
     },
 
-    toJSON() {
-        return {
-            data: this._doc,
-            token: this.createToken(),
-        };
-    },
+    // toJSON() {
+    //     return {
+    //         data: this._doc,
+    //         token: this.createToken(),
+    //     };
+    // },
 };
 
 const UserModel = mongoose.model("User", UserSchema);
