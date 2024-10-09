@@ -44,7 +44,7 @@ const LoginPage = () => {
         const response = await dispatch(loginAction(data));
         if (response?.payload?.token) {
             snackNotify("success")("Đăng nhập thành công!");
-            navigate("/home");
+            // navigate("/home");
             reset();
         } else {
             snackNotify("error")(

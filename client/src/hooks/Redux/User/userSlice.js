@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-    currentUser,
+    getcurrentUserAction,
     updateEmailVerify,
     loginAction,
     registerAction,
@@ -10,6 +10,7 @@ const userSlice = createSlice({
     name: "user",
     initialState: {
         data: [],
+        token: localStorage.getItem("token") || "",
         loading: false,
         error: null,
     },
@@ -23,10 +24,11 @@ const userSlice = createSlice({
             })
             .addCase(loginAction.fulfilled, (state, action) => {
                 state.loading = false;
+                state.token = action.payload.token;
             })
             .addCase(loginAction.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message;
+                state.error = action.payload;
             })
 
             //post register
@@ -43,18 +45,18 @@ const userSlice = createSlice({
                 state.error = action.payload;
             })
 
-            //get data state
-            .addCase(currentUser.pending, (state) => {
+            //get current user
+            .addCase(getcurrentUserAction.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(currentUser.fulfilled, (state, action) => {
+            .addCase(getcurrentUserAction.fulfilled, (state, action) => {
                 state.loading = false;
-                state.data = action.payload.data;
+                state.data = action.payload;
             })
-            .addCase(currentUser.rejected, (state, action) => {
+            .addCase(getcurrentUserAction.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message;
+                state.error = action.payload;
             })
 
             //update user data

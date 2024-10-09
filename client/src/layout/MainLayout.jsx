@@ -4,15 +4,15 @@ import { Outlet } from "react-router-dom";
 import { Footer, Header } from "../components/common";
 
 const Index = () => {
-  return (
-    <div>
-      <Header />
-      <Container>
-        <Outlet />
-      </Container>
-      <Footer />
-    </div>
-  );
+    return (
+        <div>
+            <Header />
+            <Container>
+                <Outlet />
+            </Container>
+            <Footer />
+        </div>
+    );
 };
 
 export default Index;

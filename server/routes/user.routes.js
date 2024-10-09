@@ -10,7 +10,7 @@ const upload = multer({ storage: storage });
 const router = express.Router();
 
 router.get("/all", UserController.getAll);
-router.get("/info", authJwt, UserController.getCurrentUser);
+router.get("/me", authJwt, asyncHandler(UserController.getCurrentUser));
 router.get("/:id", UserController.getUserById);
 
 router.post("/register", asyncHandler(UserController.register));
@@ -22,7 +22,7 @@ router.post(
     asyncHandler(UserController.sendOtpToEmail)
 );
 
-router.put("/info", authJwt, UserController.updateUser);
+router.put("/me", authJwt, UserController.updateUser);
 router.put(
     "/image",
     authJwt,

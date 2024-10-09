@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
-    getCurrentUser,
+    getCurrentUserApi,
     loginApi,
     registerApi,
     updateUser,
@@ -30,10 +30,19 @@ export const registerAction = createAsyncThunk(
     }
 );
 
-export const currentUser = createAsyncThunk("user/currentUser", async () => {
-    const data = await getCurrentUser();
-    return data;
-});
+export const getcurrentUserAction = createAsyncThunk(
+    "user/getcurrentUserAction",
+    async (data, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(
+            getCurrentUserApi,
+            data
+        );
+        if (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+        return result.data;
+    }
+);
 
 export const updateEmailVerify = createAsyncThunk(
     "user/updateEmailVerify",

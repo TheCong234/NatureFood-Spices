@@ -10,10 +10,7 @@ export const loginApi = async (data) => {
         withCredentials: true,
     });
     if (response.data.success) {
-        Cookies.set("token", response.data.data.token, {
-            expires: 7,
-            secure: true,
-        });
+        localStorage.setItem("token", response.data.data.token);
         return response.data;
     }
     return response;
@@ -36,14 +33,13 @@ export const registerApi = async (data) => {
     return response;
 };
 
-export const getCurrentUser = async () => {
-    try {
-        const user = await apiClient.get(UserV1.USER_CURRENT);
-        return user.data.data;
-    } catch (error) {
-        console.log("User current error: ", error);
-        return error;
-    }
+export const getCurrentUserApi = async (data) => {
+    const response = await apiClient.get(UserV1.USER_CURRENT, {
+        headers: {
+            Authorization: `Bearer ${data}`,
+        },
+    });
+    return response.data;
 };
 
 export const verifyEmail = async (data) => {
