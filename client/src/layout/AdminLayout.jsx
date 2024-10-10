@@ -119,12 +119,12 @@ const items = [
         ],
     },
     {
-        to: "/admin/category",
+        to: "/admin/order",
         icon: <GradingIcon />,
         text: "Đơn hàng",
     },
     {
-        to: "/admin/category",
+        to: "/admin/message",
         icon: <MessageIcon />,
         text: "Tin nhắn",
     },
@@ -149,7 +149,7 @@ const items = [
         fieldName: "blog",
         listItems: [
             {
-                to: "/admin/blog",
+                to: "/admin/blog/list",
                 text: "Danh sách",
             },
             {
@@ -164,7 +164,7 @@ const items = [
         text: "Thông báo ",
     },
     {
-        to: "/admin/payment",
+        to: "/admin/bill",
         icon: <PaymentsIcon />,
         text: "Hóa đơn",
     },
@@ -236,6 +236,7 @@ const Drawer = styled(MuiDrawer, {
     shouldForwardProp: (prop) => prop !== "open",
 })(({ theme }) => ({
     width: drawerWidth,
+    height: "100vh",
     flexShrink: 0,
     whiteSpace: "nowrap",
     boxSizing: "border-box",
@@ -277,7 +278,7 @@ export default function AdminLayout() {
     };
 
     return (
-        <Box>
+        <Box sx={{ bgcolor: rootColor.bg_blue }}>
             <AppBar
                 position="fixed"
                 sx={{ bgcolor: rootColor.bg_blue, color: rootColor.text }}
@@ -372,17 +373,8 @@ export default function AdminLayout() {
             {/* Main 2 */}
             <Container sx={{ display: "flex" }}>
                 <Drawer variant="permanent" open={open}>
-                    <DrawerHeader>
-                        <IconButton onClick={handleDrawerOpen}>
-                            {theme.direction === "rtl" ? (
-                                <ChevronRightIcon />
-                            ) : (
-                                <ChevronLeftIcon />
-                            )}
-                        </IconButton>
-                    </DrawerHeader>
-                    <Divider />
-                    <List>
+                    <Box sx={{ py: "32px" }}></Box>
+                    <List sx={{ bgcolor: rootColor.bg_blue }}>
                         {/*  */}
                         {items.map((item, index) =>
                             item?.to ? (
@@ -436,8 +428,8 @@ export default function AdminLayout() {
                                                             isActive,
                                                         }) =>
                                                             isActive
-                                                                ? "text-green-700 font-semibold hover:text-green-700"
-                                                                : "text-inherit hover:text-green-700 hover:font-semibold"
+                                                                ? "text-green-700 font-semibold hover:text-green-700 w-full"
+                                                                : "text-inherit hover:text-green-700 hover:font-semibold w-full"
                                                         }
                                                     >
                                                         {i.text}
@@ -451,18 +443,23 @@ export default function AdminLayout() {
                         )}
                     </List>
                 </Drawer>
-                <Box sx={{ display: "flex", position: "relative" }}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        position: "relative",
+                        width: "100%",
+                    }}
+                >
                     <CssBaseline />
 
                     <Box
                         component="main"
                         sx={{
                             flexGrow: 1,
-                            bgcolor: "background.default",
-                            p: 3,
+                            py: 2,
                         }}
                     >
-                        <DrawerHeader />
+                        <Box sx={{ height: "64px" }}></Box>
                         <Outlet />
                     </Box>
                 </Box>
