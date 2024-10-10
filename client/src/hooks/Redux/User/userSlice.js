@@ -4,12 +4,13 @@ import {
     updateEmailVerify,
     loginAction,
     registerAction,
+    getPeopleAction,
 } from "./userAction";
 
 const userSlice = createSlice({
     name: "user",
     initialState: {
-        data: [],
+        data: { user: [], total: 0 },
         token: localStorage.getItem("token") || "",
         loading: false,
         error: null,
@@ -55,6 +56,20 @@ const userSlice = createSlice({
                 state.data = action.payload;
             })
             .addCase(getcurrentUserAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            //get people
+            .addCase(getPeopleAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getPeopleAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = action.payload;
+            })
+            .addCase(getPeopleAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

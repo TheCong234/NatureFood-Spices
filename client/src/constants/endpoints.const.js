@@ -4,6 +4,7 @@ export const UserV1 = {
     USER_CURRENT: "/user/me",
     USER_SEND_OTP: "user/verify-email/otp",
     USER_UPDATE: "/user/me",
+    GET_PEOPLE: "/user/all",
 };
 
 export const StoreV1 = {
@@ -20,7 +21,8 @@ export const TagV1 = {
 };
 
 export const ProductV1 = {
-    PRODUCT_CREATE: "/product/new",
+    GET_PRODUCTS: "/product/all",
+    PRODUCT_CREATE: "/product/create",
     PRODUCT_NEWEST: "/product/newest",
     PRODUCT_DETAILS: "/product/",
 };

@@ -42,6 +42,13 @@ export const getCurrentUserApi = async (data) => {
     return response.data;
 };
 
+export const getPeopleApi = async (params) => {
+    const response = await apiClient.get(UserV1.GET_PEOPLE, {
+        params,
+    });
+    return response.data;
+};
+
 export const verifyEmail = async (data) => {
     try {
         const result = await apiClient.post(UserV1.USER_SEND_OTP, data);
