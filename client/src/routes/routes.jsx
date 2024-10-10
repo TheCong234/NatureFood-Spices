@@ -31,6 +31,8 @@ import {
 
 import { FavoritePage, HomePage } from "../pages";
 import ProductDetail from "../pages/Customer/ProductDetails";
+import Error500 from "../pages/Common/Error500";
+import Error404 from "../pages/Common/Error404";
 
 export const router = createBrowserRouter([
     {
@@ -170,5 +172,13 @@ export const router = createBrowserRouter([
                 ],
             },
         ],
+    },
+    {
+        path: "/error-500",
+        element: <Error500 />,
+    },
+    {
+        path: "/error-404",
+        element: <Error404 />,
     },
 ]);

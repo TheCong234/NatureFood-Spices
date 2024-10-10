@@ -17,7 +17,7 @@ import {
     Link,
     FormHelperText,
 } from "@mui/material";
-import "./main.css";
+import "../../../assets/styles/main.css";
 import { Mail, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import useSnackNotify from "../../../components/SnackNotify";
@@ -241,7 +241,7 @@ const RegistrationForm = () => {
                         <Button
                             variant="outlined"
                             fullWidth
-                            className="social-btn facebook-btn"
+                            className="social-btn facebook-btn text-transform-none"
                             sx={{
                                 "&:hover": {
                                     backgroundColor: "blue",
