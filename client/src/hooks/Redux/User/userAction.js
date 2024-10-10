@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
     getCurrentUserApi,
+    getPeopleApi,
     loginApi,
     registerApi,
     updateUser,
@@ -37,6 +38,17 @@ export const getcurrentUserAction = createAsyncThunk(
             getCurrentUserApi,
             data
         );
+        if (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+        return result.data;
+    }
+);
+
+export const getPeopleAction = createAsyncThunk(
+    "user/getPeopleAction",
+    async (data, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(getPeopleApi, data);
         if (error) {
             return thunkAPI.rejectWithValue(error);
         }

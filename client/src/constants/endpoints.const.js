@@ -4,6 +4,7 @@ export const UserV1 = {
     USER_CURRENT: "/user/me",
     USER_SEND_OTP: "user/verify-email/otp",
     USER_UPDATE: "/user/me",
+    GET_PEOPLE: "/user/all",
 };
 
 export const StoreV1 = {

@@ -23,12 +23,12 @@ export default function ProductCardPrimary({ product }) {
                     pagination={true}
                     modules={[Pagination]}
                 >
-                    {product.images.map((image, index) => (
+                    {product?.images?.map((image, index) => (
                         <SwiperSlide
                             key={index}
                             className="swiper-slide_styled"
                         >
-                            <img src={image.url} alt="product image" />
+                            <img src={image?.url} alt="product image" />
                         </SwiperSlide>
                     ))}
                 </Swiper>
@@ -41,16 +41,16 @@ export default function ProductCardPrimary({ product }) {
                     variant="body2"
                     sx={{ color: "text.secondary", my: 1 }}
                 >
-                    Lizards are a widespread
+                    {product?.category?.name}
                 </Typography>
                 <div className="flex text-[#d26426]">
                     <div className="text-2xl font-semibold">
                         <small>₫</small>
-                        {formatPrice(product.prices.salePrice)}
+                        {formatPrice(product?.price)}
                     </div>
                     <del className="flex items-center ml-3 font-medium text-gray-500">
                         <small>₫</small>
-                        {formatPrice(product.prices.rootPrice)}
+                        {formatPrice(product?.salePrice)}
                     </del>
                 </div>
                 <Typography
@@ -59,12 +59,12 @@ export default function ProductCardPrimary({ product }) {
                 >
                     Stock:{" "}
                     <span className="text-green-500 font-semibold">
-                        {product.stock}
+                        {product.inventory}
                     </span>
                 </Typography>
             </Box>
             <Box className="px-4 pb-4 flex justify-between">
-                <Rating name="read-only" value={product.rating} readOnly />
+                <Rating name="read-only" value={product?.rating} readOnly />
                 <Stack direction={"row"} spacing={1}>
                     <Tooltip title="Thêm vào yêu thích" placement="top">
                         <Button

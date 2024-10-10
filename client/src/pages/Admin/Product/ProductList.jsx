@@ -43,15 +43,11 @@ const Index = () => {
     return (
         <Box sx={{ width: "100%" }}>
             <Grid container spacing={2}>
-                <Grid item md={3}>
-                    <ProductCardPrimary product={fakeProduct} />
-                </Grid>
-                <Grid item md={3}>
-                    <ProductCardPrimary product={fakeProduct} />
-                </Grid>
-                <Grid item md={3}>
-                    <ProductCardPrimary product={fakeProduct} />
-                </Grid>
+                {productData?.products?.map((product) => (
+                    <Grid item md={3} key={product._id}>
+                        <ProductCardPrimary product={product} />
+                    </Grid>
+                ))}
             </Grid>
         </Box>
     );

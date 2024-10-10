@@ -31,10 +31,13 @@ const UserController = {
     },
 
     async getAll(req, res) {
-        const users = await UserModel.find({});
+        const users = await UserModel.find({ role: req.query.role || "user" });
+        const total = await UserModel.countDocuments({
+            role: req.query.role || "user",
+        });
         return res
             .status(statusCode.OK)
-            .json(BaseResponse.success("Thành công", users));
+            .json(BaseResponse.success("Thành công", { users, total }));
     },
 
     async getCurrentUser(req, res) {
