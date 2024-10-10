@@ -49,14 +49,136 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
+import BookIcon from "@mui/icons-material/Book";
 import Avatar from "@mui/material/Avatar";
-
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { rootColor } from "../theme/colors";
 import { Outlet } from "react-router-dom";
+import "../assets/styles/admin.css";
 
 const drawerWidth = 240;
+
+const items = [
+    {
+        to: "/admin/dashboard",
+        icon: <DashboardIcon />,
+        text: "Dashboard",
+    },
+    {
+        to: "/admin/customer",
+        icon: <PeopleIcon />,
+        text: "Người dùng",
+    },
+    {
+        to: "/admin/seller",
+        icon: <SupervisedUserCircleIcon />,
+        text: "Người bán",
+    },
+    {
+        to: "/admin/category",
+        icon: <CategoryIcon />,
+        text: "Danh mục",
+    },
+    {
+        icon: <ProductIcon />,
+        text: "Sản phẩm",
+        fieldName: "products",
+        listItems: [
+            {
+                to: "/admin/product",
+                text: "Danh sách",
+            },
+            {
+                to: "/admin/product/:id",
+                text: "Chi tiết",
+            },
+            {
+                to: "/admin/product/create",
+                text: "Thêm mới",
+            },
+        ],
+    },
+    {
+        icon: <EventIcon />,
+        text: "Sự kiện",
+        fieldName: "event",
+        listItems: [
+            {
+                to: "/admin/event",
+                text: "Danh sách",
+            },
+            {
+                to: "/admin/event/:id",
+                text: "Chi tiết",
+            },
+            {
+                to: "/admin/product/create",
+                text: "Thêm mới",
+            },
+        ],
+    },
+    {
+        to: "/admin/category",
+        icon: <GradingIcon />,
+        text: "Đơn hàng",
+    },
+    {
+        to: "/admin/category",
+        icon: <MessageIcon />,
+        text: "Tin nhắn",
+    },
+    {
+        icon: <EmailIcon />,
+        text: "Email",
+        fieldName: "email",
+        listItems: [
+            {
+                to: "/admin/email/inbox",
+                text: "Hộp thư đến",
+            },
+            {
+                to: "/admin/email/create",
+                text: "Soạn email",
+            },
+        ],
+    },
+    {
+        icon: <BookIcon />,
+        text: "Blog",
+        fieldName: "blog",
+        listItems: [
+            {
+                to: "/admin/blog",
+                text: "Danh sách",
+            },
+            {
+                to: "/admin/blog/create",
+                text: "Tạo blog",
+            },
+        ],
+    },
+    {
+        to: "/admin/notify",
+        icon: <NotificationsActiveIcon />,
+        text: "Thông báo ",
+    },
+    {
+        to: "/admin/payment",
+        icon: <PaymentsIcon />,
+        text: "Hóa đơn",
+    },
+    {
+        to: "/admin/report",
+        icon: <PriorityHighIcon />,
+        text: "Báo cáo",
+    },
+    {
+        to: "/admin/profile",
+        icon: <AccountCircleIcon />,
+        text: "Hồ sơ",
+    },
+];
 
 const openedMixin = (theme) => ({
     width: drawerWidth,
@@ -179,7 +301,7 @@ export default function AdminLayout() {
                                     },
                                 ]}
                             >
-                                <MenuIcon />
+                                {open ? <MenuIcon /> : <MenuOpenIcon />}
                             </IconButton>
                             <Typography
                                 variant="h6"
@@ -261,222 +383,72 @@ export default function AdminLayout() {
                     </DrawerHeader>
                     <Divider />
                     <List>
-                        <ListItem disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <DashboardIcon />
-                                </ListItemIcon>
-                                <ListItemText primary={"Dashboard"} />
+                        {/*  */}
+                        {items.map((item, index) =>
+                            item?.to ? (
                                 <NavLink
-                                    to={"/admin/dashboard"}
+                                    key={index}
+                                    to={item.to}
                                     className={({ isActive }) =>
-                                        isActive ? "text-green-700" : ""
+                                        isActive
+                                            ? "group text-green-700 font-semibold"
+                                            : "group text-inherit  hover:font-semibold"
                                     }
-                                ></NavLink>
-                            </ListItemButton>
-                        </ListItem>
-
-                        <ListItem disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <PeopleIcon />
-                                </ListItemIcon>
-                                <ListItemText primary={"Người dùng"} />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <SupervisedUserCircleIcon />
-                                </ListItemIcon>
-                                <ListItemText primary={"Người bán"} />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <CategoryIcon />
-                                </ListItemIcon>
-                                <ListItemText primary={"Danh mục sản phẩm "} />
-                            </ListItemButton>
-                        </ListItem>
-                        {/* <Collapse in={open.user} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                <ListItem sx={{ pl: 9 }}>
-                  <ListItemText primary="Người bán" />
-                </ListItem>
-              </List>
-            </Collapse> */}
-
-                        <ListItem onClick={() => handleClick("products")}>
-                            <ListItemIcon>
-                                <ProductIcon />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={
-                                    open.products ? "Sản phẩm" : "Sản phẩm"
-                                }
-                            />
-                            {open.products ? <ExpandLess /> : <ExpandMore />}
-                        </ListItem>
-                        <Collapse
-                            in={open.products}
-                            timeout="auto"
-                            unmountOnExit
-                        >
-                            <List component="div" disablePadding>
-                                <ListItem sx={{ pl: 9 }}>
-                                    <NavLink
-                                        to={"/admin/product"}
-                                        className={({ isActive }) =>
-                                            isActive ? "text-black" : ""
+                                >
+                                    <ListItemButton>
+                                        <ListItemIcon className="group-hover:text-green-700 ">
+                                            {item.icon}
+                                        </ListItemIcon>
+                                        <p className="group-hover:text-green-700">
+                                            {item.text}
+                                        </p>
+                                    </ListItemButton>
+                                </NavLink>
+                            ) : (
+                                <Box key={index}>
+                                    <ListItemButton
+                                        onClick={() =>
+                                            handleClick(item.fieldName)
                                         }
                                     >
-                                        Danh sách sản phẩm
-                                    </NavLink>
-                                </ListItem>
-                                <ListItem sx={{ pl: 9 }}>
-                                    <NavLink
-                                        to={"/admin/product"}
-                                        className={({ isActive }) =>
-                                            isActive ? "text-black" : ""
-                                        }
+                                        <ListItemIcon>{item.icon}</ListItemIcon>
+                                        <ListItemText primary={item.text} />
+                                        {open[item.fieldName] ? (
+                                            <ExpandLess />
+                                        ) : (
+                                            <ExpandMore />
+                                        )}
+                                    </ListItemButton>
+                                    <Collapse
+                                        in={open[item.fieldName]}
+                                        timeout="auto"
+                                        unmountOnExit
                                     >
-                                        Chi tiết sản phẩm
-                                    </NavLink>
-                                </ListItem>
-                                <ListItem sx={{ pl: 9 }}>
-                                    <NavLink
-                                        to={"/admin/product"}
-                                        className={({ isActive }) =>
-                                            isActive ? "text-black" : ""
-                                        }
-                                    >
-                                        Thêm sản phẩm
-                                    </NavLink>
-                                </ListItem>
-                            </List>
-                        </Collapse>
-
-                        <ListItem onClick={() => handleClick("events")}>
-                            <ListItemIcon>
-                                <EventIcon />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={open.events ? "Sự kiện" : "Sự kiện"}
-                            />
-                            {open.events ? <ExpandLess /> : <ExpandMore />}
-                        </ListItem>
-                        <Collapse in={open.events} timeout="auto" unmountOnExit>
-                            <List component="div" disablePadding>
-                                <ListItem sx={{ pl: 9 }}>
-                                    <ListItemText primary="Tạo sự kiện" />
-                                </ListItem>
-                                <ListItem sx={{ pl: 9 }}>
-                                    <ListItemText primary="Chi tiết sự kiện" />
-                                </ListItem>
-                                <ListItem sx={{ pl: 9 }}>
-                                    <ListItemText primary="Danh sách sự kiện" />
-                                </ListItem>
-                            </List>
-                        </Collapse>
-
-                        <ListItem disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <GradingIcon />
-                                </ListItemIcon>
-                                <ListItemText primary={"Đơn hàng  "} />
-                            </ListItemButton>
-                        </ListItem>
-
-                        <ListItem disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <MessageIcon />
-                                </ListItemIcon>
-                                <ListItemText primary={"Tin nhắn"} />
-                            </ListItemButton>
-                        </ListItem>
-
-                        <ListItem onClick={() => handleClick("email")}>
-                            <ListItemIcon>
-                                <EmailIcon />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={open.email ? "Email" : "Email"}
-                            />
-                            {open.email ? <ExpandLess /> : <ExpandMore />}
-                        </ListItem>
-                        <Collapse in={open.email} timeout="auto" unmountOnExit>
-                            <List component="div" disablePadding>
-                                <ListItem sx={{ pl: 9 }}>
-                                    <ListItemText primary="Gửi email" />
-                                </ListItem>
-                                <ListItem sx={{ pl: 9 }}>
-                                    <ListItemText primary="Hộp thư đến" />
-                                </ListItem>
-                            </List>
-                        </Collapse>
-
-                        <ListItem disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <NotificationsActiveIcon />
-                                </ListItemIcon>
-                                <ListItemText primary={"Thông báo"} />
-                            </ListItemButton>
-                        </ListItem>
-
-                        <ListItem disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <PaymentsIcon />
-                                </ListItemIcon>
-                                <ListItemText primary={"Hóa đơn"} />
-                            </ListItemButton>
-                        </ListItem>
-
-                        <ListItem disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <PriorityHighIcon />
-                                </ListItemIcon>
-                                <ListItemText primary={"Báo cáo"} />
-                            </ListItemButton>
-                        </ListItem>
-
-                        <ListItem onClick={() => handleClick("documents")}>
-                            <ListItemIcon>
-                                <FileCopyIcon />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={open.documents ? "Blog" : "Tài liệu"}
-                            />
-                            {open.documents ? <ExpandLess /> : <ExpandMore />}
-                        </ListItem>
-                        <Collapse
-                            in={open.documents}
-                            timeout="auto"
-                            unmountOnExit
-                        >
-                            <List component="div" disablePadding>
-                                <ListItem sx={{ pl: 9 }}>
-                                    <ListItemText primary="Danh sách bài viết" />
-                                </ListItem>
-                                <ListItem sx={{ pl: 9 }}>
-                                    <ListItemText primary="Thêm bài viết" />
-                                </ListItem>
-                            </List>
-                        </Collapse>
-                        <ListItem disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <AccountCircleIcon />
-                                </ListItemIcon>
-                                <ListItemText primary={"Hồ sơ"} />
-                            </ListItemButton>
-                        </ListItem>
+                                        <List component="div" disablePadding>
+                                            {item.listItems.map((i, ind) => (
+                                                <ListItemButton
+                                                    key={`collaspse-${ind}`}
+                                                    sx={{ pl: 9 }}
+                                                >
+                                                    <NavLink
+                                                        to={i.to}
+                                                        className={({
+                                                            isActive,
+                                                        }) =>
+                                                            isActive
+                                                                ? "text-green-700 font-semibold hover:text-green-700"
+                                                                : "text-inherit hover:text-green-700 hover:font-semibold"
+                                                        }
+                                                    >
+                                                        {i.text}
+                                                    </NavLink>
+                                                </ListItemButton>
+                                            ))}
+                                        </List>
+                                    </Collapse>
+                                </Box>
+                            )
+                        )}
                     </List>
                 </Drawer>
                 <Box sx={{ display: "flex", position: "relative" }}>
