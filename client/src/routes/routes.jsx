@@ -22,11 +22,16 @@ import {
     OrderAdmin,
     NotificationAdmin,
     MessageAdmin,
-    EventAdmin,
-    EmailAdmin,
-    DocumentAdmin,
     CategoryProductAdmin,
     BillAdmin,
+    CreateProductAdmin,
+    EventListAdmin,
+    EventCreateAdmin,
+    EventDetailAdmin,
+    EmailInboxAdmin,
+    EmailCreateAdmin,
+    BlogListAdmin,
+    BlogCreateAdmin,
 } from "../pages/Admin";
 
 import { FavoritePage, HomePage } from "../pages";
@@ -118,7 +123,7 @@ export const router = createBrowserRouter([
                         element: <DashboardAdmin />,
                     },
                     {
-                        path: "user",
+                        path: "customer",
                         element: <UserAdmin />,
                     },
                     {
@@ -126,7 +131,7 @@ export const router = createBrowserRouter([
                         element: <SellerAdmin />,
                     },
                     {
-                        path: "categoryproduct",
+                        path: "category",
                         element: <CategoryProductAdmin />,
                     },
                     {
@@ -134,8 +139,20 @@ export const router = createBrowserRouter([
                         element: <ProductAdmin />,
                     },
                     {
+                        path: "product/create",
+                        element: <CreateProductAdmin />,
+                    },
+                    {
                         path: "event",
-                        element: <EventAdmin />,
+                        element: <EventListAdmin />,
+                    },
+                    {
+                        path: "event/create",
+                        element: <EventCreateAdmin />,
+                    },
+                    {
+                        path: "event/:id",
+                        element: <EventDetailAdmin />,
                     },
                     {
                         path: "order",
@@ -146,8 +163,12 @@ export const router = createBrowserRouter([
                         element: <MessageAdmin />,
                     },
                     {
-                        path: "email",
-                        element: <EmailAdmin />,
+                        path: "email/inbox",
+                        element: <EmailInboxAdmin />,
+                    },
+                    {
+                        path: "email/create",
+                        element: <EmailCreateAdmin />,
                     },
                     {
                         path: "notification",
@@ -162,11 +183,27 @@ export const router = createBrowserRouter([
                         element: <ReportAdmin />,
                     },
                     {
-                        path: "document",
-                        element: <DocumentAdmin />,
+                        path: "blog/list",
+                        element: <BlogListAdmin />,
                     },
                     {
-                        path: "profiler",
+                        path: "blog/create",
+                        element: <BlogCreateAdmin />,
+                    },
+                    {
+                        path: "notify",
+                        element: <NotificationAdmin />,
+                    },
+                    {
+                        path: "bill",
+                        element: <BillAdmin />,
+                    },
+                    {
+                        path: "report",
+                        element: <ReportAdmin />,
+                    },
+                    {
+                        path: "profile",
                         element: <ProfilerAdmin />,
                     },
                 ],
