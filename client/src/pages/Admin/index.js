@@ -1,6 +1,6 @@
 export { default as DashboardAdmin } from "./Dashboard";
 export { default as StoresAdmin } from "./Stores";
-export { default as ProductAdmin } from "./Product";
+export { default as ProductAdmin } from "./Product/ProductList";
 export { default as UserAdmin } from "./User";
 export { default as SellerAdmin } from "./Seller";
 export { default as ReportAdmin } from "./Report";

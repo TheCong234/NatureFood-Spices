@@ -15,8 +15,7 @@ router.get("/all", ProductController.getAllProduct);
 router.get("/:id", ProductController.getProductById);
 
 router.post(
-    "/new",
-    authJwt,
+    "/create",
     upload.array("images"),
     asyncHandler(ProductController.createProduct)
 );

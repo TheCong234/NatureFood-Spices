@@ -29,6 +29,7 @@ export const CreateProductYup = yup.object().shape({
     name: yup.string().min(2).required(),
     description: yup.string().min(2).required(),
     price: yup.number().min(0).max(1000000).required(),
+    salePrice: yup.number().min(0).max(1000000).required(),
     weight: yup.number().min(0).required(),
     category: yup.string().required(),
     inventory: yup.number().min(0).max(1000000).required(),

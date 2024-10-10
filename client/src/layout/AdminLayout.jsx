@@ -247,7 +247,7 @@ const Drawer = styled(MuiDrawer, {
                 ...openedMixin(theme),
                 "& .MuiDrawer-paper": {
                     ...openedMixin(theme),
-                    position: "relative", // Đặt vị trí relative cho Paper
+                    position: "fixed", // Đặt vị trí fixed cho Paper
                 },
             },
         },
@@ -257,7 +257,7 @@ const Drawer = styled(MuiDrawer, {
                 ...closedMixin(theme),
                 "& .MuiDrawer-paper": {
                     ...closedMixin(theme),
-                    position: "relative", // Đặt vị trí relative cho Paper
+                    position: "fixed", // Đặt vị trí fixed cho Paper
                 },
             },
         },
@@ -267,7 +267,7 @@ const Drawer = styled(MuiDrawer, {
 export default function AdminLayout() {
     const theme = useTheme();
     const navigate = useNavigate();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
 
     const handleDrawerOpen = () => {
         setOpen(!open);
@@ -278,192 +278,173 @@ export default function AdminLayout() {
     };
 
     return (
-        <Box sx={{ bgcolor: rootColor.bg_blue }}>
+        <Box sx={{ bgcolor: rootColor.bg_blue, display: "flex" }}>
             <AppBar
                 position="fixed"
                 sx={{ bgcolor: rootColor.bg_blue, color: rootColor.text }}
             >
-                <Container>
-                    <Toolbar
-                        sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        <Box sx={{ display: "flex" }}>
-                            <IconButton
-                                aria-label="open drawer"
-                                onClick={handleDrawerOpen}
-                                edge="start"
-                                sx={[
-                                    {
-                                        marginRight: 5,
-                                        color: rootColor.text,
-                                    },
-                                ]}
-                            >
-                                {open ? <MenuIcon /> : <MenuOpenIcon />}
-                            </IconButton>
-                            <Typography
-                                variant="h6"
-                                noWrap
-                                component="div"
-                                sx={{ flexGrow: 1 }}
-                            >
-                                Nature Food test
-                            </Typography>
-                            {/* Search Bar */}
-                            <div
-                                style={{
-                                    position: "relative",
-                                    marginRight: 16,
-                                    marginLeft: "65px",
-                                }}
-                            >
-                                <InputBase
-                                    startAdornment={
-                                        <InputAdornment position="start">
-                                            <SearchIcon
-                                                sx={{
-                                                    fontSize: "30px",
-                                                    paddingLeft: "10px",
-                                                    opacity: "0.6",
-                                                }}
-                                            />
-                                        </InputAdornment>
-                                    }
-                                    placeholder="Search…"
-                                    style={{
-                                        width: "340px",
-                                        paddingLeft: "17px",
-                                        padding: "3px",
-                                        borderRadius: "17px",
-                                        backgroundColor: "white",
-                                    }}
-                                    inputProps={{ "aria-label": "search" }}
-                                />
-                            </div>
-                        </Box>
-                        {/* Icons */}
-                        <div style={{ display: "flex" }}>
-                            <IconButton color="inherit">
-                                <Badge badgeContent={4} color="secondary">
-                                    <NotificationsIcon />
-                                </Badge>
-                            </IconButton>
-                            <IconButton color="inherit">
-                                <Badge badgeContent={2} color="secondary">
-                                    <ShoppingCartIcon />
-                                </Badge>
-                            </IconButton>
-                            <IconButton color="inherit">
-                                <SettingsIcon />
-                            </IconButton>
-                            <Stack>
-                                <Avatar
-                                    alt="Remy Sharp"
-                                    src="/static/images/avatar/1.jpg"
-                                />
-                            </Stack>
-                        </div>
-                    </Toolbar>
-                </Container>
-            </AppBar>
-
-            {/* Main 2 */}
-            <Container sx={{ display: "flex" }}>
-                <Drawer variant="permanent" open={open}>
-                    <Box sx={{ py: "32px" }}></Box>
-                    <List sx={{ bgcolor: rootColor.bg_blue }}>
-                        {/*  */}
-                        {items.map((item, index) =>
-                            item?.to ? (
-                                <NavLink
-                                    key={index}
-                                    to={item.to}
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? "group text-green-700 font-semibold"
-                                            : "group text-inherit  hover:font-semibold"
-                                    }
-                                >
-                                    <ListItemButton>
-                                        <ListItemIcon className="group-hover:text-green-700 ">
-                                            {item.icon}
-                                        </ListItemIcon>
-                                        <p className="group-hover:text-green-700">
-                                            {item.text}
-                                        </p>
-                                    </ListItemButton>
-                                </NavLink>
-                            ) : (
-                                <Box key={index}>
-                                    <ListItemButton
-                                        onClick={() =>
-                                            handleClick(item.fieldName)
-                                        }
-                                    >
-                                        <ListItemIcon>{item.icon}</ListItemIcon>
-                                        <ListItemText primary={item.text} />
-                                        {open[item.fieldName] ? (
-                                            <ExpandLess />
-                                        ) : (
-                                            <ExpandMore />
-                                        )}
-                                    </ListItemButton>
-                                    <Collapse
-                                        in={open[item.fieldName]}
-                                        timeout="auto"
-                                        unmountOnExit
-                                    >
-                                        <List component="div" disablePadding>
-                                            {item.listItems.map((i, ind) => (
-                                                <ListItemButton
-                                                    key={`collaspse-${ind}`}
-                                                    sx={{ pl: 9 }}
-                                                >
-                                                    <NavLink
-                                                        to={i.to}
-                                                        className={({
-                                                            isActive,
-                                                        }) =>
-                                                            isActive
-                                                                ? "text-green-700 font-semibold hover:text-green-700 w-full"
-                                                                : "text-inherit hover:text-green-700 hover:font-semibold w-full"
-                                                        }
-                                                    >
-                                                        {i.text}
-                                                    </NavLink>
-                                                </ListItemButton>
-                                            ))}
-                                        </List>
-                                    </Collapse>
-                                </Box>
-                            )
-                        )}
-                    </List>
-                </Drawer>
-                <Box
+                <Toolbar
                     sx={{
                         display: "flex",
-                        position: "relative",
-                        width: "100%",
+                        justifyContent: "space-between",
                     }}
                 >
-                    <CssBaseline />
-
-                    <Box
-                        component="main"
-                        sx={{
-                            flexGrow: 1,
-                            py: 2,
-                        }}
-                    >
-                        <Box sx={{ height: "64px" }}></Box>
-                        <Outlet />
+                    <Box sx={{ display: "flex" }}>
+                        <IconButton
+                            aria-label="open drawer"
+                            onClick={handleDrawerOpen}
+                            edge="start"
+                            sx={[
+                                {
+                                    marginRight: 5,
+                                    color: rootColor.text,
+                                },
+                            ]}
+                        >
+                            {open ? <MenuIcon /> : <MenuOpenIcon />}
+                        </IconButton>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            sx={{ flexGrow: 1 }}
+                        >
+                            Nature Food test
+                        </Typography>
+                        {/* Search Bar */}
+                        <div
+                            style={{
+                                position: "relative",
+                                marginRight: 16,
+                                marginLeft: "65px",
+                            }}
+                        >
+                            <InputBase
+                                startAdornment={
+                                    <InputAdornment position="start">
+                                        <SearchIcon
+                                            sx={{
+                                                fontSize: "30px",
+                                                paddingLeft: "10px",
+                                                opacity: "0.6",
+                                            }}
+                                        />
+                                    </InputAdornment>
+                                }
+                                placeholder="Search…"
+                                style={{
+                                    width: "340px",
+                                    paddingLeft: "17px",
+                                    padding: "3px",
+                                    borderRadius: "17px",
+                                    backgroundColor: "white",
+                                }}
+                                inputProps={{ "aria-label": "search" }}
+                            />
+                        </div>
                     </Box>
-                </Box>
-            </Container>
+                    {/* Icons */}
+                    <div style={{ display: "flex" }}>
+                        <IconButton color="inherit">
+                            <Badge badgeContent={4} color="secondary">
+                                <NotificationsIcon />
+                            </Badge>
+                        </IconButton>
+                        <IconButton color="inherit">
+                            <Badge badgeContent={2} color="secondary">
+                                <ShoppingCartIcon />
+                            </Badge>
+                        </IconButton>
+                        <IconButton color="inherit">
+                            <SettingsIcon />
+                        </IconButton>
+                        <Stack>
+                            <Avatar
+                                alt="Remy Sharp"
+                                src="/static/images/avatar/1.jpg"
+                            />
+                        </Stack>
+                    </div>
+                </Toolbar>
+            </AppBar>
+
+            <Drawer variant="permanent" open={open}>
+                <Box sx={{ py: "32px" }}></Box>
+                <List sx={{ bgcolor: rootColor.bg_blue }}>
+                    {/*  */}
+                    {items.map((item, index) =>
+                        item?.to ? (
+                            <NavLink
+                                key={index}
+                                to={item.to}
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "group text-green-700 font-semibold"
+                                        : "group text-inherit  hover:font-semibold font-normal"
+                                }
+                            >
+                                <ListItemButton>
+                                    <ListItemIcon className="group-hover:text-green-700 ">
+                                        {item.icon}
+                                    </ListItemIcon>
+                                    <p className="group-hover:text-green-700">
+                                        {item.text}
+                                    </p>
+                                </ListItemButton>
+                            </NavLink>
+                        ) : (
+                            <Box key={index}>
+                                <ListItemButton
+                                    onClick={() => handleClick(item.fieldName)}
+                                >
+                                    <ListItemIcon>{item.icon}</ListItemIcon>
+                                    <ListItemText primary={item.text} />
+                                    {open[item.fieldName] ? (
+                                        <ExpandLess />
+                                    ) : (
+                                        <ExpandMore />
+                                    )}
+                                </ListItemButton>
+                                <Collapse
+                                    in={open[item.fieldName]}
+                                    timeout="auto"
+                                    unmountOnExit
+                                >
+                                    <List component="div" disablePadding>
+                                        {item.listItems.map((i, ind) => (
+                                            <ListItemButton
+                                                key={`collaspse-${ind}`}
+                                                sx={{ pl: 9 }}
+                                            >
+                                                <NavLink
+                                                    to={i.to}
+                                                    className={({ isActive }) =>
+                                                        isActive
+                                                            ? "text-green-700 font-semibold hover:text-green-700 w-full"
+                                                            : "text-inherit hover:text-green-700 hover:font-semibold w-full font-normal"
+                                                    }
+                                                >
+                                                    {i.text}
+                                                </NavLink>
+                                            </ListItemButton>
+                                        ))}
+                                    </List>
+                                </Collapse>
+                            </Box>
+                        )
+                    )}
+                </List>
+            </Drawer>
+            <Box
+                component="main"
+                sx={{
+                    flexGrow: 1,
+                    padding: 2,
+                }}
+            >
+                <Box sx={{ height: "64px" }}></Box>
+                <Outlet />
+            </Box>
         </Box>
     );
 }

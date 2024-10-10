@@ -1,6 +1,38 @@
-import { getNewestProducts, getProductById } from "../../../apis/product.api";
+import {
+    createProductApi,
+    getNewestProducts,
+    getProductById,
+    getProductsApi,
+} from "../../../apis/product.api";
 import { createReview } from "../../../apis/review.api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { tryCatchWrapper } from "../../../utils/asyncHelper";
+
+//getProducts
+export const getProductsAction = createAsyncThunk(
+    "product/getProductsAction",
+    async (_, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(getProductsApi);
+        if (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+        return result.data;
+    }
+);
+
+//create product
+export const createProductAction = createAsyncThunk(
+    "product/createProductAction",
+    async (data, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(createProductApi, data);
+        if (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+        return result.data;
+    }
+);
+
+//old
 
 // newest product
 export const getNewestProductsAction = createAsyncThunk(

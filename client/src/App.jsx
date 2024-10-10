@@ -3,6 +3,7 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/routes";
 import { useDispatch, useSelector } from "react-redux";
 import { getcurrentUserAction } from "./hooks/Redux/User/userAction";
+import "./assets/styles/base.css";
 
 function App() {
     const dispatch = useDispatch();

@@ -5,6 +5,7 @@ import {
     Checkbox,
     CircularProgress,
     FormControl,
+    Grid,
     Input,
     InputAdornment,
     InputLabel,
@@ -30,10 +31,12 @@ import "../../../assets/styles/swiper.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesAction } from "../../../hooks/Redux/Category/categoryAction";
 import { getTagsAction } from "../../../hooks/Redux/Tag/tagAction";
-import { tryCatchWrapper } from "../../../utils/asyncHelper";
-import { createProduct } from "../../../apis/product.api";
 import { useSnackbar } from "notistack";
 import { rootColor } from "../../../theme/colors";
+import { createProductAction } from "../../../hooks/Redux/Product/productAction";
+import useSnackNotify from "../../../components/SnackNotify";
+import { LoadingButton } from "@mui/lab";
+import AddIcon from "@mui/icons-material/Add";
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -55,11 +58,7 @@ const MenuProps = {
 const Index = () => {
     const { enqueueSnackbar } = useSnackbar();
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getCategoriesAction());
-        dispatch(getTagsAction());
-    }, []);
+    const snackNotify = useSnackNotify();
 
     const { data, loading, error } = useSelector((state) => state.category);
     const {
@@ -67,6 +66,7 @@ const Index = () => {
         loading: tagLoading,
         error: tagError,
     } = useSelector((state) => state.tag);
+    const { loading: productLoading } = useSelector((state) => state.product);
     const [images, setImages] = useState([]);
     const [imagesData, setImagesData] = useState([{}]);
     const [categorySelected, setCategorySelected] = useState("");
@@ -81,10 +81,6 @@ const Index = () => {
     } = useForm({
         resolver: yupResolver(CreateProductYup),
     });
-
-    const handleOpenBackdrop = () => {
-        setisOpenBackdrop(true);
-    };
 
     const handleTagSelectedChange = (event) => {
         const {
@@ -108,12 +104,10 @@ const Index = () => {
         enqueueSnackbar(message, { variant });
     };
 
-    const onSubmitHandler = async (formData) => {
-        setisOpenBackdrop(true);
+    const onSubmit = async (formData) => {
         const formDataToSend = new FormData();
         for (const key in formData) {
             if (key === "tags" && Array.isArray(formData[key])) {
-                // Nếu tags là mảng, thêm từng phần tử vào FormData
                 formData[key].forEach((tag) =>
                     formDataToSend.append("tags", tag)
                 );
@@ -124,54 +118,40 @@ const Index = () => {
         imagesData.forEach((image, index) => {
             formDataToSend.append(`images`, image);
         });
-        // Log các giá trị trong FormData
-        // for (let [key, value] of formDataToSend.entries()) {
-        //     console.log(`${key}:`, value);
-        // }
-
-        const result = await tryCatchWrapper(createProduct, formDataToSend);
-        setisOpenBackdrop(false);
-        if (result.error === null) {
+        const response = await dispatch(createProductAction(formDataToSend));
+        if (response?.payload?._id) {
             setTagsSelected([]);
             setCategorySelected("");
             setImages([]);
             reset();
-            snackResultSubmit("success")("Tạo sản phẩm thành công");
+            snackNotify("success")("Tạo sản phẩm thành công");
         } else {
-            snackResultSubmit("error")("Tạo sản phẩm thất bại");
+            snackNotify("error")("Tạo sản phẩm thất bại");
         }
     };
+
+    useEffect(() => {
+        dispatch(getCategoriesAction());
+        dispatch(getTagsAction());
+    }, []);
     return (
-        <Box sx={{ px: "24px", pb: "24px", bgcolor: rootColor.bg_blue }}>
+        <Box sx={{ pb: "24px", bgcolor: rootColor.bg_blue }}>
             <Backdrop
                 sx={{
                     color: "#fff",
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}
-                open={isOpenBackdrop}
+                open={loading}
             >
                 <CircularProgress color="inherit" />
             </Backdrop>
-            <Typography component="p" sx={{ fontStyle: "italic" }}>
-                Điền đầy đủ thông tin của sản phẩm vào form để thêm sản phẩm vào
-                cửa hàng của bạn
-            </Typography>
 
-            <form
-                onSubmit={handleSubmit(onSubmitHandler)}
-                noValidate
-                className="mt-6"
-            >
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Box className="flex">
                     <Item elevation={2} className="w-2/3 mr-6">
-                        <Typography
-                            component="h1"
-                            variant="h6"
-                            className="text-black font-bold py-2"
-                            sx={{ fontWeight: "bold" }}
-                        >
+                        <p className="text-lg font-semibold text-black">
                             Thông tin chung
-                        </Typography>
+                        </p>
                         <div>
                             <label
                                 htmlFor="name"
@@ -215,39 +195,30 @@ const Index = () => {
                     </Item>
                     <Item
                         elevation={2}
-                        className="w-1/3 "
+                        className="w-1/3 flex flex-col"
                         sx={{ position: "relative" }}
                     >
-                        <Typography
-                            component="h1"
-                            variant="h6"
-                            className="text-black font-bold py-2"
-                            sx={{ fontWeight: "bold" }}
-                        >
+                        <p className="text-lg font-semibold text-black">
                             Quảng bá sản phẩm
-                        </Typography>
+                        </p>
                         <p className="text-base text-black">Hình ảnh</p>
                         <Swiper
                             effect={"cards"}
                             grabCursor={true}
                             modules={[EffectCards]}
-                            className="mySwiper mt-1"
+                            className="swiper-create-product mt-1 px-5"
                         >
                             {images.map((image, index) => (
-                                <SwiperSlide key={`iamge-${index}`}>
-                                    <img
-                                        src={image}
-                                        alt={`upload-${index}`}
-                                        style={{
-                                            width: "100%",
-                                            objectFit: "cover",
-                                        }}
-                                    />
+                                <SwiperSlide
+                                    key={`iamge-${index}`}
+                                    className="swiper-slide_styled"
+                                >
+                                    <img src={image} alt={`upload-${index}`} />
                                 </SwiperSlide>
                             ))}
 
                             {images.length < 1 ? (
-                                <SwiperSlide>
+                                <SwiperSlide className="swiper-slide-styled">
                                     <p className="text-center text-black">
                                         Chọn ảnh cho sản phẩm
                                     </p>
@@ -278,47 +249,82 @@ const Index = () => {
                 {/* PRICE - weight */}
                 <Box className="mt-6 flex">
                     <Item elevation={2} className="w-2/3 mr-6">
-                        <Typography
-                            component="h1"
-                            variant="h6"
-                            className="text-black font-bold py-2"
-                            sx={{ fontWeight: "bold" }}
-                        >
+                        <p className="text-lg font-semibold text-black">
                             Giá thành - Đơn vị tính
-                        </Typography>
-                        <div>
-                            <label
-                                htmlFor="price"
-                                className="text-base text-black "
-                            >
-                                Giá
-                            </label>
+                        </p>
+                        <Grid container spacing={2}>
+                            <Grid item md={6}>
+                                <div>
+                                    <label
+                                        htmlFor="price"
+                                        className="text-base text-black "
+                                    >
+                                        Giá đại lý
+                                    </label>
 
-                            <FormControl
-                                variant="outlined"
-                                className="w-full pr-10"
-                            >
-                                <OutlinedInput
-                                    {...register("price")}
-                                    className="mt-1 w-1/2"
-                                    id="price"
-                                    size="small"
-                                    error={!!errors.price}
-                                    required
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            VNĐ
-                                        </InputAdornment>
-                                    }
-                                />
-                                <p className="text-red-500">
-                                    {errors?.price
-                                        ? errors.price.message
-                                        : null}
-                                </p>
-                            </FormControl>
+                                    <FormControl
+                                        variant="outlined"
+                                        className="w-full pr-10"
+                                    >
+                                        <OutlinedInput
+                                            {...register("price")}
+                                            className="mt-1 w-1/2"
+                                            fullWidth
+                                            id="price"
+                                            size="small"
+                                            error={!!errors.price}
+                                            required
+                                            endAdornment={
+                                                <InputAdornment position="end">
+                                                    VNĐ
+                                                </InputAdornment>
+                                            }
+                                        />
+                                        <p className="text-red-500">
+                                            {errors?.price
+                                                ? errors.price.message
+                                                : null}
+                                        </p>
+                                    </FormControl>
+                                </div>
+                            </Grid>
+                            <Grid item md={6}>
+                                <div>
+                                    <label
+                                        htmlFor="price"
+                                        className="text-base text-black "
+                                    >
+                                        Giá thị trường
+                                    </label>
 
-                            <div className="grid grid-cols-2 gap-6">
+                                    <FormControl
+                                        variant="outlined"
+                                        className="w-full pr-10"
+                                    >
+                                        <OutlinedInput
+                                            {...register("salePrice")}
+                                            className="mt-1 w-1/2"
+                                            id="price"
+                                            size="small"
+                                            fullWidth
+                                            error={!!errors.price}
+                                            required
+                                            endAdornment={
+                                                <InputAdornment position="end">
+                                                    VNĐ
+                                                </InputAdornment>
+                                            }
+                                        />
+                                        <p className="text-red-500">
+                                            {errors?.price
+                                                ? errors.price.message
+                                                : null}
+                                        </p>
+                                    </FormControl>
+                                </div>
+                            </Grid>
+
+                            <Grid item md={6}>
                                 <div className="mt-4">
                                     <p className="text-nowrap text-base text-black ">
                                         Đơn vị tính
@@ -329,7 +335,6 @@ const Index = () => {
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             value={20}
-                                            label="Age"
                                             onChange={() => {}}
                                             className="mt-1"
                                             size="small"
@@ -342,6 +347,9 @@ const Index = () => {
                                         </Select>
                                     </FormControl>
                                 </div>
+                            </Grid>
+
+                            <Grid item md={6}>
                                 <div className="mt-4">
                                     <label
                                         htmlFor="name"
@@ -399,20 +407,15 @@ const Index = () => {
                                         </p>
                                     </FormControl>
                                 </div>
-                            </div>
-                        </div>
+                            </Grid>
+                        </Grid>
                     </Item>
 
                     {/* Product type */}
                     <Item elevation={2} className="w-1/3">
-                        <Typography
-                            component="h1"
-                            variant="h6"
-                            className="text-black font-bold py-2"
-                            sx={{ fontWeight: "bold" }}
-                        >
+                        <p className="text-lg font-semibold text-black">
                             Phân loại
-                        </Typography>
+                        </p>
                         <p className="text-base text-black">Danh mục</p>
                         <Select
                             {...register("category", {
@@ -475,14 +478,9 @@ const Index = () => {
                 </Box>
                 <Box className="mt-6">
                     <Item elevation={2} className="w-2/3 mr-6">
-                        <Typography
-                            component="h1"
-                            variant="h6"
-                            className="text-black font-bold py-2"
-                            sx={{ fontWeight: "bold" }}
-                        >
+                        <p className="text-lg font-semibold text-black">
                             Số lượng
-                        </Typography>
+                        </p>
                         <div>
                             <label
                                 htmlFor="inventory"
@@ -506,14 +504,17 @@ const Index = () => {
                     </Item>
                 </Box>
                 <Box className="text-center">
-                    <Button
+                    <LoadingButton
                         type="submit"
                         variant="contained"
                         color="success"
                         sx={{ mt: "24px", textTransform: "none" }}
+                        loading={productLoading}
+                        loadingPosition="end"
+                        endIcon={<AddIcon />}
                     >
                         Tạo sản phẩm
-                    </Button>
+                    </LoadingButton>
                 </Box>
             </form>
         </Box>
