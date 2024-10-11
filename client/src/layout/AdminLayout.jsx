@@ -440,6 +440,7 @@ export default function AdminLayout() {
                 sx={{
                     flexGrow: 1,
                     padding: 2,
+                    overflowX: "auto",
                 }}
             >
                 <Box sx={{ height: "64px" }}></Box>
