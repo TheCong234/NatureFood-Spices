@@ -5,6 +5,7 @@ import {
     loginAction,
     registerAction,
     getPeopleAction,
+    updateUserByIdAction,
 } from "./userAction";
 
 const userSlice = createSlice({
@@ -41,7 +42,6 @@ const userSlice = createSlice({
                 state.loading = false;
             })
             .addCase(registerAction.rejected, (state, action) => {
-                console.log("action", action);
                 state.loading = false;
                 state.error = action.payload;
             })
@@ -74,16 +74,19 @@ const userSlice = createSlice({
                 state.error = action.payload;
             })
 
-            //update user data
-            .addCase(updateEmailVerify.pending, (state) => {
+            //update user by id
+            .addCase(updateUserByIdAction.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(updateEmailVerify.fulfilled, (state, action) => {
+            .addCase(updateUserByIdAction.fulfilled, (state, action) => {
                 state.loading = false;
-                state.data = { ...action.payload };
+                const index = state.data.users.findIndex(
+                    (user) => user._id == action.payload._id
+                );
+                state.data.users[index] = action.payload;
             })
-            .addCase(updateEmailVerify.rejected, (state, action) => {
+            .addCase(updateUserByIdAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });

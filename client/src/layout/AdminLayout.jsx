@@ -71,9 +71,9 @@ const items = [
         text: "Người dùng",
     },
     {
-        to: "/admin/seller",
+        to: "/admin/store",
         icon: <SupervisedUserCircleIcon />,
-        text: "Người bán",
+        text: "Cửa hàng",
     },
     {
         to: "/admin/category",

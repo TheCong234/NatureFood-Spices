@@ -1,6 +1,9 @@
-import { useEffect } from "react";
+import { forwardRef, Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPeopleAction } from "../../../hooks/Redux/User/userAction";
+import {
+    getPeopleAction,
+    updateUserByIdAction,
+} from "../../../hooks/Redux/User/userAction";
 
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -10,11 +13,30 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Avatar, Box, Chip, IconButton, Tooltip } from "@mui/material";
+import {
+    Avatar,
+    Box,
+    Button,
+    Chip,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    IconButton,
+    Slide,
+    Tooltip,
+} from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import LoadingButton from "@mui/lab/LoadingButton";
+import useSnackNotify from "../../../components/SnackNotify";
+
+const Transition = forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -38,22 +60,38 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function Index() {
     const dispatch = useDispatch();
+    const snackNotify = useSnackNotify();
+    const [selectedUser, setSelectedUser] = useState();
+    const [open, setOpen] = useState(false);
+
     const { data: userData, loading: userLoading } = useSelector(
         (state) => state.user
     );
+
+    const handleUpdateUser = async (id, status) => {
+        const response = await dispatch(
+            updateUserByIdAction({ id: id, data: { status: status } })
+        );
+        if (response?.payload?._id) {
+            snackNotify("success")("Cập nhật thành công");
+            setOpen(false);
+        } else {
+            snackNotify("error")("Cập nhật thất bại");
+        }
+        console.log(response);
+    };
 
     const handleGetData = async () => {
         const params = {
             role: "user",
         };
         const response = await dispatch(getPeopleAction(params));
-        console.log(response);
     };
     useEffect(() => {
         handleGetData();
     }, []);
     return (
-        <Box sx={{ maxWidth: "100%", overflowX: "auto" }}>
+        <Box>
             <TableContainer component={Paper}>
                 <Table aria-label="customized table">
                     <TableHead>
@@ -159,7 +197,10 @@ export default function Index() {
                                         >
                                             <IconButton
                                                 color="error"
-                                                aria-label="add an alarm"
+                                                onClick={() => {
+                                                    setSelectedUser(user);
+                                                    setOpen(true);
+                                                }}
                                             >
                                                 <LockOpenIcon />
                                             </IconButton>
@@ -171,7 +212,10 @@ export default function Index() {
                                         >
                                             <IconButton
                                                 color="error"
-                                                aria-label="add an alarm"
+                                                onClick={() => {
+                                                    setSelectedUser(user);
+                                                    setOpen(true);
+                                                }}
                                             >
                                                 <LockIcon />
                                             </IconButton>
@@ -183,6 +227,45 @@ export default function Index() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Fragment>
+                <Dialog
+                    open={open}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={() => setOpen(false)}
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle>Cập nhật trạng thái người dùng</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            Bạn có chắc chắn muốn{" "}
+                            {selectedUser?.status ? (
+                                <strong className="text-orange">mở</strong>
+                            ) : (
+                                <strong className="text-orange">khóa</strong>
+                            )}{" "}
+                            tài khoản {selectedUser?.email}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setOpen(false)}>Hủy</Button>
+                        <LoadingButton
+                            size="small"
+                            onClick={() =>
+                                handleUpdateUser(
+                                    selectedUser?._id,
+                                    selectedUser?.status == 0 ? 1 : 0
+                                )
+                            }
+                            loading={userLoading}
+                            loadingPosition="center"
+                            variant="contained"
+                        >
+                            Cập nhật
+                        </LoadingButton>
+                    </DialogActions>
+                </Dialog>
+            </Fragment>
         </Box>
     );
 }

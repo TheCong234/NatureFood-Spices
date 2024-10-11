@@ -38,3 +38,11 @@
 .na-alight-middle{
     align-items: center !important;
 }
+
+.text-green{
+    color: var(--green-color);
+}
+
+.text-orange{
+    color: var(--orange-color);
+}

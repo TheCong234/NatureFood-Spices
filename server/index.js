@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
     cors({
         origin: "http://localhost:5173", // Chỉ định nguồn cho phép
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
         allowedHeaders: ["Content-Type", "Authorization"],
         exposedHeaders: ["Content-Type", "Authorization"],
         credentials: true, // Cho phép gửi cookie nếu cần thiết
