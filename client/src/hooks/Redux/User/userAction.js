@@ -4,7 +4,7 @@ import {
     getPeopleApi,
     loginApi,
     registerApi,
-    updateUser,
+    updateUserByIdApi,
 } from "../../../apis/user.apis";
 import { tryCatchWrapper } from "../../../utils/asyncHelper";
 
@@ -49,6 +49,20 @@ export const getPeopleAction = createAsyncThunk(
     "user/getPeopleAction",
     async (data, thunkAPI) => {
         const { result, error } = await tryCatchWrapper(getPeopleApi, data);
+        if (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+        return result.data;
+    }
+);
+
+export const updateUserByIdAction = createAsyncThunk(
+    "user/updateUserByIdAction",
+    async (data, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(
+            updateUserByIdApi,
+            data
+        );
         if (error) {
             return thunkAPI.rejectWithValue(error);
         }

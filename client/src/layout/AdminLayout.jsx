@@ -71,9 +71,9 @@ const items = [
         text: "Người dùng",
     },
     {
-        to: "/admin/seller",
+        to: "/admin/store",
         icon: <SupervisedUserCircleIcon />,
-        text: "Người bán",
+        text: "Cửa hàng",
     },
     {
         to: "/admin/category",
@@ -440,6 +440,7 @@ export default function AdminLayout() {
                 sx={{
                     flexGrow: 1,
                     padding: 2,
+                    overflowX: "auto",
                 }}
             >
                 <Box sx={{ height: "64px" }}></Box>

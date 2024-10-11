@@ -4,16 +4,15 @@ import { statusCode } from "../config/statusCode.config.js";
 import { BaseResponse } from "../config/BaseResponse.config.js";
 
 const CategoryController = {
-    async getAllCategory(req, res) {
+    async getCategories(req, res) {
         const categories = await CategoryModel.find({});
-        return res
-            .status(statusCode.OK)
-            .json(
-                BaseResponse.success(
-                    "Lấy danh sách danh mục thành công",
-                    categories
-                )
-            );
+        const total = await CategoryModel.countDocuments({});
+        return res.status(statusCode.OK).json(
+            BaseResponse.success("Lấy danh sách danh mục thành công", {
+                categories,
+                total,
+            })
+        );
     },
 
     async getCategoryById(req, res) {
@@ -76,6 +75,13 @@ const CategoryController = {
                     category
                 )
             );
+    },
+
+    async deleteCategory(req, res) {
+        const category = await CategoryModel.findByIdAndDelete(req.params.id);
+        return res
+            .status(statusCode.OK)
+            .json(BaseResponse.success("Đã xóa danh mục", category));
     },
 };
 
