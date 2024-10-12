@@ -96,3 +96,29 @@ export const RegisterYup = yup.object().shape({
         .required("Vui lòng xác nhận mật khẩu")
         .oneOf([yup.ref("password"), null], "Mật khẩu xác nhận không khớp"), // So sánh với password
 });
+
+export const CategoryYup = yup.object().shape({
+    name: yup
+        .string()
+        .required("Tên danh mục là bắt buộc")
+        .min(3, "Tên danh mục phải có ít nhất 3 ký tự")
+        .max(50, "Tên danh mục không được vượt quá 50 ký tự"),
+
+    description: yup
+        .string()
+        .required("Mô tả là bắt buộc")
+        .max(200, "Mô tả không được vượt quá 200 ký tự"),
+
+    // image: yup
+    //     .mixed()
+    //     .required("Hình ảnh là bắt buộc")
+    //     .test("fileSize", "Kích thước file quá lớn", (value) => {
+    //         return value && value.size <= 2000000; // Kích thước tối đa 2MB
+    //     })
+    //     .test("fileType", "Chỉ cho phép định dạng hình ảnh", (value) => {
+    //         return (
+    //             value &&
+    //             ["image/jpeg", "image/png", "image/gif"].includes(value.type)
+    //         );
+    //     }),
+});

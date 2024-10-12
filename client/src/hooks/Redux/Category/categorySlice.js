@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getCategoriesAction, deleteCategoryAction } from "./categoryAction";
+import {
+    getCategoriesAction,
+    deleteCategoryAction,
+    createCategoryAction,
+} from "./categoryAction";
 
 const categorySlice = createSlice({
     name: "category",
@@ -22,6 +26,23 @@ const categorySlice = createSlice({
                 state.data = action.payload;
             })
             .addCase(getCategoriesAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+            //create categories
+            .addCase(createCategoryAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(createCategoryAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = {
+                    categories: [...state.data.categories, action.payload],
+                    total: state.data.total + 1,
+                };
+            })
+            .addCase(createCategoryAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             })

@@ -14,6 +14,7 @@ export const StoreV1 = {
 };
 
 export const CategoryV1 = {
+    CREATE: "/category/create",
     CATEGORY_GET_ALL: "/category/all",
     DELETE: "/category/",
 };

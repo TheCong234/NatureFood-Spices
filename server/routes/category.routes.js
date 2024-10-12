@@ -9,7 +9,11 @@ const upload = multer({ storage: storage });
 router.get("/all", asyncHandler(CategoryController.getCategories));
 router.get("/:id", CategoryController.getCategoryById);
 
-router.post("/", upload.single("image"), CategoryController.createCategory);
+router.post(
+    "/create",
+    upload.single("image"),
+    CategoryController.createCategory
+);
 
 router.put(
     "/:id/image",

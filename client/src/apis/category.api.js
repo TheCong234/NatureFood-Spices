@@ -6,6 +6,11 @@ export const getCategoriesApi = async () => {
     return response.data;
 };
 
+export const createCategoryApi = async (data) => {
+    const response = await apiClient.post(CategoryV1.CREATE, data);
+    return response.data;
+};
+
 export const deleteCategoryApi = async (data) => {
     const response = await apiClient.delete(CategoryV1.DELETE + data);
     return response.data;

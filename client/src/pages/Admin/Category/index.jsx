@@ -18,9 +18,15 @@ import {
 } from "../../../hooks/Redux/Category/categoryAction";
 import { convertDate } from "../../../services/functions";
 import useSnackNotify from "../../../components/SnackNotify";
+import ConfirmDialog from "../../../components/ConfirmDialog";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
+import CategoryCreateDialog from "./CategoryCreate";
 
 const Index = () => {
     const [sortby, setSortby] = useState(10);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [openCategoryCreate, setOpenCategoryCreate] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState();
     const dispatch = useDispatch();
     const snackNotify = useSnackNotify();
     const { data: categoryData, loading: categoryLoading } = useSelector(
@@ -56,19 +62,32 @@ const Index = () => {
                 <Typography variant="body1">
                     Hiển thị 1-24 trong 205 danh mục
                 </Typography>
-                <div>
-                    <span className="mr-2">Sắp xếp theo</span>
-                    <Select
-                        labelId="demo-select-small-label"
-                        id="demo-select-small"
-                        value={sortby}
-                        onChange={handleSortbyChange}
+                <div className="flex ">
+                    <div className="mr-3">
+                        <span className="mr-2">Sắp xếp theo</span>
+                        <Select
+                            labelId="demo-select-small-label"
+                            id="demo-select-small"
+                            value={sortby}
+                            onChange={handleSortbyChange}
+                            size="small"
+                            sx={{ padding: "2px 8px" }}
+                            inputProps={{ sx: { padding: "2px 8px" } }}
+                        >
+                            <MenuItem value={10}>Ngày tạo</MenuItem>
+                            <MenuItem value={20}>Số sản phẩm</MenuItem>
+                        </Select>
+                    </div>
+                    <Button
+                        variant="contained"
+                        color="success"
                         size="small"
-                        sx={{ padding: 0 }}
+                        onClick={() => setOpenCategoryCreate(true)}
+                        startIcon={<NoteAddIcon />}
+                        sx={{ textTransform: "none" }}
                     >
-                        <MenuItem value={10}>Ngày tạo</MenuItem>
-                        <MenuItem value={20}>Số sản phẩm</MenuItem>
-                    </Select>
+                        Tạo danh mục
+                    </Button>
                 </div>
             </Paper>
             <Grid container spacing={2}>
@@ -128,11 +147,12 @@ const Index = () => {
                                                     padding: "3px 12px",
                                                 }}
                                                 size="small"
-                                                onClick={() =>
-                                                    handleDeleteCategory(
+                                                onClick={() => {
+                                                    setSelectedCategory(
                                                         category
-                                                    )
-                                                }
+                                                    );
+                                                    setOpenDialog(true);
+                                                }}
                                             >
                                                 <DeleteIcon
                                                     fontSize="small"
@@ -147,6 +167,20 @@ const Index = () => {
                     </Grid>
                 ))}
             </Grid>
+            <ConfirmDialog
+                openDialog={openDialog}
+                setOpenDialog={setOpenDialog}
+                title={"Xóa danh mục"}
+                content={`Bạn có chắc chắn muốn xóa danh mục ${selectedCategory?.name}`}
+                object={selectedCategory}
+                handleConfirm={handleDeleteCategory}
+                loading={categoryLoading}
+            />
+
+            <CategoryCreateDialog
+                openCategoryCreate={openCategoryCreate}
+                setOpenCategoryCreate={setOpenCategoryCreate}
+            />
         </Box>
     );
 };
