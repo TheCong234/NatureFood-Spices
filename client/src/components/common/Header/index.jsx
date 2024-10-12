@@ -1,82 +1,40 @@
-import { Box, Button, Container, Stack, Toolbar } from "@mui/material";
-import { useEffect } from "react";
-import { NavLink } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-
-import AuthActions from "../../AuthActions";
-import UserNaviMenu from "../../UserNaviMenu";
-import SearchStyle from "../../SearchStyle";
-// import { currentUser } from "../../../hooks/Redux/User/userAction";
-
-const items = [
-    {
-        name: "Trang chủ",
-        to: "home",
-    },
-    {
-        name: "Danh mục",
-        to: "favorite",
-    },
-    {
-        name: "Liên hệ",
-        to: "contact",
-    },
-];
-
-const Index = () => {
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        // dispatch(currentUser());
-    }, [dispatch]);
-    const { data, loading, error } = useSelector((state) => state.user);
+import React from "react";
+import "../../../assets/styles/main.css";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+const Header = () => {
     return (
-        <Box>
-            <Container
-                sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                }}
-            >
-                <img
-                    className="h-10 rounded"
-                    src="/src/assets/images/logo.jpg"
-                    width={80}
+        <header className="header">
+            <div className="header-left">
+                <img src="your-logo.png" alt="Logo" className="logo" />
+                <span className="app-name">Nature Food</span>
+            </div>
+            <div className="header-center">
+                <input
+                    type="text"
+                    placeholder="Search"
+                    className="search-input"
                 />
-                <Stack direction={"row"} sx={{ height: "64px" }}>
-                    {items.map((item, index) => (
-                        <NavLink
-                            key={index}
-                            sx={{ fontWeight: "bold" }}
-                            color="inherit"
-                            to={item.to}
-                            className={({ isActive }) =>
-                                isActive ? "bg-green-400" : ""
-                            }
-                        >
-                            <Button
-                                sx={{
-                                    fontWeight: "bold",
-                                    height: "100%",
-                                    px: 2,
-                                    color: "black",
-                                }}
-                            >
-                                {item.name}
-                            </Button>
-                        </NavLink>
-                    ))}
-                </Stack>
-
-                <Toolbar spacing={1} direction={"row"}>
-                    <SearchStyle />
-                    <UserNaviMenu />
-                    <AuthActions display={data ? "none" : "block"} />
-                </Toolbar>
-            </Container>
-        </Box>
+            </div>
+            <div className="header-right">
+                <span className="sun-icon">
+                    <LightModeIcon />
+                </span>
+                <span className="icon cart-icon">
+                    <ShoppingCartIcon />
+                    <span className="cart-count">3</span>
+                </span>
+                <span className="icon bell-icon">
+                    <NotificationsNoneIcon />
+                </span>
+                <span className="icon user-icon">
+                    <PersonOutlineIcon />
+                </span>
+            </div>
+        </header>
     );
 };
 
-export default Index;
+export default Header;
