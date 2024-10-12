@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { AdminLayout, EmptyLayout, MainLayout } from "../layout";
+import { AdminLayout, EmptyLayout, MainLayout, SellerLayout } from "../layout";
 import { RegisterPage, LoginPage, ForgotPage } from "../pages/Common";
 import {
     CategoryStore,
@@ -82,36 +82,35 @@ export const router = createBrowserRouter([
                         path: "product/detail/:productId",
                         element: <ProductDetail />,
                     },
-
+                ],
+            },
+            {
+                path: "/seller",
+                element: <SellerLayout />,
+                children: [
                     {
-                        path: "/host",
-                        element: <HomeStore />,
-                        children: [
-                            {
-                                path: "dashboard",
-                                element: <DashboardStore />,
-                            },
-                            {
-                                path: "product",
-                                element: <ProductStore />,
-                            },
-                            {
-                                path: "category",
-                                element: <CategoryStore />,
-                            },
-                            {
-                                path: "event",
-                                element: <EventStore />,
-                            },
-                            {
-                                path: "setting",
-                                element: <SettingStore />,
-                            },
-                            {
-                                path: "promote",
-                                element: <PromoteStore />,
-                            },
-                        ],
+                        path: "dashboard",
+                        element: <DashboardStore />,
+                    },
+                    {
+                        path: "product",
+                        element: <ProductStore />,
+                    },
+                    {
+                        path: "category",
+                        element: <CategoryStore />,
+                    },
+                    {
+                        path: "event",
+                        element: <EventStore />,
+                    },
+                    {
+                        path: "setting",
+                        element: <SettingStore />,
+                    },
+                    {
+                        path: "promote",
+                        element: <PromoteStore />,
                     },
                 ],
             },
