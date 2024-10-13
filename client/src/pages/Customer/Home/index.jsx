@@ -45,7 +45,7 @@ const Index = () => {
                 modules={[Autoplay, Pagination, Navigation]}
                 className="mySwiper h-[500px] w-full rounded-md"
             >
-                {bannerData.map((banner, index) => (
+                {bannerData?.banners?.map((banner, index) => (
                     <SwiperSlide
                         key={`swipperSlide-${index}`}
                         className="text-black bg-white border-none"
