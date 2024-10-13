@@ -1,4 +1,4 @@
-import { Grid, Grid2 } from "@mui/material";
+import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import ProductCardPrimary from "../../../components/ProductCard/ProductCardPrimary";
 import { useDispatch, useSelector } from "react-redux";

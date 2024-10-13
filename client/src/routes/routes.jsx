@@ -36,10 +36,17 @@ import {
     BannerAdmin,
 } from "../pages/Admin";
 
-import { FavoritePage, HomePage } from "../pages";
+import { HomePage } from "../pages";
 import ProductDetail from "../pages/Customer/ProductDetails";
 import Error500 from "../pages/Common/Error500";
 import Error404 from "../pages/Common/Error404";
+import {
+    Wishlist,
+    Shipping,
+    Vendor,
+    TrackOrder,
+    Checkout,
+} from "../pages/Customer";
 
 export const router = createBrowserRouter([
     {
@@ -72,10 +79,6 @@ export const router = createBrowserRouter([
                         element: <HomePage />,
                     },
                     {
-                        path: "/favorite",
-                        element: <FavoritePage />,
-                    },
-                    {
                         path: "/register-store",
                         element: <RegisterStore />,
                     },
@@ -83,12 +86,36 @@ export const router = createBrowserRouter([
                         path: "product/detail/:productId",
                         element: <ProductDetail />,
                     },
+<<<<<<< HEAD
                 ],
             },
             {
                 path: "/seller",
                 element: <SellerLayout />,
                 children: [
+=======
+                    {
+                        path: "/wishlist",
+                        element: <Wishlist />,
+                    },
+                    {
+                        path: "/shipping",
+                        element: <Shipping />,
+                    },
+                    {
+                        path: "/vendor",
+                        element: <Vendor />,
+                    },
+                    {
+                        path: "/trackOrder",
+                        element: <TrackOrder />,
+                    },
+                    {
+                        path: "/checkout",
+                        element: <Checkout />,
+                    },
+
+>>>>>>> 30f7ea508ebc2f18ad38110a8fbc7795f01ef812
                     {
                         path: "dashboard",
                         element: <DashboardStore />,
