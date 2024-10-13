@@ -32,6 +32,7 @@ import {
     EmailCreateAdmin,
     BlogListAdmin,
     BlogCreateAdmin,
+    StoresAdmin,
 } from "../pages/Admin";
 
 import { HomePage } from "../pages";
@@ -150,8 +151,8 @@ export const router = createBrowserRouter([
                         element: <UserAdmin />,
                     },
                     {
-                        path: "seller",
-                        element: <SellerAdmin />,
+                        path: "store",
+                        element: <StoresAdmin />,
                     },
                     {
                         path: "category",

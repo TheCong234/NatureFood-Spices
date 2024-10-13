@@ -5,6 +5,7 @@ export const UserV1 = {
     USER_SEND_OTP: "user/verify-email/otp",
     USER_UPDATE: "/user/me",
     GET_PEOPLE: "/user/all",
+    UPDATE_USER_BY_ID: "/user/",
 };
 
 export const StoreV1 = {
@@ -14,6 +15,7 @@ export const StoreV1 = {
 
 export const CategoryV1 = {
     CATEGORY_GET_ALL: "/category/all",
+    DELETE: "/category/",
 };
 
 export const TagV1 = {

@@ -59,16 +59,15 @@ export const verifyEmail = async (data) => {
     }
 };
 
-export const updateUser = async (data) => {
-    try {
-        const user = await apiClient.put(UserV1.USER_UPDATE, data, {
+export const updateUserByIdApi = async (data) => {
+    const user = await apiClient.patch(
+        UserV1.UPDATE_USER_BY_ID + data.id,
+        data.data,
+        {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-        });
-        return user;
-    } catch (error) {
-        console.log(error);
-        return error;
-    }
+        }
+    );
+    return user.data;
 };
