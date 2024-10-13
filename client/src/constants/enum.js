@@ -17,3 +17,20 @@ export const PAYMENT_METHOD = {
     2: "VNPay",
     3: "MoMo",
 };
+
+export const USER_STATUS = {
+    0: "Hoạt động",
+    1: "Tạm khóa",
+};
+
+export const REFUND_STATUS = {
+    0: "Chưa giải quyết",
+    1: "Đang giải quyết",
+    2: "Từ chối",
+    3: "Hoàn thành",
+};
+
+export const BANNER_STATUS = {
+    0: "Đang hoạt động",
+    1: "Đã dừng",
+};

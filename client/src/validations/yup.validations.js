@@ -29,6 +29,7 @@ export const CreateProductYup = yup.object().shape({
     name: yup.string().min(2).required(),
     description: yup.string().min(2).required(),
     price: yup.number().min(0).max(1000000).required(),
+    salePrice: yup.number().min(0).max(1000000).required(),
     weight: yup.number().min(0).required(),
     category: yup.string().required(),
     inventory: yup.number().min(0).max(1000000).required(),
@@ -59,4 +60,88 @@ export const CreateBannerYup = yup.object().shape({
 
 export const CreateReviewYup = yup.object().shape({
     body: yup.string().required("Bạn cảm thấy chất lượng sản phẩm như thế nào"),
+});
+
+export const LoginYup = yup.object().shape({
+    email: yup
+        .string()
+        .email("Vui lòng nhập một địa chỉ email hợp lệ")
+        .required("Vui lòng nhập email"),
+    password: yup
+        .string()
+        .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+        .required("Vui lòng nhập mật khẩu"),
+});
+
+export const RegisterYup = yup.object().shape({
+    email: yup
+        .string()
+        .email("Vui lòng nhập một địa chỉ email hợp lệ")
+        .required("Vui lòng nhập email"),
+
+    username: yup
+        .string()
+        .required("Vui lòng nhập tên người dùng")
+        .min(3, "Tên người dùng phải có ít nhất 3 ký tự"), // Thay đổi theo yêu cầu của bạn
+
+    password: yup
+        .string()
+        .required("Vui lòng nhập mật khẩu")
+        .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+        .matches(/[A-Z]/, "Mật khẩu phải có ít nhất một chữ cái viết hoa") // Kiểm tra chữ cái viết hoa
+        .matches(/\d/, "Mật khẩu phải có ít nhất một chữ số"), // Kiểm tra chữ số
+
+    confirmPassword: yup
+        .string()
+        .required("Vui lòng xác nhận mật khẩu")
+        .oneOf([yup.ref("password"), null], "Mật khẩu xác nhận không khớp"), // So sánh với password
+});
+
+export const CategoryYup = yup.object().shape({
+    name: yup
+        .string()
+        .required("Tên danh mục là bắt buộc")
+        .min(3, "Tên danh mục phải có ít nhất 3 ký tự")
+        .max(50, "Tên danh mục không được vượt quá 50 ký tự"),
+
+    description: yup
+        .string()
+        .required("Mô tả là bắt buộc")
+        .max(200, "Mô tả không được vượt quá 200 ký tự"),
+
+    // image: yup
+    //     .mixed()
+    //     .required("Hình ảnh là bắt buộc")
+    //     .test("fileSize", "Kích thước file quá lớn", (value) => {
+    //         return value && value.size <= 2000000; // Kích thước tối đa 2MB
+    //     })
+    //     .test("fileType", "Chỉ cho phép định dạng hình ảnh", (value) => {
+    //         return (
+    //             value &&
+    //             ["image/jpeg", "image/png", "image/gif"].includes(value.type)
+    //         );
+    //     }),
+});
+
+export const BannerYup = yup.object().shape({
+    name: yup
+        .string()
+        .required("Tên banner là bắt buộc")
+        .min(3, "Tên banner phải có ít nhất 3 ký tự")
+        .max(50, "Tên banner không được vượt quá 50 ký tự"),
+
+    description: yup.string().required("Mô tả là bắt buộc"),
+    url: yup.string().required("Đường dẫn là bắt buộc"),
+    // image: yup
+    //     .mixed()
+    //     .required("Hình ảnh là bắt buộc")
+    //     .test("fileSize", "Kích thước file quá lớn", (value) => {
+    //         return value && value.size <= 2000000; // Kích thước tối đa 2MB
+    //     })
+    //     .test("fileType", "Chỉ cho phép định dạng hình ảnh", (value) => {
+    //         return (
+    //             value &&
+    //             ["image/jpeg", "image/png", "image/gif"].includes(value.type)
+    //         );
+    //     }),
 });

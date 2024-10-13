@@ -1,6 +1,6 @@
 export { default as DashboardAdmin } from "./Dashboard";
 export { default as StoresAdmin } from "./Stores";
-export { default as ProductAdmin } from "./Product";
+export { default as ProductAdmin } from "./Product/ProductList";
 export { default as UserAdmin } from "./User";
 export { default as SellerAdmin } from "./Seller";
 export { default as ReportAdmin } from "./Report";
@@ -8,10 +8,14 @@ export { default as ProfilerAdmin } from "./Profiler";
 export { default as OrderAdmin } from "./Order";
 export { default as NotificationAdmin } from "./Notification";
 export { default as MessageAdmin } from "./Message";
-export { default as EventAdmin } from "./Event";
-export { default as EmailAdmin } from "./Email";
-export { default as DocumentAdmin } from "./Document";
-export { default as CategoryProductAdmin } from "./CategoryProduct";
+export { default as EventListAdmin } from "./Event/EventList";
+export { default as EventCreateAdmin } from "./Event/EventCreate";
+export { default as EventDetailAdmin } from "./Event/EventDetail";
+export { default as EmailInboxAdmin } from "./Email/EmailInbox";
+export { default as EmailCreateAdmin } from "./Email/EmailCreate";
+export { default as BlogListAdmin } from "./Blog/BlogList";
+export { default as BlogCreateAdmin } from "./Blog/BlogCreate";
+export { default as CategoryProductAdmin } from "./Category";
 export { default as BillAdmin } from "./Bill";
-
-
+export { default as CreateProductAdmin } from "./Product/CreateProduct";
+export { default as BannerAdmin } from "./Banner";

@@ -10,10 +10,10 @@ const upload = multer({ storage: storage });
 const router = express.Router();
 
 router.get("/all", UserController.getAll);
-router.get("/info", authJwt, UserController.getCurrentUser);
+router.get("/me", authJwt, asyncHandler(UserController.getCurrentUser));
 router.get("/:id", UserController.getUserById);
 
-router.post("/register", UserController.register);
+router.post("/register", asyncHandler(UserController.register));
 router.post("/login", authLocal, UserController.login);
 
 router.post(
@@ -22,12 +22,15 @@ router.post(
     asyncHandler(UserController.sendOtpToEmail)
 );
 
-router.put("/info", authJwt, UserController.updateUser);
+router.put("/me", authJwt, UserController.updateUser);
 router.put(
     "/image",
     authJwt,
     upload.single("image"),
     UserController.updateUserImage
 );
+
+router.patch("/:id", asyncHandler(UserController.updateUserById));
+
 router.put("/change-password/:email", UserController.changePassword);
 export default router;

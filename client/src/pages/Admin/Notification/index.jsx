@@ -1,5 +1,5 @@
 const Index = () => {
-    return <div>hong nho nua</div>;
-  };
-  
-  export default Index;
+    return <div>Thông báo</div>;
+};
+
+export default Index;

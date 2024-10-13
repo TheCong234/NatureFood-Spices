@@ -9,10 +9,8 @@ import { Container } from "@mui/material";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
-        <SnackbarProvider maxSnack={3}>
-            <Container>
-                <App />
-            </Container>
+        <SnackbarProvider maxSnack={3}> 
+                <App /> 
         </SnackbarProvider>
     </Provider>
 );

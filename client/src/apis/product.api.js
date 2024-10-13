@@ -6,12 +6,17 @@ export const getNewestProducts = async () => {
     return products.data;
 };
 
+export const getProductsApi = async () => {
+    const response = await apiClient.get(ProductV1.GET_PRODUCTS);
+    return response.data;
+};
+
 export const getProductById = async (productId) => {
     const product = await apiClient.get(ProductV1.PRODUCT_DETAILS + productId);
     return product.data;
 };
 
-export const createProduct = async (data) => {
+export const createProductApi = async (data) => {
     const product = await apiClient.post(ProductV1.PRODUCT_CREATE, data, {
         headers: {
             "Content-Type": "multipart/form-data",

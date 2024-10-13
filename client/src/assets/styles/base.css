@@ -1,0 +1,48 @@
+:root{
+    --brown-color: #74493D;
+    --orange-color: #D26426;
+    --green-color: #3C603C;
+    --peach-color: #FFF7ED;
+    --white-color: #FFFFFF;
+}
+
+.text-truncate{
+  overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.text-truncate-2{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+}
+
+.text-truncate-3{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+}
+
+
+.product_card-primary:hover{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.na-flex{
+    display: flex  !important;
+}
+
+.na-alight-middle{
+    align-items: center !important;
+}
+
+.text-green{
+    color: var(--green-color);
+}
+
+.text-orange{
+    color: var(--orange-color);
+}

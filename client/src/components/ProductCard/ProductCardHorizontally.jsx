@@ -13,7 +13,7 @@ export default function ProductCardHorizontally({ product }) {
         <Box className="flex p-4 h-[200px] w-full bg-gray-300">
             <Box className="w-1/3 bg-white rounded-md">
                 <img
-                    src={product.images[0].url}
+                    src={product?.images?.[0]?.url}
                     alt="newest product"
                     style={{ objectFit: "contain" }}
                 />
