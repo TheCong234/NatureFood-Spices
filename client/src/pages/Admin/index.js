@@ -18,3 +18,4 @@ export { default as BlogCreateAdmin } from "./Blog/BlogCreate";
 export { default as CategoryProductAdmin } from "./Category";
 export { default as BillAdmin } from "./Bill";
 export { default as CreateProductAdmin } from "./Product/CreateProduct";
+export { default as BannerAdmin } from "./Banner";

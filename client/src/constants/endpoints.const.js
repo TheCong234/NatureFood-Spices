@@ -31,9 +31,11 @@ export const ProductV1 = {
 };
 
 export const BannerV1 = {
-    BANNER_GET_ALL: "/banner/all",
-    BANNER_CREATE: "/banner/new",
+    GET_BANNERS: "/banner/all",
+    CREATE: "/banner/create",
     BANNER_GET_BY_CURRENT_USER: "/banner/store",
+    UPDATE: "/banner/",
+    DELETE: "/banner/",
 };
 
 export const ReviewV1 = {

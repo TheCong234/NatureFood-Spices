@@ -12,40 +12,40 @@ const BannerController = {
 
     async getBanners(req, res) {
         const banners = await BannerModel.find();
-        return res
-            .status(statusCode.OK)
-            .json(BaseResponse.success("Lấy banners thành công", banners));
+        const total = await BannerModel.countDocuments({});
+        return res.status(statusCode.OK).json(
+            BaseResponse.success("Lấy banners thành công", {
+                banners,
+                total,
+            })
+        );
     },
+
     async create(req, res) {
-        const banner = new BannerModel({
-            storeId: req.user.store,
-            image: { url: req.file.path, filename: req.file.filename },
-            url: req.body.url,
-        });
+        const banner = new BannerModel(req.body);
+        banner.image = { url: req.file.path, filename: req.file.filename };
         const newBanner = await banner.save();
         return res
             .status(statusCode.CREATED)
             .json(BaseResponse.success("Tạo mới banner thành công", newBanner));
     },
-    async update(req, res) {
-        if (req.file) {
-            const banner = await BannerModel.findById(req.params.id);
-            banner.image = { url: req.file.path, filename: req.file.filename };
-            await banner.save();
-        }
-        const updatedBanner = await BannerModel.findByIdAndUpdate(
+
+    async updateBanner(req, res) {
+        const banner = await BannerModel.findByIdAndUpdate(
             req.params.id,
             req.body,
             { new: true }
         );
         return res
             .status(statusCode.OK)
-            .json(
-                BaseResponse.success(
-                    "Cập nhật banner thành công",
-                    updatedBanner
-                )
-            );
+            .json(BaseResponse.success("Cập nhật banner thành công", banner));
+    },
+
+    async deleteBanner(req, res) {
+        const banner = await BannerModel.findByIdAndDelete(req.params.id);
+        return res
+            .status(statusCode.OK)
+            .json(BaseResponse.success("Đã xóa banner", banner));
     },
 };
 

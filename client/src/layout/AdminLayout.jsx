@@ -32,12 +32,10 @@ import PeopleIcon from "@mui/icons-material/People";
 import ProductIcon from "@mui/icons-material/ShoppingCart";
 import EventIcon from "@mui/icons-material/Event";
 import EmailIcon from "@mui/icons-material/Email";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
 import SearchIcon from "@mui/icons-material/Search";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { NavLink, useNavigate } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -52,6 +50,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import BookIcon from "@mui/icons-material/Book";
 import Avatar from "@mui/material/Avatar";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { rootColor } from "../theme/colors";
 import { Outlet } from "react-router-dom";
@@ -79,6 +78,11 @@ const items = [
         to: "/admin/category",
         icon: <CategoryIcon />,
         text: "Danh mục",
+    },
+    {
+        to: "/admin/banner",
+        icon: <ViewCarouselIcon />,
+        text: "Banner",
     },
     {
         icon: <ProductIcon />,
@@ -371,7 +375,6 @@ export default function AdminLayout() {
             <Drawer variant="permanent" open={open}>
                 <Box sx={{ py: "32px" }}></Box>
                 <List sx={{ bgcolor: rootColor.bg_blue }}>
-                    {/*  */}
                     {items.map((item, index) =>
                         item?.to ? (
                             <NavLink
@@ -418,7 +421,9 @@ export default function AdminLayout() {
                                             >
                                                 <NavLink
                                                     to={i.to}
-                                                    className={({ isActive }) =>
+                                                    className={({
+                                                        isActive,
+                                                    }) =>
                                                         isActive
                                                             ? "text-green-700 font-semibold hover:text-green-700 w-full"
                                                             : "text-inherit hover:text-green-700 hover:font-semibold w-full font-normal"

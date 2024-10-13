@@ -44,6 +44,7 @@ const Index = () => {
         console.log(response);
         if (response?.payload?._id) {
             snackNotify("success")("Đã xóa danh mục");
+            setOpenDialog(false);
         } else {
             snackNotify("error")("Xóa danh mục thất bại");
         }

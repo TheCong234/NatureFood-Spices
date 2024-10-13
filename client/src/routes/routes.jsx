@@ -33,6 +33,7 @@ import {
     BlogListAdmin,
     BlogCreateAdmin,
     StoresAdmin,
+    BannerAdmin,
 } from "../pages/Admin";
 
 import { FavoritePage, HomePage } from "../pages";
@@ -133,6 +134,10 @@ export const router = createBrowserRouter([
                     {
                         path: "category",
                         element: <CategoryProductAdmin />,
+                    },
+                    {
+                        path: "banner",
+                        element: <BannerAdmin />,
                     },
                     {
                         path: "product",

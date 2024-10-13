@@ -122,3 +122,26 @@ export const CategoryYup = yup.object().shape({
     //         );
     //     }),
 });
+
+export const BannerYup = yup.object().shape({
+    name: yup
+        .string()
+        .required("Tên banner là bắt buộc")
+        .min(3, "Tên banner phải có ít nhất 3 ký tự")
+        .max(50, "Tên banner không được vượt quá 50 ký tự"),
+
+    description: yup.string().required("Mô tả là bắt buộc"),
+    url: yup.string().required("Đường dẫn là bắt buộc"),
+    // image: yup
+    //     .mixed()
+    //     .required("Hình ảnh là bắt buộc")
+    //     .test("fileSize", "Kích thước file quá lớn", (value) => {
+    //         return value && value.size <= 2000000; // Kích thước tối đa 2MB
+    //     })
+    //     .test("fileType", "Chỉ cho phép định dạng hình ảnh", (value) => {
+    //         return (
+    //             value &&
+    //             ["image/jpeg", "image/png", "image/gif"].includes(value.type)
+    //         );
+    //     }),
+});
