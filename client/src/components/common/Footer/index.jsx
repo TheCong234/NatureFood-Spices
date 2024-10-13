@@ -1,70 +1,80 @@
 import React from "react";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import "../../../assets/styles/main.css"; // Đảm bảo rằng file CSS này có chứa các kiểu bạn muốn
+import "../../../assets/styles/main.css";
+import { Container, Grid, Typography } from "@mui/material";
 
 const Index = () => {
     return (
-        <footer className="footer">
-            <div className="footer-intro">
-                <div className="footer-description">
-                    <div className="logo">
-                        <img
-                            src="src/assets/images/logo.jpg"
-                            alt="Phoenix Logo"
-                        />
+        <footer className="footer-styled">
+            <Container className="flex py-16">
+                <div className=" w-1/3">
+                    <div className="flex">
+                        <div className="">
+                            <img
+                                src="src/assets/images/logo.jpg"
+                                alt="Phoenix Logo"
+                                className="w-[80px] h-[40px]"
+                            />
+                        </div>
+                        <div className="">
+                            <p className="text-3xl font-bold ml-3">
+                                Nature Food
+                            </p>
+                        </div>
                     </div>
-                    <div className="chil-pho">
-                        <h1>Nature</h1>
-                        <p>
-                            Phoenix is an admin dashboard template with
-                            fascinating features and amazing layout. The
-                            template is responsive to all major browsers and is
-                            compatible with all available devices and screen
-                            sizes.
-                        </p>
-                    </div>
+                    <p className="mt-3">
+                        Phoenix is an admin dashboard template with fascinating
+                        features and amazing layout. The template is responsive
+                        to all major browsers and is compatible with all
+                        available devices and screen sizes.
+                    </p>
                 </div>
-            </div>
-            <div className="footer-container">
-                {/* Column 1: About Phoenix */}
-                <div className="footer-column">
-                    <h3>About Phoenix</h3>
-                    <a href="#">Careers</a>
-                    <a href="#">Affiliate Program</a>
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms & Conditions</a>
-                </div>
+                <div className="w-2/3 ">
+                    <Grid container spacing={2}>
+                        <Grid item xs={6} md={3}>
+                            <div className="footer-column">
+                                <h3>About Phoenix</h3>
+                                <a href="#">Careers</a>
+                                <a href="#">Affiliate Program</a>
+                                <a href="#">Privacy Policy</a>
+                                <a href="#">Terms & Conditions</a>
+                            </div>
+                        </Grid>
+                        <Grid item xs={6} md={3}>
+                            <div className="footer-column">
+                                <h3>Stay Connected</h3>
+                                <a href="#">Blogs</a>
+                                <a href="#">
+                                    <FacebookIcon className="icon" /> Facebook
+                                </a>
+                                <a href="#">
+                                    <TwitterIcon className="icon" /> Twitter
+                                </a>
+                            </div>
+                        </Grid>
 
-                {/* Column 2: Stay Connected */}
-                <div className="footer-column">
-                    <h3>Stay Connected</h3>
-                    <a href="#">Blogs</a>
-                    <a href="#">
-                        <FacebookIcon className="icon" /> Facebook
-                    </a>
-                    <a href="#">
-                        <TwitterIcon className="icon" /> Twitter
-                    </a>
-                </div>
+                        <Grid item xs={6} md={3}>
+                            <div className="footer-column">
+                                <h3>Customer Service</h3>
+                                <a href="#">Help Desk</a>
+                                <a href="#">Support, 24/7</a>
+                                <a href="#">Community of Phoenix</a>
+                            </div>
+                        </Grid>
 
-                {/* Column 3: Customer Service */}
-                <div className="footer-column">
-                    <h3>Customer Service</h3>
-                    <a href="#">Help Desk</a>
-                    <a href="#">Support, 24/7</a>
-                    <a href="#">Community of Phoenix</a>
+                        <Grid item xs={6} md={3}>
+                            <div className="footer-column">
+                                <h3>Payment Method</h3>
+                                <a href="#">Cash on Delivery</a>
+                                <a href="#">Online Payment</a>
+                                <a href="#">PayPal</a>
+                                <a href="#">Installment</a>
+                            </div>
+                        </Grid>
+                    </Grid>
                 </div>
-
-                {/* Column 4: Payment Method */}
-                <div className="footer-column">
-                    <h3>Payment Method</h3>
-                    <a href="#">Cash on Delivery</a>
-                    <a href="#">Online Payment</a>
-                    <a href="#">PayPal</a>
-                    <a href="#">Installment</a>
-                </div>
-            </div>
+            </Container>
         </footer>
     );
 };

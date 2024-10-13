@@ -152,12 +152,7 @@ a {
 } */
 /* header */
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #f6f6f6;
-  border-bottom: 1px solid #ddd;
+background-color:var(--peach-color);
 }
 
 .header-left {
@@ -212,12 +207,32 @@ a {
   top: -5px;
   right: -10px;
 }
+/* NavBar.css */
+.nav-link {
+  text-decoration: none;
+  color: black;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 20px;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: #3f51b5; /* MUI primary color */
+}
+
+.nav-link.active {
+  color: #3f51b5;
+  font-weight: bold;
+}
+
+
 /* foter */
 
 
 /* Basic styling for footer */
 .footer {
-  background-color: #f4f5f7; 
+  background-color: var(--peach-color) !important;
   padding: 40px 0;
 }
 
@@ -301,4 +316,8 @@ a {
 .chil-pho{
   margin-left: 67px;
   padding-bottom: 20px;
+}
+
+.footer-styled{
+  background-color: var(--green-color);
 }

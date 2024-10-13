@@ -34,10 +34,17 @@ import {
     BlogCreateAdmin,
 } from "../pages/Admin";
 
-import { FavoritePage, HomePage } from "../pages";
+import { HomePage } from "../pages";
 import ProductDetail from "../pages/Customer/ProductDetails";
 import Error500 from "../pages/Common/Error500";
 import Error404 from "../pages/Common/Error404";
+import {
+    Wishlist,
+    Shipping,
+    Vendor,
+    TrackOrder,
+    Checkout,
+} from "../pages/Customer";
 
 export const router = createBrowserRouter([
     {
@@ -70,16 +77,32 @@ export const router = createBrowserRouter([
                         element: <HomePage />,
                     },
                     {
-                        path: "/favorite",
-                        element: <FavoritePage />,
-                    },
-                    {
                         path: "/register-store",
                         element: <RegisterStore />,
                     },
                     {
                         path: "product/detail/:productId",
                         element: <ProductDetail />,
+                    },
+                    {
+                        path: "/wishlist",
+                        element: <Wishlist />,
+                    },
+                    {
+                        path: "/shipping",
+                        element: <Shipping />,
+                    },
+                    {
+                        path: "/vendor",
+                        element: <Vendor />,
+                    },
+                    {
+                        path: "/trackOrder",
+                        element: <TrackOrder />,
+                    },
+                    {
+                        path: "/checkout",
+                        element: <Checkout />,
                     },
 
                     {
