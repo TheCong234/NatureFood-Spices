@@ -86,14 +86,6 @@ export const router = createBrowserRouter([
                         path: "product/detail/:productId",
                         element: <ProductDetail />,
                     },
-<<<<<<< HEAD
-                ],
-            },
-            {
-                path: "/seller",
-                element: <SellerLayout />,
-                children: [
-=======
                     {
                         path: "/wishlist",
                         element: <Wishlist />,
@@ -114,8 +106,12 @@ export const router = createBrowserRouter([
                         path: "/checkout",
                         element: <Checkout />,
                     },
-
->>>>>>> 30f7ea508ebc2f18ad38110a8fbc7795f01ef812
+                ],
+            },
+            {
+                path: "/seller",
+                element: <SellerLayout />,
+                children: [  
                     {
                         path: "dashboard",
                         element: <DashboardStore />,
