@@ -16,17 +16,13 @@ router.get(
 router.get("/all", asyncHandler(BannerController.getBanners));
 
 router.post(
-    "/new",
-    authJwt,
+    "/create",
     upload.single("image"),
     asyncHandler(BannerController.create)
 );
 
-router.put(
-    "/:id",
-    authJwt,
-    upload.single("image"),
-    asyncHandler(BannerController.update)
-);
+router.patch("/:id", asyncHandler(BannerController.updateBanner));
+
+router.delete("/:id", asyncHandler(BannerController.deleteBanner));
 
 export default router;

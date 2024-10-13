@@ -6,16 +6,26 @@ export const getBannersByCurrentUser = async () => {
     return result.data;
 };
 
-export const getBanners = async () => {
-    const result = await apiClient.get(BannerV1.BANNER_GET_ALL);
+export const getBannersApi = async () => {
+    const result = await apiClient.get(BannerV1.GET_BANNERS);
     return result.data;
 };
 
-export const createBanner = async (data) => {
-    const result = await apiClient.post(BannerV1.BANNER_CREATE, data, {
+export const createBannerApi = async (data) => {
+    const result = await apiClient.post(BannerV1.CREATE, data, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
     });
+    return result.data;
+};
+
+export const updateBannerApi = async (data) => {
+    const result = await apiClient.patch(BannerV1.UPDATE + data.id, data.data);
+    return result.data;
+};
+
+export const deleteBannerApi = async (data) => {
+    const result = await apiClient.delete(BannerV1.DELETE + data);
     return result.data;
 };

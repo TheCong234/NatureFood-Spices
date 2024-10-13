@@ -15,12 +15,15 @@ const ImageSchema = new Schema({
 
 const BannerSchema = new Schema(
     {
-        storeId: {
-            type: Schema.Types.ObjectId,
-            ref: "Store",
+        image: ImageSchema,
+        name: {
+            type: String,
             required: true,
         },
-        image: ImageSchema,
+        description: {
+            type: String,
+            required: true,
+        },
         exprired: {
             type: Boolean,
             default: false,
@@ -28,6 +31,11 @@ const BannerSchema = new Schema(
         url: {
             type: String,
             required: true,
+        },
+        status: {
+            type: Number,
+            enum: [0, 1],
+            default: 0,
         },
     },
     {

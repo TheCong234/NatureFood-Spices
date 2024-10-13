@@ -1,9 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
-    createBanner,
+    createBannerApi,
     getBannersByCurrentUser,
-    getBanners,
+    getBannersApi,
+    deleteBannerApi,
+    updateBannerApi,
 } from "../../../apis/banner.api";
+import { tryCatchWrapper } from "../../../utils/asyncHelper";
 
 export const getBannersByCurrentUserAction = createAsyncThunk(
     "banner/getBannersByCurrentUserAction",
@@ -16,16 +19,44 @@ export const getBannersByCurrentUserAction = createAsyncThunk(
 
 export const getBannersAction = createAsyncThunk(
     "banner/getBannersAction",
-    async () => {
-        const result = await getBanners();
-        return result;
+    async (_, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(getBannersApi);
+        if (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+        return result.data;
     }
 );
 
 export const createBannerAction = createAsyncThunk(
     "banner/createBannerAction",
-    async (data) => {
-        const result = await createBanner(data);
-        return result;
+    async (data, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(createBannerApi, data);
+        if (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+        return result.data;
+    }
+);
+
+export const updateBannerAction = createAsyncThunk(
+    "banner/updateBannerAction",
+    async (data, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(updateBannerApi, data);
+        if (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+        return result.data;
+    }
+);
+
+export const deleteBannerAction = createAsyncThunk(
+    "banner/deleteBannerAction",
+    async (data, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(deleteBannerApi, data);
+        if (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+        return result.data;
     }
 );

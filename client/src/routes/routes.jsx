@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { AdminLayout, EmptyLayout, MainLayout } from "../layout";
+import { AdminLayout, EmptyLayout, MainLayout, SellerLayout } from "../layout";
 import { RegisterPage, LoginPage, ForgotPage } from "../pages/Common";
 import {
     CategoryStore,
@@ -33,6 +33,7 @@ import {
     BlogListAdmin,
     BlogCreateAdmin,
     StoresAdmin,
+    BannerAdmin,
 } from "../pages/Admin";
 
 import { HomePage } from "../pages";
@@ -85,6 +86,14 @@ export const router = createBrowserRouter([
                         path: "product/detail/:productId",
                         element: <ProductDetail />,
                     },
+<<<<<<< HEAD
+                ],
+            },
+            {
+                path: "/seller",
+                element: <SellerLayout />,
+                children: [
+=======
                     {
                         path: "/wishlist",
                         element: <Wishlist />,
@@ -106,35 +115,30 @@ export const router = createBrowserRouter([
                         element: <Checkout />,
                     },
 
+>>>>>>> 30f7ea508ebc2f18ad38110a8fbc7795f01ef812
                     {
-                        path: "/host",
-                        element: <HomeStore />,
-                        children: [
-                            {
-                                path: "dashboard",
-                                element: <DashboardStore />,
-                            },
-                            {
-                                path: "product",
-                                element: <ProductStore />,
-                            },
-                            {
-                                path: "category",
-                                element: <CategoryStore />,
-                            },
-                            {
-                                path: "event",
-                                element: <EventStore />,
-                            },
-                            {
-                                path: "setting",
-                                element: <SettingStore />,
-                            },
-                            {
-                                path: "promote",
-                                element: <PromoteStore />,
-                            },
-                        ],
+                        path: "dashboard",
+                        element: <DashboardStore />,
+                    },
+                    {
+                        path: "product",
+                        element: <ProductStore />,
+                    },
+                    {
+                        path: "category",
+                        element: <CategoryStore />,
+                    },
+                    {
+                        path: "event",
+                        element: <EventStore />,
+                    },
+                    {
+                        path: "setting",
+                        element: <SettingStore />,
+                    },
+                    {
+                        path: "promote",
+                        element: <PromoteStore />,
                     },
                 ],
             },
@@ -157,6 +161,10 @@ export const router = createBrowserRouter([
                     {
                         path: "category",
                         element: <CategoryProductAdmin />,
+                    },
+                    {
+                        path: "banner",
+                        element: <BannerAdmin />,
                     },
                     {
                         path: "product",
