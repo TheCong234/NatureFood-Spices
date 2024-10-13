@@ -29,3 +29,8 @@ export const REFUND_STATUS = {
     2: "Từ chối",
     3: "Hoàn thành",
 };
+
+export const BANNER_STATUS = {
+    0: "Đang hoạt động",
+    1: "Đã dừng",
+};

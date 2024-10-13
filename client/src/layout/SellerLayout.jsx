@@ -1,6 +1,5 @@
 import * as React from "react";
-// import { styled, useTheme } from "@mui/material/styles";
-
+import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -19,70 +18,53 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import { rootColor } from "../theme/colors";
+import PeopleIcon from "@mui/icons-material/People";
+import ProductIcon from "@mui/icons-material/ShoppingCart";
+import EventIcon from "@mui/icons-material/Event";
+import EmailIcon from "@mui/icons-material/Email";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import CategoryIcon from "@mui/icons-material/Category";
+import GradingIcon from "@mui/icons-material/Grading";
+import MessageIcon from "@mui/icons-material/Message";
+import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import PaymentsIcon from "@mui/icons-material/Payments";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import BookIcon from "@mui/icons-material/Book";
+import { NavLink, Outlet } from "react-router-dom";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import {
     Collapse,
     Container,
     InputAdornment,
     InputBase,
     Stack,
-    styled,
-    useTheme,
 } from "@mui/material";
-import PeopleIcon from "@mui/icons-material/People";
-import ProductIcon from "@mui/icons-material/ShoppingCart";
-import EventIcon from "@mui/icons-material/Event";
-import EmailIcon from "@mui/icons-material/Email";
-import SearchIcon from "@mui/icons-material/Search";
-import SettingsIcon from "@mui/icons-material/Settings";
-import Badge from "@mui/material/Badge";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import { NavLink, useNavigate } from "react-router-dom";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
-import CategoryIcon from "@mui/icons-material/Category";
-import GradingIcon from "@mui/icons-material/Grading";
-import MessageIcon from "@mui/icons-material/Message";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import PaymentsIcon from "@mui/icons-material/Payments";
-import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import BookIcon from "@mui/icons-material/Book";
-import Avatar from "@mui/material/Avatar";
-import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { rootColor } from "../theme/colors";
-import { Outlet } from "react-router-dom";
-import "../assets/styles/admin.css";
 
 const drawerWidth = 240;
 
 const items = [
     {
-        to: "/admin/dashboard",
+        to: "/seller/dashboard",
         icon: <DashboardIcon />,
         text: "Dashboard",
     },
     {
-        to: "/admin/customer",
+        to: "/seller/customer",
         icon: <PeopleIcon />,
         text: "Người dùng",
     },
     {
-        to: "/admin/store",
+        to: "/seller/store",
         icon: <SupervisedUserCircleIcon />,
         text: "Cửa hàng",
     },
     {
-        to: "/admin/category",
+        to: "/seller/category",
         icon: <CategoryIcon />,
         text: "Danh mục",
-    },
-    {
-        to: "/admin/banner",
-        icon: <ViewCarouselIcon />,
-        text: "Banner",
     },
     {
         icon: <ProductIcon />,
@@ -90,15 +72,15 @@ const items = [
         fieldName: "products",
         listItems: [
             {
-                to: "/admin/product",
+                to: "/seller/product",
                 text: "Danh sách",
             },
             {
-                to: "/admin/product/:id",
+                to: "/seller/product/:id",
                 text: "Chi tiết",
             },
             {
-                to: "/admin/product/create",
+                to: "/seller/product/create",
                 text: "Thêm mới",
             },
         ],
@@ -109,26 +91,26 @@ const items = [
         fieldName: "event",
         listItems: [
             {
-                to: "/admin/event",
+                to: "/seller/event",
                 text: "Danh sách",
             },
             {
-                to: "/admin/event/:id",
+                to: "/seller/event/:id",
                 text: "Chi tiết",
             },
             {
-                to: "/admin/product/create",
+                to: "/seller/product/create",
                 text: "Thêm mới",
             },
         ],
     },
     {
-        to: "/admin/order",
+        to: "/seller/order",
         icon: <GradingIcon />,
         text: "Đơn hàng",
     },
     {
-        to: "/admin/message",
+        to: "/seller/message",
         icon: <MessageIcon />,
         text: "Tin nhắn",
     },
@@ -138,11 +120,11 @@ const items = [
         fieldName: "email",
         listItems: [
             {
-                to: "/admin/email/inbox",
+                to: "/seller/email/inbox",
                 text: "Hộp thư đến",
             },
             {
-                to: "/admin/email/create",
+                to: "/seller/email/create",
                 text: "Soạn email",
             },
         ],
@@ -153,32 +135,32 @@ const items = [
         fieldName: "blog",
         listItems: [
             {
-                to: "/admin/blog/list",
+                to: "/seller/blog/list",
                 text: "Danh sách",
             },
             {
-                to: "/admin/blog/create",
+                to: "/seller/blog/create",
                 text: "Tạo blog",
             },
         ],
     },
     {
-        to: "/admin/notify",
+        to: "/seller/notify",
         icon: <NotificationsActiveIcon />,
         text: "Thông báo ",
     },
     {
-        to: "/admin/bill",
+        to: "/seller/bill",
         icon: <PaymentsIcon />,
         text: "Hóa đơn",
     },
     {
-        to: "/admin/report",
+        to: "/seller/report",
         icon: <PriorityHighIcon />,
         text: "Báo cáo",
     },
     {
-        to: "/admin/profile",
+        to: "/seller/profile",
         icon: <AccountCircleIcon />,
         text: "Hồ sơ",
     },
@@ -210,6 +192,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
     alignItems: "center",
     justifyContent: "flex-end",
     padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
 }));
 
@@ -240,7 +223,6 @@ const Drawer = styled(MuiDrawer, {
     shouldForwardProp: (prop) => prop !== "open",
 })(({ theme }) => ({
     width: drawerWidth,
-    height: "100vh",
     flexShrink: 0,
     whiteSpace: "nowrap",
     boxSizing: "border-box",
@@ -249,132 +231,70 @@ const Drawer = styled(MuiDrawer, {
             props: ({ open }) => open,
             style: {
                 ...openedMixin(theme),
-                "& .MuiDrawer-paper": {
-                    ...openedMixin(theme),
-                    position: "fixed", // Đặt vị trí fixed cho Paper
-                },
+                "& .MuiDrawer-paper": openedMixin(theme),
             },
         },
         {
             props: ({ open }) => !open,
             style: {
                 ...closedMixin(theme),
-                "& .MuiDrawer-paper": {
-                    ...closedMixin(theme),
-                    position: "fixed", // Đặt vị trí fixed cho Paper
-                },
+                "& .MuiDrawer-paper": closedMixin(theme),
             },
         },
     ],
 }));
 
-export default function AdminLayout() {
+export default function MiniDrawer() {
     const theme = useTheme();
-    const navigate = useNavigate();
     const [open, setOpen] = React.useState(true);
 
     const handleDrawerOpen = () => {
-        setOpen(!open);
+        setOpen(true);
     };
 
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
     const handleClick = (menu) => {
         setOpen((prev) => ({ ...prev, [menu]: !prev[menu] }));
     };
 
     return (
-        <Box sx={{ bgcolor: rootColor.bg_blue, display: "flex" }}>
-            <AppBar
-                position="fixed"
-                sx={{ bgcolor: rootColor.bg_blue, color: rootColor.text }}
-            >
-                <Toolbar
-                    sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                    }}
-                >
-                    <Box sx={{ display: "flex" }}>
-                        <IconButton
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            sx={[
-                                {
-                                    marginRight: 5,
-                                    color: rootColor.text,
-                                },
-                            ]}
-                        >
-                            {open ? <MenuIcon /> : <MenuOpenIcon />}
-                        </IconButton>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            sx={{ flexGrow: 1 }}
-                        >
-                            Nature Food test
-                        </Typography>
-                        {/* Search Bar */}
-                        <div
-                            style={{
-                                position: "relative",
-                                marginRight: 16,
-                                marginLeft: "65px",
-                            }}
-                        >
-                            <InputBase
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <SearchIcon
-                                            sx={{
-                                                fontSize: "30px",
-                                                paddingLeft: "10px",
-                                                opacity: "0.6",
-                                            }}
-                                        />
-                                    </InputAdornment>
-                                }
-                                placeholder="Search…"
-                                style={{
-                                    width: "340px",
-                                    paddingLeft: "17px",
-                                    padding: "3px",
-                                    borderRadius: "17px",
-                                    backgroundColor: "white",
-                                }}
-                                inputProps={{ "aria-label": "search" }}
-                            />
-                        </div>
-                    </Box>
-                    {/* Icons */}
-                    <div style={{ display: "flex" }}>
-                        <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton color="inherit">
-                            <Badge badgeContent={2} color="secondary">
-                                <ShoppingCartIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton color="inherit">
-                            <SettingsIcon />
-                        </IconButton>
-                        <Stack>
-                            <Avatar
-                                alt="Remy Sharp"
-                                src="/static/images/avatar/1.jpg"
-                            />
-                        </Stack>
-                    </div>
+        <Box sx={{ display: "flex" }}>
+            <CssBaseline />
+            <AppBar position="fixed" open={open}>
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        sx={[
+                            {
+                                marginRight: 5,
+                            },
+                            open && { display: "none" },
+                        ]}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" noWrap component="div">
+                        Mini variant drawer
+                    </Typography>
                 </Toolbar>
             </AppBar>
-
             <Drawer variant="permanent" open={open}>
-                <Box sx={{ py: "32px" }}></Box>
-                <List sx={{ bgcolor: rootColor.bg_blue }}>
+                <DrawerHeader>
+                    <IconButton onClick={handleDrawerClose}>
+                        {theme.direction === "rtl" ? (
+                            <ChevronRightIcon />
+                        ) : (
+                            <ChevronLeftIcon />
+                        )}
+                    </IconButton>
+                </DrawerHeader>
+                <Divider />
+                <List>
                     {items.map((item, index) =>
                         item?.to ? (
                             <NavLink
@@ -440,15 +360,8 @@ export default function AdminLayout() {
                     )}
                 </List>
             </Drawer>
-            <Box
-                component="main"
-                sx={{
-                    flexGrow: 1,
-                    padding: 2,
-                    overflowX: "auto",
-                }}
-            >
-                <Box sx={{ height: "64px" }}></Box>
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                <DrawerHeader />
                 <Outlet />
             </Box>
         </Box>

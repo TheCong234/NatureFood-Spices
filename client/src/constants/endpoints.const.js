@@ -14,6 +14,7 @@ export const StoreV1 = {
 };
 
 export const CategoryV1 = {
+    CREATE: "/category/create",
     CATEGORY_GET_ALL: "/category/all",
     DELETE: "/category/",
 };
@@ -30,9 +31,11 @@ export const ProductV1 = {
 };
 
 export const BannerV1 = {
-    BANNER_GET_ALL: "/banner/all",
-    BANNER_CREATE: "/banner/new",
+    GET_BANNERS: "/banner/all",
+    CREATE: "/banner/create",
     BANNER_GET_BY_CURRENT_USER: "/banner/store",
+    UPDATE: "/banner/",
+    DELETE: "/banner/",
 };
 
 export const ReviewV1 = {
