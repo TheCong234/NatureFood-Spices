@@ -41,6 +41,12 @@ const StoreSchema = Schema(
                 ref: "StoreProduct",
             },
         ],
+        favorite: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Product",
+            },
+        ],
         address: {
             type: Schema.Types.ObjectId,
             ref: "Address",
@@ -49,6 +55,10 @@ const StoreSchema = Schema(
             type: Number,
             enum: [0, 1, 2],
             default: 0,
+        },
+        cart: {
+            type: Schema.Types.ObjectId,
+            ref: "Cart",
         },
     },
     {

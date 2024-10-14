@@ -8,16 +8,18 @@ export const getStoreById = async (storeId) => {
     return store.data;
 };
 
-export const createStore = async (data) => {
-    try {
-        const store = await apiClient.post(StoreV1.STORE_CREATE, data, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-            withCredentials: true,
-        });
-        return store.data;
-    } catch (error) {
-        return error;
-    }
+export const getCurrentStoreApi = async () => {
+    const response = await apiClient.get(StoreV1.GET_CURRENT);
+    return response.data;
+};
+
+export const createStoreApi = async (data) => {
+    const response = await apiClient.post(StoreV1.STORE_CREATE, data.data, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${data.token}`,
+        },
+        withCredentials: true,
+    });
+    return response.data;
 };

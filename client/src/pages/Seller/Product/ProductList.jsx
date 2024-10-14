@@ -4,6 +4,7 @@ import ProductCardPrimary from "../../../components/ProductCard/ProductCardPrima
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getProductsAction } from "../../../hooks/Redux/Product/productAction";
+import { getFavoriteProductsAction } from "../../../hooks/Redux/Favorite/favoriteAction";
 
 const Index = () => {
     const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const Index = () => {
     );
     const handleGetData = async () => {
         await dispatch(getProductsAction());
+        await dispatch(getFavoriteProductsAction());
     };
     useEffect(() => {
         handleGetData();
