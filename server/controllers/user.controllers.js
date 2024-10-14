@@ -9,16 +9,16 @@ import { sendMail } from "../utils/mailer.utils.js";
 
 const UserController = {
     async register(req, res) {
-        const cart = new CartModel();
-        const newCart = await cart.save();
         const user = await UserModel.create(req.body);
-        user.cart = newCart._id;
-        await user.save();
+        const newUser = await user.save();
+
+        const cart = new CartModel({ user: newUser._id });
+        await cart.save();
         const token = user.createToken();
         return res
             .status(statusCode.CREATED)
             .json(
-                BaseResponse.success("Đăng ký tài khaonr thành công", { token })
+                BaseResponse.success("Đăng ký tài khoản thành công", { token })
             );
     },
 
