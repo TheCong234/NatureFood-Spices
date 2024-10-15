@@ -106,12 +106,16 @@ export const router = createBrowserRouter([
                         path: "/checkout",
                         element: <Checkout />,
                     },
+                    // {
+                    //     path: "/cart",
+                    //     element: <Cart />,
+                    // },
                 ],
             },
             {
                 path: "/seller",
                 element: <SellerLayout />,
-                children: [  
+                children: [
                     {
                         path: "dashboard",
                         element: <DashboardStore />,
