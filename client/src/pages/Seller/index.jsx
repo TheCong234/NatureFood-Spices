@@ -1,4 +1,5 @@
 export { default as ProductListSeller } from "./Product/ProductList";
+export { default as ProductCartSeller } from "./Product/ProductCart";
 export { default as DashboardSeller } from "./Dashboard";
 export { default as RegisterSeller } from "./Register";
 

@@ -62,17 +62,6 @@ export default function ProductCardPrimary({ product }) {
         console.log(response);
     };
 
-    const handleRemoveFromCart = async () => {
-        const response = await dispatch(
-            removeFavoriteProductAction(product._id)
-        );
-        if (response?.error) {
-            snackNotify("error")("Bỏ thích thất bại");
-        } else {
-            snackNotify("success")("Đã bỏ yêu thích");
-        }
-    };
-
     return (
         <Card className="product_card-primary">
             <Box>

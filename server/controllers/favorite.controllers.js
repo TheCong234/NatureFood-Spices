@@ -78,7 +78,7 @@ const FavoriteController = {
     async removeFavoriteProduct(req, res) {
         const store = await StoreModel.findOneAndUpdate(
             { owner: req.user._id },
-            { $addToSet: { favorite: { _id: req.params.id } } }
+            { $pull: { favorite: req.params.id } }
         );
         const product = await ProductModel.findById(req.params.id);
         return res

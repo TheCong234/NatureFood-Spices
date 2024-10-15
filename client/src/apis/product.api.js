@@ -6,8 +6,8 @@ export const getNewestProducts = async () => {
     return products.data;
 };
 
-export const getProductsApi = async () => {
-    const response = await apiClient.get(ProductV1.GET_PRODUCTS);
+export const getProductsApi = async (params) => {
+    const response = await apiClient.get(ProductV1.GET_PRODUCTS, { params });
     return response.data;
 };
 

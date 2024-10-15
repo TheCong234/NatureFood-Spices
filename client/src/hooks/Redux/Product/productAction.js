@@ -11,8 +11,8 @@ import { tryCatchWrapper } from "../../../utils/asyncHelper";
 //getProducts
 export const getProductsAction = createAsyncThunk(
     "product/getProductsAction",
-    async (_, thunkAPI) => {
-        const { result, error } = await tryCatchWrapper(getProductsApi);
+    async (data, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(getProductsApi, data);
         if (error) {
             return thunkAPI.rejectWithValue(error);
         }
