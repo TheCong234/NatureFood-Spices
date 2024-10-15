@@ -8,6 +8,7 @@ import {
     ProductListSeller,
     PromoteStore,
     RegisterSeller,
+    ProductCartSeller,
 } from "../pages/Seller";
 
 import {
@@ -115,8 +116,12 @@ export const router = createBrowserRouter([
                         element: <DashboardSeller />,
                     },
                     {
-                        path: "product",
+                        path: "product/list",
                         element: <ProductListSeller />,
+                    },
+                    {
+                        path: "product/cart",
+                        element: <ProductCartSeller />,
                     },
                     {
                         path: "event",

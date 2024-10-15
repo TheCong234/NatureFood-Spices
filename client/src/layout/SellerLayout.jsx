@@ -65,20 +65,16 @@ const items = [
     // },
     {
         icon: <ProductIcon />,
-        text: "Sản phẩm kho",
+        text: "Sản phẩm cty",
         fieldName: "products",
         listItems: [
             {
-                to: "/seller/product",
+                to: "/seller/product/list?skip=0&take=10&type=all",
                 text: "Danh sách",
             },
             {
-                to: "/seller/product/:id",
-                text: "Chi tiết",
-            },
-            {
-                to: "/seller/product/create",
-                text: "Thêm mới",
+                to: "/seller/product/cart",
+                text: "Giỏ hàng",
             },
         ],
     },
