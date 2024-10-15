@@ -30,10 +30,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
     cors({
         origin: "*", // Chỉ định nguồn cho phép
-        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-        allowedHeaders: ["Content-Type", "Authorization"],
-        exposedHeaders: ["Content-Type", "Authorization"],
-        credentials: true, // Cho phép gửi cookie nếu cần thiết
+        // methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        // allowedHeaders: ["Content-Type", "Authorization"],
+        // exposedHeaders: ["Content-Type", "Authorization"],
+        // credentials: true, // Cho phép gửi cookie nếu cần thiết
     })
 );
 
