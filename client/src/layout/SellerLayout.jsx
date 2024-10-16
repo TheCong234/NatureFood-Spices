@@ -359,7 +359,7 @@ export default function MiniDrawer() {
                     )}
                 </List>
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Box component="main" sx={{ flexGrow: 1, p: 3, overflowX: "auto" }}>
                 <DrawerHeader />
                 <Outlet />
             </Box>
