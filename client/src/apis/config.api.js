@@ -6,7 +6,7 @@ const apiClient = axios.create({
         Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     timeout: 60000,
-    // withCredentials: true,
+    withCredentials: true,
 });
 
 export { apiClient };
