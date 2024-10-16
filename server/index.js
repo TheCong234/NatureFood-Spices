@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
     cors({
-        origin: "http://72.18.214.43", // Chỉ định chính xác origin được phép
+        origin: ["http://72.18.214.43", "http://localhost:5173"], // Chỉ định chính xác origin được phép
         credentials: true, // Cho phép gửi thông tin xác thực
     })
 );
