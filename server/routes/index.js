@@ -11,3 +11,4 @@ export { default as BannerRoutes } from "./banner.routes.js";
 export { default as StoreProductRoutes } from "./store.product.routes.js";
 export { default as OrderRoutes } from "./order.routes.js";
 export { default as RefundRoutes } from "./refund.routes.js";
+export { default as StoreCartRoutes } from "./store.cart.routes.js";

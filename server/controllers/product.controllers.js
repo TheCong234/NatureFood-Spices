@@ -7,10 +7,35 @@ import StoreModel from "../models/store.models.js";
 
 const ProductController = {
     async getAllProduct(req, res) {
-        const products = await ProductModel.find({}).populate("category");
-        const total = await ProductModel.countDocuments({});
+        const { skip, take, type } = req.query;
+        const skipNumber = parseInt(skip) || 0;
+        const takeNumber = parseInt(take) || 10;
+
+        let products = null;
+        let total = 0;
+        if (type == "all") {
+            products = await ProductModel.find({})
+                .populate("category")
+                .skip(skipNumber)
+                .limit(takeNumber);
+            total = await ProductModel.countDocuments({});
+        } else if (type == "favorite") {
+            const store = await StoreModel.findOne({ owner: req.user._id })
+                .populate({
+                    path: "favorite",
+                    populate: { path: "category" },
+                })
+                .skip(skipNumber)
+                .limit(takeNumber);
+            products = store?.favorite;
+            const standStore = await StoreModel.findOne({
+                owner: req.user._id,
+            });
+            total = standStore?.favorite?.length || 10;
+        }
+
         return res.status(statusCode.OK).json(
-            BaseResponse.success("Lấy tất cả sản phẩm thành công", {
+            BaseResponse.success("Lấy sản phẩm thành công", {
                 products,
                 total,
             })

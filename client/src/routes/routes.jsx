@@ -2,15 +2,14 @@ import { createBrowserRouter } from "react-router-dom";
 import { AdminLayout, EmptyLayout, MainLayout, SellerLayout } from "../layout";
 import { RegisterPage, LoginPage, ForgotPage } from "../pages/Common";
 import {
-    CategoryStore,
-    DashboardStore,
+    DashboardSeller,
     EventStore,
-    HomeStore,
-    RegisterStore,
     SettingStore,
-    ProductStore,
+    ProductListSeller,
     PromoteStore,
-} from "../pages";
+    RegisterSeller,
+    ProductCartSeller,
+} from "../pages/Seller";
 
 import {
     DashboardAdmin,
@@ -65,6 +64,10 @@ export const router = createBrowserRouter([
                 path: "/forgot",
                 element: <ForgotPage />,
             },
+            {
+                path: "/register-seller",
+                element: <RegisterSeller />,
+            },
 
             {
                 path: "/",
@@ -77,10 +80,6 @@ export const router = createBrowserRouter([
                     {
                         path: "/home",
                         element: <HomePage />,
-                    },
-                    {
-                        path: "/register-store",
-                        element: <RegisterStore />,
                     },
                     {
                         path: "product/detail/:productId",
@@ -118,15 +117,15 @@ export const router = createBrowserRouter([
                 children: [
                     {
                         path: "dashboard",
-                        element: <DashboardStore />,
+                        element: <DashboardSeller />,
                     },
                     {
-                        path: "product",
-                        element: <ProductStore />,
+                        path: "product/list",
+                        element: <ProductListSeller />,
                     },
                     {
-                        path: "category",
-                        element: <CategoryStore />,
+                        path: "product/cart",
+                        element: <ProductCartSeller />,
                     },
                     {
                         path: "event",

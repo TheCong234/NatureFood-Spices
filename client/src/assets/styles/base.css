@@ -46,3 +46,39 @@
 .text-orange{
     color: var(--orange-color);
 }
+
+.na-mr-2{
+    margin-right: 0.5rem !important;
+}
+
+.na-table-header-tini{
+    background-color: var(--peach-color);
+    /* color: black; */
+    font-size: 14px;
+    flex-wrap: nowrap;
+}
+
+.na-table-header-tini .na-table-cell-tini{
+    font-size: 14px !important;
+    padding: 8px 16px !important;
+    font-weight: 500;
+    border-bottom: none; 
+}
+
+.na-table-body-tini .na-table-row{
+    height: 60px;
+}
+
+.na-fs-16{
+    font-size: 16px !important;
+}
+
+.na-px-4{
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+}
+
+/* .na-table-body-tini .na-table-row td{
+    padding-left: 4px;
+    padding-right: 4px;
+} */

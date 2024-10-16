@@ -1,3 +1,5 @@
+import { useLocation } from "react-router-dom";
+
 export function formatPrice(price) {
     return price
         .toString()
@@ -13,3 +15,7 @@ export function convertDate(dateString) {
 
     return `${day}-${month}-${year}`; // Trả về định dạng mới
 }
+
+export const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+};

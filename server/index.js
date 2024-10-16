@@ -14,6 +14,7 @@ import {
     StoreProductRoutes,
     OrderRoutes,
     RefundRoutes,
+    StoreCartRoutes,
 } from "./routes/index.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
@@ -28,11 +29,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
     cors({
-        origin: "http://localhost:5173", // Chỉ định nguồn cho phép
-        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-        allowedHeaders: ["Content-Type", "Authorization"],
-        exposedHeaders: ["Content-Type", "Authorization"],
-        credentials: true, // Cho phép gửi cookie nếu cần thiết
+        origin: "http://72.18.214.43", // Chỉ định chính xác origin được phép
+        credentials: true, // Cho phép gửi thông tin xác thực
     })
 );
 
@@ -84,6 +82,7 @@ app.use(`${apiVersion}/banner`, BannerRoutes);
 app.use(`${apiVersion}/store-product`, StoreProductRoutes);
 app.use(`${apiVersion}/order`, OrderRoutes);
 app.use(`${apiVersion}/refund`, RefundRoutes);
+app.use(`${apiVersion}/store-cart`, StoreCartRoutes);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

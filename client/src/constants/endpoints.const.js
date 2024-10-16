@@ -9,6 +9,7 @@ export const UserV1 = {
 };
 
 export const StoreV1 = {
+    GET_CURRENT: "/store/current",
     STORE_CREATE: "/store/new",
     STORE_GET_STORE_BY_ID: "/store",
 };
@@ -40,4 +41,15 @@ export const BannerV1 = {
 
 export const ReviewV1 = {
     REVIEW_CREATE: "/review/",
+};
+
+export const FavoriteV1 = {
+    ADD_PRODUCT: "/favorite/product/add/",
+    REMOVE_PRODUCT: "/favorite/product/remove/",
+    GET_FAVORITE_PRODUCT: "/favorite/product",
+};
+
+export const StoreCartV1 = {
+    ADD: "/store-cart/",
+    REMOVE: "/store-cart/",
 };

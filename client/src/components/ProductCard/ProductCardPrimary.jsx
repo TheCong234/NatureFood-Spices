@@ -1,20 +1,67 @@
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import React, { useRef, useState } from "react";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Pagination } from "swiper/modules";
-import { Box, Rating, Stack, Tooltip } from "@mui/material";
 import { formatPrice } from "../../services/functions";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    addFavoriteProductAction,
+    removeFavoriteProductAction,
+} from "../../hooks/Redux/Favorite/favoriteAction";
+import { Box, Card, Rating, Stack, Tooltip } from "@mui/material";
+import useSnackNotify from "../SnackNotify";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { addProductToStoreCartAction } from "../../hooks/Redux/Cart/cartAction";
 
 export default function ProductCardPrimary({ product }) {
+    const dispatch = useDispatch();
+    const snackNotify = useSnackNotify();
+    const { data: favoriteData } = useSelector((state) => state.favorite);
+    const { currentStore } = useSelector((state) => state.store);
+
+    //favorite features
+    const handleAddFavoriteProduct = async () => {
+        const response = await dispatch(addFavoriteProductAction(product._id));
+        if (response?.error) {
+            snackNotify("error")("Thêm yêu thích thất bại");
+        } else {
+            snackNotify("success")("Đã thêm vào yêu thích");
+        }
+        console.log(response);
+    };
+
+    const handleRemoveFavoriteProduct = async () => {
+        const response = await dispatch(
+            removeFavoriteProductAction(product._id)
+        );
+        if (response?.error) {
+            snackNotify("error")("Bỏ thích thất bại");
+        } else {
+            snackNotify("success")("Đã bỏ yêu thích");
+        }
+    };
+
+    //Cart features
+    const handleAddToCart = async () => {
+        const data = {
+            storeId: currentStore?._id,
+            productId: product?._id,
+            quantity: 1,
+        };
+        const response = await dispatch(addProductToStoreCartAction(data));
+        if (response?.error) {
+            snackNotify("error")("Thêm vào giỏ hàng thất bại");
+        } else {
+            snackNotify("success")("Đã thêm vào giỏ hàng");
+        }
+        console.log(response);
+    };
+
     return (
         <Card className="product_card-primary">
             <Box>
@@ -48,7 +95,7 @@ export default function ProductCardPrimary({ product }) {
                         <small>₫</small>
                         {formatPrice(product?.price)}
                     </div>
-                    <del className="flex items-center ml-3 font-medium text-gray-500">
+                    <del className="flex items-center ml-3 font-semibold text-gray-500">
                         <small>₫</small>
                         {formatPrice(product?.salePrice)}
                     </del>
@@ -59,28 +106,47 @@ export default function ProductCardPrimary({ product }) {
                 >
                     Stock:{" "}
                     <span className="text-green-500 font-semibold">
-                        {product.inventory}
+                        {product?.inventory}
                     </span>
                 </Typography>
             </Box>
             <Box className="px-4 pb-4 flex justify-between">
                 <Rating name="read-only" value={product?.rating} readOnly />
                 <Stack direction={"row"} spacing={1}>
-                    <Tooltip title="Thêm vào yêu thích" placement="top">
-                        <Button
-                            variant="outlined"
-                            sx={{ padding: "3px 12px", minWidth: "10px" }}
-                            size="small"
-                            className="btn-product-cart"
-                        >
-                            <FavoriteBorderIcon fontSize="small" />
-                        </Button>
-                    </Tooltip>
+                    {favoriteData?.favorite?.some(
+                        (f) => f._id == product._id
+                    ) ? (
+                        <Tooltip title="Bỏ yêu thích" placement="top">
+                            <Button
+                                variant="outlined"
+                                sx={{ padding: "3px 12px", minWidth: "10px" }}
+                                size="small"
+                                className="btn-product-cart"
+                                onClick={handleRemoveFavoriteProduct}
+                            >
+                                <FavoriteIcon fontSize="small" color="error" />
+                            </Button>
+                        </Tooltip>
+                    ) : (
+                        <Tooltip title="Thêm vào yêu thích" placement="top">
+                            <Button
+                                variant="outlined"
+                                sx={{ padding: "3px 12px", minWidth: "10px" }}
+                                size="small"
+                                className="btn-product-cart"
+                                onClick={handleAddFavoriteProduct}
+                            >
+                                <FavoriteBorderIcon fontSize="small" />
+                            </Button>
+                        </Tooltip>
+                    )}
+
                     <Tooltip title="Thêm vào giỏ hàng" placement="top">
                         <Button
                             variant="outlined"
                             sx={{ padding: "3px 12px", minWidth: "10px" }}
                             size="small"
+                            onClick={handleAddToCart}
                         >
                             <AddShoppingCartIcon fontSize="small" />
                         </Button>
