@@ -51,5 +51,6 @@ export const FavoriteV1 = {
 
 export const StoreCartV1 = {
     ADD: "/store-cart/",
-    REMOVE: "/store-cart/",
+    DELETE: "/store-cart/items/",
+    GET_STORE_CART: "/store-cart/all",
 };

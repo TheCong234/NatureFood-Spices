@@ -50,7 +50,7 @@ export default function ProductCardPrimary({ product }) {
     const handleAddToCart = async () => {
         const data = {
             storeId: currentStore?._id,
-            productId: product?._id,
+            product: product?._id,
             quantity: 1,
         };
         const response = await dispatch(addProductToStoreCartAction(data));

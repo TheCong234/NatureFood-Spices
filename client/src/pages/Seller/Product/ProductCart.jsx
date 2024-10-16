@@ -16,6 +16,13 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import { QuantityInput } from "../../../components";
 import { formatPrice } from "../../../services/functions";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    deleteStoreCartItemAction,
+    getStoreCartItemsAction,
+} from "../../../hooks/Redux/Cart/cartAction";
+import { useEffect } from "react";
+import useSnackNotify from "../../../components/SnackNotify";
 
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
@@ -30,6 +37,24 @@ const rows = [
 ];
 
 export default function ProductCart() {
+    const dispatch = useDispatch();
+    const snackNotify = useSnackNotify();
+    const { data: cartData, loading: cartLoading } = useSelector(
+        (state) => state.cart
+    );
+
+    const handelDeleteStoreCartItem = async (data) => {
+        await dispatch(deleteStoreCartItemAction(data?._id));
+        snackNotify("success")("Đã xóa sản phẩm khỏi giỏ hàng");
+    };
+
+    const handleGetData = async () => {
+        await dispatch(getStoreCartItemsAction());
+    };
+
+    useEffect(() => {
+        handleGetData();
+    }, []);
     return (
         <Box>
             <Paper>
@@ -98,9 +123,9 @@ export default function ProductCart() {
                                 </TableRow>
                             </TableHead>
                             <TableBody className="na-table-body-tini">
-                                {rows.map((row) => (
+                                {cartData?.products?.map((product) => (
                                     <TableRow
-                                        key={row.name}
+                                        key={product?._id}
                                         sx={{
                                             "&:last-child td, &:last-child th":
                                                 { border: 0 },
@@ -120,31 +145,42 @@ export default function ProductCart() {
                                                     variant="body1"
                                                     className="text-truncate-2"
                                                 >
-                                                    Apple MacBook Pro 15"
-                                                    Z0V20008N: 2.9GHz 6-core
-                                                    8th-Gen Intel Core i9, 32GB
-                                                    RAM
+                                                    {product?.product?.name}
                                                 </Typography>
                                             </div>
                                         </TableCell>
                                         <TableCell align="right">
-                                            <QuantityInput quanity={3} />
+                                            <QuantityInput
+                                                quanity={product?.quantity}
+                                            />
                                         </TableCell>
                                         <TableCell align="right">
                                             <div className="na-fs-16 flex justify-center font-semibold ">
                                                 <small>₫</small>
-                                                {formatPrice(2141342)}
+                                                {formatPrice(
+                                                    product?.product?.price
+                                                )}
                                             </div>
                                         </TableCell>
                                         <TableCell align="right">
                                             <div className="na-fs-16 flex justify-center font-semibold text-orange">
                                                 <small>₫</small>
-                                                {formatPrice(2141342 * 3)}
+                                                {formatPrice(
+                                                    product?.product?.price *
+                                                        product?.quantity
+                                                )}
                                             </div>
                                         </TableCell>
                                         <TableCell align="right">
-                                            <IconButton aria-label="delete">
-                                                <DeleteIcon />
+                                            <IconButton
+                                                aria-label="delete"
+                                                onClick={() =>
+                                                    handelDeleteStoreCartItem(
+                                                        product
+                                                    )
+                                                }
+                                            >
+                                                <DeleteIcon color="error" />
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>

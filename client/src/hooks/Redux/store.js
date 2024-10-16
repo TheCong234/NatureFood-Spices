@@ -7,6 +7,7 @@ import bannerReducer from "./Banner/bannerSlice";
 import newestProductsReducer from "./Product/newestProductsSlice";
 import productReducer from "./Product/productSlice";
 import favoriteReducer from "./Favorite/favoriteSlice";
+import cartReducer from "./Cart/cartSlice";
 
 export const store = configureStore({
     reducer: {
@@ -18,5 +19,6 @@ export const store = configureStore({
         newestProducts: newestProductsReducer,
         product: productReducer,
         favorite: favoriteReducer,
+        cart: cartReducer,
     },
 });
