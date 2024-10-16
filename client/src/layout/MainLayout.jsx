@@ -8,6 +8,7 @@ const Index = () => {
         <div>
             <Header />
             <Container>
+                <div className="py-20"></div>
                 <Outlet />
             </Container>
             <Footer />

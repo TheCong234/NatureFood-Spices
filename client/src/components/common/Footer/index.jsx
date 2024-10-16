@@ -6,7 +6,7 @@ import { Container, Grid, Typography } from "@mui/material";
 
 const Index = () => {
     return (
-        <footer className="footer-styled">
+        <footer className="footer">
             <Container className="flex py-16">
                 <div className=" w-1/3">
                     <div className="flex">
@@ -46,10 +46,10 @@ const Index = () => {
                                 <h3>Stay Connected</h3>
                                 <a href="#">Blogs</a>
                                 <a href="#">
-                                    <FacebookIcon className="icon" /> Facebook
+                                    <FacebookIcon /> Facebook
                                 </a>
                                 <a href="#">
-                                    <TwitterIcon className="icon" /> Twitter
+                                    <TwitterIcon /> Twitter
                                 </a>
                             </div>
                         </Grid>
