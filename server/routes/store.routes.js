@@ -9,6 +9,8 @@ import StoreControllers from "../controllers/store.controllers.js";
 const upload = multer({ storage: storage });
 
 const router = express.Router();
+
+router.get("/current", authJwt, asyncHandler(StoreControllers.getCurrentStore));
 router.get("/:id", asyncHandler(StoreControllers.getStoreById));
 
 router.post(

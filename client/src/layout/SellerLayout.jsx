@@ -35,13 +35,10 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import BookIcon from "@mui/icons-material/Book";
 import { NavLink, Outlet } from "react-router-dom";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import {
-    Collapse,
-    Container,
-    InputAdornment,
-    InputBase,
-    Stack,
-} from "@mui/material";
+import { Collapse } from "@mui/material";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getCurrentStoreAction } from "../hooks/Redux/Store/storeAction";
 
 const drawerWidth = 240;
 
@@ -51,37 +48,33 @@ const items = [
         icon: <DashboardIcon />,
         text: "Dashboard",
     },
-    {
-        to: "/seller/customer",
-        icon: <PeopleIcon />,
-        text: "Người dùng",
-    },
-    {
-        to: "/seller/store",
-        icon: <SupervisedUserCircleIcon />,
-        text: "Cửa hàng",
-    },
-    {
-        to: "/seller/category",
-        icon: <CategoryIcon />,
-        text: "Danh mục",
-    },
+    // {
+    //     to: "/seller/customer",
+    //     icon: <PeopleIcon />,
+    //     text: "Người dùng",
+    // },
+    // {
+    //     to: "/seller/store",
+    //     icon: <SupervisedUserCircleIcon />,
+    //     text: "Cửa hàng",
+    // },
+    // {
+    //     to: "/seller/category",
+    //     icon: <CategoryIcon />,
+    //     text: "Danh mục",
+    // },
     {
         icon: <ProductIcon />,
-        text: "Sản phẩm",
+        text: "Sản phẩm cty",
         fieldName: "products",
         listItems: [
             {
-                to: "/seller/product",
+                to: "/seller/product/list?skip=0&take=10&type=all",
                 text: "Danh sách",
             },
             {
-                to: "/seller/product/:id",
-                text: "Chi tiết",
-            },
-            {
-                to: "/seller/product/create",
-                text: "Thêm mới",
+                to: "/seller/product/cart",
+                text: "Giỏ hàng",
             },
         ],
     },
@@ -246,7 +239,8 @@ const Drawer = styled(MuiDrawer, {
 
 export default function MiniDrawer() {
     const theme = useTheme();
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = useState(true);
+    const dispatch = useDispatch();
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -259,6 +253,13 @@ export default function MiniDrawer() {
         setOpen((prev) => ({ ...prev, [menu]: !prev[menu] }));
     };
 
+    const handleGetData = async () => {
+        await dispatch(getCurrentStoreAction());
+    };
+
+    useEffect(() => {
+        handleGetData();
+    }, []);
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
@@ -341,9 +342,7 @@ export default function MiniDrawer() {
                                             >
                                                 <NavLink
                                                     to={i.to}
-                                                    className={({
-                                                        isActive,
-                                                    }) =>
+                                                    className={({ isActive }) =>
                                                         isActive
                                                             ? "text-green-700 font-semibold hover:text-green-700 w-full"
                                                             : "text-inherit hover:text-green-700 hover:font-semibold w-full font-normal"
@@ -360,7 +359,7 @@ export default function MiniDrawer() {
                     )}
                 </List>
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Box component="main" sx={{ flexGrow: 1, p: 3, overflowX: "auto" }}>
                 <DrawerHeader />
                 <Outlet />
             </Box>
