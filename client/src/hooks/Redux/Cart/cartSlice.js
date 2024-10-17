@@ -1,7 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addProductToStoreCartAction } from "./cartAction";
+import {
+    addProductToStoreCartAction,
+    getStoreCartItemsAction,
+    deleteStoreCartItemAction,
+    adjustmentStoreCartItemAction,
+} from "./cartAction";
 
-const storeCartSlice = createSlice({
+const cartSlice = createSlice({
     name: "cart",
     initialState: {
         data: { products: [], total: 0 },
@@ -27,8 +32,67 @@ const storeCartSlice = createSlice({
             .addCase(addProductToStoreCartAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            })
+
+            //delete store cart item
+            .addCase(deleteStoreCartItemAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteStoreCartItemAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = {
+                    products: state.data.products.filter(
+                        (product) => product._id.toString() != action.payload.id
+                    ),
+                    total: state.data.total - 1,
+                };
+            })
+            .addCase(deleteStoreCartItemAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            //adjustment store cart item
+            .addCase(adjustmentStoreCartItemAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(
+                adjustmentStoreCartItemAction.fulfilled,
+                (state, action) => {
+                    state.loading = false;
+                    if (action.payload?.id) {
+                        const index = state.data.products.findIndex(
+                            (p) => p._id.toString() == action.payload.id
+                        );
+                        state.data.products[index].quantity =
+                            action.payload.quantity;
+                    }
+                }
+            )
+            .addCase(
+                adjustmentStoreCartItemAction.rejected,
+                (state, action) => {
+                    state.loading = false;
+                    state.error = action.payload;
+                }
+            )
+
+            //get  store cart items
+            .addCase(getStoreCartItemsAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getStoreCartItemsAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = action.payload;
+            })
+            .addCase(getStoreCartItemsAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
     },
 });
 
-export default storeCartSlice.reducer;
+export default cartSlice.reducer;

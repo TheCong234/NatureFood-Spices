@@ -16,20 +16,63 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import { QuantityInput } from "../../../components";
 import { formatPrice } from "../../../services/functions";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Cupcake", 305, 3.7, 67, 4.3),
-    createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+import { useDispatch, useSelector } from "react-redux";
+import {
+    adjustmentStoreCartItemAction,
+    deleteStoreCartItemAction,
+    getStoreCartItemsAction,
+} from "../../../hooks/Redux/Cart/cartAction";
+import { useEffect, useState } from "react";
+import useSnackNotify from "../../../components/SnackNotify";
+import { useNavigate } from "react-router-dom";
+import { createStoreProductsAction } from "../../../hooks/Redux/StoreProduct/storeProductAction";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export default function ProductCart() {
+    const [isCreated, setIsCreated] = useState(false);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const snackNotify = useSnackNotify();
+    const { data: cartData, loading: cartLoading } = useSelector(
+        (state) => state.cart
+    );
+    const { loading: storeProductLoading } = useSelector(
+        (state) => state.storeProduct
+    );
+    const { currentStore } = useSelector((state) => state.store);
+
+    const handelDeleteStoreCartItem = async (data) => {
+        await dispatch(deleteStoreCartItemAction(data?._id));
+        snackNotify("success")("Đã xóa sản phẩm khỏi giỏ hàng");
+    };
+
+    const adjustmentStoreCartItem = async (data) => {
+        const response = await dispatch(adjustmentStoreCartItemAction(data));
+        if (response?.error) {
+            snackNotify("error")("Lỗi, vui lòng thử lại sau");
+        } else {
+            snackNotify("success")("Cập nhật giỏ hàng");
+        }
+    };
+
+    const createStoreProducts = async () => {
+        const response = await dispatch(
+            createStoreProductsAction(currentStore?._id)
+        );
+        if (response?.error) {
+            snackNotify("error")("Lỗi, vui lòng thử lại sau");
+        } else {
+            snackNotify("success")("Tạo sản phẩm thành công");
+        }
+    };
+
+    const handleGetData = async () => {
+        await dispatch(getStoreCartItemsAction());
+    };
+
+    useEffect(() => {
+        handleGetData();
+    }, [isCreated]);
     return (
         <Box>
             <Paper>
@@ -43,18 +86,27 @@ export default function ProductCart() {
                             startIcon={<NavigateBeforeIcon />}
                             size="small"
                             sx={{ textTransform: "none", mr: 1 }}
+                            onClick={() =>
+                                navigate(
+                                    "/seller/product/list?skip=0&take=10&type=all"
+                                )
+                            }
                         >
                             Tiếp tục mua sắm
                         </Button>
-                        <Button
-                            variant="contained"
+
+                        <LoadingButton
                             size="small"
                             color="warning"
+                            onClick={createStoreProducts}
+                            loading={storeProductLoading}
+                            loadingPosition="start"
                             startIcon={<ShoppingCartCheckoutIcon />}
+                            variant="contained"
                             sx={{ textTransform: "none" }}
                         >
-                            Thanh toán
-                        </Button>
+                            Save
+                        </LoadingButton>
                     </div>
                 </Paper>
                 <Box>
@@ -98,9 +150,9 @@ export default function ProductCart() {
                                 </TableRow>
                             </TableHead>
                             <TableBody className="na-table-body-tini">
-                                {rows.map((row) => (
+                                {cartData?.products?.map((product) => (
                                     <TableRow
-                                        key={row.name}
+                                        key={product?._id}
                                         sx={{
                                             "&:last-child td, &:last-child th":
                                                 { border: 0 },
@@ -111,40 +163,67 @@ export default function ProductCart() {
                                             <div className="flex">
                                                 <div className="min-w-[90px] h-full mr-3 rounded-sm overflow-hidden">
                                                     <img
-                                                        src="https://prium.github.io/falcon/v3.21.0/assets/img/products/1.jpg"
+                                                        src={
+                                                            product?.product
+                                                                ?.images?.[0]
+                                                                ?.url
+                                                        }
                                                         alt="product image"
-                                                        className="h-[48px] w-full object-cover"
+                                                        className="h-[64px] w-full object-cover"
                                                     />
                                                 </div>
                                                 <Typography
                                                     variant="body1"
-                                                    className="text-truncate-2"
+                                                    className="text-truncate-3"
                                                 >
-                                                    Apple MacBook Pro 15"
-                                                    Z0V20008N: 2.9GHz 6-core
-                                                    8th-Gen Intel Core i9, 32GB
-                                                    RAM
+                                                    {product?.product?.name}
                                                 </Typography>
                                             </div>
                                         </TableCell>
                                         <TableCell align="right">
-                                            <QuantityInput quanity={3} />
+                                            <QuantityInput
+                                                quanity={product?.quantity}
+                                                handleReduce={() =>
+                                                    adjustmentStoreCartItem({
+                                                        id: product?._id,
+                                                        quantity: -1,
+                                                    })
+                                                }
+                                                handleIncrease={() =>
+                                                    adjustmentStoreCartItem({
+                                                        id: product?._id,
+                                                        quantity: 1,
+                                                    })
+                                                }
+                                            />
                                         </TableCell>
                                         <TableCell align="right">
                                             <div className="na-fs-16 flex justify-center font-semibold ">
                                                 <small>₫</small>
-                                                {formatPrice(2141342)}
+                                                {formatPrice(
+                                                    product?.product?.price
+                                                )}
                                             </div>
                                         </TableCell>
                                         <TableCell align="right">
                                             <div className="na-fs-16 flex justify-center font-semibold text-orange">
                                                 <small>₫</small>
-                                                {formatPrice(2141342 * 3)}
+                                                {formatPrice(
+                                                    product?.product?.price *
+                                                        product?.quantity
+                                                )}
                                             </div>
                                         </TableCell>
                                         <TableCell align="right">
-                                            <IconButton aria-label="delete">
-                                                <DeleteIcon />
+                                            <IconButton
+                                                aria-label="delete"
+                                                onClick={() =>
+                                                    handelDeleteStoreCartItem(
+                                                        product
+                                                    )
+                                                }
+                                            >
+                                                <DeleteIcon color="error" />
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>

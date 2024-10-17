@@ -9,6 +9,7 @@ import {
     PromoteStore,
     RegisterSeller,
     ProductCartSeller,
+    StoreProductSeller,
 } from "../pages/Seller";
 
 import {
@@ -128,8 +129,8 @@ export const router = createBrowserRouter([
                         element: <ProductCartSeller />,
                     },
                     {
-                        path: "event",
-                        element: <EventStore />,
+                        path: "store-product/list",
+                        element: <StoreProductSeller />,
                     },
                     {
                         path: "setting",
