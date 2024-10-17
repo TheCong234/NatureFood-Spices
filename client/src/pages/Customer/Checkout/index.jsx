@@ -188,192 +188,196 @@ export default function CheckoutForm() {
                 </Box>
 
                 {/* Summary Section */}
-                <Card style={{ width: "30%", height: "470px" }}>
-                    <CardContent>
-                        <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                        >
-                            <Typography
-                                variant="h5"
-                                component="div"
-                                fontWeight={800}
-                                fontSize={20}
+                <div className="w-[30%]">
+                    <Card sx={{ marginTop: 8 }}>
+                        <CardContent>
+                            <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                alignItems="center"
                             >
-                                Summary
-                            </Typography>
-                            <Button
-                                variant="text"
-                                color="primary"
-                                style={{ textTransform: "none" }}
-                                onMouseOver={(e) => {
-                                    e.target.style.textDecoration = "underline";
-                                    e.target.style.color = "Blue";
-                                }}
-                                onMouseOut={(e) => {
-                                    e.target.style.textDecoration = "none";
-                                    e.target.style.color = "";
-                                }}
-                            >
-                                Edit cart
-                            </Button>
-                        </Box>
+                                <Typography
+                                    variant="h5"
+                                    component="div"
+                                    fontWeight={800}
+                                    fontSize={20}
+                                >
+                                    Summary
+                                </Typography>
+                                <Button
+                                    variant="text"
+                                    color="primary"
+                                    style={{ textTransform: "none" }}
+                                    onMouseOver={(e) => {
+                                        e.target.style.textDecoration =
+                                            "underline";
+                                        e.target.style.color = "Blue";
+                                    }}
+                                    onMouseOut={(e) => {
+                                        e.target.style.textDecoration = "none";
+                                        e.target.style.color = "";
+                                    }}
+                                >
+                                    Edit cart
+                                </Button>
+                            </Box>
 
-                        <Box mt={2}>
-                            {/* Product 1 */}
+                            <Box mt={2}>
+                                {/* Product 1 */}
+                                <Box
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    mb={2}
+                                >
+                                    <Box display="flex" alignItems="center">
+                                        <img
+                                            src="fitbit.png"
+                                            // alt="Fitbit Sense"
+                                            width="40"
+                                            height="40"
+                                            style={{ marginRight: "10px" }}
+                                        />
+                                        <Typography fontSize={13}>
+                                            Fitbit Sense Advanced Smartwatch
+                                            with...
+                                        </Typography>
+                                    </Box>
+                                    <Typography fontSize={13} paddingRight={3}>
+                                        x1
+                                    </Typography>
+                                    <Typography fontSize={13} paddingLeft={6}>
+                                        $398
+                                    </Typography>
+                                </Box>
+
+                                {/* Product 2 */}
+                                <Box
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    mb={2}
+                                >
+                                    <Box display="flex" alignItems="center">
+                                        <img
+                                            src="iphone.png"
+                                            // alt="iPhone 13 Pro Max"
+                                            width="40"
+                                            height="40"
+                                            style={{ marginRight: "10px" }}
+                                        />
+                                        <Typography fontSize={13}>
+                                            iPhone 13 Pro Max-Pacific Blue-128GB
+                                        </Typography>
+                                    </Box>
+                                    <Typography fontSize={13} paddingRight={3}>
+                                        x1
+                                    </Typography>
+                                    <Typography fontSize={13} paddingLeft={6}>
+                                        $398
+                                    </Typography>
+                                </Box>
+
+                                {/* Product 3 */}
+                                <Box
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    mb={2}
+                                >
+                                    <Box display="flex" alignItems="center">
+                                        <img
+                                            src="macbook.png"
+                                            // alt="MacBook Pro"
+                                            width="40"
+                                            height="40"
+                                            style={{ marginRight: "10px" }}
+                                        />
+                                        <Typography fontSize={13}>
+                                            Apple MacBook Pro 13 inch-M1-8/256GB
+                                        </Typography>
+                                    </Box>
+                                    <Typography fontSize={13} paddingRight={3}>
+                                        x1
+                                    </Typography>
+                                    <Typography fontSize={13} paddingLeft={6}>
+                                        $65
+                                    </Typography>
+                                </Box>
+                            </Box>
+
+                            <hr className="border-dashed border-bottom border-translucent" />
+
+                            {/* Price Summary */}
+                            <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                mb={1}
+                                mt={3}
+                            >
+                                <Typography fontSize={13}>
+                                    Items subtotal:
+                                </Typography>
+                                <Typography fontSize={13}>$691</Typography>
+                            </Box>
+                            <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                mb={1}
+                            >
+                                <Typography fontSize={13}>Discount:</Typography>
+                                <Typography color="error" fontSize={13}>
+                                    -$59
+                                </Typography>
+                            </Box>
+                            <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                mb={1}
+                            >
+                                <Typography fontSize={13}>Tax:</Typography>
+                                <Typography fontSize={13}>$126.20</Typography>
+                            </Box>
+                            <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                mb={1}
+                            >
+                                <Typography fontSize={13}>Subtotal:</Typography>
+                                <Typography fontSize={13}>$665</Typography>
+                            </Box>
                             <Box
                                 display="flex"
                                 justifyContent="space-between"
                                 mb={2}
                             >
-                                <Box display="flex" alignItems="center">
-                                    <img
-                                        src="fitbit.png"
-                                        // alt="Fitbit Sense"
-                                        width="40"
-                                        height="40"
-                                        style={{ marginRight: "10px" }}
-                                    />
-                                    <Typography fontSize={13}>
-                                        Fitbit Sense Advanced Smartwatch with...
-                                    </Typography>
-                                </Box>
-                                <Typography fontSize={13} paddingRight={3}>
-                                    x1
+                                <Typography fontSize={13}>
+                                    Shipping Cost:
                                 </Typography>
-                                <Typography fontSize={13} paddingLeft={6}>
-                                    $398
-                                </Typography>
+                                <Typography fontSize={13}>$30</Typography>
                             </Box>
 
-                            {/* Product 2 */}
-                            <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                mb={2}
-                            >
-                                <Box display="flex" alignItems="center">
-                                    <img
-                                        src="iphone.png"
-                                        // alt="iPhone 13 Pro Max"
-                                        width="40"
-                                        height="40"
-                                        style={{ marginRight: "10px" }}
-                                    />
-                                    <Typography fontSize={13}>
-                                        iPhone 13 Pro Max-Pacific Blue-128GB
-                                    </Typography>
-                                </Box>
-                                <Typography fontSize={13} paddingRight={3}>
-                                    x1
+                            <hr className="border-dashed border-bottom border-translucent" />
+
+                            {/* Total */}
+                            <Box display="flex" justifyContent="space-between">
+                                <Typography
+                                    variant="h6"
+                                    fontWeight={700}
+                                    marginTop={2}
+                                    fontSize={18}
+                                >
+                                    Total:
                                 </Typography>
-                                <Typography fontSize={13} paddingLeft={6}>
-                                    $398
+                                <Typography
+                                    variant="h6"
+                                    marginTop={2}
+                                    fontWeight={700}
+                                    fontSize={18}
+                                >
+                                    $695.20
                                 </Typography>
                             </Box>
-
-                            {/* Product 3 */}
-                            <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                mb={2}
-                            >
-                                <Box display="flex" alignItems="center">
-                                    <img
-                                        src="macbook.png"
-                                        // alt="MacBook Pro"
-                                        width="40"
-                                        height="40"
-                                        style={{ marginRight: "10px" }}
-                                    />
-                                    <Typography fontSize={13}>
-                                        Apple MacBook Pro 13 inch-M1-8/256GB
-                                    </Typography>
-                                </Box>
-                                <Typography fontSize={13} paddingRight={3}>
-                                    x1
-                                </Typography>
-                                <Typography fontSize={13} paddingLeft={6}>
-                                    $65
-                                </Typography>
-                            </Box>
-                        </Box>
-
-                        <hr className="border-dashed border-bottom border-translucent" />
-
-                        {/* Price Summary */}
-                        <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            mb={1}
-                            mt={3}
-                        >
-                            <Typography fontSize={13}>
-                                Items subtotal:
-                            </Typography>
-                            <Typography fontSize={13}>$691</Typography>
-                        </Box>
-                        <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            mb={1}
-                        >
-                            <Typography fontSize={13}>Discount:</Typography>
-                            <Typography color="error" fontSize={13}>
-                                -$59
-                            </Typography>
-                        </Box>
-                        <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            mb={1}
-                        >
-                            <Typography fontSize={13}>Tax:</Typography>
-                            <Typography fontSize={13}>$126.20</Typography>
-                        </Box>
-                        <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            mb={1}
-                        >
-                            <Typography fontSize={13}>Subtotal:</Typography>
-                            <Typography fontSize={13}>$665</Typography>
-                        </Box>
-                        <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            mb={2}
-                        >
-                            <Typography fontSize={13}>
-                                Shipping Cost:
-                            </Typography>
-                            <Typography fontSize={13}>$30</Typography>
-                        </Box>
-
-                        <hr className="border-dashed border-bottom border-translucent" />
-
-                        {/* Total */}
-                        <Box display="flex" justifyContent="space-between">
-                            <Typography
-                                variant="h6"
-                                fontWeight={700}
-                                marginTop={2}
-                                fontSize={18}
-                            >
-                                Total:
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                marginTop={2}
-                                fontWeight={700}
-                                fontSize={18}
-                            >
-                                $695.20
-                            </Typography>
-                        </Box>
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                    </Card>
+                </div>
             </div>
         </section>
     );

@@ -49,9 +49,12 @@
    
 }
 .login-btn{
-    border: 1px solid white !important;
+    /* border: 1px solid white !important; */
     font-weight: 600 !important;
-    width: 90px;
+    width: 120px;
+}
+.login-btn:hover {
+  color: white !important; 
 }
 .accout{
     padding-bottom: 10px;
@@ -59,9 +62,14 @@
 
 .text-transform-none{
     text-transform: none !important;
+    
 }
 .register-btn{
     font-weight: 600;
+}
+
+.button-container .css-1q98nef-MuiButtonBase-root-MuiButton-root{
+  border: 1px solid white !important;
 }
 /* Error-500 */
  * {

@@ -65,21 +65,42 @@ const RegistrationForm = () => {
         <Container className="container-center">
             <Box className="form-container">
                 <Box className="register-option">
-                    <Typography variant="h4" className="logo">
-                        falcon
+                    <Typography
+                        variant="h4"
+                        sx={{
+                            color: "white",
+                            fontWeight: "bold",
+                            mb: 2,
+                            paddingTop: "10px",
+                            display: "flex",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <img
+                            src="src/assets/images/logo.png"
+                            alt="Logo"
+                            style={{
+                                height: "80px",
+                                width: "170px",
+                            }}
+                        />
                     </Typography>
-                    <Typography className="tagline">
-                        With the power of Falcon, you can now focus only on
-                        functionalities for your digital products, while leaving
-                        the UI design on us!
+                    <Typography className="tagline px-4">
+                        Nature Food cung cấp gia vị thiên nhiên chất lượng, an
+                        toàn, giúp bữa ăn thêm ngon và bảo vệ sức khỏe người
+                        dùng !
                     </Typography>
-                    <Box className="login-section pt-40">
-                        <Typography className="accout">
-                            Have an account?
+                    <Box className="login-section pt-40 ">
+                        <Typography className="accout pb-9">
+                            Bạn đã có tài khoản ?
                         </Typography>
-                        <Button variant="text" className="login-btn">
-                            <Link href="/login">Log In</Link>
-                        </Button>
+                        <div className="button-container">
+                            <Button variant="outlined" color="warning">
+                                <Link href="/login" className="login-btn">
+                                    Đăng nhập{" "}
+                                </Link>
+                            </Button>
+                        </div>
                     </Box>
                 </Box>
                 {/* <form onSubmit={handleSubmit(onSubmit)}> */}
@@ -88,7 +109,7 @@ const RegistrationForm = () => {
                     className="register-form"
                 >
                     <Typography variant="h4" className="register-title">
-                        Register
+                        Đăng ký
                     </Typography>
                     <Typography variant="body1" className="" gutterBottom>
                         Tên hiển thị
@@ -200,11 +221,9 @@ const RegistrationForm = () => {
                         control={<Checkbox color="primary" />}
                         label={
                             <Typography className="terms">
-                                I accept the{" "}
-                                <span className="terms-link">terms</span> and{" "}
-                                <span className="terms-link">
-                                    privacy policy
-                                </span>
+                                Tôi chấp nhận{" "}
+                                <span className="terms-link">điều khoản</span>{" "}
+                                và <span className="terms-link">bảo mật</span>
                             </Typography>
                         }
                         className="checkbox"
@@ -217,10 +236,10 @@ const RegistrationForm = () => {
                         fullWidth
                         className="register-btn"
                     >
-                        Register
+                        Đăng ký
                     </Button>
 
-                    <Divider className="divider">or register with</Divider>
+                    <Divider className="divider">hoặc đăng nhập bằng</Divider>
 
                     <Box className="flex pt-3">
                         <Button
@@ -228,6 +247,7 @@ const RegistrationForm = () => {
                             fullWidth
                             className="text-transform-none"
                             sx={{
+                                marginRight: 4,
                                 color: red[500],
                                 "&:hover": {
                                     backgroundColor: "#db4437",

@@ -11,31 +11,31 @@ import { NavLink } from "react-router-dom";
 const items = [
     {
         to: "/",
-        text: "Home",
+        text: "Trang chủ",
     },
     {
         to: "/product",
-        text: " Products",
+        text: " Sản phẩm",
     },
     {
         to: "/wishlist",
-        text: "  Wishlist",
+        text: " Danh sách",
     },
     {
         to: "/shipping",
-        text: "Shipping Info",
+        text: "Thông tin vận chuyển",
     },
     {
         to: "/vendor",
-        text: "  Be a Vendor",
+        text: " Trở thành người bán",
     },
     {
         to: "/trackOrder",
-        text: "  Track Order",
+        text: "  Theo dõi đơn hàng",
     },
     {
         to: "/checkout",
-        text: "  Checkout",
+        text: "  Thanh toán",
     },
 ];
 
