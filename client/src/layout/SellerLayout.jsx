@@ -79,6 +79,11 @@ const items = [
         ],
     },
     {
+        to: "/seller/store-product/list",
+        icon: <PeopleIcon />,
+        text: "Sản phẩm cửa hàng",
+    },
+    {
         icon: <EventIcon />,
         text: "Sự kiện",
         fieldName: "event",
@@ -122,21 +127,7 @@ const items = [
             },
         ],
     },
-    {
-        icon: <BookIcon />,
-        text: "Blog",
-        fieldName: "blog",
-        listItems: [
-            {
-                to: "/seller/blog/list",
-                text: "Danh sách",
-            },
-            {
-                to: "/seller/blog/create",
-                text: "Tạo blog",
-            },
-        ],
-    },
+
     {
         to: "/seller/notify",
         icon: <NotificationsActiveIcon />,

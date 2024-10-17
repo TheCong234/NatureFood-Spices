@@ -63,6 +63,45 @@ const StoreCartController = {
             })
         );
     },
+
+    async adjustmentStoreCartItem(req, res) {
+        const { quantity } = req.body;
+        const storeCart = await StoreCartModel.findOne({
+            store: req.user.store,
+        });
+
+        const item = storeCart.items.find(
+            (i) => i._id.toString() == req.params.id
+        );
+
+        const newQuantity = item.quantity + quantity;
+
+        if (newQuantity > 1) {
+            const storeCart = await StoreCartModel.findOneAndUpdate(
+                {
+                    store: req.user.store,
+                },
+                {
+                    $set: {
+                        "items.$[elem].quantity": newQuantity, // Cập nhật số lượng item
+                    },
+                },
+                {
+                    new: true, // Trả về document đã được cập nhật
+                    arrayFilters: [{ "elem._id": req.params.id }], // Lọc để cập nhật item đúng
+                }
+            );
+            return res.status(statusCode.OK).json(
+                BaseResponse.success("Cập nhật số lượng thành công", {
+                    id: req.params.id,
+                    quantity: newQuantity,
+                })
+            );
+        }
+        return res
+            .status(statusCode.OK)
+            .json(BaseResponse.success("Cập nhật số lượng thành công", null));
+    },
 };
 
 export default StoreCartController;

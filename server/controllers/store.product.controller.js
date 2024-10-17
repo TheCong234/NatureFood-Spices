@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { BaseResponse } from "../config/BaseResponse.config.js";
 import { statusCode } from "../config/statusCode.config.js";
 import StoreProductModel from "../models/product.store.model.js";
+import StoreCartModel from "../models/store.cart.model.js";
 import StoreModel from "../models/store.models.js";
 
 const StoreProductController = {
@@ -50,29 +51,39 @@ const StoreProductController = {
     },
 
     async createStoreProducts(req, res) {
-        for (let product of req.body.products) {
+        const storeCart = await StoreCartModel.findOne({
+            store: req.params.storeId,
+        });
+        for (let product of storeCart.items) {
             const existingStoreProduct = await StoreProductModel.findOne({
-                productId: product._id,
-                storeId: req.user.store,
+                productId: product.product,
+                storeId: new mongoose.Types.ObjectId(req.params.storeId),
             });
             if (existingStoreProduct) {
                 await StoreProductModel.updateOne(
-                    { productId: product._id, storeId: req.user.store },
+                    {
+                        productId: product.product,
+                        storeId: new mongoose.Types.ObjectId(
+                            req.params.storeId
+                        ),
+                    },
                     { $inc: { stock: product.quantity } }
                 );
             } else {
                 const productData = new StoreProductModel({
-                    productId: product._id,
-                    storeId: req.user.store,
+                    productId: product.product,
+                    storeId: req.params.storeId,
                     stock: product.quantity,
                 });
                 const newProduct = await productData.save();
-                const updatedStore = await StoreModel.updateOne(
-                    { _id: req.user.store },
+                await StoreModel.updateOne(
+                    { _id: req.params.storeId },
                     { $addToSet: { products: newProduct._id } }
                 );
             }
         }
+        storeCart.items = [];
+        await storeCart.save();
 
         return res
             .status(statusCode.CREATED)

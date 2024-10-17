@@ -3,6 +3,7 @@ import {
     addProductToStoreCartAction,
     getStoreCartItemsAction,
     deleteStoreCartItemAction,
+    adjustmentStoreCartItemAction,
 } from "./cartAction";
 
 const cartSlice = createSlice({
@@ -51,6 +52,32 @@ const cartSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
+
+            //adjustment store cart item
+            .addCase(adjustmentStoreCartItemAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(
+                adjustmentStoreCartItemAction.fulfilled,
+                (state, action) => {
+                    state.loading = false;
+                    if (action.payload?.id) {
+                        const index = state.data.products.findIndex(
+                            (p) => p._id.toString() == action.payload.id
+                        );
+                        state.data.products[index].quantity =
+                            action.payload.quantity;
+                    }
+                }
+            )
+            .addCase(
+                adjustmentStoreCartItemAction.rejected,
+                (state, action) => {
+                    state.loading = false;
+                    state.error = action.payload;
+                }
+            )
 
             //get  store cart items
             .addCase(getStoreCartItemsAction.pending, (state) => {

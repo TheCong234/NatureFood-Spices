@@ -12,7 +12,7 @@ router.get(
 router.get("/all", asyncHandler(StoreProductController.getStoreProducts));
 
 router.post(
-    "/new",
+    "/:storeId/create",
     authJwt,
     asyncHandler(StoreProductController.createStoreProducts)
 );

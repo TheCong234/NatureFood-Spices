@@ -31,6 +31,10 @@ export const ProductV1 = {
     PRODUCT_DETAILS: "/product/",
 };
 
+export const StoreProductV1 = {
+    CREATE: "/store-product/",
+};
+
 export const BannerV1 = {
     GET_BANNERS: "/banner/all",
     CREATE: "/banner/create",
@@ -53,4 +57,5 @@ export const StoreCartV1 = {
     ADD: "/store-cart/",
     DELETE: "/store-cart/items/",
     GET_STORE_CART: "/store-cart/all",
+    ADJUSTMENT_ITEM: "/store-cart/items/",
 };

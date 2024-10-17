@@ -23,4 +23,9 @@ router.patch(
     asyncHandler(StoreCartController.deleteStoreCartItem)
 );
 
+router.patch(
+    "/items/:id/adjustment",
+    authJwt,
+    asyncHandler(StoreCartController.adjustmentStoreCartItem)
+);
 export default router;

@@ -4,6 +4,7 @@ import {
     addProductToStoreCartApi,
     getStoreCartItemsApi,
     deleteStoreCartItemApi,
+    adjustmentStoreCartItemApi,
 } from "../../../apis/store.cart";
 
 export const addProductToStoreCartAction = createAsyncThunk(
@@ -25,6 +26,20 @@ export const deleteStoreCartItemAction = createAsyncThunk(
     async (data, thunkAPI) => {
         const { result, error } = await tryCatchWrapper(
             deleteStoreCartItemApi,
+            data
+        );
+        if (error) {
+            return thunkAPI.rejectWithValue(error.response);
+        }
+        return result.data;
+    }
+);
+
+export const adjustmentStoreCartItemAction = createAsyncThunk(
+    "cart/adjustmentStoreCartItemAction",
+    async (data, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(
+            adjustmentStoreCartItemApi,
             data
         );
         if (error) {

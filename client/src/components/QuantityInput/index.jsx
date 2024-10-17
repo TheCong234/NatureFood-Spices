@@ -4,18 +4,14 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { red } from "../../theme/colors";
 
-const QuantityInput = ({
-    quanity,
-    handleReduceQuantity,
-    handleIncreaseQuantity,
-}) => {
+const QuantityInput = ({ quanity, handleReduce, handleIncrease }) => {
     return (
         <ButtonGroup variant="outlined" aria-label="Basic button group">
             <Button
                 aria-label="add"
                 size="small"
                 sx={{ color: "inherit", borderColor: "grey" }}
-                onClick={handleReduceQuantity}
+                onClick={handleReduce}
             >
                 <RemoveIcon fontSize="small" />
             </Button>
@@ -29,7 +25,7 @@ const QuantityInput = ({
                 aria-label="add"
                 size="small"
                 sx={{ color: "inherit", borderColor: "grey" }}
-                onClick={handleIncreaseQuantity}
+                onClick={handleIncrease}
             >
                 <AddIcon fontSize="small" />
             </Button>
