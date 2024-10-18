@@ -104,6 +104,21 @@ const items = [
         ],
     },
     {
+        icon: <BookIcon />,
+        text: "Blog",
+        fieldName: "blog",
+        listItems: [
+            {
+                to: "/admin/blog/list",
+                text: "Danh sách",
+            },
+            {
+                to: "/admin/blog/create",
+                text: "Tạo blog",
+            },
+        ],
+    },
+    {
         icon: <EventIcon />,
         text: "Sự kiện",
         fieldName: "event",
@@ -147,21 +162,7 @@ const items = [
             },
         ],
     },
-    {
-        icon: <BookIcon />,
-        text: "Blog",
-        fieldName: "blog",
-        listItems: [
-            {
-                to: "/admin/blog/list",
-                text: "Danh sách",
-            },
-            {
-                to: "/admin/blog/create",
-                text: "Tạo blog",
-            },
-        ],
-    },
+
     {
         to: "/admin/notify",
         icon: <NotificationsActiveIcon />,
@@ -421,9 +422,7 @@ export default function AdminLayout() {
                                             >
                                                 <NavLink
                                                     to={i.to}
-                                                    className={({
-                                                        isActive,
-                                                    }) =>
+                                                    className={({ isActive }) =>
                                                         isActive
                                                             ? "text-green-700 font-semibold hover:text-green-700 w-full"
                                                             : "text-inherit hover:text-green-700 hover:font-semibold w-full font-normal"
