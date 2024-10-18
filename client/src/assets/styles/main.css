@@ -159,8 +159,9 @@ a {
   text-decoration: underline;
 } */
 /* header */
-.header {
-background-color:var(--peach-color);
+.mainlayout-header {
+  background-color: #ECFCCB;
+  width: 100% !important;
 }
 
 .header-left {
@@ -240,7 +241,7 @@ background-color:var(--peach-color);
 
 /* Basic styling for footer */
 .footer {
-  background-color: var(--peach-color) !important;
+  background-color:#ECFCCB;
   padding: 40px 0;
 }
 
@@ -316,58 +317,5 @@ background-color:var(--peach-color);
   color: #000; 
 }
 
-/* check out */
-/* .checkout-form {
-  width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
 
-.form-header {
-  text-align: center;
-  margin-bottom: 10px;
-  font-size: 24px;
-  font-weight: 800;
-}
-
-.form-subheader {
-  text-align: left;
-  margin-bottom: 20px;
-  font-size: 22px;
-  font-weight: 700;
-
-}
-
-.form-group {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-}
-
-.form-group > .form-field {
-  width: 100%;
-}
-
-.form-group > .form-field + .form-field {
-  margin-left: 10px;
-}
-
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.save-button {
-  background-color: #1976d2;
-  color: white;
-}
-
-.exit-button {
-  border-color: #d32f2f;
-  color: #d32f2f;
-} */
 
