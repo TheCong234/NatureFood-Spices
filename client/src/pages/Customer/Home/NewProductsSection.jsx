@@ -1,20 +1,23 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/pagination";
 import "../../../assets/styles/newestProductsSection.css";
 import { Grid, Pagination } from "swiper/modules";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, Typography } from "@mui/material";
 import ListAltIcon from "@mui/icons-material/ListAlt";
+import { getNewestProductsAction } from "../../../hooks/Redux/Product/productAction";
 
 const NewProductSection = () => {
-    const {
-        data: newestProductsData,
-        loading: newestProductsLoading,
-        error: newestProductsError,
-    } = useSelector((state) => state.newestProducts);
+    const dispatch = useDispatch();
+    const { data: newestProductsData, loading: newestProductsLoading } =
+        useSelector((state) => state.newestProducts);
+
+    useEffect(() => {
+        dispatch(getNewestProductsAction());
+    }, []);
     return (
         <Swiper
             slidesPerView={2}

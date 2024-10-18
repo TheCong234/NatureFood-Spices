@@ -9,58 +9,55 @@ import { Box, Button, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getBannersAction } from "../../../hooks/Redux/Banner/bannerAction";
-import { getCategoriesAction } from "../../../hooks/Redux/Category/categoryAction";
+
 import CategoryCarousel from "./CategoryCarousel";
 import NewProductSection from "./NewProductsSection";
-import { getNewestProductsAction } from "../../../hooks/Redux/Product/productAction";
 import BlogCarousel from "./BlogCarousel";
 import { useNavigate } from "react-router-dom";
 
 const Index = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {
-        data: bannerData,
-        loading: bannerLoading,
-        error: bannerError,
-    } = useSelector((state) => state.banner);
+    const { data: bannerData, loading: bannerLoading } = useSelector(
+        (state) => state.banner
+    );
 
     useEffect(() => {
-        dispatch(getBannersAction());
-        dispatch(getCategoriesAction());
-        dispatch(getNewestProductsAction());
-    }, [dispatch]);
+        dispatch(getBannersAction({ skip: 0, take: 10, type: "enable" }));
+    }, []);
     return (
-        <Box className=" relative pb-16">
-            <Swiper
-                slidesPerView={1}
-                spaceBetween={30}
-                loop={true}
-                autoplay={{
-                    delay: 2500,
-                    disableOnInteraction: false,
-                }}
-                pagination={{
-                    clickable: true,
-                }}
-                navigation={true}
-                modules={[Autoplay, Pagination, Navigation]}
-                className="mySwiper h-[500px] w-full rounded-md"
-            >
-                {bannerData?.banners?.map((banner, index) => (
-                    <SwiperSlide
-                        key={`swipperSlide-${index}`}
-                        className="text-black bg-white border-none"
-                    >
-                        <img
-                            src={banner.image.url}
-                            alt="banner image"
-                            width="100%"
-                        />
-                    </SwiperSlide>
-                ))}
-            </Swiper>
-            <Box className="py-8">
+        <Box className="relative pb-16">
+            <section>
+                <Swiper
+                    slidesPerView={1}
+                    spaceBetween={30}
+                    loop={true}
+                    autoplay={{
+                        delay: 2500,
+                        disableOnInteraction: false,
+                    }}
+                    pagination={{
+                        clickable: true,
+                    }}
+                    navigation={true}
+                    modules={[Autoplay, Pagination, Navigation]}
+                    className="mySwiper h-[500px] w-full rounded-md"
+                >
+                    {bannerData?.banners?.map((banner, index) => (
+                        <SwiperSlide
+                            key={`swipperSlide-${index}`}
+                            className="text-black bg-white border-none"
+                        >
+                            <img
+                                src={banner.image.url}
+                                alt="banner image"
+                                width="100%"
+                            />
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            </section>
+            <section className="py-8">
                 <div className="flex  flex-col items-center mb-3">
                     <Box className="flex justify-center">
                         <div className="flex items-center">
@@ -79,9 +76,9 @@ const Index = () => {
                     </p>
                 </div>
                 <CategoryCarousel />
-            </Box>
+            </section>
 
-            <Box sx={{ py: 4, bgcolor: "#efefef" }}>
+            <section sx={{ py: 4, bgcolor: "#efefef" }}>
                 <div className="flex flex-col items-center mb-3">
                     <p className="text-3xl font-bold mr-2">Sản phẩm mới nhất</p>
                     <p className="w-1/2 text-slate-500 text-md text-center">
@@ -90,7 +87,7 @@ const Index = () => {
                     </p>
                 </div>
                 <NewProductSection />
-            </Box>
+            </section>
 
             <Box className="py-8">
                 <Box className="flex justify-between items-center">
