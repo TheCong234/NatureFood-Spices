@@ -237,9 +237,11 @@ export default function CheckoutForm() {
                                             height="40"
                                             style={{ marginRight: "10px" }}
                                         />
-                                        <Typography fontSize={13}>
+                                        <Typography
+                                            fontSize={13}
+                                            className="text-truncate-2"
+                                        >
                                             Fitbit Sense Advanced Smartwatch
-                                            with...
                                         </Typography>
                                     </Box>
                                     <Typography fontSize={13} paddingRight={3}>
@@ -258,10 +260,10 @@ export default function CheckoutForm() {
                                 >
                                     <Box display="flex" alignItems="center">
                                         <img
-                                            src="iphone.png"
+                                            src="/src/assets/images/logo.png"
                                             // alt="iPhone 13 Pro Max"
-                                            width="40"
-                                            height="40"
+                                            width="40px"
+                                            height="100%"
                                             style={{ marginRight: "10px" }}
                                         />
                                         <Typography fontSize={13}>
