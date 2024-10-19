@@ -39,7 +39,7 @@ const BlogSchema = new Schema(
                 ref: "Tag",
             },
         ],
-        thumbnail: ImageSchema,
+        image: ImageSchema,
         status: {
             type: Boolean,
             enum: [0, 1],

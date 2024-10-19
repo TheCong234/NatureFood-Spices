@@ -17,9 +17,7 @@ export const createStoreApi = async (data) => {
     const response = await apiClient.post(StoreV1.STORE_CREATE, data.data, {
         headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${data.token}`,
         },
-        withCredentials: true,
     });
     return response.data;
 };

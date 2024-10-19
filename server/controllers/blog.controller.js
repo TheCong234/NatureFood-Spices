@@ -5,6 +5,7 @@ import BlogModel from "../models/blog.model.js";
 const BlogController = {
     async createBlog(req, res) {
         const blog = new BlogModel(req.body);
+        blog.image = { url: req.file.path, filename: req.file.filename };
         const newBlog = await blog.save();
         return res
             .status(statusCode.OK)
