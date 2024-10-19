@@ -15,6 +15,7 @@ import {
     OrderRoutes,
     RefundRoutes,
     StoreCartRoutes,
+    BlogRoutes,
 } from "./routes/index.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
@@ -83,6 +84,7 @@ app.use(`${apiVersion}/store-product`, StoreProductRoutes);
 app.use(`${apiVersion}/order`, OrderRoutes);
 app.use(`${apiVersion}/refund`, RefundRoutes);
 app.use(`${apiVersion}/store-cart`, StoreCartRoutes);
+app.use(`${apiVersion}/blog`, BlogRoutes);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

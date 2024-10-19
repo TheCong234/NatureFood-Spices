@@ -43,6 +43,10 @@ export const BannerV1 = {
     DELETE: "/banner/",
 };
 
+export const BlogV1 = {
+    CREATE: "/blog/create",
+};
+
 export const ReviewV1 = {
     REVIEW_CREATE: "/review/",
 };

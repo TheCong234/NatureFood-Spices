@@ -11,8 +11,23 @@ const BannerController = {
     },
 
     async getBanners(req, res) {
-        const banners = await BannerModel.find();
-        const total = await BannerModel.countDocuments({});
+        const { skip, take, type } = req.query;
+        let banners = null;
+        let total = 0;
+        if (type == "disable") {
+            banners = await BannerModel.find({ status: 1 })
+                .skip(skip)
+                .limit(take);
+            total = await BannerModel.countDocuments({ status: 1 });
+        } else if (type == "enable") {
+            banners = await BannerModel.find({ status: 0 })
+                .skip(skip)
+                .limit(take);
+            total = await BannerModel.countDocuments({ status: 0 });
+        } else {
+            banners = await BannerModel.find().skip(skip).limit(take);
+            total = await BannerModel.countDocuments();
+        }
         return res.status(statusCode.OK).json(
             BaseResponse.success("Lấy banners thành công", {
                 banners,

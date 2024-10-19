@@ -1,18 +1,22 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "../../../assets/styles/categoryCarousel.css";
 import { Navigation, Pagination } from "swiper/modules";
 import CategoryCard from "../../../components/CategoryCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategoriesAction } from "../../../hooks/Redux/Category/categoryAction";
 
 const CategoryCarousel = () => {
-    const {
-        data: categoryData,
-        loading: categoryLoading,
-        error: categoryError,
-    } = useSelector((state) => state.category);
+    const dispatch = useDispatch();
+    const { data: categoryData, loading: categoryLoading } = useSelector(
+        (state) => state.category
+    );
+
+    useEffect(() => {
+        dispatch(getCategoriesAction());
+    }, []);
     return (
         <Swiper
             slidesPerView={5}
