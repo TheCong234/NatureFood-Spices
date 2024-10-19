@@ -7,7 +7,6 @@ export const loginApi = async (data) => {
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
         },
-        // withCredentials: true,
     });
     if (response.data.success) {
         localStorage.setItem("token", response.data.data.token);
@@ -21,7 +20,6 @@ export const registerApi = async (data) => {
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
         },
-        // withCredentials: true,
     });
     if (response.data.success) {
         Cookies.set("token", response.data.data.token, {

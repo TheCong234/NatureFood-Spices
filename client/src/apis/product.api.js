@@ -21,7 +21,6 @@ export const createProductApi = async (data) => {
         headers: {
             "Content-Type": "multipart/form-data",
         },
-        // withCredentials: true,
     });
     return response.data;
 };
