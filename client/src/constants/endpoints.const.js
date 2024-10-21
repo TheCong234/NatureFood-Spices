@@ -45,6 +45,7 @@ export const BannerV1 = {
 
 export const BlogV1 = {
     CREATE: "/blog/create",
+    GET_BLOGS: "/blog/list",
 };
 
 export const ReviewV1 = {

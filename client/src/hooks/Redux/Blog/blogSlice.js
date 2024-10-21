@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createBlogAction } from "./blogAction";
+import { createBlogAction, getBlogsAction } from "./blogAction";
 
 const blogSlice = createSlice({
     name: "blog",
@@ -11,6 +11,20 @@ const blogSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            //get blogs
+            .addCase(getBlogsAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getBlogsAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = action.payload;
+            })
+            .addCase(getBlogsAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
             //create blog
             .addCase(createBlogAction.pending, (state) => {
                 state.loading = true;

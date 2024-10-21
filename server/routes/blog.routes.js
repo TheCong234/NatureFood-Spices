@@ -8,6 +8,8 @@ const upload = multer({ storage: storage });
 
 const router = express.Router();
 
+router.get("/list", asyncHandler(BlogController.getBlogs));
+
 router.post(
     "/create",
     upload.single("image"),
