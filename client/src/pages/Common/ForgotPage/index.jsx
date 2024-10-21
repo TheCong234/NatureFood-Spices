@@ -18,6 +18,7 @@ import {
 import backgroundImagenaturefood from "/src/assets/images/bg-login-naturefood.jpg";
 import backgroundImage from "/src/assets/images/bg-login.jpg";
 import { blue } from "../../../theme/colors";
+import { color } from "@mui/system";
 
 const ForgotPage = () => {
     return (
@@ -56,25 +57,33 @@ const ForgotPage = () => {
                                 variant="h4"
                                 sx={{
                                     color: "white",
+                                    fontWeight: "bold",
                                     mb: 2,
-                                    fontWeight: 900,
-                                    paddingTop: "30px",
-                                    paddingBottom: "20px",
+                                    paddingTop: "10px",
+                                    display: "flex",
+                                    justifyContent: "center",
                                 }}
                             >
-                                falcon
+                                <img
+                                    src="src/assets/images/logo.png"
+                                    alt="Logo"
+                                    style={{
+                                        height: "80px",
+                                        width: "170px",
+                                    }}
+                                />
                             </Typography>
                             <Typography
                                 variant="body1"
                                 sx={{
-                                    color: "#5f6368",
+                                    color: "white",
                                     mb: 3,
                                     paddingBottom: "130px",
                                 }}
                             >
-                                With the power of Falcon, you can now focus only
-                                on functionalities for your digital products,
-                                while leaving the UI design on us!
+                                Nature Food cung cấp gia vị thiên nhiên chất
+                                lượng, an toàn, giúp bữa ăn thêm ngon và bảo vệ
+                                sức khỏe người dùng !
                             </Typography>
                             {/* Footer */}
 
@@ -83,8 +92,14 @@ const ForgotPage = () => {
                                 color="textSecondary"
                                 sx={{ mt: 1 }}
                             >
-                                Read our <Link href="#">terms</Link> and{" "}
-                                <Link href="#">conditions</Link>.
+                                <Link href="#" sx={{ color: "white" }}>
+                                    Điều khoản{" "}
+                                </Link>{" "}
+                                và{" "}
+                                <Link href="#" sx={{ color: "white" }}>
+                                    dịch vụ
+                                </Link>
+                                .
                             </Typography>
                         </Box>
                     </Grid>
@@ -107,12 +122,10 @@ const ForgotPage = () => {
                                 variant="h5"
                                 sx={{ mb: 2, fontWeight: "bold" }}
                             >
-                                Forgot Passwork
+                                Quên mật khẩu
                             </Typography>
                         </Box>
-                        <span>
-                            Enter your email and we'll send you a reset link.
-                        </span>
+                        <span>Nhập mail để nhận đổi mật khẩu</span>
                         {/* Login Form */}
                         <TextField
                             fullWidth
@@ -132,10 +145,10 @@ const ForgotPage = () => {
                                 textTransform: "none",
                             }}
                         >
-                            Send reset link
+                            Gửi
                         </Button>
                         <Link href="#" underline="hover">
-                            {"I cant recover my account using this page→"}
+                            {"Tôi không lấy lại được mật khẩu→"}
                         </Link>
                     </Grid>
                 </Grid>

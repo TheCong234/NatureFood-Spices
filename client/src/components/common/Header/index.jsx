@@ -1,130 +1,142 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../../assets/styles/main.css";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import { AppBar, Toolbar } from "@mui/material";
-import { Box } from "@mui/system";
-import { NavLink } from "react-router-dom";
+import SearchIcon from "@mui/icons-material/Search";
+import {
+    AppBar,
+    Badge,
+    Box,
+    Container,
+    IconButton,
+    InputAdornment,
+    InputBase,
+    Stack,
+    Toolbar,
+} from "@mui/material";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getCartItemsAction } from "../../../hooks/Redux/Cart/cartAction";
 
 const items = [
     {
         to: "/",
-        text: "Home",
+        text: "Trang chủ",
     },
     {
-        to: "/product",
-        text: " Products",
+        to: "/product/list?skip=0&take=10",
+        text: " Sản phẩm",
     },
     {
         to: "/wishlist",
-        text: "  Wishlist",
+        text: " Danh sách",
     },
     {
         to: "/shipping",
-        text: "Shipping Info",
+        text: "Thông tin vận chuyển",
     },
     {
         to: "/vendor",
-        text: "  Be a Vendor",
+        text: " Trở thành người bán",
     },
     {
         to: "/trackOrder",
-        text: "  Track Order",
+        text: "  Theo dõi đơn hàng",
     },
     {
         to: "/checkout",
-        text: "  Checkout",
+        text: "  Thanh toán",
     },
 ];
 
 const Header = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { data: cartData } = useSelector((state) => state.cart);
+
+    // const handleGetData = async
+    useEffect(() => {
+        dispatch(getCartItemsAction({ skip: 0, take: 10 }));
+    }, []);
     return (
-        <header className="header fixed w-full z-[999]">
-            {/* Top Header Section */}
-            <div className="header-top flex items-center justify-between p-4">
-                {/* Logo Section */}
-                <div className="header-left flex items-center">
-                    <img src="your-logo.png" alt="Logo" className="logo mr-2" />
-                    <span className="app-name font-bold text-lg">phoenix</span>
-                </div>
-
-                {/* Search Bar */}
-                <div className="header-center flex-grow mx-4">
-                    <input
-                        type="text"
-                        placeholder="Search"
-                        className="search-input w-full p-2 border rounded-full pl-10"
-                    />
-                </div>
-
-                {/* Icon Section */}
-                <div className="header-right flex items-center gap-4">
-                    <span className="sun-icon cursor-pointer">
-                        <LightModeIcon />
-                    </span>
-                    <span className="icon cart-icon relative cursor-pointer">
-                        <ShoppingCartIcon />
-                        <span className="cart-count absolute top-0 right-0 bg-blue-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                            3
-                        </span>
-                    </span>
-                    <span className="icon bell-icon cursor-pointer">
-                        <NotificationsNoneIcon />
-                    </span>
-                    <span className="icon user-icon cursor-pointer">
-                        <PersonOutlineIcon />
-                    </span>
-                </div>
-            </div>
-            <div className="category-header  p-2 bg-gray-100">
-                <AppBar position="static" color="transparent" elevation={0}>
-                    <div>
-                        <Box className="flex justify-center w-full">
-                            <Box>
-                                {items.map((item, index) => (
-                                    <NavLink
-                                        key={index}
-                                        to={item.to}
-                                        className="nav-link"
-                                    >
-                                        {item.text}
-                                    </NavLink>
-                                ))}
-                                {/* <NavLink to="/" className="nav-link">
-                                    Home
-                                </NavLink>
-                                <NavLink to="/stores" className="nav-link">
-                                    My Favourite Stores
-                                </NavLink>
-                                <NavLink to="/products" className="nav-link">
-                                    Products
-                                </NavLink>
-                                <NavLink to="/wishlist" className="nav-link">
-                                    Wishlist
-                                </NavLink>
-                                <NavLink
-                                    to="/shipping-info"
-                                    className="nav-link"
+        <Box className="w-full fixed z-[999] ">
+            <Box className=" mainlayout-header">
+                <Container>
+                    <div className="header-top flex items-center justify-between p-4">
+                        <div className="">
+                            <img
+                                src="/src/assets/images/logo.png"
+                                alt="Logo"
+                                className="w-[80px]"
+                            />
+                        </div>
+                        <div className="relative flex-1 px-20">
+                            <InputBase
+                                startAdornment={
+                                    <InputAdornment position="start">
+                                        <SearchIcon
+                                            sx={{
+                                                fontSize: "30px",
+                                                paddingLeft: "10px",
+                                                opacity: "0.6",
+                                            }}
+                                        />
+                                    </InputAdornment>
+                                }
+                                placeholder="Search…"
+                                style={{
+                                    width: "640px",
+                                    paddingLeft: "17px",
+                                    padding: "3px",
+                                    borderRadius: "17px",
+                                    backgroundColor: "white",
+                                }}
+                                inputProps={{ "aria-label": "search" }}
+                            />
+                        </div>
+                        <Stack direction="row" spacing={0}>
+                            <IconButton color="inherit">
+                                <LightModeIcon />
+                            </IconButton>
+                            <IconButton
+                                color="inherit"
+                                onClick={() => navigate("/cart?skip=0&take=10")}
+                            >
+                                <Badge
+                                    badgeContent={cartData?.total}
+                                    color="success"
                                 >
-                                    Shipping Info
-                                </NavLink>
-                                <NavLink to="/vendor" className="nav-link">
-                                    Be a Vendor
-                                </NavLink>
-                                <NavLink to="/track-order" className="nav-link">
-                                    Track Order
-                                </NavLink>
-                                <NavLink to="/checkout" className="nav-link">
-                                    Checkout
-                                </NavLink> */}
-                            </Box>
-                        </Box>
+                                    <ShoppingCartIcon />
+                                </Badge>
+                            </IconButton>
+                            <IconButton color="inherit">
+                                <NotificationsNoneIcon />
+                            </IconButton>
+                            <IconButton color="inherit">
+                                <PersonOutlineIcon />
+                            </IconButton>
+                        </Stack>
                     </div>
-                </AppBar>
+                </Container>
+            </Box>
+            <div className="bg-gray-100 pt-2 pb-2">
+                <Container className="flex justify-center">
+                    <Box>
+                        {items.map((item, index) => (
+                            <NavLink
+                                key={index}
+                                to={item.to}
+                                className="nav-link"
+                            >
+                                {item.text}
+                            </NavLink>
+                        ))}
+                    </Box>
+                </Container>
             </div>
-        </header>
+        </Box>
     );
 };
 

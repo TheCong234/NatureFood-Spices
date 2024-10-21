@@ -9,124 +9,96 @@ import { Box, Button, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getBannersAction } from "../../../hooks/Redux/Banner/bannerAction";
-import { getCategoriesAction } from "../../../hooks/Redux/Category/categoryAction";
+
 import CategoryCarousel from "./CategoryCarousel";
 import NewProductSection from "./NewProductsSection";
-import { getNewestProductsAction } from "../../../hooks/Redux/Product/productAction";
 import BlogCarousel from "./BlogCarousel";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
     const dispatch = useDispatch();
-    const {
-        data: bannerData,
-        loading: bannerLoading,
-        error: bannerError,
-    } = useSelector((state) => state.banner);
+    const navigate = useNavigate();
+    const { data: bannerData, loading: bannerLoading } = useSelector(
+        (state) => state.banner
+    );
 
     useEffect(() => {
-        dispatch(getBannersAction());
-        dispatch(getCategoriesAction());
-        dispatch(getNewestProductsAction());
-    }, [dispatch]);
+        dispatch(getBannersAction({ skip: 0, take: 10, type: "enable" }));
+    }, []);
     return (
-        <Box className=" relative pb-16">
-            <Swiper
-                slidesPerView={1}
-                spaceBetween={30}
-                loop={true}
-                autoplay={{
-                    delay: 2500,
-                    disableOnInteraction: false,
-                }}
-                pagination={{
-                    clickable: true,
-                }}
-                navigation={true}
-                modules={[Autoplay, Pagination, Navigation]}
-                className="mySwiper h-[500px] w-full rounded-md"
-            >
-                {bannerData?.banners?.map((banner, index) => (
-                    <SwiperSlide
-                        key={`swipperSlide-${index}`}
-                        className="text-black bg-white border-none"
-                    >
-                        <img
-                            src={banner.image.url}
-                            alt="banner image"
-                            width="100%"
-                        />
-                    </SwiperSlide>
-                ))}
-            </Swiper>
-            <Box className="pb-16">
-                <Box className="flex justify-center">
-                    <Typography
-                        variant="h4"
-                        component="p"
-                        sx={{
-                            fontWeight: "bold",
-                            textAlign: "center",
-                            pt: 4,
-                        }}
-                    >
-                        Danh mục
-                    </Typography>
-                    <img
-                        src="/src/assets/icons/icon_fire.png"
-                        alt="icon fire"
-                        width="26px"
-                        className="self-auto object-contain pt-6 ml-2"
-                    />
-                </Box>
-                <Typography
-                    variant="body1"
-                    component="p"
-                    sx={{ textAlign: "center", pb: 4, mt: 1 }}
-                >
-                    Lựa chọn những danh mục sản phẩm ngon với ẩm thực của bạn
-                </Typography>
-                <CategoryCarousel />
-            </Box>
-
-            <Box sx={{ pb: 4, bgcolor: "#efefef" }}>
-                <Typography
-                    variant="h4"
-                    component="h2"
-                    sx={{
-                        fontWeight: "bold",
-                        textAlign: "center",
-                        py: 4,
+        <Box className="relative pb-16">
+            <section>
+                <Swiper
+                    slidesPerView={1}
+                    spaceBetween={30}
+                    loop={true}
+                    autoplay={{
+                        delay: 2500,
+                        disableOnInteraction: false,
                     }}
+                    pagination={{
+                        clickable: true,
+                    }}
+                    navigation={true}
+                    modules={[Autoplay, Pagination, Navigation]}
+                    className="mySwiper h-[500px] w-full rounded-md"
                 >
-                    Sản phẩm mới nhất
-                </Typography>
-                <NewProductSection />
-            </Box>
+                    {bannerData?.banners?.map((banner, index) => (
+                        <SwiperSlide
+                            key={`swipperSlide-${index}`}
+                            className="text-black bg-white border-none"
+                        >
+                            <img
+                                src={banner.image.url}
+                                alt="banner image"
+                                width="100%"
+                            />
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            </section>
+            <section className="py-8">
+                <div className="flex  flex-col items-center mb-3">
+                    <Box className="flex justify-center">
+                        <div className="flex items-center">
+                            <p className="text-3xl font-bold mr-2">Danh mục</p>
+                            <img
+                                src="/src/assets/icons/icon_fire.png"
+                                alt="icon fire"
+                                width="22px"
+                                className="h-7"
+                            />
+                        </div>
+                    </Box>
+                    <p className="w-1/2 text-slate-500 text-md text-center">
+                        Hãy khám phá và thêm gia vị sạch vào bữa ăn của bạn ngay
+                        hôm nay!
+                    </p>
+                </div>
+                <CategoryCarousel />
+            </section>
 
-            <Box className="pb-16">
+            <section sx={{ py: 4, bgcolor: "#efefef" }}>
+                <div className="flex flex-col items-center mb-3">
+                    <p className="text-3xl font-bold mr-2">Sản phẩm mới nhất</p>
+                    <p className="w-1/2 text-slate-500 text-md text-center">
+                        Hãy khám phá bộ sưu tập gia vị mới nhất của chúng tôi để
+                        nâng tầm bữa ăn của bạn!
+                    </p>
+                </div>
+                <NewProductSection />
+            </section>
+
+            <Box className="py-8">
                 <Box className="flex justify-between items-center">
-                    <Typography
-                        variant="h4"
-                        component="p"
-                        sx={{
-                            fontWeight: "bold",
-                            py: 4,
-                            width: "50%",
-                            textAlign: "left",
-                            mr: 12,
-                        }}
-                    >
-                        Các bài viết của chúng tôi ản phẩm ngon vớ
-                    </Typography>
-                    <Typography
-                        variant="body2"
-                        component="p"
-                        sx={{ textAlign: "left", width: "50%", ml: 12 }}
-                    >
-                        Lựa chọn những danh mục sản phẩm ngon với ẩm thực của
-                        bạn ựa chọn những danh mục sản phẩm ngon với ẩm thực của
-                        bạn ựa chọn những danh mục sản phẩm ngon với
-                    </Typography>
+                    <p className="text-3xl font-bold mr-2 w-1/3">
+                        Những bài viết hữu ích và thú vị
+                    </p>
+                    <p className="w-1/2 text-slate-500 text-md">
+                        Những bài viết thú vị về ẩm thực của chúng tôi, nơi khám
+                        phá mối liên hệ giữa gia vị, ẩm thực và văn hóa xung
+                        quanh!
+                    </p>
                 </Box>
                 <BlogCarousel />
             </Box>
@@ -134,36 +106,25 @@ const Index = () => {
             <Box
                 sx={{
                     backgroundImage:
-                        "url('https://spicesinc.com/sites/default/files/y/whitebowls.jpg')",
+                        "url('/src/assets/images/bg-shopping-with-naturefood.jpg')",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                 }}
             >
-                <Box className="py-16">
-                    <Typography
-                        variant="h4"
-                        component="p"
-                        sx={{
-                            fontWeight: "bold",
-                            pt: 4,
-                            textAlign: "left",
-                        }}
+                <Box className="p-16">
+                    <p className="text-3xl font-bold mr-2 w-2/3 mb-3">
+                        Cùng Nature Food đưa đến các gia vị ngon-sạch-mới-lạ đến
+                        các gia đình Việt
+                    </p>
+                    <p className="w-1/2 text-slate-500 text-md mb-3">
+                        Tham gia bán hàng cùng Nature Food
+                    </p>
+                    <Button
+                        variant="contained"
+                        color="warning"
+                        onClick={() => navigate("/register-seller")}
                     >
-                        Các bài viết của chúng tôi ản phẩm ngon vớ
-                    </Typography>
-                    <Typography
-                        variant="body1"
-                        component="p"
-                        sx={{
-                            textAlign: "left",
-                            fontWeight: "bold",
-                            mt: 2,
-                        }}
-                    >
-                        Lựa chọn những danh mục sản phẩm
-                    </Typography>
-                    <Button variant="contained" color="warning" sx={{ mt: 2 }}>
-                        Bắt đầu
+                        Đăng ký
                     </Button>
                 </Box>
             </Box>

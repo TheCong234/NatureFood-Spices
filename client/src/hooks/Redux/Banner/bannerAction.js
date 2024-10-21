@@ -19,8 +19,8 @@ export const getBannersByCurrentUserAction = createAsyncThunk(
 
 export const getBannersAction = createAsyncThunk(
     "banner/getBannersAction",
-    async (_, thunkAPI) => {
-        const { result, error } = await tryCatchWrapper(getBannersApi);
+    async (data, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(getBannersApi, data);
         if (error) {
             return thunkAPI.rejectWithValue(error);
         }

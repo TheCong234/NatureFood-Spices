@@ -9,6 +9,7 @@ import {
     PromoteStore,
     RegisterSeller,
     ProductCartSeller,
+    StoreProductSeller,
 } from "../pages/Seller";
 
 import {
@@ -45,6 +46,10 @@ import {
     Vendor,
     TrackOrder,
     Checkout,
+    Blog,
+    Products,
+    Cart,
+    Notification,
 } from "../pages/Customer";
 
 export const router = createBrowserRouter([
@@ -82,7 +87,7 @@ export const router = createBrowserRouter([
                         element: <HomePage />,
                     },
                     {
-                        path: "product/detail/:productId",
+                        path: "product/details/:productId",
                         element: <ProductDetail />,
                     },
                     {
@@ -105,6 +110,22 @@ export const router = createBrowserRouter([
                         path: "/checkout",
                         element: <Checkout />,
                     },
+                    {
+                        path: "/blog",
+                        element: <Blog />,
+                    },
+                    {
+                        path: "/product/list",
+                        element: <Products />,
+                    },
+                    {
+                        path: "/cart",
+                        element: <Cart />,
+                    },
+                    {
+                        path: "/notification",
+                        element: <Notification />,
+                    },
                 ],
             },
             {
@@ -124,8 +145,8 @@ export const router = createBrowserRouter([
                         element: <ProductCartSeller />,
                     },
                     {
-                        path: "event",
-                        element: <EventStore />,
+                        path: "store-product/list",
+                        element: <StoreProductSeller />,
                     },
                     {
                         path: "setting",

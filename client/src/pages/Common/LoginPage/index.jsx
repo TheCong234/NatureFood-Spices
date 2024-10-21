@@ -91,9 +91,18 @@ const LoginPage = () => {
                                     fontWeight: "bold",
                                     mb: 2,
                                     paddingTop: "10px",
+                                    display: "flex",
+                                    justifyContent: "center",
                                 }}
                             >
-                                falcon
+                                <img
+                                    src="src/assets/images/logo.png"
+                                    alt="Logo"
+                                    style={{
+                                        height: "80px",
+                                        width: "170px",
+                                    }}
+                                />
                             </Typography>
                             <Typography
                                 variant="body1"
@@ -103,9 +112,9 @@ const LoginPage = () => {
                                     paddingTop: "20px",
                                 }}
                             >
-                                With the power of Falcon, you can now focus only
-                                on functionalities for your digital products,
-                                while leaving the UI design on us!
+                                Nature Food cung cấp gia vị thiên nhiên chất
+                                lượng, an toàn, giúp bữa ăn thêm ngon và bảo vệ
+                                sức khỏe người dùng !
                             </Typography>
                             {/* Footer */}
                             <Typography
@@ -116,17 +125,18 @@ const LoginPage = () => {
                                     color: white[200],
                                 }}
                             >
-                                Don't have an account?{" "}
+                                Bạn chưa có tài khoản ?{" "}
                                 <Link
                                     href="/register"
                                     sx={{
+                                        pt: 1,
                                         color: white[200],
                                         fontWeight: "bold",
                                         display: "flex",
                                         justifyContent: "center",
                                     }}
                                 >
-                                    Get started!
+                                    Đăng nhập !
                                 </Link>
                             </Typography>
                             <Typography
@@ -138,13 +148,13 @@ const LoginPage = () => {
                                     color: white[200],
                                 }}
                             >
-                                Read our{" "}
+                                {" "}
                                 <Link href="#" color={"inherit"}>
-                                    terms
+                                    điều khoản
                                 </Link>{" "}
-                                and{" "}
+                                và{" "}
                                 <Link href="#" color={"inherit"}>
-                                    conditions
+                                    dịch vụ
                                 </Link>
                                 .
                             </Typography>
@@ -164,7 +174,7 @@ const LoginPage = () => {
                                 variant="h5"
                                 sx={{ mb: 2, fontWeight: "bold" }}
                             >
-                                Account Login
+                                Đăng nhập tài khoản
                             </Typography>
                         </Box>
 
@@ -183,7 +193,7 @@ const LoginPage = () => {
                             <TextField
                                 {...register("password")}
                                 fullWidth
-                                label="Password"
+                                label="Mật khẩu "
                                 variant="outlined"
                                 margin="normal"
                                 type="password"
@@ -195,7 +205,7 @@ const LoginPage = () => {
                                 control={
                                     <Checkbox defaultChecked color="primary" />
                                 }
-                                label="Remember me"
+                                label="Nhớ mật khẩu "
                                 sx={{ mt: 1 }}
                             />
                             <Button
@@ -205,15 +215,15 @@ const LoginPage = () => {
                                 color="primary"
                                 sx={{ my: 2 }}
                             >
-                                Log in
+                                Đăng nhập
                             </Button>
                         </form>
                         <Link href="#" underline="hover">
-                            Forgot Password?
+                            Quên mật khẩu ?
                         </Link>
 
                         {/* Divider */}
-                        <Divider sx={{ my: 3 }}>or log in with</Divider>
+                        <Divider sx={{ my: 3 }}>Hoặc đăng nhập bằng</Divider>
 
                         {/* Social Login */}
                         <Grid container spacing={2}>

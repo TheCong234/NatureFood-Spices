@@ -59,12 +59,6 @@ const UserSchema = Schema(
             type: String,
         },
         image: ImageSchema,
-        favorite: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Product",
-            },
-        ],
         role: {
             type: String,
             enum: ["admin", "seller", "user"],

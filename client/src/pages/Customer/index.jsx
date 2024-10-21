@@ -5,3 +5,7 @@ export { default as Shipping } from "./Shipping";
 export { default as Vendor } from "./Vendor";
 export { default as TrackOrder } from "./TrackOrder";
 export { default as Checkout } from "./Checkout";
+export { default as Blog } from "./blog";
+export { default as Products } from "./Products";
+export { default as Cart } from "./Cart";
+export { default as Notification } from "./Notification";

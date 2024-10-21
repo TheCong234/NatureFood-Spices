@@ -49,9 +49,12 @@
    
 }
 .login-btn{
-    border: 1px solid white !important;
+    /* border: 1px solid white !important; */
     font-weight: 600 !important;
-    width: 90px;
+    width: 120px;
+}
+.login-btn:hover {
+  color: white !important; 
 }
 .accout{
     padding-bottom: 10px;
@@ -59,9 +62,14 @@
 
 .text-transform-none{
     text-transform: none !important;
+    
 }
 .register-btn{
     font-weight: 600;
+}
+
+.button-container .css-1q98nef-MuiButtonBase-root-MuiButton-root{
+  border: 1px solid white !important;
 }
 /* Error-500 */
  * {
@@ -151,8 +159,9 @@ a {
   text-decoration: underline;
 } */
 /* header */
-.header {
-background-color:var(--peach-color);
+.mainlayout-header {
+  background-color: #ECFCCB;
+  width: 100% !important;
 }
 
 .header-left {
@@ -232,7 +241,7 @@ background-color:var(--peach-color);
 
 /* Basic styling for footer */
 .footer {
-  background-color: var(--peach-color) !important;
+  background-color:#ECFCCB;
   padding: 40px 0;
 }
 
@@ -308,16 +317,5 @@ background-color:var(--peach-color);
   color: #000; 
 }
 
-/* Icon styling */
-.icon {
-  margin-right: 8px; 
-  vertical-align: middle; 
-}
-.chil-pho{
-  margin-left: 67px;
-  padding-bottom: 20px;
-}
 
-.footer-styled{
-  background-color: var(--green-color);
-}
+

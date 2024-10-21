@@ -1,4 +1,4 @@
-import { ProductV1 } from "../constants/endpoints.const";
+import { ProductV1, StoreProductV1 } from "../constants/endpoints.const";
 import { apiClient } from "./config.api";
 
 export const getNewestProducts = async () => {
@@ -12,16 +12,22 @@ export const getProductsApi = async (params) => {
 };
 
 export const getProductById = async (productId) => {
-    const product = await apiClient.get(ProductV1.PRODUCT_DETAILS + productId);
-    return product.data;
+    const response = await apiClient.get(ProductV1.PRODUCT_DETAILS + productId);
+    return response.data;
 };
 
 export const createProductApi = async (data) => {
-    const product = await apiClient.post(ProductV1.PRODUCT_CREATE, data, {
+    const response = await apiClient.post(ProductV1.PRODUCT_CREATE, data, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
-        withCredentials: true,
     });
-    return product.data;
+    return response.data;
+};
+
+export const createStoreProductsApi = async (storeId) => {
+    const response = await apiClient.post(
+        `${StoreProductV1.CREATE}${storeId}/create`
+    );
+    return response.data;
 };

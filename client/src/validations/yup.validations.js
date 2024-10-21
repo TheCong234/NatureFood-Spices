@@ -143,3 +143,16 @@ export const BannerYup = yup.object().shape({
     //         );
     //     }),
 });
+
+export const CreateBlogYup = yup.object().shape({
+    title: yup.string().required("Tiêu đề là bắt buộc"),
+    slug: yup
+        .string()
+        .min(5, "Slug phải có ít nhất 5 ký tự")
+        .required("Slug là bắt buộc"),
+    content: yup.string().required("Nội dung là bắt buộc"),
+    excerpt: yup
+        .string()
+        .min(5, "Tóm tắt phải có ít nhất 5 ký tự")
+        .required("Tóm tắt là bắt buộc"),
+});

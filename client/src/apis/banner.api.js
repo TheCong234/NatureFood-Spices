@@ -6,8 +6,8 @@ export const getBannersByCurrentUser = async () => {
     return result.data;
 };
 
-export const getBannersApi = async () => {
-    const result = await apiClient.get(BannerV1.GET_BANNERS);
+export const getBannersApi = async (params) => {
+    const result = await apiClient.get(BannerV1.GET_BANNERS, { params });
     return result.data;
 };
 

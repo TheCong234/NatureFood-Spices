@@ -9,25 +9,28 @@ export default function Error404() {
         <body className="error-body">
             <div className="error-page">
                 <div className="falcon-logo">
-                    <img src="src/assets/images/logo.jpg" alt="falcon logo" />
+                    <img src="src/assets/images/logo.png" alt="falcon logo" />
                 </div>
                 <div className="error-contentt">
                     <h1 className="error-h">404</h1>
                     <p className="error-message">
-                        The page you're looking for is not found.
+                        Không tìm thấy trang bạn đang tìm kiếm.
                     </p>
                     <hr></hr>
                     <p className="error-details">
                         Make sure the address is correct and that the page
                         hasn't moved. If you think this is a mistake,{" "}
-                        <a href="mailto:support@example.com">contact us</a>.
+                        <a href="mailto:support@example.com">
+                            hãy liên hệ với chúng tôi
+                        </a>
+                        .
                     </p>
                     <Button
                         className="error-button"
                         variant="contained"
                         startIcon={<HomeIcon />}
                     >
-                        Take me home
+                        Trở về trang chủ
                     </Button>
                 </div>
             </div>
