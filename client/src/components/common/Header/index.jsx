@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../../assets/styles/main.css";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -16,7 +16,9 @@ import {
     Stack,
     Toolbar,
 } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getCartItemsAction } from "../../../hooks/Redux/Cart/cartAction";
 
 const items = [
     {
@@ -24,7 +26,7 @@ const items = [
         text: "Trang chủ",
     },
     {
-        to: "/product",
+        to: "/product/list?skip=0&take=10",
         text: " Sản phẩm",
     },
     {
@@ -50,6 +52,14 @@ const items = [
 ];
 
 const Header = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { data: cartData } = useSelector((state) => state.cart);
+
+    // const handleGetData = async
+    useEffect(() => {
+        dispatch(getCartItemsAction({ skip: 0, take: 10 }));
+    }, []);
     return (
         <Box className="w-full fixed z-[999] ">
             <Box className=" mainlayout-header">
@@ -90,8 +100,14 @@ const Header = () => {
                             <IconButton color="inherit">
                                 <LightModeIcon />
                             </IconButton>
-                            <IconButton color="inherit">
-                                <Badge badgeContent={4} color="inherit">
+                            <IconButton
+                                color="inherit"
+                                onClick={() => navigate("/cart?skip=0&take=10")}
+                            >
+                                <Badge
+                                    badgeContent={cartData?.total}
+                                    color="success"
+                                >
                                     <ShoppingCartIcon />
                                 </Badge>
                             </IconButton>

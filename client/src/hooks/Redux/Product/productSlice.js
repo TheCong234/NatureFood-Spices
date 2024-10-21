@@ -48,7 +48,7 @@ const productSlice = createSlice({
                 state.error = action.error.message;
             })
 
-            //old
+            //********************old*******************
             //get product
             .addCase(getProductByIdAction.pending, (state) => {
                 state.loading = true;

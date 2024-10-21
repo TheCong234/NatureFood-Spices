@@ -33,6 +33,7 @@ export const ProductV1 = {
 
 export const StoreProductV1 = {
     CREATE: "/store-product/",
+    GET_STORE_PRODUCTS: "/store-product/all",
 };
 
 export const BannerV1 = {
@@ -45,6 +46,7 @@ export const BannerV1 = {
 
 export const BlogV1 = {
     CREATE: "/blog/create",
+    GET_BLOGS: "/blog/list",
 };
 
 export const ReviewV1 = {
@@ -53,8 +55,13 @@ export const ReviewV1 = {
 
 export const FavoriteV1 = {
     ADD_PRODUCT: "/favorite/product/add/",
+    ADD_STORE_PRODUCT: "/favorite/store-product/",
+
     REMOVE_PRODUCT: "/favorite/product/remove/",
     GET_FAVORITE_PRODUCT: "/favorite/product",
+    GET_FAVORITE_STORE_PRODUCT: "/favorite/store-product/all",
+
+    DELETE_FAVORITE_STORE_PRODUCT: "/favorite/store-product/",
 };
 
 export const StoreCartV1 = {
@@ -62,4 +69,9 @@ export const StoreCartV1 = {
     DELETE: "/store-cart/items/",
     GET_STORE_CART: "/store-cart/all",
     ADJUSTMENT_ITEM: "/store-cart/items/",
+};
+
+export const CartV1 = {
+    CREATE: "/cart",
+    GET_ALL: "/cart/all",
 };

@@ -47,7 +47,12 @@ import {
     TrackOrder,
     Checkout,
     Blog,
+<<<<<<< HEAD
+    Products,
+    Cart,
+=======
     Notification,
+>>>>>>> a6686bd7b2123e221353079b8093a7f3532c8a86
 } from "../pages/Customer";
 
 export const router = createBrowserRouter([
@@ -85,7 +90,7 @@ export const router = createBrowserRouter([
                         element: <HomePage />,
                     },
                     {
-                        path: "product/detail/:productId",
+                        path: "product/details/:productId",
                         element: <ProductDetail />,
                     },
                     {
@@ -111,6 +116,14 @@ export const router = createBrowserRouter([
                     {
                         path: "/blog",
                         element: <Blog />,
+                    },
+                    {
+                        path: "/product/list",
+                        element: <Products />,
+                    },
+                    {
+                        path: "/cart",
+                        element: <Cart />, 
                     },
                     {
                         path: "/notification",
