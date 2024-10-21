@@ -6,3 +6,4 @@ export { default as Vendor } from "./Vendor";
 export { default as TrackOrder } from "./TrackOrder";
 export { default as Checkout } from "./Checkout";
 export { default as Blog } from "./blog";
+export { default as Notification } from "./Notification";
