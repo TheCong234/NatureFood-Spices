@@ -5,8 +5,5 @@ import asyncHandler from "../middlewares/async-handler.middleware.js";
 
 const router = express.Router();
 
-router.get("/items", authJwt, asyncHandler(CartController.getItemsCart));
-
-router.post("/add", authJwt, asyncHandler(CartController.addItem));
-router.delete("/:productId", authJwt, asyncHandler(CartController.removeItem));
+router.post("/", authJwt, asyncHandler(CartController.createCartItem));
 export default router;

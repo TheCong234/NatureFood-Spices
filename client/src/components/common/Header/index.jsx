@@ -24,7 +24,7 @@ const items = [
         text: "Trang chủ",
     },
     {
-        to: "/product",
+        to: "/product/list",
         text: " Sản phẩm",
     },
     {

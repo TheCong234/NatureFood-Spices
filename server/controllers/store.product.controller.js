@@ -7,15 +7,18 @@ import StoreModel from "../models/store.models.js";
 
 const StoreProductController = {
     async getStoreProducts(req, res) {
-        const storeProducts = await StoreProductModel.find({});
-        return res
-            .status(statusCode.OK)
-            .json(
-                BaseResponse.success(
-                    "Lấy tất cả sản phẩm sale thành công",
-                    storeProducts
-                )
-            );
+        const { skip, take } = req.query;
+        const products = await StoreProductModel.find()
+            .populate("productId")
+            .skip(skip)
+            .limit(take);
+        const total = await StoreProductModel.countDocuments();
+        return res.status(statusCode.OK).json(
+            BaseResponse.success("Lấy sản phẩm sale thành công", {
+                products,
+                total,
+            })
+        );
     },
 
     async getStoreProductsByCategory(req, res) {

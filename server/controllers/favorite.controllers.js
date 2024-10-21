@@ -4,32 +4,51 @@ import { BaseResponse } from "../config/BaseResponse.config.js";
 import UserModel from "../models/user.model.js";
 import StoreModel from "../models/store.models.js";
 import ProductModel from "../models/product.model.js";
+import FavoriteModel from "../models/favorite.model.js";
 
 const FavoriteController = {
-    async getAll(req, res) {
-        try {
-            const favoriteList = req.user.favorite;
-            return res
-                .status(statusCode.OK)
-                .json(
-                    BaseResponse.success(
-                        "Lấy danh sách yêu thích thành công",
-                        favoriteList
-                    )
-                );
-        } catch (error) {
-            console.log("get all favorite: ", error);
-            return res
-                .status(statusCode.INTERNAL_SERVER_ERROR)
-                .json(
-                    BaseResponse.error(
-                        "Lấy danh sách yêu thích thất bại",
-                        error
-                    )
-                );
-        }
+    //************customer***********
+
+    async addFavoriteStoreProduct(req, res) {
+        const favorite = new FavoriteModel({
+            user: req.user._id,
+            storeProduct: req.params.storeProductId,
+        });
+        const newFavorite = await favorite.save();
+        return res
+            .status(statusCode.CREATED)
+            .json(
+                BaseResponse.success("Thêm yêu thích thành công", newFavorite)
+            );
     },
 
+    async deleteFavoriteStoreProduct(req, res) {
+        const favorite = await FavoriteModel.findOneAndDelete({
+            user: req.user._id,
+            storeProduct: req.params.storeProductId,
+        });
+        return res
+            .status(statusCode.OK)
+            .json(BaseResponse.success("Xóa yêu thích thành công", favorite));
+    },
+
+    async getFavoriteStoreProducts(req, res) {
+        const { skip, take } = req.query;
+        const products = await FavoriteModel.find({ user: req.user._id })
+            .skip(skip)
+            .limit(take);
+        const total = await FavoriteModel.countDocuments({
+            user: req.user._id,
+        });
+        return res.status(statusCode.OK).json(
+            BaseResponse.success("Lấy danh sách yêu thích thành công", {
+                products,
+                total,
+            })
+        );
+    },
+
+    //************store**********
     async modifyFavorite(req, res) {
         try {
             const { id } = req.params;

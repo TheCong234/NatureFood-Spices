@@ -6,7 +6,24 @@ import {
     deleteStoreCartItemApi,
     adjustmentStoreCartItemApi,
 } from "../../../apis/store.cart";
+import { createCartItemApi } from "../../../apis/cart.api";
 
+//*********** customer ***********
+export const createCartItemAction = createAsyncThunk(
+    "cart/createCartItemAction",
+    async (data, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(
+            createCartItemApi,
+            data
+        );
+        if (error) {
+            return thunkAPI.rejectWithValue(error.response);
+        }
+        return result.data;
+    }
+);
+
+//*********** store ***********
 export const addProductToStoreCartAction = createAsyncThunk(
     "cart/addProductToStoreCartAction",
     async (data, thunkAPI) => {

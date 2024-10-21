@@ -4,6 +4,7 @@ import {
     getStoreCartItemsAction,
     deleteStoreCartItemAction,
     adjustmentStoreCartItemAction,
+    createCartItemAction,
 } from "./cartAction";
 
 const cartSlice = createSlice({
@@ -16,7 +17,30 @@ const cartSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            //*********** customer ***********
+            //create cart item
+            .addCase(createCartItemAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(createCartItemAction.fulfilled, (state, action) => {
+                state.loading = false;
+                const existIndex = state.data.products.findIndex(
+                    (p) => p._id == action.payload._id
+                );
+                if (existIndex != -1) {
+                    state.data.products[existIndex] = action.payload;
+                } else {
+                    state.data.products.push(action.payload);
+                    state.data.total += 1;
+                }
+            })
+            .addCase(createCartItemAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
 
+            //*********** store ***********
             //add product to store cart
             .addCase(addProductToStoreCartAction.pending, (state) => {
                 state.loading = true;
@@ -24,7 +48,6 @@ const cartSlice = createSlice({
             })
             .addCase(addProductToStoreCartAction.fulfilled, (state, action) => {
                 state.loading = false;
-                console.log(action);
                 if (action?.payload?.index == -1) {
                     state.data.total += action?.payload?.quantity;
                 }
