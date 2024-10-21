@@ -3,6 +3,20 @@ import { statusCode } from "../config/statusCode.config.js";
 import CartModel from "../models/cart.model.js";
 
 const CartController = {
+    async getCartItems(req, res) {
+        const { skip, take } = req.query;
+        const products = await CartModel.find({ user: req.user._id })
+            .skip(skip)
+            .limit(take);
+        const total = await CartModel.countDocuments({ user: req.user._id });
+        return res.status(statusCode.OK).json(
+            BaseResponse.success("Lấy giỏ hàng thành công", {
+                products,
+                total,
+            })
+        );
+    },
+
     async createCartItem(req, res) {
         const userId = req.user._id;
         const { storeProduct, quantity } = req.body;

@@ -48,6 +48,7 @@ import {
     Checkout,
     Blog,
     Products,
+    Cart,
 } from "../pages/Customer";
 
 export const router = createBrowserRouter([
@@ -115,6 +116,10 @@ export const router = createBrowserRouter([
                     {
                         path: "/product/list",
                         element: <Products />,
+                    },
+                    {
+                        path: "/cart",
+                        element: <Cart />,
                     },
                 ],
             },

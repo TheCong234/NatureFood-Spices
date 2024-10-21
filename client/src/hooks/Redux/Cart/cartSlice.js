@@ -5,6 +5,7 @@ import {
     deleteStoreCartItemAction,
     adjustmentStoreCartItemAction,
     createCartItemAction,
+    getCartItemsAction,
 } from "./cartAction";
 
 const cartSlice = createSlice({
@@ -36,6 +37,20 @@ const cartSlice = createSlice({
                 }
             })
             .addCase(createCartItemAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            //get cart items
+            .addCase(getCartItemsAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getCartItemsAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = action.payload;
+            })
+            .addCase(getCartItemsAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

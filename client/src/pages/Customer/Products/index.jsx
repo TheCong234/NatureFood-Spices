@@ -242,7 +242,7 @@ export default function Products() {
             </Grid>
             <Pagination
                 className="pt-6 flex justify-center"
-                count={productData?.total}
+                count={Math.floor(productData?.total / productsEachPage + 1)}
                 page={Math.floor(query.get("skip") / productsEachPage + 1) || 1}
                 onChange={handlePaginationChange}
                 color="success"

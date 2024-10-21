@@ -6,7 +6,7 @@ import {
     deleteStoreCartItemApi,
     adjustmentStoreCartItemApi,
 } from "../../../apis/store.cart";
-import { createCartItemApi } from "../../../apis/cart.api";
+import { createCartItemApi, getCartItemsApi } from "../../../apis/cart.api";
 
 //*********** customer ***********
 export const createCartItemAction = createAsyncThunk(
@@ -16,6 +16,17 @@ export const createCartItemAction = createAsyncThunk(
             createCartItemApi,
             data
         );
+        if (error) {
+            return thunkAPI.rejectWithValue(error.response);
+        }
+        return result.data;
+    }
+);
+
+export const getCartItemsAction = createAsyncThunk(
+    "cart/getCartItemsAction",
+    async (data, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(getCartItemsApi, data);
         if (error) {
             return thunkAPI.rejectWithValue(error.response);
         }
