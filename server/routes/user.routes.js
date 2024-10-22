@@ -15,6 +15,11 @@ router.get("/:id", UserController.getUserById);
 
 router.post("/register", asyncHandler(UserController.register));
 router.post("/login", authLocal, UserController.login);
+router.post(
+    "/delivery/create",
+    authJwt,
+    asyncHandler(UserController.createDelivery)
+);
 
 router.post(
     "/verify-email/otp",

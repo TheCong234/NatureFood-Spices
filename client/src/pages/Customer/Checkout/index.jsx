@@ -95,7 +95,6 @@ export default function CheckoutForm() {
                                 Chỉnh sửa
                             </Button>
                             <div>
-                                {/* Tên */}
                                 <Box display="flex" alignItems="center" mb={2}>
                                     <PersonIcon sx={{ mr: 1 }} />
                                     <Typography>
@@ -103,8 +102,6 @@ export default function CheckoutForm() {
                                         {shippingDetails.name}
                                     </Typography>
                                 </Box>
-
-                                {/* Địa chỉ */}
                                 <Box display="flex" alignItems="center" mb={2}>
                                     <LocationOnIcon sx={{ mr: 1 }} />
                                     <Typography>

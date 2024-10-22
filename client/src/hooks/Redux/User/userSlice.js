@@ -6,6 +6,7 @@ import {
     registerAction,
     getPeopleAction,
     updateUserByIdAction,
+    createDeliveryAction,
 } from "./userAction";
 
 const userSlice = createSlice({
@@ -13,6 +14,7 @@ const userSlice = createSlice({
     initialState: {
         data: { user: [], total: 0 },
         token: localStorage.getItem("token") || "",
+        currentUser: null,
         loading: false,
         error: null,
     },
@@ -53,7 +55,7 @@ const userSlice = createSlice({
             })
             .addCase(getcurrentUserAction.fulfilled, (state, action) => {
                 state.loading = false;
-                state.data = action.payload;
+                state.currentUser = action.payload;
             })
             .addCase(getcurrentUserAction.rejected, (state, action) => {
                 state.loading = false;
@@ -89,6 +91,23 @@ const userSlice = createSlice({
             .addCase(updateUserByIdAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
+            })
+
+            //create delivery
+            .addCase(createDeliveryAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(createDeliveryAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.currentUser = {
+                    ...state.currentUser,
+                    delivery: action.payload,
+                };
+            })
+            .addCase(createDeliveryAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
     },
 });

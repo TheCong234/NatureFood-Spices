@@ -2,10 +2,9 @@ import { statusCode } from "../config/statusCode.config.js";
 import { BaseResponse } from "../config/BaseResponse.config.js";
 import UserModel from "../models/user.model.js";
 import CartModel from "../models/cart.model.js";
-import ProductModel from "../models/product.model.js";
-import StoreModel from "../models/store.models.js";
 import { otpTemplate } from "../config/otp.template.config.js";
 import { sendMail } from "../utils/mailer.utils.js";
+import AddressModel from "../models/address.model.js";
 
 const UserController = {
     async register(req, res) {
@@ -144,6 +143,29 @@ const UserController = {
         return res
             .status(statusCode.OK)
             .json(BaseResponse.success("Gửi email thành công", null));
+    },
+
+    async createDelivery(req, res) {
+        const address = new AddressModel(req.body);
+        const newAddress = await address.save();
+        const delivery = {
+            address: newAddress._id,
+            ownerName: req.body.ownerName,
+            phone: req.body.phone,
+        };
+        const updatedUser = await UserModel.findByIdAndUpdate(
+            req.user._id,
+            { $push: { delivery } },
+            { new: true, useFindAndModify: false }
+        );
+        return res
+            .status(statusCode.OK)
+            .json(
+                BaseResponse.success(
+                    "Thêm địa chỉ nhận hàng thành công",
+                    updatedUser.delivery
+                )
+            );
     },
 };
 

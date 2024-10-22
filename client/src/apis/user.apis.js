@@ -69,3 +69,8 @@ export const updateUserByIdApi = async (data) => {
     );
     return user.data;
 };
+
+export const createDeliveryApi = async (data) => {
+    const response = await apiClient.post(UserV1.CREATE_DELIVERY, data);
+    return response.data;
+};

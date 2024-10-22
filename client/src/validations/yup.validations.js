@@ -156,3 +156,18 @@ export const CreateBlogYup = yup.object().shape({
         .min(5, "Tóm tắt phải có ít nhất 5 ký tự")
         .required("Tóm tắt là bắt buộc"),
 });
+
+export const CreateDeliveryYup = yup.object().shape({
+    ownerName: yup
+        .string()
+        .min(2, "Tên người nhận phải nhiều hơn 2 ký tự")
+        .required("Tên người nhận là bắt buộc"),
+    phone: yup
+        .string()
+        .min(9, "Số điện thoại không hợp lệ")
+        .required("Số điện thoại là bắt buộc"),
+    city: yup.string().required("Thành phố/Tỉnh là bắt buộc"),
+    district: yup.string().required("Quận/Huyện là bắt buộc"),
+    ward: yup.string().required("Phường/Xã là bắt buộc"),
+    street: yup.string().required("Địa chỉ chi tiết là bắt buộc"),
+});
