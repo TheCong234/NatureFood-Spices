@@ -22,7 +22,8 @@ import "../../../assets/styles/main.css";
 import PersonIcon from "@mui/icons-material/Person";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PhoneIcon from "@mui/icons-material/Phone";
-import { color } from "@mui/system";
+import { color, textTransform } from "@mui/system";
+import { Link } from "react-router-dom";
 export default function CheckoutForm() {
     // State management
     const [shippingDetails, setShippingDetails] = useState({
@@ -86,18 +87,13 @@ export default function CheckoutForm() {
                             <h3 className=" font-bold text-xl">
                                 Chi tiết vận chuyển
                             </h3>
-                            <button
-                                className="pb-4"
-                                onClick={handleEdit}
-                                style={{
-                                    color: "blue",
-                                    cursor: "pointer",
-                                    border: "none",
-                                    background: "none",
-                                }}
+                            <Button
+                                className="na-text-transform-none hover:text-green-600"
+                                component={Link}
+                                to="/shipping"
                             >
                                 Chỉnh sửa
-                            </button>
+                            </Button>
                             <div>
                                 {/* Tên */}
                                 <Box display="flex" alignItems="center" mb={2}>

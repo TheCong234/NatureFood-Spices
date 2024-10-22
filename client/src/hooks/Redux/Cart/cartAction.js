@@ -6,7 +6,12 @@ import {
     deleteStoreCartItemApi,
     adjustmentStoreCartItemApi,
 } from "../../../apis/store.cart";
-import { createCartItemApi, getCartItemsApi } from "../../../apis/cart.api";
+import {
+    adjustmentCartItemApi,
+    createCartItemApi,
+    deleteCartItemApi,
+    getCartItemsApi,
+} from "../../../apis/cart.api";
 
 //*********** customer ***********
 export const createCartItemAction = createAsyncThunk(
@@ -27,6 +32,34 @@ export const getCartItemsAction = createAsyncThunk(
     "cart/getCartItemsAction",
     async (data, thunkAPI) => {
         const { result, error } = await tryCatchWrapper(getCartItemsApi, data);
+        if (error) {
+            return thunkAPI.rejectWithValue(error.response);
+        }
+        return result.data;
+    }
+);
+
+export const adjustmentCartItemAction = createAsyncThunk(
+    "cart/adjustmentCartItemAction",
+    async (data, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(
+            adjustmentCartItemApi,
+            data
+        );
+        if (error) {
+            return thunkAPI.rejectWithValue(error.response);
+        }
+        return result.data;
+    }
+);
+
+export const deleteCartItemAction = createAsyncThunk(
+    "cart/deleteCartItemAction",
+    async (data, thunkAPI) => {
+        const { result, error } = await tryCatchWrapper(
+            deleteCartItemApi,
+            data
+        );
         if (error) {
             return thunkAPI.rejectWithValue(error.response);
         }

@@ -74,4 +74,6 @@ export const StoreCartV1 = {
 export const CartV1 = {
     CREATE: "/cart",
     GET_ALL: "/cart/all",
+    UPDATE_ITEM: "/cart/",
+    DELETE: "/cart/",
 };

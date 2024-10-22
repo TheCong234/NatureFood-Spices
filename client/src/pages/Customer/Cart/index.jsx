@@ -19,26 +19,57 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { QuantityInput } from "../../../components";
+import { Link, useNavigate } from "react-router-dom";
+import useSnackNotify from "../../../components/SnackNotify";
+import {
+    adjustmentCartItemAction,
+    deleteCartItemAction,
+} from "../../../hooks/Redux/Cart/cartAction";
+
+function countTotal(itemsCart) {
+    let sum = 0;
+
+    for (let item of itemsCart) {
+        const quantity = item.quantity;
+        const price =
+            item.storeProduct.productId.salePrice *
+            (1 - item.storeProduct.discountPrice);
+        sum += quantity * price;
+    }
+    return sum;
+}
 
 export default function Cart() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const snackNotify = useSnackNotify();
     const { data: cartData, loading: cartLoading } = useSelector(
         (state) => state.cart
     );
 
-    const handelDeleteStoreCartItem = async (data) => {};
+    const handelDeleteCartItem = async (data) => {
+        const response = await dispatch(deleteCartItemAction(data));
+        if (response?.error) {
+            snackNotify("error")("Xóa sản phẩm khỏi giỏ hàng thất bại");
+        } else {
+            snackNotify("success")("Đã xóa sản phẩm khỏi giỏ hàng");
+        }
+    };
 
-    const adjustmentStoreCartItem = async (data) => {};
-
-    const createStoreProducts = async () => {};
-
-    const handleGetData = async () => {};
+    const adjustmentCartItem = async (data) => {
+        const response = await dispatch(adjustmentCartItemAction(data));
+        if (response?.error) {
+            snackNotify("error")("Cập nhật giỏ hàng thất bại");
+        } else {
+            snackNotify("success")("Cập nhật giỏ hàng thành công");
+        }
+    };
 
     useEffect(() => {}, []);
     return (
         <Box>
             <Paper>
-                <Paper className=" p-[20px] flex justify-between items-center">
+                <div className=" p-[20px] flex justify-between items-center">
                     <Typography variant="body1">
                         Hiển thị 1-24 trong 205 sản phẩm
                     </Typography>
@@ -49,28 +80,13 @@ export default function Cart() {
                             size="small"
                             sx={{ textTransform: "none", mr: 1 }}
                             onClick={() =>
-                                navigate(
-                                    "/seller/product/list?skip=0&take=10&type=all"
-                                )
+                                navigate("/product/list?skip=0&take=10")
                             }
                         >
                             Tiếp tục mua sắm
                         </Button>
-
-                        <LoadingButton
-                            size="small"
-                            color="warning"
-                            // onClick={createStoreProducts}
-                            // loading={storeProductLoading}
-                            loadingPosition="start"
-                            startIcon={<ShoppingCartCheckoutIcon />}
-                            variant="contained"
-                            sx={{ textTransform: "none" }}
-                        >
-                            Save
-                        </LoadingButton>
                     </div>
-                </Paper>
+                </div>
                 <Box>
                     <TableContainer component={Paper}>
                         <Table aria-label="simple table">
@@ -126,7 +142,9 @@ export default function Cart() {
                                                 <div className="min-w-[90px] h-full mr-3 rounded-sm overflow-hidden">
                                                     <img
                                                         src={
-                                                            product?.product
+                                                            product
+                                                                ?.storeProduct
+                                                                ?.productId
                                                                 ?.images?.[0]
                                                                 ?.url
                                                         }
@@ -138,7 +156,10 @@ export default function Cart() {
                                                     variant="body1"
                                                     className="text-truncate-3"
                                                 >
-                                                    {product?.product?.name}
+                                                    {
+                                                        product?.storeProduct
+                                                            ?.productId?.name
+                                                    }
                                                 </Typography>
                                             </div>
                                         </TableCell>
@@ -146,24 +167,29 @@ export default function Cart() {
                                             <QuantityInput
                                                 quanity={product?.quantity}
                                                 handleReduce={() =>
-                                                    adjustmentStoreCartItem({
+                                                    adjustmentCartItem({
                                                         id: product?._id,
                                                         quantity: -1,
                                                     })
                                                 }
                                                 handleIncrease={() =>
-                                                    adjustmentStoreCartItem({
+                                                    adjustmentCartItem({
                                                         id: product?._id,
                                                         quantity: 1,
                                                     })
                                                 }
                                             />
                                         </TableCell>
-                                        {/* <TableCell align="right">
+                                        <TableCell align="right">
                                             <div className="na-fs-16 flex justify-center font-semibold ">
                                                 <small>₫</small>
                                                 {formatPrice(
-                                                    product?.product?.price
+                                                    product?.storeProduct
+                                                        ?.productId?.salePrice *
+                                                        (1 -
+                                                            product
+                                                                ?.storeProduct
+                                                                ?.discountPrice)
                                                 )}
                                             </div>
                                         </TableCell>
@@ -171,17 +197,22 @@ export default function Cart() {
                                             <div className="na-fs-16 flex justify-center font-semibold text-orange">
                                                 <small>₫</small>
                                                 {formatPrice(
-                                                    product?.product?.price *
+                                                    product?.storeProduct
+                                                        ?.productId?.salePrice *
+                                                        (1 -
+                                                            product
+                                                                ?.storeProduct
+                                                                ?.discountPrice) *
                                                         product?.quantity
                                                 )}
                                             </div>
-                                        </TableCell> */}
+                                        </TableCell>
                                         <TableCell align="right">
                                             <IconButton
                                                 aria-label="delete"
                                                 onClick={() =>
-                                                    handelDeleteStoreCartItem(
-                                                        product
+                                                    handelDeleteCartItem(
+                                                        product?._id
                                                     )
                                                 }
                                             >
@@ -190,11 +221,46 @@ export default function Cart() {
                                         </TableCell>
                                     </TableRow>
                                 ))}
+                                <TableRow>
+                                    <TableCell align="right"></TableCell>
+                                    <TableCell align="right"> </TableCell>
+                                    <TableCell align="right">
+                                        <div className="na-fs-16  font-semibold ">
+                                            Tổng:
+                                        </div>
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        (
+                                        <span className="na-fs-16 font-semibold text-orange">
+                                            {cartData?.total}
+                                        </span>{" "}
+                                        sản phẩm)
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <div className="na-fs-16 flex  font-bold text-red-600 underline">
+                                            <small>₫</small>
+                                            {formatPrice(
+                                                countTotal(cartData?.products)
+                                            )}
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
                             </TableBody>
                         </Table>
                     </TableContainer>
                 </Box>
             </Paper>
+            <Box className="pt-3 text-end">
+                <Button
+                    variant="contained"
+                    color="success"
+                    component={Link}
+                    to="/checkout"
+                    className="hover:text-white"
+                >
+                    Thanh toán
+                </Button>
+            </Box>
         </Box>
     );
 }

@@ -6,6 +6,8 @@ import {
     adjustmentStoreCartItemAction,
     createCartItemAction,
     getCartItemsAction,
+    adjustmentCartItemAction,
+    deleteCartItemAction,
 } from "./cartAction";
 
 const cartSlice = createSlice({
@@ -51,6 +53,42 @@ const cartSlice = createSlice({
                 state.data = action.payload;
             })
             .addCase(getCartItemsAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            //adjustment cart item
+            .addCase(adjustmentCartItemAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(adjustmentCartItemAction.fulfilled, (state, action) => {
+                state.loading = false;
+                const productIndex = state.data.products.findIndex(
+                    (p) => p._id == action.payload._id
+                );
+                state.data.products[productIndex] = action.payload;
+            })
+            .addCase(adjustmentCartItemAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            //delete cart item
+            .addCase(deleteCartItemAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteCartItemAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = {
+                    products: state.data.products.filter(
+                        (p) => p._id != action.payload._id
+                    ),
+                    total: state.data.total - 1,
+                };
+            })
+            .addCase(deleteCartItemAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
