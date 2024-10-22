@@ -79,7 +79,6 @@
     padding-right: 4px !important;
 }
 
-/* .na-table-body-tini .na-table-row td{
-    padding-left: 4px;
-    padding-right: 4px;
-} */
+.na-text-transform-none{
+    text-transform: none !important;
+}

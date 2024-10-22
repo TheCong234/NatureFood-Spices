@@ -31,11 +31,7 @@ const items = [
     },
     {
         to: "/wishlist",
-        text: " Danh sách",
-    },
-    {
-        to: "/shipping",
-        text: "Thông tin vận chuyển",
+        text: " Danh sách yêu thích",
     },
     {
         to: "/vendor",
@@ -44,10 +40,6 @@ const items = [
     {
         to: "/trackOrder",
         text: "  Theo dõi đơn hàng",
-    },
-    {
-        to: "/checkout",
-        text: "  Thanh toán",
     },
 ];
 

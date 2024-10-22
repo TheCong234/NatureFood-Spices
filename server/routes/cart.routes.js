@@ -7,4 +7,8 @@ const router = express.Router();
 router.get("/all", authJwt, asyncHandler(CartController.getCartItems));
 
 router.post("/", authJwt, asyncHandler(CartController.createCartItem));
+
+router.patch("/:id", authJwt, asyncHandler(CartController.adjustmentCartItem));
+
+router.delete("/:id", authJwt, asyncHandler(CartController.deleteCartItem));
 export default router;
