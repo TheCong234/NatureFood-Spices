@@ -60,12 +60,10 @@ const Index = () => {
     const dispatch = useDispatch();
     const snackNotify = useSnackNotify();
 
-    const { data, loading, error } = useSelector((state) => state.category);
-    const {
-        data: tagData,
-        loading: tagLoading,
-        error: tagError,
-    } = useSelector((state) => state.tag);
+    const { data: categoryData, loading } = useSelector((state) => state.category);
+    const { data: tagData } = useSelector((state) => state.tag);
+    console.log(tagData);
+
     const { loading: productLoading } = useSelector((state) => state.product);
     const [images, setImages] = useState([]);
     const [imagesData, setImagesData] = useState([{}]);
@@ -86,10 +84,7 @@ const Index = () => {
         const {
             target: { value },
         } = event;
-        setTagsSelected(
-            // On autofill we get a stringified value.
-            typeof value === "string" ? value.split(",") : value
-        );
+        setTagsSelected(typeof value === "string" ? value.split(",") : value);
     };
 
     const handleImageChange = (e) => {
@@ -108,9 +103,7 @@ const Index = () => {
         const formDataToSend = new FormData();
         for (const key in formData) {
             if (key === "tags" && Array.isArray(formData[key])) {
-                formData[key].forEach((tag) =>
-                    formDataToSend.append("tags", tag)
-                );
+                formData[key].forEach((tag) => formDataToSend.append("tags", tag));
             } else {
                 formDataToSend.append(key, formData[key]);
             }
@@ -149,14 +142,9 @@ const Index = () => {
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Box className="flex">
                     <Item elevation={2} className="w-2/3 mr-6">
-                        <p className="text-lg font-semibold text-black">
-                            Thông tin chung
-                        </p>
+                        <p className="text-lg font-semibold text-black">Thông tin chung</p>
                         <div>
-                            <label
-                                htmlFor="name"
-                                className="text-base text-black "
-                            >
+                            <label htmlFor="name" className="text-base text-black ">
                                 Tên sản phẩm
                             </label>
                             <TextField
@@ -172,10 +160,7 @@ const Index = () => {
                             />
                         </div>
                         <div className="mt-6">
-                            <label
-                                htmlFor="description"
-                                className="text-base text-black"
-                            >
+                            <label htmlFor="description" className="text-base text-black">
                                 Mô tả sản phẩm
                             </label>
                             <TextField
@@ -193,35 +178,19 @@ const Index = () => {
                             />
                         </div>
                     </Item>
-                    <Item
-                        elevation={2}
-                        className="w-1/3 flex flex-col"
-                        sx={{ position: "relative" }}
-                    >
-                        <p className="text-lg font-semibold text-black">
-                            Quảng bá sản phẩm
-                        </p>
+                    <Item elevation={2} className="w-1/3 flex flex-col" sx={{ position: "relative" }}>
+                        <p className="text-lg font-semibold text-black">Quảng bá sản phẩm</p>
                         <p className="text-base text-black">Hình ảnh</p>
-                        <Swiper
-                            effect={"cards"}
-                            grabCursor={true}
-                            modules={[EffectCards]}
-                            className="swiper-create-product mt-1 px-5"
-                        >
+                        <Swiper effect={"cards"} grabCursor={true} modules={[EffectCards]} className="swiper-create-product mt-1 px-5">
                             {images.map((image, index) => (
-                                <SwiperSlide
-                                    key={`iamge-${index}`}
-                                    className="swiper-slide_styled"
-                                >
+                                <SwiperSlide key={`iamge-${index}`} className="swiper-slide_styled">
                                     <img src={image} alt={`upload-${index}`} />
                                 </SwiperSlide>
                             ))}
 
                             {images.length < 1 ? (
                                 <SwiperSlide className="swiper-slide-styled">
-                                    <p className="text-center text-black">
-                                        Chọn ảnh cho sản phẩm
-                                    </p>
+                                    <p className="text-center text-black">Chọn ảnh cho sản phẩm</p>
                                 </SwiperSlide>
                             ) : null}
                         </Swiper>
@@ -238,34 +207,22 @@ const Index = () => {
                             required
                             // error={!!errors?.images}
                         />
-                        {errors?.images ? (
-                            <p className="text-red-500">
-                                {errors.images.message}
-                            </p>
-                        ) : null}
+                        {errors?.images ? <p className="text-red-500">{errors.images.message}</p> : null}
                     </Item>
                 </Box>
 
                 {/* PRICE - weight */}
                 <Box className="mt-6 flex">
                     <Item elevation={2} className="w-2/3 mr-6">
-                        <p className="text-lg font-semibold text-black">
-                            Giá thành - Đơn vị tính
-                        </p>
+                        <p className="text-lg font-semibold text-black">Giá thành - Đơn vị tính</p>
                         <Grid container spacing={2}>
                             <Grid item md={6}>
                                 <div>
-                                    <label
-                                        htmlFor="price"
-                                        className="text-base text-black "
-                                    >
+                                    <label htmlFor="price" className="text-base text-black ">
                                         Giá đại lý
                                     </label>
 
-                                    <FormControl
-                                        variant="outlined"
-                                        className="w-full pr-10"
-                                    >
+                                    <FormControl variant="outlined" className="w-full pr-10">
                                         <OutlinedInput
                                             {...register("price")}
                                             className="mt-1 w-1/2"
@@ -274,33 +231,19 @@ const Index = () => {
                                             size="small"
                                             error={!!errors.price}
                                             required
-                                            endAdornment={
-                                                <InputAdornment position="end">
-                                                    VNĐ
-                                                </InputAdornment>
-                                            }
+                                            endAdornment={<InputAdornment position="end">VNĐ</InputAdornment>}
                                         />
-                                        <p className="text-red-500">
-                                            {errors?.price
-                                                ? errors.price.message
-                                                : null}
-                                        </p>
+                                        <p className="text-red-500">{errors?.price ? errors.price.message : null}</p>
                                     </FormControl>
                                 </div>
                             </Grid>
                             <Grid item md={6}>
                                 <div>
-                                    <label
-                                        htmlFor="price"
-                                        className="text-base text-black "
-                                    >
+                                    <label htmlFor="price" className="text-base text-black ">
                                         Giá thị trường
                                     </label>
 
-                                    <FormControl
-                                        variant="outlined"
-                                        className="w-full pr-10"
-                                    >
+                                    <FormControl variant="outlined" className="w-full pr-10">
                                         <OutlinedInput
                                             {...register("salePrice")}
                                             className="mt-1 w-1/2"
@@ -309,26 +252,16 @@ const Index = () => {
                                             fullWidth
                                             error={!!errors.price}
                                             required
-                                            endAdornment={
-                                                <InputAdornment position="end">
-                                                    VNĐ
-                                                </InputAdornment>
-                                            }
+                                            endAdornment={<InputAdornment position="end">VNĐ</InputAdornment>}
                                         />
-                                        <p className="text-red-500">
-                                            {errors?.price
-                                                ? errors.price.message
-                                                : null}
-                                        </p>
+                                        <p className="text-red-500">{errors?.price ? errors.price.message : null}</p>
                                     </FormControl>
                                 </div>
                             </Grid>
 
                             <Grid item md={6}>
                                 <div className="mt-4">
-                                    <p className="text-nowrap text-base text-black ">
-                                        Đơn vị tính
-                                    </p>
+                                    <p className="text-nowrap text-base text-black ">Đơn vị tính</p>
 
                                     <FormControl fullWidth>
                                         <Select
@@ -339,9 +272,7 @@ const Index = () => {
                                             className="mt-1"
                                             size="small"
                                         >
-                                            <MenuItem value={10}>
-                                                Thùng
-                                            </MenuItem>
+                                            <MenuItem value={10}>Thùng</MenuItem>
                                             <MenuItem value={20}>Chai</MenuItem>
                                             <MenuItem value={30}>Gói</MenuItem>
                                         </Select>
@@ -351,16 +282,10 @@ const Index = () => {
 
                             <Grid item md={6}>
                                 <div className="mt-4">
-                                    <label
-                                        htmlFor="name"
-                                        className="text-base text-black "
-                                    >
+                                    <label htmlFor="name" className="text-base text-black ">
                                         Cân nặng
                                     </label>
-                                    <FormControl
-                                        variant="outlined"
-                                        className="w-full pr-10"
-                                    >
+                                    <FormControl variant="outlined" className="w-full pr-10">
                                         <OutlinedInput
                                             {...register("weight")}
                                             className="mt-1"
@@ -376,35 +301,23 @@ const Index = () => {
                                                         onChange={(event) => {}}
                                                         className="mt-1"
                                                         sx={{
-                                                            ".MuiOutlinedInput-notchedOutline":
-                                                                {
-                                                                    border: "none",
-                                                                },
-                                                            "&.Mui-focused .MuiOutlinedInput-notchedOutline":
-                                                                {
-                                                                    border: "none",
-                                                                },
+                                                            ".MuiOutlinedInput-notchedOutline": {
+                                                                border: "none",
+                                                            },
+                                                            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                                                border: "none",
+                                                            },
                                                         }}
                                                         size="small"
                                                     >
-                                                        <MenuItem value={0}>
-                                                            miligram
-                                                        </MenuItem>
-                                                        <MenuItem value={1}>
-                                                            gram
-                                                        </MenuItem>
-                                                        <MenuItem value={2}>
-                                                            kg
-                                                        </MenuItem>
+                                                        <MenuItem value={0}>miligram</MenuItem>
+                                                        <MenuItem value={1}>gram</MenuItem>
+                                                        <MenuItem value={2}>kg</MenuItem>
                                                     </Select>
                                                 </InputAdornment>
                                             }
                                         />
-                                        <p className="text-red-500">
-                                            {errors?.weight
-                                                ? errors.weight.message
-                                                : null}
-                                        </p>
+                                        <p className="text-red-500">{errors?.weight ? errors.weight.message : null}</p>
                                     </FormControl>
                                 </div>
                             </Grid>
@@ -413,9 +326,7 @@ const Index = () => {
 
                     {/* Product type */}
                     <Item elevation={2} className="w-1/3">
-                        <p className="text-lg font-semibold text-black">
-                            Phân loại
-                        </p>
+                        <p className="text-lg font-semibold text-black">Phân loại</p>
                         <p className="text-base text-black">Danh mục</p>
                         <Select
                             {...register("category", {
@@ -430,23 +341,16 @@ const Index = () => {
                             error={!!errors.category}
                             required
                         >
-                            {data.map((category, index) => (
-                                <MenuItem
-                                    key={`category-${index}`}
-                                    value={category._id}
-                                >
-                                    {category.name}
+                            {categoryData?.categories?.map((category, index) => (
+                                <MenuItem key={`category-${index}`} value={category?._id}>
+                                    {category?.name}
                                 </MenuItem>
                             ))}
                         </Select>
-                        <p className="text-red-500">
-                            {errors?.category ? errors.category.message : null}
-                        </p>
+                        <p className="text-red-500">{errors?.category ? errors.category.message : null}</p>
 
                         <FormControl className="w-full" sx={{ mt: 4 }}>
-                            <InputLabel id="demo-multiple-checkbox-label">
-                                #HangTag
-                            </InputLabel>
+                            <InputLabel id="demo-multiple-checkbox-label">#HangTag</InputLabel>
                             <Select
                                 {...register("tags")}
                                 multiple
@@ -457,19 +361,10 @@ const Index = () => {
                                 MenuProps={MenuProps}
                                 input={<OutlinedInput label="#HangTag" />}
                             >
-                                {tagData.map((tag, index) => (
-                                    <MenuItem
-                                        key={`tag-${index}`}
-                                        value={tag._id.toString()}
-                                    >
-                                        <Checkbox
-                                            checked={
-                                                tagsSelected.indexOf(
-                                                    tag._id.toString()
-                                                ) > -1
-                                            }
-                                        />
-                                        <ListItemText primary={tag.name} />
+                                {tagData?.tags?.map((item) => (
+                                    <MenuItem key={item?._id} value={item?._id.toString()}>
+                                        <Checkbox checked={tagsSelected.indexOf(item?._id.toString()) > -1} />
+                                        <ListItemText primary={item?.name} />
                                     </MenuItem>
                                 ))}
                             </Select>
@@ -478,14 +373,9 @@ const Index = () => {
                 </Box>
                 <Box className="mt-6">
                     <Item elevation={2} className="w-2/3 mr-6">
-                        <p className="text-lg font-semibold text-black">
-                            Số lượng
-                        </p>
+                        <p className="text-lg font-semibold text-black">Số lượng</p>
                         <div>
-                            <label
-                                htmlFor="inventory"
-                                className="text-base text-black "
-                            >
+                            <label htmlFor="inventory" className="text-base text-black ">
                                 Kho
                             </label>
 

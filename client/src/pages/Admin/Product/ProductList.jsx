@@ -4,18 +4,21 @@ import ProductCardPrimary from "../../../components/ProductCard/ProductCardPrima
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getProductsAction } from "../../../hooks/Redux/Product/productAction";
+import { useQuery } from "../../../services/functions";
 
 const Index = () => {
     const dispatch = useDispatch();
-    const { data: productData, loading: productLoading } = useSelector(
-        (state) => state.product
-    );
-    const handleGetData = async () => {
-        await dispatch(getProductsAction());
-    };
+    const query = useQuery();
+    const { data: productData, loading: productLoading } = useSelector((state) => state.product);
+
     useEffect(() => {
-        handleGetData();
-    }, []);
+        const params = {
+            skip: query.get("skip"),
+            take: query.get("take"),
+            type: query.get("type"),
+        };
+        dispatch(getProductsAction(params));
+    }, [query.get("skip"), query.get("take"), query.get("type")]);
     return (
         <Box sx={{ width: "100%" }}>
             <Grid container spacing={2}>

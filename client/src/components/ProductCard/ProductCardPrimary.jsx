@@ -9,10 +9,7 @@ import { formatPrice } from "../../services/functions";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    addFavoriteProductAction,
-    removeFavoriteProductAction,
-} from "../../hooks/Redux/Favorite/favoriteAction";
+import { addFavoriteProductAction, removeFavoriteProductAction } from "../../hooks/Redux/Favorite/favoriteAction";
 import { Box, Card, Rating, Stack, Tooltip } from "@mui/material";
 import useSnackNotify from "../SnackNotify";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -36,9 +33,7 @@ export default function ProductCardPrimary({ product }) {
     };
 
     const handleRemoveFavoriteProduct = async () => {
-        const response = await dispatch(
-            removeFavoriteProductAction(product._id)
-        );
+        const response = await dispatch(removeFavoriteProductAction(product._id));
         if (response?.error) {
             snackNotify("error")("Bỏ thích thất bại");
         } else {
@@ -65,31 +60,16 @@ export default function ProductCardPrimary({ product }) {
     return (
         <Card className="product_card-primary">
             <Box>
-                <Swiper
-                    className="product_card-primary_swiper "
-                    pagination={true}
-                    modules={[Pagination]}
-                >
+                <Swiper className="product_card-primary_swiper " pagination={true} modules={[Pagination]}>
                     {product?.images?.map((image, index) => (
-                        <SwiperSlide
-                            key={index}
-                            className="swiper-slide_styled"
-                        >
+                        <SwiperSlide key={index} className="swiper-slide_styled">
                             <img src={image?.url} alt="product image" />
                         </SwiperSlide>
                     ))}
                 </Swiper>
             </Box>
             <Box className="px-5">
-                <p className="font-semibold text-truncate-2 text-lg leading-5">
-                    {product.name}
-                </p>
-                <Typography
-                    variant="body2"
-                    sx={{ color: "text.secondary", my: 1 }}
-                >
-                    {product?.category?.name}
-                </Typography>
+                <p className="font-semibold text-lg leading-5 line-clamp-2 h-10">{product?.name}</p>
                 <div className="flex text-[#d26426]">
                     <div className="text-2xl font-semibold">
                         <small>₫</small>
@@ -100,22 +80,15 @@ export default function ProductCardPrimary({ product }) {
                         {formatPrice(product?.salePrice)}
                     </del>
                 </div>
-                <Typography
-                    variant="body2"
-                    sx={{ color: "text.secondary", my: 1 }}
-                >
-                    Stock:{" "}
-                    <span className="text-green-500 font-semibold">
-                        {product?.inventory}
-                    </span>
+                <Typography variant="body2" sx={{ color: "text.secondary", my: 1 }}>
+                    Sẵn có:&nbsp;
+                    <span className="text-green-500 font-semibold">{product?.inventory}</span>
                 </Typography>
             </Box>
             <Box className="px-4 pb-4 flex justify-between">
                 <Rating name="read-only" value={product?.rating} readOnly />
                 <Stack direction={"row"} spacing={1}>
-                    {favoriteData?.products?.some(
-                        (f) => f._id == product._id
-                    ) ? (
+                    {favoriteData?.products?.some((f) => f._id == product._id) ? (
                         <Tooltip title="Bỏ yêu thích" placement="top">
                             <Button
                                 variant="outlined"
@@ -142,12 +115,7 @@ export default function ProductCardPrimary({ product }) {
                     )}
 
                     <Tooltip title="Thêm vào giỏ hàng" placement="top">
-                        <Button
-                            variant="outlined"
-                            sx={{ padding: "3px 12px", minWidth: "10px" }}
-                            size="small"
-                            onClick={handleAddToCart}
-                        >
+                        <Button variant="outlined" sx={{ padding: "3px 12px", minWidth: "10px" }} size="small" onClick={handleAddToCart}>
                             <AddShoppingCartIcon fontSize="small" />
                         </Button>
                     </Tooltip>

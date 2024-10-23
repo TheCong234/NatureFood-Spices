@@ -1,21 +1,9 @@
-import {
-    Box,
-    Button,
-    Grid,
-    MenuItem,
-    Paper,
-    Select,
-    Tooltip,
-    Typography,
-} from "@mui/material";
+import { Box, Button, Grid, MenuItem, Paper, Select, Tooltip, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    deleteCategoryAction,
-    getCategoriesAction,
-} from "../../../hooks/Redux/Category/categoryAction";
+import { deleteCategoryAction, getCategoriesAction } from "../../../hooks/Redux/Category/categoryAction";
 import { convertDate } from "../../../services/functions";
 import useSnackNotify from "../../../components/SnackNotify";
 import ConfirmDialog from "../../../components/ConfirmDialog";
@@ -29,24 +17,19 @@ const Index = () => {
     const [selectedCategory, setSelectedCategory] = useState();
     const dispatch = useDispatch();
     const snackNotify = useSnackNotify();
-    const { data: categoryData, loading: categoryLoading } = useSelector(
-        (state) => state.category
-    );
+    const { data: categoryData, loading: categoryLoading } = useSelector((state) => state.category);
 
     const handleSortbyChange = (event) => {
         setSortby(event.target.value);
     };
 
-    const handleDeleteCategory = async (categoryDelete) => {
-        const response = await dispatch(
-            deleteCategoryAction(categoryDelete?._id)
-        );
-        console.log(response);
-        if (response?.payload?._id) {
+    const handleDeleteCategory = async () => {
+        const response = await dispatch(deleteCategoryAction(selectedCategory?._id));
+        if (response?.error) {
+            snackNotify("error")("Xóa danh mục thất bại");
+        } else {
             snackNotify("success")("Đã xóa danh mục");
             setOpenDialog(false);
-        } else {
-            snackNotify("error")("Xóa danh mục thất bại");
         }
     };
 
@@ -60,9 +43,7 @@ const Index = () => {
     return (
         <Box>
             <Paper className="mb-4 p-[20px] flex justify-between items-center">
-                <Typography variant="body1">
-                    Hiển thị 1-24 trong 205 danh mục
-                </Typography>
+                <Typography variant="body1">Hiển thị 1-24 trong 205 danh mục</Typography>
                 <div className="flex ">
                     <div className="mr-3">
                         <span className="mr-2">Sắp xếp theo</span>
@@ -97,38 +78,21 @@ const Index = () => {
                         <Paper>
                             <Box className="flex justify-between p-2">
                                 <div className="w-[90px] h-[100px] flex justify-center">
-                                    <img
-                                        src={category?.image?.url}
-                                        alt="category image"
-                                        className="h-full object-cover"
-                                    />
+                                    <img src={category?.image?.url} alt="category image" className="h-full object-cover" />
                                 </div>
                                 <div className="px-2 flex-1">
-                                    <p className="font-semibold text-truncate-2 text-lg leading-5 mb-1">
-                                        {category?.name}
-                                    </p>
-                                    <Typography
-                                        variant="body2"
-                                        color="text.secondary"
-                                    >
-                                        {"Ngày tạo: " +
-                                            convertDate(category?.createdAt)}
+                                    <p className="font-semibold text-truncate-2 text-lg leading-5 mb-1">{category?.name}</p>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {"Ngày tạo: " + convertDate(category?.createdAt)}
                                     </Typography>
                                 </div>
                                 <div>
                                     <div className="flex text-[#d26426]">
-                                        <div className="text-2xl font-semibold">
-                                            232
-                                        </div>
-                                        <div className="ml-2 font-medium text-gray-500 mt-2 whitespace-nowrap">
-                                            sản phẩm
-                                        </div>
+                                        <div className="text-2xl font-semibold">232</div>
+                                        <div className="ml-2 font-medium text-gray-500 mt-2 whitespace-nowrap">sản phẩm</div>
                                     </div>
                                     <Box className="flex mt-1 justify-between">
-                                        <Tooltip
-                                            title="Chỉnh sửa"
-                                            placement="top"
-                                        >
+                                        <Tooltip title="Chỉnh sửa" placement="top">
                                             <Button
                                                 variant="outlined"
                                                 sx={{
@@ -149,16 +113,11 @@ const Index = () => {
                                                 }}
                                                 size="small"
                                                 onClick={() => {
-                                                    setSelectedCategory(
-                                                        category
-                                                    );
+                                                    setSelectedCategory(category);
                                                     setOpenDialog(true);
                                                 }}
                                             >
-                                                <DeleteIcon
-                                                    fontSize="small"
-                                                    color="error"
-                                                />
+                                                <DeleteIcon fontSize="small" color="error" />
                                             </Button>
                                         </Tooltip>
                                     </Box>
@@ -178,10 +137,7 @@ const Index = () => {
                 loading={categoryLoading}
             />
 
-            <CategoryCreateDialog
-                openCategoryCreate={openCategoryCreate}
-                setOpenCategoryCreate={setOpenCategoryCreate}
-            />
+            <CategoryCreateDialog openCategoryCreate={openCategoryCreate} setOpenCategoryCreate={setOpenCategoryCreate} />
         </Box>
     );
 };
