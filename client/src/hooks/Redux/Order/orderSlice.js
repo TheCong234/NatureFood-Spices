@@ -20,8 +20,6 @@ const orderSlice = createSlice({
             })
             .addCase(createCustomerOrderAction.fulfilled, (state, action) => {
                 state.loading = false;
-                state.data.orders.push(action.payload);
-                state.data.total += 1;
             })
             .addCase(createCustomerOrderAction.rejected, (state, action) => {
                 state.loading = false;

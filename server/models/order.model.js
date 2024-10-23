@@ -8,11 +8,11 @@ const OrderSchema = new Schema(
             ref: "User",
             required: true,
         },
-        // store: {
-        //     type: Schema.Types.ObjectId,
-        //     ref: "Store",
-        //     required: true,
-        // },
+        store: {
+            type: Schema.Types.ObjectId,
+            ref: "Store",
+            required: true,
+        },
         products: [
             {
                 productId: {
@@ -35,10 +35,6 @@ const OrderSchema = new Schema(
         totalAmount: {
             type: Number,
             required: true,
-        },
-        orderDate: {
-            type: Date,
-            default: Date.now,
         },
         status: {
             type: Number,

@@ -41,34 +41,23 @@ const CartController = {
             });
             newCart = await cart.save();
         }
-        return res
-            .status(statusCode.OK)
-            .json(
-                BaseResponse.success("Thêm vào giỏ hàng thành công", newCart)
-            );
+        newCart = await CartModel.findById(newCart._id).populate({ path: "storeProduct", populate: "productId" });
+        return res.status(statusCode.OK).json(BaseResponse.success("Thêm vào giỏ hàng thành công", newCart));
     },
 
     async adjustmentCartItem(req, res) {
         const { id } = req.params;
         const { quantity } = req.body;
-        const cart = await CartModel.findByIdAndUpdate(
-            id,
-            { $inc: { quantity } },
-            { new: true }
-        ).populate({
+        const cart = await CartModel.findByIdAndUpdate(id, { $inc: { quantity } }, { new: true }).populate({
             path: "storeProduct",
             populate: "productId",
         });
-        return res
-            .status(statusCode.OK)
-            .json(BaseResponse.success("Cập nhật giỏ hàng thành công", cart));
+        return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật giỏ hàng thành công", cart));
     },
 
     async deleteCartItem(req, res) {
         const item = await CartModel.findByIdAndDelete(req.params.id);
-        return res
-            .status(statusCode.OK)
-            .json(BaseResponse.success("Xóa khỏi giỏ hàng thành công", item));
+        return res.status(statusCode.OK).json(BaseResponse.success("Xóa khỏi giỏ hàng thành công", item));
     },
 };
 

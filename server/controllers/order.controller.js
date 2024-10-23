@@ -31,23 +31,48 @@ const OrderController = {
     },
 
     async createCustomerOrders(req, res) {
-        const { delivery, paymentMethod, deliveryMethod, totalAmount, carts } = req.body;
+        const { delivery, paymentMethod, deliveryMethod, carts } = req.body;
         const user = req.user._id;
-        let products = [];
-        for (let product of carts) {
-            const item = {
-                productId: product._id,
-                quantity: product.quantity,
-                price: product.storeProduct.productId.salePrice * (1 - product.storeProduct.discountPrice),
-            };
-            products.push(item);
+        const groupProducts = carts.reduce((acc, product) => {
+            const storeId = product.storeProduct._id.toString();
+            if (!acc[storeId]) {
+                acc[storeId] = [];
+            }
+            acc[storeId].push(product);
+            return acc;
+        }, {});
+
+        for (let store in groupProducts) {
+            let products = [];
+            let totalAmount = 0;
+            for (let product of groupProducts[store]) {
+                const item = {
+                    productId: product._id,
+                    quantity: product.quantity,
+                    price: product.storeProduct.productId.salePrice * (1 - product.storeProduct.discountPrice),
+                };
+                totalAmount += product.storeProduct.productId.salePrice * (1 - product.storeProduct.discountPrice) * product.quantity;
+                products.push(item);
+            }
+            const order = new OrderModel({ user, delivery, paymentMethod, deliveryMethod, totalAmount, products, store });
+            const newOrder = await order.save();
+            if (newOrder?._id) {
+                await CartModel.deleteMany({ user });
+            }
         }
-        const order = new OrderModel({ user, delivery, paymentMethod, deliveryMethod, totalAmount, products });
-        const newOrder = await order.save();
-        if (newOrder?._id) {
-            await CartModel.deleteMany({ user });
-        }
-        return res.status(statusCode.CREATED).json(BaseResponse.success("Tạo đơn hàng thành công", newOrder));
+
+        // let products = [];
+        // for (let product of carts) {
+        //     const item = {
+        //         productId: product._id,
+        //         quantity: product.quantity,
+        //         price: product.storeProduct.productId.salePrice * (1 - product.storeProduct.discountPrice),
+        //     };
+        //     products.push(item);
+        // }
+        // const order = new OrderModel({ user, delivery, paymentMethod, deliveryMethod, totalAmount, products });
+
+        return res.status(statusCode.CREATED).json(BaseResponse.success("Tạo đơn hàng thành công", null));
     },
 
     async updateOrder(req, res) {
