@@ -20,6 +20,22 @@ const ImageSchema = new Schema({
     },
 });
 
+const deliverySchema = new Schema({
+    address: {
+        type: Schema.Types.ObjectId,
+        ref: "Address",
+        required: true,
+    },
+    ownerName: {
+        type: String,
+        required: true,
+    },
+    phone: {
+        type: String,
+        required: true,
+    },
+});
+
 const UserSchema = Schema(
     {
         email: {
@@ -59,12 +75,6 @@ const UserSchema = Schema(
             type: String,
         },
         image: ImageSchema,
-        favorite: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Product",
-            },
-        ],
         role: {
             type: String,
             enum: ["admin", "seller", "user"],
@@ -87,6 +97,7 @@ const UserSchema = Schema(
             enum: [0, 1],
             default: 0,
         },
+        delivery: [deliverySchema],
     },
     {
         timestamps: true,

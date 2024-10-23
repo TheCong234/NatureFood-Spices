@@ -113,7 +113,7 @@ export default function ProductCardPrimary({ product }) {
             <Box className="px-4 pb-4 flex justify-between">
                 <Rating name="read-only" value={product?.rating} readOnly />
                 <Stack direction={"row"} spacing={1}>
-                    {favoriteData?.favorite?.some(
+                    {favoriteData?.products?.some(
                         (f) => f._id == product._id
                     ) ? (
                         <Tooltip title="Bỏ yêu thích" placement="top">

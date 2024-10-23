@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -9,10 +9,17 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-
 import { FreeMode, Navigation, Pagination } from "swiper/modules";
+import { getBlogsAction } from "../../../hooks/Redux/Blog/blogAction";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function BlogCarousel() {
+    const dispatch = useDispatch();
+    const { data: blogData } = useSelector((state) => state.blog);
+
+    useEffect(() => {
+        dispatch(getBlogsAction({ skip: 0, take: 10, type: "enable" }));
+    }, []);
     return (
         <Swiper
             slidesPerView={3}
@@ -25,25 +32,25 @@ export default function BlogCarousel() {
             modules={[FreeMode, Pagination, Navigation]}
             className="mySwiper w-full px-2 py-4 h-auto"
         >
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((blog, index) => (
-                <SwiperSlide key={`blog-${index}`} className="border-none">
-                    <Card sx={{}}>
+            {blogData?.blogs?.map((blog) => (
+                <SwiperSlide key={blog?._id} className="border-none">
+                    <Card sx={{}} className="w-full">
                         <CardMedia
                             component="img"
-                            style={{ height: 240, objectFit: "contain" }}
-                            image="https://png.pngtree.com/thumb_back/fh260/background/20230817/pngtree-lotus-flower-jpg-pink-lotus-flower-image_13023952.jpg"
-                            title="green iguana"
+                            style={{ height: 240, objectFit: "cover" }}
+                            image={blog?.image?.url}
+                            title="blog img"
                         />
                         <CardContent>
                             <Typography
                                 gutterBottom
-                                variant="h5"
+                                variant="h6"
                                 component="div"
                                 textAlign="left"
                                 noWrap
                                 sx={{ fontWeight: "bold" }}
                             >
-                                Lizard
+                                {blog?.title}
                             </Typography>
                             <Typography
                                 variant="body2"
@@ -59,18 +66,12 @@ export default function BlogCarousel() {
                                     textAlign: "left",
                                 }}
                             >
-                                Lizards are a widespread group of squamate
-                                reptiles, with over 6,000 species, ranging
-                                across all continents except Antarctica
+                                {blog?.excerpt}
                             </Typography>
                         </CardContent>
                     </Card>
                 </SwiperSlide>
             ))}
-
-            <SwiperSlide className="border-none h-[200px] text-[#D26426]">
-                Xem thêm &gt;&gt;
-            </SwiperSlide>
         </Swiper>
     );
 }

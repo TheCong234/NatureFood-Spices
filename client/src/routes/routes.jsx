@@ -47,6 +47,8 @@ import {
     TrackOrder,
     Checkout,
     Blog,
+    Products,
+    Cart,
     Notification,
 } from "../pages/Customer";
 
@@ -85,7 +87,7 @@ export const router = createBrowserRouter([
                         element: <HomePage />,
                     },
                     {
-                        path: "product/detail/:productId",
+                        path: "product/details/:productId",
                         element: <ProductDetail />,
                     },
                     {
@@ -111,6 +113,14 @@ export const router = createBrowserRouter([
                     {
                         path: "/blog",
                         element: <Blog />,
+                    },
+                    {
+                        path: "/product/list",
+                        element: <Products />,
+                    },
+                    {
+                        path: "/cart",
+                        element: <Cart />,
                     },
                     {
                         path: "/notification",
