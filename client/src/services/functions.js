@@ -19,3 +19,14 @@ export function convertDate(dateString) {
 export const useQuery = () => {
     return new URLSearchParams(useLocation().search);
 };
+
+export function countCartTotal(itemsCart) {
+    let sum = 0;
+
+    for (let item of itemsCart) {
+        const quantity = item.quantity;
+        const price = item.storeProduct.productId.salePrice * (1 - item.storeProduct.discountPrice);
+        sum += quantity * price;
+    }
+    return sum;
+}

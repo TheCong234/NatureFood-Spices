@@ -7,6 +7,7 @@ export const UserV1 = {
     GET_PEOPLE: "/user/all",
     UPDATE_USER_BY_ID: "/user/",
     CREATE_DELIVERY: "/user/delivery/create",
+    GET_DELIVERY: "/user/delivery/all",
 };
 
 export const StoreV1 = {
@@ -77,4 +78,8 @@ export const CartV1 = {
     GET_ALL: "/cart/all",
     UPDATE_ITEM: "/cart/",
     DELETE: "/cart/",
+};
+
+export const OrderV1 = {
+    CREATE_CUSTOMER_ORDER: "/order/customer/create",
 };

@@ -7,6 +7,7 @@ import {
     getPeopleAction,
     updateUserByIdAction,
     createDeliveryAction,
+    getCurrentUserDeliveryAction,
 } from "./userAction";
 
 const userSlice = createSlice({
@@ -15,6 +16,7 @@ const userSlice = createSlice({
         data: { user: [], total: 0 },
         token: localStorage.getItem("token") || "",
         currentUser: null,
+        delivery: { delivery: [], total: 0 },
         loading: false,
         error: null,
     },
@@ -62,6 +64,20 @@ const userSlice = createSlice({
                 state.error = action.payload;
             })
 
+            //get current user delivery
+            .addCase(getCurrentUserDeliveryAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getCurrentUserDeliveryAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.delivery = action.payload;
+            })
+            .addCase(getCurrentUserDeliveryAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
             //get people
             .addCase(getPeopleAction.pending, (state) => {
                 state.loading = true;
@@ -83,9 +99,7 @@ const userSlice = createSlice({
             })
             .addCase(updateUserByIdAction.fulfilled, (state, action) => {
                 state.loading = false;
-                const index = state.data.users.findIndex(
-                    (user) => user._id == action.payload._id
-                );
+                const index = state.data.users.findIndex((user) => user._id == action.payload._id);
                 state.data.users[index] = action.payload;
             })
             .addCase(updateUserByIdAction.rejected, (state, action) => {

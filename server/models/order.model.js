@@ -45,13 +45,13 @@ const OrderSchema = new Schema(
             enum: [0, 1, 2, 3],
             default: 0,
         },
-        shippingAddress: {
-            type: String,
-            required: true,
-        },
         paymentMethod: {
             type: Number,
             enum: [0, 1, 2, 3],
+            required: true,
+        },
+        delivery: {
+            type: Schema.Types.ObjectId,
             required: true,
         },
     },
