@@ -8,10 +8,7 @@ import StoreModel from "../models/store.models.js";
 const StoreProductController = {
     async getStoreProducts(req, res) {
         const { skip, take } = req.query;
-        const products = await StoreProductModel.find()
-            .populate("productId")
-            .skip(skip)
-            .limit(take);
+        const products = await StoreProductModel.find().populate("productId").skip(skip).limit(take);
         const total = await StoreProductModel.countDocuments();
         return res.status(statusCode.OK).json(
             BaseResponse.success("Lấy sản phẩm sale thành công", {
@@ -39,9 +36,7 @@ const StoreProductController = {
             },
             {
                 $match: {
-                    "rootProduct.category": new mongoose.Types.ObjectId(
-                        category
-                    ), // Lọc theo category của Product
+                    "rootProduct.category": new mongoose.Types.ObjectId(category), // Lọc theo category của Product
                 },
             },
         ]);
@@ -54,48 +49,24 @@ const StoreProductController = {
     },
 
     async createStoreProducts(req, res) {
-        const storeCart = await StoreCartModel.findOne({
-            store: req.params.storeId,
-        });
-        for (let product of storeCart.items) {
-            const existingStoreProduct = await StoreProductModel.findOne({
-                productId: product.product,
-                storeId: new mongoose.Types.ObjectId(req.params.storeId),
-            });
-            if (existingStoreProduct) {
-                await StoreProductModel.updateOne(
-                    {
-                        productId: product.product,
-                        storeId: new mongoose.Types.ObjectId(
-                            req.params.storeId
-                        ),
-                    },
-                    { $inc: { stock: product.quantity } }
-                );
+        const store = req.user.store;
+        const storeCart = await StoreCartModel.find({ store });
+        for (let item of storeCart) {
+            const existingProduct = await StoreProductModel.findOne({ storeId: store, productId: item.product });
+            if (existingProduct) {
+                await StoreProductModel.findByIdAndUpdate(existingProduct._id, { $inc: { stock: item.quantity } });
             } else {
-                const productData = new StoreProductModel({
-                    productId: product.product,
-                    storeId: req.params.storeId,
-                    stock: product.quantity,
-                });
-                const newProduct = await productData.save();
-                await StoreModel.updateOne(
-                    { _id: req.params.storeId },
-                    { $addToSet: { products: newProduct._id } }
-                );
+                const data = {
+                    productId: item.product,
+                    storeId: store,
+                    stock: item.quantity,
+                };
+                const product = new StoreProductModel(data);
+                await product.save();
             }
         }
-        storeCart.items = [];
-        await storeCart.save();
-
-        return res
-            .status(statusCode.CREATED)
-            .json(
-                BaseResponse.success(
-                    "Thêm sản phẩm vào cửa hàng thành công",
-                    null
-                )
-            );
+        await StoreCartModel.deleteMany({ store });
+        return res.status(statusCode.OK).json(BaseResponse.success("Thêm sản phẩm cửa hàng thành công", null));
     },
 };
 

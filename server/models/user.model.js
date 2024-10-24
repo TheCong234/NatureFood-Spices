@@ -45,12 +45,9 @@ const UserSchema = Schema(
             trim: true,
             validate: {
                 validator: function (v) {
-                    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-                        v
-                    );
+                    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
                 },
-                message: (props) =>
-                    `${props.value} is not a valid email address`,
+                message: (props) => `${props.value} is not a valid email address`,
             },
             required: true,
         },
@@ -79,10 +76,6 @@ const UserSchema = Schema(
             type: String,
             enum: ["admin", "seller", "user"],
             default: "user",
-        },
-        cart: {
-            type: Schema.Types.ObjectId,
-            ref: "Cart",
         },
         store: {
             type: Schema.Types.ObjectId,

@@ -1,18 +1,6 @@
 import LoadingButton from "@mui/lab/LoadingButton";
-import {
-    Box,
-    Button,
-    IconButton,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Typography,
-} from "@mui/material";
-import { formatPrice } from "../../../services/functions";
+import { Box, Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { countCartTotal, formatPrice } from "../../../services/functions";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -21,31 +9,13 @@ import { useEffect } from "react";
 import { QuantityInput } from "../../../components";
 import { Link, useNavigate } from "react-router-dom";
 import useSnackNotify from "../../../components/SnackNotify";
-import {
-    adjustmentCartItemAction,
-    deleteCartItemAction,
-} from "../../../hooks/Redux/Cart/cartAction";
-
-function countTotal(itemsCart) {
-    let sum = 0;
-
-    for (let item of itemsCart) {
-        const quantity = item.quantity;
-        const price =
-            item.storeProduct.productId.salePrice *
-            (1 - item.storeProduct.discountPrice);
-        sum += quantity * price;
-    }
-    return sum;
-}
+import { adjustmentCartItemAction, deleteCartItemAction } from "../../../hooks/Redux/Cart/cartAction";
 
 export default function Cart() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const snackNotify = useSnackNotify();
-    const { data: cartData, loading: cartLoading } = useSelector(
-        (state) => state.cart
-    );
+    const { data: cartData, loading: cartLoading } = useSelector((state) => state.cart);
 
     const handelDeleteCartItem = async (data) => {
         const response = await dispatch(deleteCartItemAction(data));
@@ -70,18 +40,14 @@ export default function Cart() {
         <Box>
             <Paper>
                 <div className=" p-[20px] flex justify-between items-center">
-                    <Typography variant="body1">
-                        Hiển thị 1-24 trong 205 sản phẩm
-                    </Typography>
+                    <Typography variant="body1">Hiển thị 1-24 trong 205 sản phẩm</Typography>
                     <div className="flex items-center">
                         <Button
                             variant="outlined"
                             startIcon={<NavigateBeforeIcon />}
                             size="small"
                             sx={{ textTransform: "none", mr: 1 }}
-                            onClick={() =>
-                                navigate("/product/list?skip=0&take=10")
-                            }
+                            onClick={() => navigate("/product/list?skip=0&take=10")}
                         >
                             Tiếp tục mua sắm
                         </Button>
@@ -92,37 +58,19 @@ export default function Cart() {
                         <Table aria-label="simple table">
                             <TableHead className="na-table-header-tini">
                                 <TableRow>
-                                    <TableCell
-                                        className="na-table-cell-tini"
-                                        sx={{ minWidth: "400px" }}
-                                    >
+                                    <TableCell className="na-table-cell-tini" sx={{ minWidth: "400px" }}>
                                         Sản phẩm
                                     </TableCell>
-                                    <TableCell
-                                        className="na-table-cell-tini"
-                                        align="center"
-                                    >
+                                    <TableCell className="na-table-cell-tini" align="center">
                                         Số lượng
                                     </TableCell>
-                                    <TableCell
-                                        className="na-table-cell-tini"
-                                        align="center"
-                                        sx={{ minWidth: "120px" }}
-                                    >
+                                    <TableCell className="na-table-cell-tini" align="center" sx={{ minWidth: "120px" }}>
                                         Giá
                                     </TableCell>
-                                    <TableCell
-                                        className="na-table-cell-tini"
-                                        align="center"
-                                        sx={{ minWidth: "150px" }}
-                                    >
+                                    <TableCell className="na-table-cell-tini" align="center" sx={{ minWidth: "150px" }}>
                                         Tổng
                                     </TableCell>
-                                    <TableCell
-                                        className="na-table-cell-tini"
-                                        align="right"
-                                        sx={{ whiteSpace: "nowrap" }}
-                                    >
+                                    <TableCell className="na-table-cell-tini" align="right" sx={{ whiteSpace: "nowrap" }}>
                                         Tùy chọn
                                     </TableCell>
                                 </TableRow>
@@ -132,8 +80,7 @@ export default function Cart() {
                                     <TableRow
                                         key={product?._id}
                                         sx={{
-                                            "&:last-child td, &:last-child th":
-                                                { border: 0 },
+                                            "&:last-child td, &:last-child th": { border: 0 },
                                         }}
                                         className="na-table-row "
                                     >
@@ -141,25 +88,13 @@ export default function Cart() {
                                             <div className="flex">
                                                 <div className="min-w-[90px] h-full mr-3 rounded-sm overflow-hidden">
                                                     <img
-                                                        src={
-                                                            product
-                                                                ?.storeProduct
-                                                                ?.productId
-                                                                ?.images?.[0]
-                                                                ?.url
-                                                        }
+                                                        src={product?.storeProduct?.productId?.images?.[0]?.url}
                                                         alt="product image"
                                                         className="h-[64px] w-full object-cover"
                                                     />
                                                 </div>
-                                                <Typography
-                                                    variant="body1"
-                                                    className="text-truncate-3"
-                                                >
-                                                    {
-                                                        product?.storeProduct
-                                                            ?.productId?.name
-                                                    }
+                                                <Typography variant="body1" className="text-truncate-3">
+                                                    {product?.storeProduct?.productId?.name}
                                                 </Typography>
                                             </div>
                                         </TableCell>
@@ -184,12 +119,7 @@ export default function Cart() {
                                             <div className="na-fs-16 flex justify-center font-semibold ">
                                                 <small>₫</small>
                                                 {formatPrice(
-                                                    product?.storeProduct
-                                                        ?.productId?.salePrice *
-                                                        (1 -
-                                                            product
-                                                                ?.storeProduct
-                                                                ?.discountPrice)
+                                                    product?.storeProduct?.productId?.salePrice * (1 - product?.storeProduct?.discountPrice)
                                                 )}
                                             </div>
                                         </TableCell>
@@ -197,25 +127,14 @@ export default function Cart() {
                                             <div className="na-fs-16 flex justify-center font-semibold text-orange">
                                                 <small>₫</small>
                                                 {formatPrice(
-                                                    product?.storeProduct
-                                                        ?.productId?.salePrice *
-                                                        (1 -
-                                                            product
-                                                                ?.storeProduct
-                                                                ?.discountPrice) *
+                                                    product?.storeProduct?.productId?.salePrice *
+                                                        (1 - product?.storeProduct?.discountPrice) *
                                                         product?.quantity
                                                 )}
                                             </div>
                                         </TableCell>
                                         <TableCell align="right">
-                                            <IconButton
-                                                aria-label="delete"
-                                                onClick={() =>
-                                                    handelDeleteCartItem(
-                                                        product?._id
-                                                    )
-                                                }
-                                            >
+                                            <IconButton aria-label="delete" onClick={() => handelDeleteCartItem(product?._id)}>
                                                 <DeleteIcon color="error" />
                                             </IconButton>
                                         </TableCell>
@@ -225,23 +144,15 @@ export default function Cart() {
                                     <TableCell align="right"></TableCell>
                                     <TableCell align="right"> </TableCell>
                                     <TableCell align="right">
-                                        <div className="na-fs-16  font-semibold ">
-                                            Tổng:
-                                        </div>
+                                        <div className="na-fs-16  font-semibold ">Tổng:</div>
                                     </TableCell>
                                     <TableCell align="right">
-                                        (
-                                        <span className="na-fs-16 font-semibold text-orange">
-                                            {cartData?.total}
-                                        </span>{" "}
-                                        sản phẩm)
+                                        (<span className="na-fs-16 font-semibold text-orange">{cartData?.total}</span> sản phẩm)
                                     </TableCell>
                                     <TableCell align="right">
                                         <div className="na-fs-16 flex  font-bold text-red-600 underline">
                                             <small>₫</small>
-                                            {formatPrice(
-                                                countTotal(cartData?.products)
-                                            )}
+                                            {formatPrice(countCartTotal(cartData?.products))}
                                         </div>
                                     </TableCell>
                                 </TableRow>
@@ -251,13 +162,7 @@ export default function Cart() {
                 </Box>
             </Paper>
             <Box className="pt-3 text-end">
-                <Button
-                    variant="contained"
-                    color="success"
-                    component={Link}
-                    to="/checkout"
-                    className="hover:text-white"
-                >
+                <Button variant="contained" color="success" component={Link} to="/checkout" className="hover:text-white">
                     Thanh toán
                 </Button>
             </Box>

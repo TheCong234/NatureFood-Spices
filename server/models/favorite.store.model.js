@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const StoreCartSchema = Schema({
+const StoreFavoriteSchema = new Schema({
     store: {
         type: Schema.Types.ObjectId,
         ref: "Store",
@@ -12,12 +12,7 @@ const StoreCartSchema = Schema({
         ref: "Product",
         required: true,
     },
-    quantity: {
-        type: Number,
-        default: 1,
-        min: 1,
-    },
 });
+const StoreFavoriteModel = mongoose.model("StoreFavorite", StoreFavoriteSchema);
 
-const StoreCartModel = mongoose.model("StoreCart", StoreCartSchema);
-export default StoreCartModel;
+export default StoreFavoriteModel;

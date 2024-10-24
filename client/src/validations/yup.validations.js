@@ -61,26 +61,14 @@ export const CreateReviewYup = yup.object().shape({
 });
 
 export const LoginYup = yup.object().shape({
-    email: yup
-        .string()
-        .email("Vui lòng nhập một địa chỉ email hợp lệ")
-        .required("Vui lòng nhập email"),
-    password: yup
-        .string()
-        .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
-        .required("Vui lòng nhập mật khẩu"),
+    email: yup.string().email("Vui lòng nhập một địa chỉ email hợp lệ").required("Vui lòng nhập email"),
+    password: yup.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự").required("Vui lòng nhập mật khẩu"),
 });
 
 export const RegisterYup = yup.object().shape({
-    email: yup
-        .string()
-        .email("Vui lòng nhập một địa chỉ email hợp lệ")
-        .required("Vui lòng nhập email"),
+    email: yup.string().email("Vui lòng nhập một địa chỉ email hợp lệ").required("Vui lòng nhập email"),
 
-    username: yup
-        .string()
-        .required("Vui lòng nhập tên người dùng")
-        .min(3, "Tên người dùng phải có ít nhất 3 ký tự"), // Thay đổi theo yêu cầu của bạn
+    username: yup.string().required("Vui lòng nhập tên người dùng").min(3, "Tên người dùng phải có ít nhất 3 ký tự"), // Thay đổi theo yêu cầu của bạn
 
     password: yup
         .string()
@@ -102,10 +90,7 @@ export const CategoryYup = yup.object().shape({
         .min(3, "Tên danh mục phải có ít nhất 3 ký tự")
         .max(50, "Tên danh mục không được vượt quá 50 ký tự"),
 
-    description: yup
-        .string()
-        .required("Mô tả là bắt buộc")
-        .max(200, "Mô tả không được vượt quá 200 ký tự"),
+    description: yup.string().required("Mô tả là bắt buộc").max(200, "Mô tả không được vượt quá 200 ký tự"),
 
     // image: yup
     //     .mixed()
@@ -146,28 +131,22 @@ export const BannerYup = yup.object().shape({
 
 export const CreateBlogYup = yup.object().shape({
     title: yup.string().required("Tiêu đề là bắt buộc"),
-    slug: yup
-        .string()
-        .min(5, "Slug phải có ít nhất 5 ký tự")
-        .required("Slug là bắt buộc"),
+    slug: yup.string().min(5, "Slug phải có ít nhất 5 ký tự").required("Slug là bắt buộc"),
     content: yup.string().required("Nội dung là bắt buộc"),
-    excerpt: yup
-        .string()
-        .min(5, "Tóm tắt phải có ít nhất 5 ký tự")
-        .required("Tóm tắt là bắt buộc"),
+    excerpt: yup.string().min(5, "Tóm tắt phải có ít nhất 5 ký tự").required("Tóm tắt là bắt buộc"),
 });
 
 export const CreateDeliveryYup = yup.object().shape({
-    ownerName: yup
-        .string()
-        .min(2, "Tên người nhận phải nhiều hơn 2 ký tự")
-        .required("Tên người nhận là bắt buộc"),
-    phone: yup
-        .string()
-        .min(9, "Số điện thoại không hợp lệ")
-        .required("Số điện thoại là bắt buộc"),
+    ownerName: yup.string().min(2, "Tên người nhận phải nhiều hơn 2 ký tự").required("Tên người nhận là bắt buộc"),
+    phone: yup.string().min(9, "Số điện thoại không hợp lệ").required("Số điện thoại là bắt buộc"),
     city: yup.string().required("Thành phố/Tỉnh là bắt buộc"),
     district: yup.string().required("Quận/Huyện là bắt buộc"),
     ward: yup.string().required("Phường/Xã là bắt buộc"),
     street: yup.string().required("Địa chỉ chi tiết là bắt buộc"),
+});
+
+export const CheckoutYup = yup.object().shape({
+    delivery: yup.string().required("Thông tin giao hàng là bắt buộc"),
+    paymentMethod: yup.number().required("Phương thức thanh toán là bắt buộc"),
+    deliveryMethod: yup.number().required("Cách thức giao hàng là bắt buộc"),
 });

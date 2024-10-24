@@ -1,8 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-    createStoreProductsAction,
-    getStoreProductsAction,
-} from "./storeProductAction";
+import { createStoreProductsAction, getStoreProductsAction } from "./storeProductAction";
 
 const storeProductSlice = createSlice({
     name: "tag",
