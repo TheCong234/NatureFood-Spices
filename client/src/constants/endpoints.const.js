@@ -36,6 +36,7 @@ export const ProductV1 = {
 export const StoreProductV1 = {
     CREATE: "/store-product/create",
     GET_STORE_PRODUCTS: "/store-product/all",
+    GET_STORE_PRODUCT: "/store-product/details/",
 };
 
 export const BannerV1 = {

@@ -40,17 +40,7 @@ import { HomePage } from "../pages";
 import ProductDetail from "../pages/Customer/ProductDetails";
 import Error500 from "../pages/Common/Error500";
 import Error404 from "../pages/Common/Error404";
-import {
-    Wishlist,
-    Shipping,
-    Vendor,
-    TrackOrder,
-    Checkout,
-    Blog,
-    Products,
-    Cart,
-    Notification,
-} from "../pages/Customer";
+import { Wishlist, Shipping, Vendor, TrackOrder, Checkout, Blog, Products, Cart, Notification, Orderlist } from "../pages/Customer";
 
 export const router = createBrowserRouter([
     {
@@ -87,7 +77,7 @@ export const router = createBrowserRouter([
                         element: <HomePage />,
                     },
                     {
-                        path: "product/details/:productId",
+                        path: "product/details/:storeProductId",
                         element: <ProductDetail />,
                     },
                     {
