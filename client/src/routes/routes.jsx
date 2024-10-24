@@ -40,6 +40,7 @@ import { HomePage } from "../pages";
 import ProductDetail from "../pages/Customer/ProductDetails";
 import Error500 from "../pages/Common/Error500";
 import Error404 from "../pages/Common/Error404";
+
 import {
     Wishlist,
     Shipping,
@@ -50,6 +51,7 @@ import {
     Products,
     Cart,
     Notification,
+    Orderlist,
 } from "../pages/Customer";
 
 export const router = createBrowserRouter([
@@ -125,6 +127,10 @@ export const router = createBrowserRouter([
                     {
                         path: "/notification",
                         element: <Notification />,
+                    },
+                    {
+                        path: "/orderlist",
+                        element: <Orderlist />,
                     },
                 ],
             },

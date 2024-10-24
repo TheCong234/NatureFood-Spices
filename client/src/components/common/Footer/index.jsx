@@ -12,7 +12,7 @@ const Index = () => {
                     <div className="flex">
                         <div className="">
                             <img
-                                src="src/assets/images/logo.jpg"
+                                src="src/assets/images/logo.png"
                                 alt="Phoenix Logo"
                                 className="w-[80px] h-[40px]"
                             />
