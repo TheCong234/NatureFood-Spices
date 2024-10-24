@@ -40,6 +40,7 @@ import { createCustomerOrderAction } from "../../../hooks/Redux/Order/orderActio
 import useSnackNotify from "../../../components/SnackNotify";
 import { countCartTotal } from "../../../services/functions";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { resetCart } from "../../../hooks/Redux/Cart/cartSlice";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -75,6 +76,7 @@ export default function CheckoutForm() {
             snackNotify("error")("Đặt hàng thất bại");
         } else {
             snackNotify("success")("Đặt hàng thành công");
+            resetCart();
             reset();
             setOpenDialog(true);
         }

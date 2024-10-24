@@ -34,7 +34,7 @@ export const ProductV1 = {
 };
 
 export const StoreProductV1 = {
-    CREATE: "/store-product/",
+    CREATE: "/store-product/create",
     GET_STORE_PRODUCTS: "/store-product/all",
 };
 
@@ -64,6 +64,11 @@ export const FavoriteV1 = {
     GET_FAVORITE_STORE_PRODUCT: "/favorite/store-product/all",
 
     DELETE_FAVORITE_STORE_PRODUCT: "/favorite/store-product/",
+};
+
+export const StoreFavoriteV1 = {
+    MODIFY: "/favorite/product/",
+    GET_ITEMS: "favorite/product/all",
 };
 
 export const StoreCartV1 = {

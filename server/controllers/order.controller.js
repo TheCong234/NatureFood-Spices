@@ -34,7 +34,7 @@ const OrderController = {
         const { delivery, paymentMethod, deliveryMethod, carts } = req.body;
         const user = req.user._id;
         const groupProducts = carts.reduce((acc, product) => {
-            const storeId = product.storeProduct._id.toString();
+            const storeId = product.storeProduct.storeId.toString();
             if (!acc[storeId]) {
                 acc[storeId] = [];
             }
