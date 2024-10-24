@@ -7,12 +7,9 @@ const router = express.Router();
 
 router.get("/my-orders", authJwt, asyncHandler(OrderController.getMyOrders));
 
-router.post("/new", authJwt, asyncHandler(OrderController.createOrders));
+router.post("/customer/create", authJwt, asyncHandler(OrderController.createCustomerOrders));
+router.post("/new", authJwt, asyncHandler(OrderController.createSellerOrders));
 
-router.patch(
-    "/:id/update/:status",
-    authJwt,
-    asyncHandler(OrderController.updateOrder)
-);
+router.patch("/:id/update/:status", authJwt, asyncHandler(OrderController.updateOrder));
 
 export default router;

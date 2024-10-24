@@ -25,9 +25,7 @@ export const createProductApi = async (data) => {
     return response.data;
 };
 
-export const createStoreProductsApi = async (storeId) => {
-    const response = await apiClient.post(
-        `${StoreProductV1.CREATE}${storeId}/create`
-    );
+export const createStoreProductsApi = async () => {
+    const response = await apiClient.post(StoreProductV1.CREATE);
     return response.data;
 };

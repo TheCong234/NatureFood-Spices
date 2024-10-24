@@ -5,39 +5,13 @@ import asyncHandler from "../middlewares/async-handler.middleware.js";
 
 const router = express.Router();
 
-router.get(
-    "/store-product/all",
-    authJwt,
-    asyncHandler(FavoriteController.getFavoriteStoreProducts)
-);
-router.get(
-    "/product",
-    authJwt,
-    asyncHandler(FavoriteController.getFavoriteProducts)
-);
+router.get("/store-product/all", authJwt, asyncHandler(FavoriteController.getFavoriteStoreProducts));
+router.get("/product/all", authJwt, asyncHandler(FavoriteController.getStoreFavoriteItems));
 
-router.post(
-    "/store-product/:storeProductId/add",
-    authJwt,
-    asyncHandler(FavoriteController.addFavoriteStoreProduct)
-);
+router.post("/store-product/:storeProductId/add", authJwt, asyncHandler(FavoriteController.addFavoriteStoreProduct));
 
-router.patch(
-    "/product/add/:id",
-    authJwt,
-    asyncHandler(FavoriteController.addFavoriteProduct)
-);
+router.post("/product/:productId/modify", authJwt, asyncHandler(FavoriteController.modifyStoreFavoriteItem));
 
-router.patch(
-    "/product/remove/:id",
-    authJwt,
-    asyncHandler(FavoriteController.removeFavoriteProduct)
-);
-
-router.delete(
-    "/store-product/:storeProductId",
-    authJwt,
-    asyncHandler(FavoriteController.deleteFavoriteStoreProduct)
-);
+router.delete("/store-product/:storeProductId", authJwt, asyncHandler(FavoriteController.deleteFavoriteStoreProduct));
 
 export default router;

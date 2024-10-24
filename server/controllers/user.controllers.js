@@ -14,19 +14,13 @@ const UserController = {
         const cart = new CartModel({ user: newUser._id });
         await cart.save();
         const token = user.createToken();
-        return res
-            .status(statusCode.CREATED)
-            .json(
-                BaseResponse.success("Đăng ký tài khoản thành công", { token })
-            );
+        return res.status(statusCode.CREATED).json(BaseResponse.success("Đăng ký tài khoản thành công", { token }));
     },
 
     async login(req, res) {
         const user = req.user;
         const token = user.createToken();
-        return res
-            .status(statusCode.OK)
-            .json(BaseResponse.success("Đăng nhập thành công", { token }));
+        return res.status(statusCode.OK).json(BaseResponse.success("Đăng nhập thành công", { token }));
     },
 
     async getAll(req, res) {
@@ -34,15 +28,17 @@ const UserController = {
         const total = await UserModel.countDocuments({
             role: req.query.role || "user",
         });
-        return res
-            .status(statusCode.OK)
-            .json(BaseResponse.success("Thành công", { users, total }));
+        return res.status(statusCode.OK).json(BaseResponse.success("Thành công", { users, total }));
     },
 
     async getCurrentUser(req, res) {
-        return res
-            .status(statusCode.OK)
-            .json(BaseResponse.success("Tìm thấy current user", req.user));
+        return res.status(statusCode.OK).json(BaseResponse.success("Tìm thấy current user", req.user));
+    },
+
+    async getCurrentUserDelivery(req, res) {
+        const user = await UserModel.findById(req.user._id).populate("delivery.address");
+        const data = { delivery: user.delivery, total: user.delivery.length };
+        return res.status(statusCode.OK).json(BaseResponse.success("Lấy thông tin giao hàng thành công", data));
     },
 
     async getUserById(req, res) {
@@ -50,31 +46,16 @@ const UserController = {
             const { id } = req.params;
             const user = await UserModel.findById(id);
 
-            return res
-                .status(statusCode.OK)
-                .json(BaseResponse.success("Tìm thấy người dùng", user));
+            return res.status(statusCode.OK).json(BaseResponse.success("Tìm thấy người dùng", user));
         } catch (error) {
             console.log("Find user by id: ", error);
-            return res
-                .status(statusCode.NOT_FOUND)
-                .json(BaseResponse.error("Không tìm thấy người dùng", error));
+            return res.status(statusCode.NOT_FOUND).json(BaseResponse.error("Không tìm thấy người dùng", error));
         }
     },
 
     async updateUser(req, res) {
-        const updatedUser = await UserModel.findByIdAndUpdate(
-            req.user._id,
-            req.body,
-            { new: true }
-        );
-        return res
-            .status(statusCode.OK)
-            .json(
-                BaseResponse.success(
-                    "Cập nhật người dùng thành công",
-                    updatedUser
-                )
-            );
+        const updatedUser = await UserModel.findByIdAndUpdate(req.user._id, req.body, { new: true });
+        return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật người dùng thành công", updatedUser));
     },
 
     async updateUserImage(req, res) {
@@ -87,18 +68,9 @@ const UserController = {
                 };
             }
             await user.save();
-            return res
-                .status(statusCode.OK)
-                .json(
-                    BaseResponse.success(
-                        "Cập nhật ảnh người dùng thành công",
-                        null
-                    )
-                );
+            return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật ảnh người dùng thành công", null));
         } catch (error) {
-            return res
-                .status(statusCode.INTERNAL_SERVER_ERROR)
-                .json(BaseResponse.error("Cập nhật thất bại", error));
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).json(BaseResponse.error("Cập nhật thất bại", error));
         }
     },
 
@@ -108,9 +80,7 @@ const UserController = {
             new: true,
             runValidators: true,
         });
-        return res
-            .status(statusCode.OK)
-            .json(BaseResponse.success("Cập nhật người dùng thành công", user));
+        return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật người dùng thành công", user));
     },
 
     async changePassword(req, res) {
@@ -120,19 +90,10 @@ const UserController = {
             const user = await UserModel.findOne({ email: email });
             user.password = password;
             const updatedUser = await user.save();
-            return res
-                .status(statusCode.OK)
-                .json(
-                    BaseResponse.success(
-                        "Cập nhật mật khẩu mới thành công",
-                        updatedUser
-                    )
-                );
+            return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật mật khẩu mới thành công", updatedUser));
         } catch (error) {
             console.log("change password: ", error);
-            return res
-                .status(statusCode.NOT_FOUND)
-                .json(BaseResponse.success("Không tìm thấy người dùng"), error);
+            return res.status(statusCode.NOT_FOUND).json(BaseResponse.success("Không tìm thấy người dùng"), error);
         }
     },
 
@@ -140,9 +101,7 @@ const UserController = {
         const { subject, otp } = req.body;
         const template = otpTemplate(req.user.email, otp);
         await sendMail(req.user.email, subject, template);
-        return res
-            .status(statusCode.OK)
-            .json(BaseResponse.success("Gửi email thành công", null));
+        return res.status(statusCode.OK).json(BaseResponse.success("Gửi email thành công", null));
     },
 
     async createDelivery(req, res) {
@@ -153,19 +112,8 @@ const UserController = {
             ownerName: req.body.ownerName,
             phone: req.body.phone,
         };
-        const updatedUser = await UserModel.findByIdAndUpdate(
-            req.user._id,
-            { $push: { delivery } },
-            { new: true, useFindAndModify: false }
-        );
-        return res
-            .status(statusCode.OK)
-            .json(
-                BaseResponse.success(
-                    "Thêm địa chỉ nhận hàng thành công",
-                    updatedUser.delivery
-                )
-            );
+        const updatedUser = await UserModel.findByIdAndUpdate(req.user._id, { $push: { delivery } }, { new: true, useFindAndModify: false });
+        return res.status(statusCode.OK).json(BaseResponse.success("Thêm địa chỉ nhận hàng thành công", updatedUser.delivery));
     },
 };
 

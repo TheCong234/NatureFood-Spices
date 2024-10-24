@@ -4,7 +4,7 @@ import { getTagsAction } from "./tagAction";
 const tagSlice = createSlice({
     name: "tag",
     initialState: {
-        data: [],
+        data: { tags: [], total: 0 },
         loading: false,
         error: null,
     },
@@ -17,7 +17,7 @@ const tagSlice = createSlice({
             })
             .addCase(getTagsAction.fulfilled, (state, action) => {
                 state.loading = false;
-                state.data = action.payload.data;
+                state.data = action.payload;
             })
             .addCase(getTagsAction.rejected, (state, action) => {
                 state.loading = false;

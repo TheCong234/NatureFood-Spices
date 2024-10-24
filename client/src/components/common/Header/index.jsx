@@ -5,17 +5,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import SearchIcon from "@mui/icons-material/Search";
-import {
-    AppBar,
-    Badge,
-    Box,
-    Container,
-    IconButton,
-    InputAdornment,
-    InputBase,
-    Stack,
-    Toolbar,
-} from "@mui/material";
+import { AppBar, Badge, Box, Container, IconButton, InputAdornment, InputBase, Stack, Toolbar } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItemsAction } from "../../../hooks/Redux/Cart/cartAction";
@@ -58,11 +48,7 @@ const Header = () => {
                 <Container>
                     <div className="header-top flex items-center justify-between p-4">
                         <div className="">
-                            <img
-                                src="/src/assets/images/logo.png"
-                                alt="Logo"
-                                className="w-[80px]"
-                            />
+                            <img src="/src/assets/images/logo.png" alt="Logo" className="w-[80px]" />
                         </div>
                         <div className="relative flex-1 px-20">
                             <InputBase
@@ -92,14 +78,8 @@ const Header = () => {
                             <IconButton color="inherit">
                                 <LightModeIcon />
                             </IconButton>
-                            <IconButton
-                                color="inherit"
-                                onClick={() => navigate("/cart?skip=0&take=10")}
-                            >
-                                <Badge
-                                    badgeContent={cartData?.total}
-                                    color="success"
-                                >
+                            <IconButton color="inherit" onClick={() => navigate("/cart?skip=0&take=10")}>
+                                <Badge badgeContent={cartData?.total} color="success" showZero>
                                     <ShoppingCartIcon />
                                 </Badge>
                             </IconButton>
@@ -117,11 +97,7 @@ const Header = () => {
                 <Container className="flex justify-center">
                     <Box>
                         {items.map((item, index) => (
-                            <NavLink
-                                key={index}
-                                to={item.to}
-                                className="nav-link"
-                            >
+                            <NavLink key={index} to={item.to} className="nav-link">
                                 {item.text}
                             </NavLink>
                         ))}

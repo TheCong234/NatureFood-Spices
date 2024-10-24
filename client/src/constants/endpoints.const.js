@@ -7,6 +7,7 @@ export const UserV1 = {
     GET_PEOPLE: "/user/all",
     UPDATE_USER_BY_ID: "/user/",
     CREATE_DELIVERY: "/user/delivery/create",
+    GET_DELIVERY: "/user/delivery/all",
 };
 
 export const StoreV1 = {
@@ -33,7 +34,7 @@ export const ProductV1 = {
 };
 
 export const StoreProductV1 = {
-    CREATE: "/store-product/",
+    CREATE: "/store-product/create",
     GET_STORE_PRODUCTS: "/store-product/all",
 };
 
@@ -65,6 +66,11 @@ export const FavoriteV1 = {
     DELETE_FAVORITE_STORE_PRODUCT: "/favorite/store-product/",
 };
 
+export const StoreFavoriteV1 = {
+    MODIFY: "/favorite/product/",
+    GET_ITEMS: "favorite/product/all",
+};
+
 export const StoreCartV1 = {
     ADD: "/store-cart/",
     DELETE: "/store-cart/items/",
@@ -77,4 +83,8 @@ export const CartV1 = {
     GET_ALL: "/cart/all",
     UPDATE_ITEM: "/cart/",
     DELETE: "/cart/",
+};
+
+export const OrderV1 = {
+    CREATE_CUSTOMER_ORDER: "/order/customer/create",
 };

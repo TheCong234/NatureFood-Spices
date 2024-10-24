@@ -5,16 +5,9 @@ import { authJwt } from "../services/auth.services.js";
 
 const router = express.Router();
 
-router.get(
-    "/category/:category",
-    asyncHandler(StoreProductController.getStoreProductsByCategory)
-);
+router.get("/category/:category", asyncHandler(StoreProductController.getStoreProductsByCategory));
 router.get("/all", asyncHandler(StoreProductController.getStoreProducts));
 
-router.post(
-    "/:storeId/create",
-    authJwt,
-    asyncHandler(StoreProductController.createStoreProducts)
-);
+router.post("/create", authJwt, asyncHandler(StoreProductController.createStoreProducts));
 
 export default router;
