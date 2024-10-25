@@ -18,6 +18,12 @@ const StoreProductController = {
         );
     },
 
+    async getStoreProduct(req, res) {
+        const { storeProductId } = req.params;
+        const product = await StoreProductModel.findById(storeProductId).populate("productId").populate("storeId");
+        return res.status(statusCode.OK).json(BaseResponse.success("Lấy thông tin sản phẩm thành công", product));
+    },
+
     async getStoreProductsByCategory(req, res) {
         const { category } = req.params;
         console.log(category);

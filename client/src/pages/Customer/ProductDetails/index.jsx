@@ -1,156 +1,144 @@
-import { Box, Button, Rating, Stack, Typography, Tab } from "@mui/material";
+import { Box, Button, Rating, Stack, Typography, Tab, Divider } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import ProductImagesCarousel from "./ProductImagesCarousel";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductByIdAction } from "../../../hooks/Redux/Product/productAction";
 import QuantitySelector from "../../../components/QuantitySelector";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import DetailsTab from "./DetailsTab";
 import ReviewTab from "./ReviewTab";
+import { getStoreProductApi } from "../../../apis/product.store";
+import { formatPrice } from "../../../services/functions";
+import { QuantityInput } from "../../../components";
+import { createCartItemAction } from "../../../hooks/Redux/Cart/cartAction";
+import useSnackNotify from "../../../components/SnackNotify";
 
 const ProductDetail = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { productId } = useParams();
-  useEffect(() => {
-    dispatch(getProductByIdAction(productId));
-  }, [productId]);
-  const {
-    product: productData,
-    loading: productLoading,
-    productError: productError,
-  } = useSelector((state) => state.product);
+    const [product, setProduct] = useState();
+    const [loading, setLoading] = useState(false);
+    const [quantity, setQuantity] = useState(1);
+    const [valueTab, setValueTab] = useState("1");
+    const snackNotify = useSnackNotify();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { storeProductId } = useParams();
 
-  const [quantity, setQuantity] = useState(1);
-  const [valueTab, setValueTab] = useState("1");
+    const createStoreCartItem = async () => {
+        const response = await dispatch(createCartItemAction({ storeProduct: product?._id, quantity }));
+        if (response?.error) {
+            snackNotify("error")("Thêm sản phẩm vào giỏ hàng thất bại");
+        } else {
+            snackNotify("success")("Đã thêm sản phẩm vào giỏ hàng");
+        }
+    };
 
-  const handleTabChange = (event, newValue) => {
-    setValueTab(newValue);
-  };
-  return (
-    <Box>
-      <Box className="flex">
-        <Box className="w-1/2 pr-8">
-          <ProductImagesCarousel />
-        </Box>
-        <Box className="w-1/2">
-          <Typography component="h2" variant="h5" sx={{ fontWeight: "bold" }}>
-            {productData?.name}
-          </Typography>
-          <Stack direction={"row"} sx={{ mt: 1 }}>
-            <Rating
-              name="size-small"
-              value={3}
-              readOnly
-              size="small"
-              className="flex items-center mr-2 "
-            />
-            <span>(3.0)</span>
-          </Stack>
-          <Typography
-            component="h2"
-            variant="h4"
-            sx={{ fontWeight: "bold", mt: 2 }}
-          >
-            ₫{productData?.price.toLocaleString("vi-VN")}
-          </Typography>
+    const handleGetData = async () => {
+        const response = await getStoreProductApi(storeProductId);
+        setProduct(response?.data);
+        console.log(response);
+    };
+    useEffect(() => {
+        handleGetData();
+    }, [storeProductId]);
 
-          <Stack
-            sx={{
-              borderTop: "1px solid",
-              borderBottom: "1px solid",
-              borderColor: "divider",
-              py: 3,
-              mt: 2,
-            }}
-            direction={"row"}
-          >
-            <Box sx={{ flex: 1 }}>
-              <Typography variant="body1">Kiểu đóng gói</Typography>
-              <Stack direction={"row"} spacing={1} sx={{ mt: 1 }}>
-                <Button
-                  size="small"
-                  sx={{ textTransform: "none" }}
-                  variant="contained"
-                  color="warning"
-                >
-                  Chai
-                </Button>
-                <Button
-                  size="small"
-                  sx={{ textTransform: "none" }}
-                  variant="contained"
-                  color="warning"
-                >
-                  Lo
-                </Button>
-                <Button
-                  size="small"
-                  sx={{ textTransform: "none" }}
-                  variant="contained"
-                  color="warning"
-                >
-                  Gói
-                </Button>
-              </Stack>
+    const handleTabChange = (event, newValue) => {
+        setValueTab(newValue);
+    };
+    return (
+        <Box>
+            <Box className="flex">
+                <Box className="w-1/2 pr-8">
+                    <ProductImagesCarousel product={product} />
+                </Box>
+                <Box className="w-1/2">
+                    <Typography component="h2" variant="h5" sx={{ fontWeight: "bold" }}>
+                        {product?.productId?.name}
+                    </Typography>
+                    <Stack direction={"row"} sx={{ mt: 1 }}>
+                        <Rating name="size-small" value={3} readOnly size="small" className="flex items-center mr-2 " />
+                        <span>(3.0)</span>
+                    </Stack>
+                    <div>
+                        <Typography component="h2" variant="h4" sx={{ fontWeight: "bold", mt: 2 }}>
+                            ₫{product && formatPrice(product?.productId?.salePrice)}
+                        </Typography>
+                    </div>
+
+                    <hr className="my-4" />
+                    <Stack direction={"row"}>
+                        <Box sx={{ flex: 1 }}>
+                            <Typography variant="body1">Kiểu đóng gói</Typography>
+                            <Stack direction={"row"} spacing={1} sx={{ mt: 1 }}>
+                                <Button size="small" sx={{ textTransform: "none" }} variant="contained" color="warning">
+                                    Chai
+                                </Button>
+                                <Button size="small" sx={{ textTransform: "none" }} variant="contained" color="warning">
+                                    Lo
+                                </Button>
+                                <Button size="small" sx={{ textTransform: "none" }} variant="contained" color="warning">
+                                    Gói
+                                </Button>
+                            </Stack>
+                        </Box>
+
+                        <Box sx={{ flex: 1 }}>
+                            <Typography variant="body1">Trọng lượng</Typography>
+                            <Typography variant="h6" component="h4" sx={{ fontWeight: "bold", mt: 1 }}>
+                                500g / chai
+                            </Typography>
+                        </Box>
+                    </Stack>
+                    <Box sx={{ py: 3 }}>
+                        <Typography variant="body1" gutterBottom>
+                            <strong>Bạn cần nó</strong> - hãy thêm vào giỏ hàng của bạn
+                        </Typography>
+                        <div className="flex">
+                            <QuantityInput
+                                quanity={quantity}
+                                handleReduce={() => {
+                                    quantity > 1 && setQuantity(quantity - 1);
+                                }}
+                                handleIncrease={() => {
+                                    quantity < product?.stock && setQuantity(quantity + 1);
+                                }}
+                                className={"mr-3"}
+                            />
+                            <Button
+                                variant="contained"
+                                color="warning"
+                                startIcon={<AddShoppingCartIcon />}
+                                size="small"
+                                className="na-text-transform-none ml-2"
+                                onClick={createStoreCartItem}
+                            >
+                                Thêm vào giỏ hàng
+                            </Button>
+                        </div>
+                    </Box>
+                </Box>
             </Box>
 
-            <Box sx={{ flex: 1 }}>
-              <Typography variant="body1">Trọng lượng</Typography>
-              <Typography
-                variant="h6"
-                component="h4"
-                sx={{ fontWeight: "bold", mt: 1 }}
-              >
-                500g / chai
-              </Typography>
+            <Box sx={{ width: "100%", typography: "body1" }}>
+                <TabContext value={valueTab}>
+                    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                        <TabList onChange={handleTabChange} aria-label="lab API tabs example" sx={{ width: "100%", display: "flex" }}>
+                            <Tab label="Chi tiết sản phẩm" value="1" sx={{ flex: 1 }} />
+                            <Tab label="Xếp hạng & đánh giá" value="2" sx={{ flex: 1 }} />
+                            <Tab label="Thảo luận" value="3" sx={{ flex: 1 }} />
+                        </TabList>
+                    </Box>
+                    <TabPanel value="1">
+                        <DetailsTab product={product} />
+                    </TabPanel>
+                    <TabPanel value="2">
+                        <ReviewTab product={product} />
+                    </TabPanel>
+                    <TabPanel value="3">Item Three</TabPanel>
+                </TabContext>
             </Box>
-          </Stack>
-          <Box sx={{ py: 3 }}>
-            <Typography variant="body1" gutterBottom>
-              <strong>Bạn cần nó</strong> - hãy thêm vào giỏ hàng của bạn
-            </Typography>
-            <Stack direction={"row"} spacing={2}>
-              <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
-              <Button
-                variant="contained"
-                color="warning"
-                startIcon={<AddShoppingCartIcon />}
-                sx={{ textTransform: "none" }}
-              >
-                Thêm
-              </Button>
-            </Stack>
-          </Box>
         </Box>
-      </Box>
-
-      <Box sx={{ width: "100%", typography: "body1" }}>
-        <TabContext value={valueTab}>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <TabList
-              onChange={handleTabChange}
-              aria-label="lab API tabs example"
-              sx={{ width: "100%", display: "flex" }}
-            >
-              <Tab label="Chi tiết sản phẩm" value="1" sx={{ flex: 1 }} />
-              <Tab label="Xếp hạng & đánh giá" value="2" sx={{ flex: 1 }} />
-              <Tab label="Thảo luận" value="3" sx={{ flex: 1 }} />
-            </TabList>
-          </Box>
-          <TabPanel value="1">
-            <DetailsTab productData={productData} />
-          </TabPanel>
-          <TabPanel value="2">
-            <ReviewTab reviews={productData?.reviews}></ReviewTab>
-          </TabPanel>
-          <TabPanel value="3">Item Three</TabPanel>
-        </TabContext>
-      </Box>
-    </Box>
-  );
+    );
 };
 
 export default ProductDetail;

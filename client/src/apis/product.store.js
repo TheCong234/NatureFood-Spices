@@ -7,3 +7,8 @@ export const getStoreProductsApi = async (params) => {
     });
     return response.data;
 };
+
+export const getStoreProductApi = async (storeProductId) => {
+    const response = await apiClient.get(StoreProductV1.GET_STORE_PRODUCT + storeProductId);
+    return response.data;
+};

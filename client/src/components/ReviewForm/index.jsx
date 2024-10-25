@@ -1,12 +1,4 @@
-import {
-    TextField,
-    Typography,
-    Rating,
-    Box,
-    Button,
-    Stack,
-    CircularProgress,
-} from "@mui/material";
+import { TextField, Typography, Rating, Box, Button, Stack, CircularProgress } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import SwitchRightIcon from "@mui/icons-material/SwitchRight";
 import { useState } from "react";
@@ -14,8 +6,8 @@ import { CreateReviewYup } from "../../validations/yup.validations";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useSelector, useDispatch } from "react-redux";
-import { createReviewAction } from "../../hooks/Redux/Product/productAction";
-import { enqueueSnackbar } from "notistack";
+import { createReviewAction } from "../../hooks/Redux/Review/reviewAction";
+import useSnackNotify from "../SnackNotify";
 
 const labels = {
     1: "Useless+",
@@ -29,9 +21,10 @@ function getLabelText(value) {
     return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
 }
 
-export default function ReviewForm() {
+export default function ReviewForm({ product }) {
     const dispatch = useDispatch();
-    const [value, setValue] = useState(5);
+    const snackNotify = useSnackNotify();
+    const [rating, setRating] = useState(5);
     const [hover, setHover] = useState(-1);
     const {
         register,
@@ -42,38 +35,19 @@ export default function ReviewForm() {
         resolver: yupResolver(CreateReviewYup),
     });
 
-    const {
-        product: productData,
-        loading: productLoading,
-        productError: productError,
-    } = useSelector((state) => state.product);
-
-    const handleClickVariant = (variant) => (message) => {
-        // variant could be success, error, warning, info, or default
-        enqueueSnackbar(message, { variant });
-    };
-    const onSubmitHandler = async (data) => {
-        const formData = new FormData();
-        formData.append("body", data.body);
-        formData.append("rating", value);
-        const dataToSend = { productId: productData._id, formData: formData };
-
-        const resultDispatch = await dispatch(createReviewAction(dataToSend));
-        if (createReviewAction.fulfilled.match(resultDispatch)) {
-            handleClickVariant("success")("Thêm đánh giá thành công");
-            reset();
+    const onSubmit = async (data) => {
+        data.storeProductId = product?._id;
+        data.rating = rating;
+        const response = await dispatch(createReviewAction(data));
+        if (response?.error) {
+            snackNotify("error")("Đánh giá thất bại");
         } else {
-            handleClickVariant("error")(
-                `Thêm đánh giá thất bại ${resultDispatch.error.message}`
-            );
+            snackNotify("success")("Đã thêm đánh giá");
+            reset();
         }
     };
     return (
-        <form
-            className="mt-8"
-            onSubmit={handleSubmit(onSubmitHandler)}
-            noValidate
-        >
+        <form className="mt-8" onSubmit={handleSubmit(onSubmit)} noValidate>
             <Stack direction={"row"} spacing={2}>
                 <Box
                     sx={{
@@ -82,36 +56,22 @@ export default function ReviewForm() {
                         alignContent: "center",
                     }}
                 >
-                    <Typography gutterBottom>
-                        Xếp hạng sao cho sản phẩm này
-                    </Typography>
-                    <Box
-                        sx={{
-                            width: "100%",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                        }}
-                    >
+                    <Typography gutterBottom>Xếp hạng sao cho sản phẩm này</Typography>
+                    <Box className="w-full flex items-center justify-center">
                         <Rating
                             name="hover-feedback"
-                            value={value}
+                            value={rating}
                             precision={1}
                             getLabelText={getLabelText}
                             onChange={(event, newValue) => {
-                                setValue(newValue);
+                                setRating(newValue);
                             }}
                             onChangeActive={(event, newHover) => {
                                 setHover(newHover);
                             }}
-                            emptyIcon={
-                                <StarIcon
-                                    style={{ opacity: 0.55 }}
-                                    fontSize="inherit"
-                                />
-                            }
+                            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
                         />
-                        {value !== null && (
+                        {rating !== null && (
                             <Box sx={{ ml: 2, position: "relative" }}>
                                 <Button
                                     variant="contained"
@@ -125,7 +85,7 @@ export default function ReviewForm() {
                                         width: "96px",
                                     }}
                                 >
-                                    {labels[hover !== -1 ? hover : value]}
+                                    {labels[hover !== -1 ? hover : rating]}
                                 </Button>
                                 <SwitchRightIcon
                                     color="success"
@@ -137,34 +97,11 @@ export default function ReviewForm() {
                                 />
                             </Box>
                         )}
-                        {errors.rating && (
-                            <Typography color="error" component="div">
-                                {errors.rating.message}
-                            </Typography>
-                        )}
                     </Box>
                     <Box sx={{ position: "relative" }}>
-                        <Button
-                            variant="contained"
-                            color="success"
-                            type="submit"
-                            sx={{ textTransform: "none", mt: 2 }}
-                            disabled={productLoading}
-                        >
+                        <Button size="small" variant="contained" color="success" type="submit" sx={{ textTransform: "none", mt: 2 }}>
                             Đánh giá
                         </Button>
-                        {productLoading && (
-                            <CircularProgress
-                                size={24}
-                                sx={{
-                                    color: "green",
-                                    position: "absolute",
-                                    top: "40%",
-                                    left: "45%",
-                                    zIndex: 1,
-                                }}
-                            />
-                        )}
                     </Box>
                 </Box>
                 <TextField

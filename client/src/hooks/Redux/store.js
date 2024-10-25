@@ -11,6 +11,7 @@ import cartReducer from "./Cart/cartSlice";
 import storeProductReducer from "./StoreProduct/storeProductSlice";
 import blogReducer from "./Blog/blogSlice";
 import orderReducer from "./Order/orderSlice";
+import reviewReducer from "./Review/reviewSlice";
 
 export const store = configureStore({
     reducer: {
@@ -26,5 +27,6 @@ export const store = configureStore({
         storeProduct: storeProductReducer,
         blog: blogReducer,
         order: orderReducer,
+        review: reviewReducer,
     },
 });
