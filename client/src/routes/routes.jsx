@@ -50,6 +50,8 @@ import {
     Products,
     Cart,
     Notification,
+    Orderlist,
+    OrderDetail,
 } from "../pages/Customer";
 
 export const router = createBrowserRouter([
@@ -129,6 +131,10 @@ export const router = createBrowserRouter([
                     {
                         path: "/orderlist",
                         element: <Orderlist />,
+                    },
+                    {
+                        path: "/orderdetail",
+                        element: <OrderDetail />,
                     },
                 ],
             },
