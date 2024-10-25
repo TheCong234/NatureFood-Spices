@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createReviewAction, createProductAction, getProductsAction } from "./productAction";
+import { createProductAction, getProductsAction } from "./productAction";
 
 const productSlice = createSlice({
     name: "product",
@@ -39,21 +39,6 @@ const productSlice = createSlice({
                 };
             })
             .addCase(createProductAction.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.error.message;
-            })
-
-            //********************old*******************
-            //create review
-            .addCase(createReviewAction.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(createReviewAction.fulfilled, (state, action) => {
-                state.loading = false;
-                state.product.reviews.unshift(action.payload.data);
-            })
-            .addCase(createReviewAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });

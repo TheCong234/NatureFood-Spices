@@ -53,7 +53,8 @@ export const BlogV1 = {
 };
 
 export const ReviewV1 = {
-    REVIEW_CREATE: "/review/",
+    CREATE: "/review/",
+    GET_ALL: "/review/",
 };
 
 export const FavoriteV1 = {

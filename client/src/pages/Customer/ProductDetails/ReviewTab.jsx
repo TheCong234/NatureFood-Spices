@@ -2,8 +2,10 @@ import { Avatar, Box, Button, Divider, LinearProgress, linearProgressClasses, Ra
 import StarIcon from "@mui/icons-material/Star";
 import ReviewTag from "../../../components/ReviewTag";
 import ReviewForm from "../../../components/ReviewForm";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Nodata } from "../../../components";
+import { getReviewsAction } from "../../../hooks/Redux/Review/reviewAction";
+import { useEffect } from "react";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height: 10,
@@ -23,7 +25,23 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     },
 }));
 export default function ReviewTab({ product }) {
-    const review = { reviews: [], total: 0 };
+    const dispatch = useDispatch();
+    const { data: reviewData } = useSelector((state) => state.review);
+
+    const handleGetData = async () => {
+        const data = {
+            storeProductId: product?._id,
+            params: {
+                skip: 0,
+                take: 20,
+            },
+        };
+        await dispatch(getReviewsAction(data));
+    };
+
+    useEffect(() => {
+        handleGetData();
+    }, []);
     return (
         <Box>
             <Typography variant="h6" component="h2" gutterBottom sx={{ fontWeight: "bold" }}>
@@ -100,13 +118,13 @@ export default function ReviewTab({ product }) {
             </Stack>
 
             <Box sx={{ mt: 2 }}>
-                <ReviewForm />
+                <ReviewForm product={product} />
             </Box>
             <Divider sx={{ mt: 4 }} />
-            {review?.total == 0 ? (
+            {reviewData?.total == 0 ? (
                 <Nodata content={"Chưa có đánh giá nào, hãy mua hàng và để lại đánh giá của bạn nhé"} />
             ) : (
-                review?.reviews.map((item) => <ReviewTag key={item?._id} review={item} />)
+                reviewData?.reviews.map((item) => <ReviewTag key={item?._id} review={item} />)
             )}
         </Box>
     );
