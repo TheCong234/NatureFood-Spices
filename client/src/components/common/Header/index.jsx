@@ -20,11 +20,11 @@ const items = [
         text: " Sản phẩm",
     },
     {
-        to: "/wishlist",
-        text: " Danh sách yêu thích",
+        to: "/blog/list?skip=0&take=10",
+        text: "Blogs",
     },
     {
-        to: "/vendor",
+        to: "/register-seller",
         text: " Trở thành người bán",
     },
     {

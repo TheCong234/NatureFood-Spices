@@ -9,11 +9,8 @@ const upload = multer({ storage: storage });
 const router = express.Router();
 
 router.get("/list", asyncHandler(BlogController.getBlogs));
+router.get("/:slug", asyncHandler(BlogController.getBlog));
 
-router.post(
-    "/create",
-    upload.single("image"),
-    asyncHandler(BlogController.createBlog)
-);
+router.post("/create", upload.single("image"), asyncHandler(BlogController.createBlog));
 
 export default router;

@@ -73,7 +73,7 @@ export default function Products() {
                 {productData?.products?.map((product) => (
                     <Grid item xs={6} md={3} key={product?._id}>
                         <Card className="product_card-primary" key={product?._id}>
-                            <Box component={Link} to={`/product/details/${product?._id}`}>
+                            <Box className="cursor-pointer" onClick={() => navigate(`/product/details/${product?._id}`)}>
                                 <Swiper className="product_card-primary_swiper " pagination={true} modules={[PaginationSwipper]}>
                                     {product?.productId?.images?.map((image) => (
                                         <SwiperSlide key={image?._id} className="swiper-slide_styled">
@@ -82,7 +82,7 @@ export default function Products() {
                                     ))}
                                 </Swiper>
                             </Box>
-                            <Box className="px-5">
+                            <Box className="px-5 cursor-pointer" onClick={() => navigate(`/product/details/${product?._id}`)}>
                                 <p className="font-semibold text-truncate-2 text-lg leading-5">{product?.productId?.name}</p>
                                 <Typography variant="body2" sx={{ color: "text.secondary", my: 1 }}>
                                     {product?.productId?.category?.name}
