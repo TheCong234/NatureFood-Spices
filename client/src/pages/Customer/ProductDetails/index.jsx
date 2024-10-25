@@ -1,5 +1,5 @@
-import { Box, Button, Rating, Stack, Typography, Tab, Divider } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import { Box, Button, Rating, Stack, Typography, Tab, Divider, Avatar } from "@mui/material";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ProductImagesCarousel from "./ProductImagesCarousel";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +18,7 @@ const ProductDetail = () => {
     const [product, setProduct] = useState();
     const [loading, setLoading] = useState(false);
     const [quantity, setQuantity] = useState(1);
-    const [valueTab, setValueTab] = useState("1");
+    const [valueTab, setValueTab] = useState("2");
     const snackNotify = useSnackNotify();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -60,9 +60,10 @@ const ProductDetail = () => {
                         <span>(3.0)</span>
                     </Stack>
                     <div>
-                        <Typography component="h2" variant="h4" sx={{ fontWeight: "bold", mt: 2 }}>
-                            ₫{product && formatPrice(product?.productId?.salePrice)}
-                        </Typography>
+                        <p className="text-3xl font-bold text-orange">
+                            <small>₫</small>
+                            {product && formatPrice(product?.productId?.salePrice)}
+                        </p>
                     </div>
 
                     <hr className="my-4" />
@@ -89,6 +90,18 @@ const ProductDetail = () => {
                             </Typography>
                         </Box>
                     </Stack>
+
+                    <hr className="my-4" />
+
+                    <div>
+                        <p>Được đăng bán bởi</p>
+                        <Box component={Link} to={"/"} className="flex items-center mt-3 text-inherit hover:text-green-500">
+                            <Avatar sizes="small" src="/assets/images/no-avatar.png" />
+                            <p className="font-semibold text-xl ml-2">{product?.storeId?.name}</p>
+                        </Box>
+                    </div>
+                    <hr className="my-4" />
+
                     <Box sx={{ py: 3 }}>
                         <Typography variant="body1" gutterBottom>
                             <strong>Bạn cần nó</strong> - hãy thêm vào giỏ hàng của bạn
@@ -122,10 +135,9 @@ const ProductDetail = () => {
             <Box sx={{ width: "100%", typography: "body1" }}>
                 <TabContext value={valueTab}>
                     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                        <TabList onChange={handleTabChange} aria-label="lab API tabs example" sx={{ width: "100%", display: "flex" }}>
+                        <TabList onChange={handleTabChange} aria-label="lab API tabs example">
                             <Tab label="Chi tiết sản phẩm" value="1" sx={{ flex: 1 }} />
                             <Tab label="Xếp hạng & đánh giá" value="2" sx={{ flex: 1 }} />
-                            <Tab label="Thảo luận" value="3" sx={{ flex: 1 }} />
                         </TabList>
                     </Box>
                     <TabPanel value="1">
@@ -134,7 +146,6 @@ const ProductDetail = () => {
                     <TabPanel value="2">
                         <ReviewTab product={product} />
                     </TabPanel>
-                    <TabPanel value="3">Item Three</TabPanel>
                 </TabContext>
             </Box>
         </Box>

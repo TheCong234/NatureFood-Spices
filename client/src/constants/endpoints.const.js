@@ -55,6 +55,8 @@ export const BlogV1 = {
 export const ReviewV1 = {
     CREATE: "/review/",
     GET_ALL: "/review/",
+    UPDATE: "/review/",
+    DELETE: "/review/",
 };
 
 export const FavoriteV1 = {

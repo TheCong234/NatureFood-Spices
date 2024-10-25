@@ -8,6 +8,6 @@ const router = express.Router();
 router.get("/:storeProductId/all", asyncHandler(ReviewController.getReviews));
 router.post("/:storeProductId", authJwt, asyncHandler(ReviewController.createReview));
 
-router.put("/:id/feedback", authJwt, ReviewController.createFeedBack);
-router.delete("/:id", ReviewController.deleteReview);
+router.patch("/:reviewId", authJwt, asyncHandler(ReviewController.updateReview));
+router.delete("/:reviewId", authJwt, asyncHandler(ReviewController.deleteReview));
 export default router;

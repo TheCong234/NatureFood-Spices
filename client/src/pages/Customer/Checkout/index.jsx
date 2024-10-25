@@ -75,8 +75,8 @@ export default function CheckoutForm() {
         if (response?.error) {
             snackNotify("error")("Đặt hàng thất bại");
         } else {
+            dispatch(resetCart());
             snackNotify("success")("Đặt hàng thành công");
-            resetCart();
             reset();
             setOpenDialog(true);
         }
