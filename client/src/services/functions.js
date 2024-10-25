@@ -30,3 +30,32 @@ export function countCartTotal(itemsCart) {
     }
     return sum;
 }
+
+export function convertTimeDuration(date) {
+    const now = new Date();
+    const createdAt = new Date(date);
+    const diffInMs = now - createdAt;
+
+    // Chuyển đổi sang các đơn vị khác
+    const diffInMinutes = Math.floor(diffInMs / 1000 / 60);
+    const diffInHours = Math.floor(diffInMs / 1000 / 60 / 60);
+    const diffInDays = Math.floor(diffInMs / 1000 / 60 / 60 / 24);
+    const diffInMonths = Math.floor(diffInDays / 30); // Xấp xỉ
+    const diffInYears = Math.floor(diffInDays / 365); // Xấp xỉ
+
+    // Kiểm tra điều kiện để hiển thị theo đơn vị thời gian phù hợp
+    let timeDifference;
+
+    if (diffInMinutes < 60) {
+        timeDifference = `${diffInMinutes} phút trước`;
+    } else if (diffInHours < 24) {
+        timeDifference = `${diffInHours} giờ trước`;
+    } else if (diffInDays < 30) {
+        timeDifference = `${diffInDays} ngày trước`;
+    } else if (diffInMonths < 12) {
+        timeDifference = `${diffInMonths} tháng trước`;
+    } else {
+        timeDifference = `${diffInYears} năm trước`;
+    }
+    return timeDifference;
+}

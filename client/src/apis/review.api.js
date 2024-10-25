@@ -12,3 +12,13 @@ export const createReviewApi = async (data) => {
     const response = await apiClient.post(ReviewV1.CREATE + data.storeProductId, data);
     return response.data;
 };
+
+export const updateReviewApi = async (data) => {
+    const response = await apiClient.patch(ReviewV1.UPDATE + data.reviewId, data);
+    return response.data;
+};
+
+export const deleteReviewApi = async (reviewId) => {
+    const response = await apiClient.delete(ReviewV1.DELETE + reviewId);
+    return response.data;
+};

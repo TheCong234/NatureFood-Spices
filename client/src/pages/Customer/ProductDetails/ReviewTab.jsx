@@ -1,11 +1,11 @@
 import { Avatar, Box, Button, Divider, LinearProgress, linearProgressClasses, Rating, Stack, styled, TextField, Typography } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
-import ReviewTag from "../../../components/ReviewTag";
 import ReviewForm from "../../../components/ReviewForm";
 import { useDispatch, useSelector } from "react-redux";
 import { Nodata } from "../../../components";
 import { getReviewsAction } from "../../../hooks/Redux/Review/reviewAction";
 import { useEffect } from "react";
+import ReviewTag from "./ReviewTag";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height: 10,
@@ -41,7 +41,7 @@ export default function ReviewTab({ product }) {
 
     useEffect(() => {
         handleGetData();
-    }, []);
+    }, [product?._id]);
     return (
         <Box>
             <Typography variant="h6" component="h2" gutterBottom sx={{ fontWeight: "bold" }}>
@@ -124,7 +124,7 @@ export default function ReviewTab({ product }) {
             {reviewData?.total == 0 ? (
                 <Nodata content={"Chưa có đánh giá nào, hãy mua hàng và để lại đánh giá của bạn nhé"} />
             ) : (
-                reviewData?.reviews.map((item) => <ReviewTag key={item?._id} review={item} />)
+                reviewData?.reviews.map((item) => <ReviewTag key={item?._id} review={item} product={product} />)
             )}
         </Box>
     );

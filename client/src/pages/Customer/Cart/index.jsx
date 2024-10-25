@@ -6,7 +6,7 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { QuantityInput } from "../../../components";
+import { Nodata, QuantityInput } from "../../../components";
 import { Link, useNavigate } from "react-router-dom";
 import useSnackNotify from "../../../components/SnackNotify";
 import { adjustmentCartItemAction, deleteCartItemAction } from "../../../hooks/Redux/Cart/cartAction";
@@ -140,29 +140,39 @@ export default function Cart() {
                                         </TableCell>
                                     </TableRow>
                                 ))}
-                                <TableRow>
-                                    <TableCell align="right"></TableCell>
-                                    <TableCell align="right"> </TableCell>
-                                    <TableCell align="right">
-                                        <div className="na-fs-16  font-semibold ">Tổng:</div>
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        (<span className="na-fs-16 font-semibold text-orange">{cartData?.total}</span> sản phẩm)
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        <div className="na-fs-16 flex  font-bold text-red-600 underline">
-                                            <small>₫</small>
-                                            {formatPrice(countCartTotal(cartData?.products))}
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
+                                {cartData?.total > 0 && (
+                                    <TableRow>
+                                        <TableCell align="right"></TableCell>
+                                        <TableCell align="right"> </TableCell>
+                                        <TableCell align="right">
+                                            <div className="na-fs-16  font-semibold ">Tổng:</div>
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            (<span className="na-fs-16 font-semibold text-orange">{cartData?.total}</span> sản phẩm)
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            <div className="na-fs-16 flex  font-bold text-red-600 underline">
+                                                <small>₫</small>
+                                                {formatPrice(countCartTotal(cartData?.products))}
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                )}
                             </TableBody>
                         </Table>
+                        {cartData?.total == 0 && <Nodata content={"Giỏ hàng của bạn trống"} />}
                     </TableContainer>
                 </Box>
             </Paper>
             <Box className="pt-3 text-end">
-                <Button variant="contained" color="success" component={Link} to="/checkout" className="hover:text-white">
+                <Button
+                    variant="contained"
+                    color="success"
+                    component={Link}
+                    to="/checkout"
+                    className="hover:text-white"
+                    disabled={cartData?.total == 0}
+                >
                     Thanh toán
                 </Button>
             </Box>

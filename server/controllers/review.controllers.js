@@ -7,12 +7,11 @@ const ReviewController = {
     async getReviews(req, res) {
         const { storeProductId } = req.params;
         const { skip, take } = req.query;
-        console.log(storeProductId, skip, take);
-
-        const reviews = await ReviewModel.find({ storeProduct: storeProductId }).populate("author").skip(skip).limit(take);
+        const reviews = await ReviewModel.find({ storeProduct: storeProductId }).populate("author").sort({ createdAt: -1 }).skip(skip).limit(take);
         const total = await ReviewModel.countDocuments({ storeProduct: storeProductId });
         return res.status(statusCode.OK).json(BaseResponse.success("Lấy danh sách review thành công", { reviews, total }));
     },
+
     async createReview(req, res) {
         const { storeProductId } = req.params;
         const review = new ReviewModel({ ...req.body, author: req.user._id, storeProduct: storeProductId });
@@ -21,26 +20,16 @@ const ReviewController = {
         return res.status(statusCode.CREATED).json(BaseResponse.success("Tạo review thành công", populatedReview));
     },
 
-    async createFeedBack(req, res) {
-        try {
-            const { id } = req.params;
-            // return console.log('feedback: ', req.body.feedback);
-            const review = await ReviewModel.findByIdAndUpdate(id, { feedback: req.body.feedback }, { new: true });
-            return res.status(statusCode.CREATED).json(BaseResponse.success("Thêm feedback thành công", review));
-        } catch (error) {
-            console.log("create feedback: ", error);
-            return res.status(statusCode.INTERNAL_SERVER_ERROR).json(BaseResponse.error("Thêm feedback thất bại", error));
-        }
+    async updateReview(req, res) {
+        const { reviewId } = req.params;
+        const review = await ReviewModel.findByIdAndUpdate(reviewId, req.body, { new: true });
+        return res.status(statusCode.OK).json(BaseResponse.success("Thêm feedback thành công", review));
     },
 
     async deleteReview(req, res) {
-        try {
-            const review = await ReviewModel.findByIdAndDelete(req.params.id);
-            return res.status(statusCode.OK).json(BaseResponse.success("Xóa đánh giá thành công", null));
-        } catch (error) {
-            console.log("delete Review: ", error);
-            return res.status(statusCode.INTERNAL_SERVER_ERROR).json(BaseResponse.error("Xóa đánh giá thất bại", error));
-        }
+        const { reviewId } = req.params;
+        const review = await ReviewModel.findByIdAndDelete(reviewId);
+        return res.status(statusCode.OK).json(BaseResponse.success("Xóa đánh giá thành công", review));
     },
 };
 

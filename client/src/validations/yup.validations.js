@@ -58,7 +58,10 @@ export const CreateBannerYup = yup.object().shape({
 
 export const CreateReviewYup = yup.object().shape({
     body: yup.string().required("Bạn cảm thấy chất lượng sản phẩm như thế nào"),
-    // rating: yup.number().required("Xếp hạng sao là bắt buộc"),
+});
+
+export const CreateReviewFeedbackYup = yup.object().shape({
+    feedback: yup.string().required("Nhập phản hồi cho đánh giá"),
 });
 
 export const LoginYup = yup.object().shape({
