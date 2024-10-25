@@ -1,14 +1,13 @@
-import express from 'express';
-import ProductModel from '../models/product.model.js';
-import ReviewModel from '../models/review.model.js';
-import ReviewController from '../controllers/review.controllers.js';
-import { authJwt } from '../services/auth.services.js';
+import express from "express";
+import ReviewController from "../controllers/review.controllers.js";
+import { authJwt } from "../services/auth.services.js";
+import asyncHandler from "../middlewares/async-handler.middleware.js";
 
 const router = express.Router();
 
-router.post('/:productId', authJwt, ReviewController.createReview);
+router.get("/:storeProductId/all", asyncHandler(ReviewController.getReviews));
+router.post("/:storeProductId", authJwt, asyncHandler(ReviewController.createReview));
 
-router.put('/:id/feedback', authJwt, ReviewController.createFeedBack);
-
-router.delete('/:id', ReviewController.deleteReview);
+router.put("/:id/feedback", authJwt, ReviewController.createFeedBack);
+router.delete("/:id", ReviewController.deleteReview);
 export default router;

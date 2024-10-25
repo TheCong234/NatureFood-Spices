@@ -7,7 +7,7 @@ import "swiper/css/thumbs";
 import "../../../assets/styles/productImagesCarousel.css";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 
-export default function ProductImagesCarousel() {
+export default function ProductImagesCarousel({ product }) {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
     return (
@@ -22,8 +22,15 @@ export default function ProductImagesCarousel() {
                 navigation={true}
                 thumbs={{ swiper: thumbsSwiper }}
                 modules={[FreeMode, Navigation, Thumbs]}
-                className="productIamges"
+                className="productIamges p-[10px] "
             >
+                {product?.productId?.images?.map((item) => (
+                    <SwiperSlide key={item?._id}>
+                        <div className="h-full">
+                            <img src={item?.url} alt="image store product" className="object-cover" />
+                        </div>
+                    </SwiperSlide>
+                ))}
                 <SwiperSlide>
                     <img src="https://spicesinc.com/sites/default/files/y/whitebowls.jpg" />
                 </SwiperSlide>
@@ -32,27 +39,6 @@ export default function ProductImagesCarousel() {
                 </SwiperSlide>
                 <SwiperSlide>
                     <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-10.jpg" />
                 </SwiperSlide>
             </Swiper>
             <Swiper
@@ -63,9 +49,16 @@ export default function ProductImagesCarousel() {
                 freeMode={true}
                 watchSlidesProgress={true}
                 modules={[FreeMode, Navigation, Thumbs]}
-                className="productIamgesThumbnail"
+                className="productIamgesThumbnail bg-[#f3f4f6]"
             >
-                <SwiperSlide className="w-1/4 h-full opacity-25">
+                {product?.productId?.images?.map((item) => (
+                    <SwiperSlide key={item?._id}>
+                        <div className="h-full w-full">
+                            <img src={item?.url} alt="image store product" className="object-contain" />
+                        </div>
+                    </SwiperSlide>
+                ))}
+                <SwiperSlide>
                     <img src="https://spicesinc.com/sites/default/files/y/whitebowls.jpg" />
                 </SwiperSlide>
                 <SwiperSlide>
@@ -73,27 +66,6 @@ export default function ProductImagesCarousel() {
                 </SwiperSlide>
                 <SwiperSlide>
                     <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-10.jpg" />
                 </SwiperSlide>
             </Swiper>
         </>
