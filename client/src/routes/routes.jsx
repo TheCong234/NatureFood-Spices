@@ -53,6 +53,8 @@ import {
     Orderlist,
     OrderDetail,
     Blogs,
+    Category,
+    Categories,
 } from "../pages/Customer";
 
 export const router = createBrowserRouter([
@@ -124,6 +126,14 @@ export const router = createBrowserRouter([
                     {
                         path: "/product/list",
                         element: <Products />,
+                    },
+                    {
+                        path: "/product/category/:categoryId",
+                        element: <Category />,
+                    },
+                    {
+                        path: "/categories",
+                        element: <Categories />,
                     },
                     {
                         path: "/cart",
@@ -278,7 +288,7 @@ export const router = createBrowserRouter([
         element: <Error500 />,
     },
     {
-        path: "/error-404",
+        path: "*",
         element: <Error404 />,
     },
 ]);

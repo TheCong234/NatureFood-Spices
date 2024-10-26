@@ -4,15 +4,15 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "../../../assets/styles/categoryCarousel.css";
 import { Navigation, Pagination } from "swiper/modules";
-import CategoryCard from "../../../components/CategoryCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesAction } from "../../../hooks/Redux/Category/categoryAction";
+import { Card, CardMedia } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const CategoryCarousel = () => {
     const dispatch = useDispatch();
-    const { data: categoryData, loading: categoryLoading } = useSelector(
-        (state) => state.category
-    );
+    const navigate = useNavigate();
+    const { data: categoryData, loading: categoryLoading } = useSelector((state) => state.category);
 
     useEffect(() => {
         dispatch(getCategoriesAction());
@@ -30,12 +30,19 @@ const CategoryCarousel = () => {
             className="mySwiper w-full h-auto"
             initialSlide={2}
         >
-            {categoryData?.categories?.map((category, index) => (
-                <SwiperSlide
-                    key={`category-${index}`}
-                    className="border-none my-2 shadow-lg shadow-black-500/50"
-                >
-                    <CategoryCard category={category} />
+            {categoryData?.categories?.map((item) => (
+                <SwiperSlide key={item?._id} className="border-none my-2 shadow-lg shadow-black-500/50">
+                    <Card className="w-full cursor-pointer" onClick={() => navigate(`/product/category/${item?._id}?skip=0&take=10`)}>
+                        <CardMedia
+                            component="img"
+                            style={{ height: 200, width: "100%", objectFit: "contain" }}
+                            image={item?.image?.url}
+                            alt="category img"
+                        />
+                        <div className="px-4 py-2">
+                            <p className="line-clamp-1 text-xl text-left">{item?.name}</p>
+                        </div>
+                    </Card>
                 </SwiperSlide>
             ))}
         </Swiper>

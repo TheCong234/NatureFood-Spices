@@ -25,9 +25,10 @@ const StoreProductController = {
     },
 
     async getStoreProductsByCategory(req, res) {
-        const { category } = req.params;
-        console.log(category);
+        const { categoryId } = req.params;
+        console.log(categoryId);
 
+        const { skip, take } = req.query;
         const storeProducts = await StoreProductModel.aggregate([
             {
                 $lookup: {
@@ -42,8 +43,14 @@ const StoreProductController = {
             },
             {
                 $match: {
-                    "rootProduct.category": new mongoose.Types.ObjectId(category), // Lọc theo category của Product
+                    "rootProduct.category": new mongoose.Types.ObjectId(categoryId), // Lọc theo category của Product
                 },
+            },
+            {
+                $skip: parseInt(skip), // Bỏ qua số tài liệu đã chỉ định
+            },
+            {
+                $limit: parseInt(take), // Giới hạn số tài liệu trả về
             },
         ]);
         return res.status(statusCode.OK).json(

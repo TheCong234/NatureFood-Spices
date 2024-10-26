@@ -12,3 +12,5 @@ export { default as Cart } from "./Cart";
 export { default as Notification } from "./Notification";
 export { default as Orderlist } from "./OrderList";
 export { default as OrderDetail } from "./OrderDetail";
+export { default as Category } from "./Category";
+export { default as Categories } from "./Categories";

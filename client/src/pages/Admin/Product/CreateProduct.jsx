@@ -335,6 +335,7 @@ const Index = () => {
                             value={categorySelected || ""}
                             onChange={(e) => {
                                 setCategorySelected(e.target.value);
+                                console.log(e.target.value);
                             }}
                             className="mt-1 w-full"
                             size="small"

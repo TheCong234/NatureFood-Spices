@@ -12,3 +12,8 @@ export const getStoreProductApi = async (storeProductId) => {
     const response = await apiClient.get(StoreProductV1.GET_STORE_PRODUCT + storeProductId);
     return response.data;
 };
+
+export const getStoreProductsByCategoryApi = async (data) => {
+    const response = await apiClient.get(StoreProductV1.GET_STORE_PRODUCT_BY_CATEGORY + data.categoryId, { params: data.params });
+    return response.data;
+};
