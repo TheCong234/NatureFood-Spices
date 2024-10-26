@@ -20,6 +20,7 @@ export const CategoryV1 = {
     CREATE: "/category/create",
     CATEGORY_GET_ALL: "/category/all",
     DELETE: "/category/",
+    GET_PRODUCTS_EACH_CATEGORY: "/category/products-each-category",
 };
 
 export const TagV1 = {
