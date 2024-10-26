@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import "../../../assets/styles/main.css";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import { AppBar, Badge, Box, Container, IconButton, InputAdornment, InputBase, Stack, Toolbar } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItemsAction } from "../../../hooks/Redux/Cart/cartAction";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import PersonIcon from "@mui/icons-material/Person";
 
 const items = [
     {
@@ -20,11 +20,15 @@ const items = [
         text: " Sản phẩm",
     },
     {
-        to: "/wishlist",
-        text: " Danh sách yêu thích",
+        to: "/blog/list?skip=0&take=10",
+        text: "Blogs",
     },
     {
-        to: "/vendor",
+        to: "/categories",
+        text: "Danh mục",
+    },
+    {
+        to: "/register-seller",
         text: " Trở thành người bán",
     },
     {
@@ -83,11 +87,13 @@ const Header = () => {
                                     <ShoppingCartIcon />
                                 </Badge>
                             </IconButton>
-                            <IconButton color="inherit">
-                                <NotificationsNoneIcon />
+                            <IconButton color="inherit" onClick={() => navigate("/notification?skip=0&take=10")}>
+                                <Badge badgeContent={0} color="success" showZero>
+                                    <NotificationsActiveIcon />
+                                </Badge>
                             </IconButton>
                             <IconButton color="inherit">
-                                <PersonOutlineIcon />
+                                <PersonIcon />
                             </IconButton>
                         </Stack>
                     </div>

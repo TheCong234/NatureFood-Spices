@@ -2,7 +2,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { countCartTotal, formatPrice } from "../../../services/functions";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";

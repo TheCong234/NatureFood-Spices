@@ -40,7 +40,22 @@ import { HomePage } from "../pages";
 import ProductDetail from "../pages/Customer/ProductDetails";
 import Error500 from "../pages/Common/Error500";
 import Error404 from "../pages/Common/Error404";
-import { Wishlist, Shipping, Vendor, TrackOrder, Checkout, Blog, Products, Cart, Notification, Orderlist, OrderDetail } from "../pages/Customer";
+import {
+    Wishlist,
+    Shipping,
+    Vendor,
+    TrackOrder,
+    Checkout,
+    Blog,
+    Products,
+    Cart,
+    Notification,
+    Orderlist,
+    OrderDetail,
+    Blogs,
+    Category,
+    Categories,
+} from "../pages/Customer";
 
 export const router = createBrowserRouter([
     {
@@ -101,12 +116,24 @@ export const router = createBrowserRouter([
                         element: <Checkout />,
                     },
                     {
-                        path: "/blog",
+                        path: "/blog/list",
+                        element: <Blogs />,
+                    },
+                    {
+                        path: "/blog/:slug",
                         element: <Blog />,
                     },
                     {
                         path: "/product/list",
                         element: <Products />,
+                    },
+                    {
+                        path: "/product/category/:categoryId",
+                        element: <Category />,
+                    },
+                    {
+                        path: "/categories",
+                        element: <Categories />,
                     },
                     {
                         path: "/cart",
@@ -261,7 +288,7 @@ export const router = createBrowserRouter([
         element: <Error500 />,
     },
     {
-        path: "/error-404",
+        path: "*",
         element: <Error404 />,
     },
 ]);

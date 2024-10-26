@@ -20,6 +20,7 @@ export const CategoryV1 = {
     CREATE: "/category/create",
     CATEGORY_GET_ALL: "/category/all",
     DELETE: "/category/",
+    GET_PRODUCTS_EACH_CATEGORY: "/category/products-each-category",
 };
 
 export const TagV1 = {
@@ -37,6 +38,7 @@ export const StoreProductV1 = {
     CREATE: "/store-product/create",
     GET_STORE_PRODUCTS: "/store-product/all",
     GET_STORE_PRODUCT: "/store-product/details/",
+    GET_STORE_PRODUCT_BY_CATEGORY: "/store-product/category/",
 };
 
 export const BannerV1 = {
@@ -50,6 +52,7 @@ export const BannerV1 = {
 export const BlogV1 = {
     CREATE: "/blog/create",
     GET_BLOGS: "/blog/list",
+    GET_BLOG: "/blog/",
 };
 
 export const ReviewV1 = {
