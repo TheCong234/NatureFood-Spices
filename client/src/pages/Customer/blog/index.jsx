@@ -31,5 +31,6 @@ export default function Blog() {
             </div>
             <hr />
         </div>
+        //fix blog
     );
 }
