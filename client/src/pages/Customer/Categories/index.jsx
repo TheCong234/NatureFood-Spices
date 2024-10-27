@@ -34,7 +34,13 @@ export default function Categories() {
                         <div className="flex justify-between items-center">
                             <div className="text-xl font-semibold px-4 border-b-2 border-orange-500 py-3">{item?.categoryName}</div>
                             <div className="mr-4">
-                                <Button variant="contained" color="success" size="small" className="na-text-transform-none">
+                                <Button
+                                    variant="contained"
+                                    color="success"
+                                    size="small"
+                                    className="na-text-transform-none"
+                                    onClick={() => navigate(`/product/category/${item?._id}?skip=0&take=10`)}
+                                >
                                     Xem sản phẩm danh mục
                                 </Button>
                             </div>

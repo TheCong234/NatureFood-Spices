@@ -55,6 +55,7 @@ import {
     Blogs,
     Category,
     Categories,
+    GroupByProduct,
 } from "../pages/Customer";
 
 export const router = createBrowserRouter([
@@ -130,6 +131,10 @@ export const router = createBrowserRouter([
                     {
                         path: "/product/category/:categoryId",
                         element: <Category />,
+                    },
+                    {
+                        path: "/group-by-product/:productId",
+                        element: <GroupByProduct />,
                     },
                     {
                         path: "/categories",
