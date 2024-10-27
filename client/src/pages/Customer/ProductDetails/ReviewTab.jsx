@@ -36,7 +36,9 @@ export default function ReviewTab({ product }) {
                 take: 20,
             },
         };
-        await dispatch(getReviewsAction(data));
+        if (product?._id) {
+            await dispatch(getReviewsAction(data));
+        }
     };
 
     useEffect(() => {

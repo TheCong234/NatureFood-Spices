@@ -11,7 +11,7 @@ export default function ProductImagesCarousel({ product }) {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
     return (
-        <>
+        <div>
             <Swiper
                 style={{
                     "--swiper-navigation-color": "#fff",
@@ -68,6 +68,6 @@ export default function ProductImagesCarousel({ product }) {
                     <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
                 </SwiperSlide>
             </Swiper>
-        </>
+        </div>
     );
 }

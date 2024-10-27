@@ -7,6 +7,7 @@ export const RegisterStoreYup = yup.object().shape({
     district: yup.string().min(2).required(),
     street: yup.string().min(2).required(),
     image: yup.mixed().required("Image is required"),
+    ward: yup.string().required("Phường/Xã là bắt buộc"),
     // .test(
     //     "fileSize",
     //     "Tệp không được vượt quá 5MB",

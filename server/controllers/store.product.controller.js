@@ -3,7 +3,7 @@ import { BaseResponse } from "../config/BaseResponse.config.js";
 import { statusCode } from "../config/statusCode.config.js";
 import StoreProductModel from "../models/product.store.model.js";
 import StoreCartModel from "../models/store.cart.model.js";
-import StoreModel from "../models/store.models.js";
+import CategoryModel from "../models/category.model.js";
 
 const StoreProductController = {
     async getStoreProducts(req, res) {
@@ -26,8 +26,6 @@ const StoreProductController = {
 
     async getStoreProductsByCategory(req, res) {
         const { categoryId } = req.params;
-        console.log(categoryId);
-
         const { skip, take } = req.query;
         const storeProducts = await StoreProductModel.aggregate([
             {
@@ -42,6 +40,18 @@ const StoreProductController = {
                 $unwind: "$rootProduct", // Tách mảng rootProduct thành các object riêng biệt
             },
             {
+                $lookup: {
+                    from: "stores",
+                    localField: "storeId",
+                    foreignField: "_id",
+                    as: "store",
+                },
+            },
+
+            {
+                $unwind: "$store",
+            },
+            {
                 $match: {
                     "rootProduct.category": new mongoose.Types.ObjectId(categoryId), // Lọc theo category của Product
                 },
@@ -53,8 +63,10 @@ const StoreProductController = {
                 $limit: parseInt(take), // Giới hạn số tài liệu trả về
             },
         ]);
+        const category = await CategoryModel.findById(categoryId);
         return res.status(statusCode.OK).json(
             BaseResponse.success("Lấy sản phẩm theo danh mục thành công", {
+                category,
                 products: storeProducts,
                 total: storeProducts.length,
             })
