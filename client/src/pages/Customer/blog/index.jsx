@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { getBlogApi } from "../../../apis/blog.api";
 import useSnackNotify from "../../../components/SnackNotify";
 
-const Blog = () => {
+export default function Blog() {
     const [blog, setBlog] = useState();
     const { slug } = useParams();
     const snackNotify = useSnackNotify();
@@ -32,6 +32,4 @@ const Blog = () => {
             <hr />
         </div>
     );
-};
-
-export default Blog;
+}
