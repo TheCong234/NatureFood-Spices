@@ -15,9 +15,12 @@ const Index = () => {
     return (
         <div>
             <Header />
-            <Container className="pt-36 pb-6">
-                <Outlet />
-            </Container>
+            <div className="bg-[#f5f5f5]">
+                <Container className="pt-36 pb-6">
+                    <Outlet />
+                </Container>
+            </div>
+
             <Footer />
         </div>
     );

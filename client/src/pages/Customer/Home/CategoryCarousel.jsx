@@ -18,34 +18,36 @@ const CategoryCarousel = () => {
         dispatch(getCategoriesAction());
     }, []);
     return (
-        <Swiper
-            slidesPerView={5}
-            spaceBetween={30}
-            centeredSlides={true}
-            pagination={{
-                clickable: true,
-            }}
-            navigation={true}
-            modules={[Pagination, Navigation]}
-            className="mySwiper w-full h-auto"
-            initialSlide={2}
-        >
-            {categoryData?.categories?.map((item) => (
-                <SwiperSlide key={item?._id} className="border-none my-2 shadow-lg shadow-black-500/50">
-                    <Card className="w-full cursor-pointer" onClick={() => navigate(`/product/category/${item?._id}?skip=0&take=10`)}>
-                        <CardMedia
-                            component="img"
-                            style={{ height: 200, width: "100%", objectFit: "contain" }}
-                            image={item?.image?.url}
-                            alt="category img"
-                        />
-                        <div className="px-4 py-2">
-                            <p className="line-clamp-1 text-xl text-left">{item?.name}</p>
-                        </div>
-                    </Card>
-                </SwiperSlide>
-            ))}
-        </Swiper>
+        <div>
+            <Swiper
+                slidesPerView={5}
+                spaceBetween={30}
+                centeredSlides={true}
+                pagination={{
+                    clickable: true,
+                }}
+                navigation={true}
+                modules={[Pagination, Navigation]}
+                className="mySwiper w-full h-auto"
+                initialSlide={2}
+            >
+                {categoryData?.categories?.map((item) => (
+                    <SwiperSlide key={item?._id} className="border-none my-2 shadow-lg shadow-black-500/50">
+                        <Card className="w-full cursor-pointer" onClick={() => navigate(`/product/category/${item?._id}?skip=0&take=10`)}>
+                            <CardMedia
+                                component="img"
+                                style={{ height: 200, width: "100%", objectFit: "cover" }}
+                                image={item?.image?.url}
+                                alt="category img"
+                            />
+                            <div className="px-4 py-2">
+                                <p className="line-clamp-1 text-xl text-left">{item?.name}</p>
+                            </div>
+                        </Card>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+        </div>
     );
 };
 export default CategoryCarousel;

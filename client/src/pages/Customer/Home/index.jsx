@@ -18,15 +18,13 @@ import { useNavigate } from "react-router-dom";
 const Index = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { data: bannerData, loading: bannerLoading } = useSelector(
-        (state) => state.banner
-    );
+    const { data: bannerData, loading: bannerLoading } = useSelector((state) => state.banner);
 
     useEffect(() => {
         dispatch(getBannersAction({ skip: 0, take: 10, type: "enable" }));
     }, []);
     return (
-        <Box className="relative pb-16">
+        <Box className="relative">
             <section>
                 <Swiper
                     slidesPerView={1}
@@ -44,86 +42,50 @@ const Index = () => {
                     className="mySwiper h-[500px] w-full rounded-md"
                 >
                     {bannerData?.banners?.map((banner, index) => (
-                        <SwiperSlide
-                            key={`swipperSlide-${index}`}
-                            className="text-black bg-white border-none"
-                        >
-                            <img
-                                src={banner.image.url}
-                                alt="banner image"
-                                width="100%"
-                            />
+                        <SwiperSlide key={`swipperSlide-${index}`} className="text-black bg-white border-none">
+                            <img src={banner.image.url} alt="banner image" width="100%" />
                         </SwiperSlide>
                     ))}
                 </Swiper>
             </section>
-            <section className="py-8">
+            <section className="py-6 px-3  bg-[#FFF7ED] rounded-md mt-6">
                 <div className="flex  flex-col items-center mb-3">
                     <Box className="flex justify-center">
                         <div className="flex items-center">
                             <p className="text-3xl font-bold mr-2">Danh mục</p>
-                            <img
-                                src="/src/assets/icons/icon_fire.png"
-                                alt="icon fire"
-                                width="22px"
-                                className="h-7"
-                            />
+                            <img src="/src/assets/icons/icon_fire.png" alt="icon fire" width="22px" className="h-7" />
                         </div>
                     </Box>
-                    <p className="w-1/2 text-slate-500 text-md text-center">
-                        Hãy khám phá và thêm gia vị sạch vào bữa ăn của bạn ngay
-                        hôm nay!
-                    </p>
+                    <p className="w-1/2 text-slate-500 text-md text-center">Hãy khám phá và thêm gia vị sạch vào bữa ăn của bạn ngay hôm nay!</p>
                 </div>
                 <CategoryCarousel />
             </section>
 
-            <section sx={{ py: 4, bgcolor: "#efefef" }}>
+            <section className="py-6 mt-6">
                 <div className="flex flex-col items-center mb-3">
                     <p className="text-3xl font-bold mr-2">Sản phẩm mới nhất</p>
                     <p className="w-1/2 text-slate-500 text-md text-center">
-                        Hãy khám phá bộ sưu tập gia vị mới nhất của chúng tôi để
-                        nâng tầm bữa ăn của bạn!
+                        Hãy khám phá bộ sưu tập gia vị mới nhất của chúng tôi để nâng tầm bữa ăn của bạn!
                     </p>
                 </div>
                 <NewProductSection />
             </section>
 
-            <Box className="py-8">
+            <section className="py-6 mt-6 px-3 bg-[#FFF7ED] rounded-md">
                 <Box className="flex justify-between items-center">
-                    <p className="text-3xl font-bold mr-2 w-1/3">
-                        Những bài viết hữu ích và thú vị
-                    </p>
+                    <p className="text-3xl font-bold mr-2 w-1/3">Những bài viết hữu ích và thú vị</p>
                     <p className="w-1/2 text-slate-500 text-md">
-                        Những bài viết thú vị về ẩm thực của chúng tôi, nơi khám
-                        phá mối liên hệ giữa gia vị, ẩm thực và văn hóa xung
-                        quanh!
+                        Những bài viết thú vị về ẩm thực của chúng tôi, nơi khám phá mối liên hệ giữa gia vị, ẩm thực và văn hóa xung quanh!
                     </p>
                 </Box>
                 <BlogCarousel />
-            </Box>
+            </section>
 
-            <Box
-                sx={{
-                    backgroundImage:
-                        "url('/src/assets/images/bg-shopping-with-naturefood.jpg')",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                }}
-            >
-                <Box className="p-16">
-                    <p className="text-3xl font-bold mr-2 w-2/3 mb-3">
-                        Cùng Nature Food đưa đến các gia vị ngon-sạch-mới-lạ đến
-                        các gia đình Việt
-                    </p>
-                    <p className="w-1/2 text-slate-500 text-md mb-3">
-                        Tham gia bán hàng cùng Nature Food
-                    </p>
-                    <Button
-                        variant="contained"
-                        color="warning"
-                        onClick={() => navigate("/register-seller")}
-                    >
+            <Box className="bg-[url('/assets/images/bg-shopping-with-naturefood.jpg')] bg-cover bg-center mt-6 rounded-md">
+                <Box className="px-16 py-20">
+                    <p className="text-3xl font-bold mr-2 w-2/3 mb-3">Cùng Nature Food đưa đến các gia vị ngon-sạch-mới-lạ đến các gia đình Việt</p>
+                    <p className="w-1/2 text-slate-500 text-md mb-3">Tham gia bán hàng cùng Nature Food</p>
+                    <Button variant="contained" color="warning" onClick={() => navigate("/register-seller")}>
                         Đăng ký
                     </Button>
                 </Box>
