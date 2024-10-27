@@ -74,5 +74,6 @@ export default function Blogs() {
                 ))}
             </div>
         </div>
+        //fix blog
     );
 }
