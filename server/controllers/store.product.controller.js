@@ -61,6 +61,14 @@ const StoreProductController = {
         );
     },
 
+    async getStoreProductsByProduct(req, res) {
+        const { productId } = req.params;
+        const { skip, take } = req.query;
+        const products = await StoreProductModel.find({ productId }).populate("productId").populate("storeId");
+        const total = await StoreProductModel.countDocuments({ productId });
+        return res.status(statusCode.OK).json(BaseResponse.success("Lấy sản phẩm thành công", { products, total }));
+    },
+
     async createStoreProducts(req, res) {
         const store = req.user.store;
         const storeCart = await StoreCartModel.find({ store });

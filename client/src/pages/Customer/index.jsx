@@ -14,3 +14,4 @@ export { default as Orderlist } from "./OrderList";
 export { default as OrderDetail } from "./OrderDetail";
 export { default as Category } from "./Category";
 export { default as Categories } from "./Categories";
+export { default as GroupByProduct } from "./GroupByProduct";

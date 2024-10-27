@@ -53,8 +53,8 @@ export default function ProductImagesCarousel({ product }) {
             >
                 {product?.productId?.images?.map((item) => (
                     <SwiperSlide key={item?._id}>
-                        <div className="h-full w-full">
-                            <img src={item?.url} alt="image store product" className="object-contain" />
+                        <div className="h-full">
+                            <img src={item?.url} alt="image store product" className="object-cover" />
                         </div>
                     </SwiperSlide>
                 ))}

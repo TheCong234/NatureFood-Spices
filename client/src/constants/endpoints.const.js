@@ -39,6 +39,7 @@ export const StoreProductV1 = {
     GET_STORE_PRODUCTS: "/store-product/all",
     GET_STORE_PRODUCT: "/store-product/details/",
     GET_STORE_PRODUCT_BY_CATEGORY: "/store-product/category/",
+    GET_STORE_PRODUCT_BY_PRODUCT: "/store-product/group-by-product/",
 };
 
 export const BannerV1 = {
