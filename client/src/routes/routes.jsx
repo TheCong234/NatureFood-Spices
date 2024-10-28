@@ -50,12 +50,15 @@ import {
     Products,
     Cart,
     Notification,
-    Orderlist,
-    OrderDetail,
     Blogs,
     Category,
     Categories,
     GroupByProduct,
+    My,
+    Delivery,
+    Account,
+    OrderList,
+    Profile,
 } from "../pages/Customer";
 
 export const router = createBrowserRouter([
@@ -93,7 +96,7 @@ export const router = createBrowserRouter([
                         element: <HomePage />,
                     },
                     {
-                        path: "product/details/:storeProductId",
+                        path: "/product/details/:storeProductId",
                         element: <ProductDetail />,
                     },
                     {
@@ -149,12 +152,30 @@ export const router = createBrowserRouter([
                         element: <Notification />,
                     },
                     {
-                        path: "/orderlist",
-                        element: <Orderlist />,
-                    },
-                    {
-                        path: "/orderdetail",
-                        element: <OrderDetail />,
+                        path: "/my",
+                        element: <My />,
+                        children: [
+                            {
+                                path: "",
+                                element: <Account />,
+                            },
+                            {
+                                path: "account",
+                                element: <Account />,
+                            },
+                            {
+                                path: "order-list",
+                                element: <OrderList />,
+                            },
+                            {
+                                path: "profile",
+                                element: <Profile />,
+                            },
+                            {
+                                path: "delivery",
+                                element: <Delivery />,
+                            },
+                        ],
                     },
                 ],
             },

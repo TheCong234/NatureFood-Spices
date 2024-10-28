@@ -24,7 +24,7 @@ const orders = [
     },
 ];
 
-const OrderTable = () => {
+const OrderList = () => {
     const [selectedOrders, setSelectedOrders] = useState([]);
     const [menuOpen, setMenuOpen] = useState(null);
     const [selectAll, setSelectAll] = useState(false);
@@ -40,9 +40,7 @@ const OrderTable = () => {
 
     const handleSelectOrder = (id) => {
         if (selectedOrders.includes(id)) {
-            setSelectedOrders(
-                selectedOrders.filter((orderId) => orderId !== id)
-            );
+            setSelectedOrders(selectedOrders.filter((orderId) => orderId !== id));
         } else {
             setSelectedOrders([...selectedOrders, id]);
         }
@@ -64,21 +62,13 @@ const OrderTable = () => {
                             <option>Xóa</option>
                             <option>Lưu trữ</option>
                         </select>
-                        <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-                            Áp dụng
-                        </button>
+                        <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Áp dụng</button>
                     </div>
                 ) : (
                     <div className="flex space-x-2">
-                        <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-                            Làm mới
-                        </button>
-                        <button className="bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-100">
-                            Lọc
-                        </button>
-                        <button className="bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-100">
-                            Xuất ra
-                        </button>
+                        <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Làm mới</button>
+                        <button className="bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-100">Lọc</button>
+                        <button className="bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-100">Xuất ra</button>
                     </div>
                 )}
             </div>
@@ -88,27 +78,13 @@ const OrderTable = () => {
                     <thead className="bg-gray-50">
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <input
-                                    type="checkbox"
-                                    checked={selectAll}
-                                    onChange={handleSelectAll}
-                                />
+                                <input type="checkbox" checked={selectAll} onChange={handleSelectAll} />
                             </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Đặt hàng
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Ngày
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Địa chỉ
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Trạng thái
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Số tiền
-                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Đặt hàng</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Địa chỉ</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Số tiền</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
                         </tr>
                     </thead>
@@ -116,32 +92,18 @@ const OrderTable = () => {
                         {orders.map((order, index) => (
                             <tr key={index}>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedOrders.includes(
-                                            order.id
-                                        )}
-                                        onChange={() =>
-                                            handleSelectOrder(order.id)
-                                        }
-                                    />
+                                    <input type="checkbox" checked={selectedOrders.includes(order.id)} onChange={() => handleSelectOrder(order.id)} />
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <span className="font-medium text-blue-600">
                                         {order.id} by {order.user}
                                     </span>
-                                    <p className="text-sm text-gray-500">
-                                        {order.email}
-                                    </p>
+                                    <p className="text-sm text-gray-500">{order.email}</p>
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    {order.date}
-                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">{order.date}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <p>{order.shipTo}</p>
-                                    <p className="text-sm text-gray-500">
-                                        {order.method}
-                                    </p>
+                                    <p className="text-sm text-gray-500">{order.method}</p>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <span
@@ -158,15 +120,10 @@ const OrderTable = () => {
                                         {order.status}
                                     </span>
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    {order.amount}
-                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">{order.amount}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right">
                                     <div className="relative">
-                                        <button
-                                            className="text-gray-500 hover:text-gray-700"
-                                            onClick={() => toggleMenu(index)}
-                                        >
+                                        <button className="text-gray-500 hover:text-gray-700" onClick={() => toggleMenu(index)}>
                                             <MoreVertIcon />
                                         </button>
                                         {menuOpen === index && (
@@ -193,4 +150,4 @@ const OrderTable = () => {
     );
 };
 
-export default OrderTable;
+export default OrderList;

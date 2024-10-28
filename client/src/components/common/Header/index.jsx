@@ -1,14 +1,41 @@
-import React, { useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import "../../../assets/styles/main.css";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
-import { AppBar, Badge, Box, Container, IconButton, InputAdornment, InputBase, Stack, Toolbar } from "@mui/material";
-import { NavLink, useNavigate } from "react-router-dom";
+import {
+    AppBar,
+    Avatar,
+    Badge,
+    Box,
+    Button,
+    Container,
+    Divider,
+    Fade,
+    IconButton,
+    InputAdornment,
+    InputBase,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Menu,
+    MenuItem,
+    Paper,
+    Popper,
+    Stack,
+    Toolbar,
+    Tooltip,
+    Typography,
+} from "@mui/material";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItemsAction } from "../../../hooks/Redux/Cart/cartAction";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import PersonIcon from "@mui/icons-material/Person";
+import ArrowRight from "@mui/icons-material/ArrowRight";
+import { Logout, Person, Settings } from "@mui/icons-material";
 
 const items = [
     {
@@ -41,6 +68,14 @@ const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { data: cartData } = useSelector((state) => state.cart);
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [openPerson, setOpenPerson] = useState(false);
+
+    const handleClickPersonIcon = (event) => {
+        setAnchorEl(event.currentTarget);
+        setOpenPerson(!openPerson);
+    };
 
     // const handleGetData = async
     useEffect(() => {
@@ -92,9 +127,13 @@ const Header = () => {
                                     <NotificationsActiveIcon />
                                 </Badge>
                             </IconButton>
-                            <IconButton color="inherit">
-                                <PersonIcon />
-                            </IconButton>
+
+                            <div className="flex bg-green-700 items-center pr-3 rounded-[20px] ml-2 cursor-pointer " onClick={handleClickPersonIcon}>
+                                <IconButton color="inherit" sx={{ bgcolor: "#f3f4f6", border: "1px solid green", "&:hover": { bgcolor: "white" } }}>
+                                    <PersonIcon fontSize="small" />
+                                </IconButton>
+                                <p className="ml-1">The</p>
+                            </div>
                         </Stack>
                     </div>
                 </Container>
@@ -110,6 +149,123 @@ const Header = () => {
                     </Box>
                 </Container>
             </div>
+            {/* <Popper 
+                sx={{ zIndex: 1200 }}
+                open={openPerson}
+                anchorEl={anchorEl}
+                placement="bottom-end"
+                transition
+            >
+                {({ TransitionProps }) => (
+                    <Fade {...TransitionProps} timeout={350}>
+                        <Paper className="rounded-3xl mt-2">
+                            <Box>
+                                <nav aria-label="main mailbox folders">
+                                    <List>
+                                        <ListItem
+                                            className="hover:bg-gray-100 cursor-pointer text-inherit hover:text-green-600"
+                                            component={Link}
+                                            to="/my/account"
+                                        >
+                                            <div className="flex w-full ">
+                                                <PersonIcon />
+                                                <p className="ml-3">Tài khoản</p>
+                                            </div>
+                                        </ListItem>
+                                        <ListItem className="hover:bg-gray-100 cursor-pointer">
+                                            <div className="flex w-full ">
+                                                <PersonIcon />
+                                                <p className="ml-3">Hỗ trợ</p>
+                                            </div>
+                                        </ListItem>
+                                    </List>
+                                </nav>
+                                <Divider />
+                                <nav aria-label="secondary mailbox folders">
+                                    <List>
+                                        <ListItem disablePadding>
+                                            <ListItemButton>
+                                                <ListItemText primary="Trash" />
+                                            </ListItemButton>
+                                        </ListItem>
+                                        <ListItem disablePadding>
+                                            <ListItemButton component="a" href="#simple-list">
+                                                <ListItemText primary="Spam" />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    </List>
+                                </nav>
+                            </Box>
+                        </Paper>
+                    </Fade>
+                )}
+            </Popper> */}
+            <Fragment>
+                <Menu
+                    anchorEl={anchorEl}
+                    open={openPerson}
+                    onClose={() => setOpenPerson(false)}
+                    onClick={() => setOpenPerson(false)}
+                    slotProps={{
+                        paper: {
+                            elevation: 0,
+                            sx: {
+                                overflow: "visible",
+                                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                                mt: 1.5,
+                                "& .MuiAvatar-root": {
+                                    width: 32,
+                                    height: 32,
+                                    ml: -0.5,
+                                    mr: 1,
+                                },
+                                "&::before": {
+                                    content: '""',
+                                    display: "block",
+                                    position: "absolute",
+                                    top: 0,
+                                    right: 14,
+                                    width: 10,
+                                    height: 10,
+                                    bgcolor: "background.paper",
+                                    // transform: "translateY(-50%) rotate(45deg)",
+                                    zIndex: 0,
+                                },
+                            },
+                        },
+                    }}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                >
+                    <MenuItem>
+                        <Avatar /> Profile
+                    </MenuItem>
+                    <MenuItem>
+                        <Box component={Link} to="/my" className="text-inherit hover:text-green-600 flex items-center">
+                            <Avatar /> Tài khoản của tôi
+                        </Box>
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem>
+                        <ListItemIcon>
+                            <PersonIcon fontSize="small" />
+                        </ListItemIcon>
+                        Add another account
+                    </MenuItem>
+                    <MenuItem>
+                        <ListItemIcon>
+                            <Settings fontSize="small" />
+                        </ListItemIcon>
+                        Settings
+                    </MenuItem>
+                    <MenuItem>
+                        <ListItemIcon>
+                            <Logout fontSize="small" />
+                        </ListItemIcon>
+                        Logout
+                    </MenuItem>
+                </Menu>
+            </Fragment>
         </Box>
     );
 };
