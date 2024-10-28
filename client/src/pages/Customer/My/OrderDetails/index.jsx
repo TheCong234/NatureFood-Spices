@@ -1,6 +1,10 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 
-const OrderDetail = () => {
+const OrderDetails = () => {
+    const { orderId } = useParams();
+    console.log(orderId);
+
     return (
         <>
             {/* Order Details Header */}
@@ -93,4 +97,4 @@ const OrderDetail = () => {
     );
 };
 
-export default OrderDetail;
+export default OrderDetails;

@@ -4,19 +4,21 @@ import OrderModel from "../models/order.model.js";
 import CartModel from "../models/cart.model.js";
 
 const OrderController = {
-    async getMyOrders(req, res) {
-        const userId = req.user._id;
-        const skip = parseInt(req.query.skip) || 0;
-        const take = parseInt(req.query.take) || 10;
-        const orders = await OrderModel.find({ user: userId }).sort({ orderDate: -1 }).skip(skip).limit(take);
-        const total = await OrderModel.countDocuments({ user: userId });
+    async getCustomerOrders(req, res) {
+        const user = req.user._id;
+        const { skip, take, type, date } = req.query;
+        const filter = { user, ...(type !== "all" && { status: parseInt(type) || 0 }) };
 
-        return res.status(statusCode.CREATED).json(
-            BaseResponse.success("Lấy các đơn hàng thành công", {
-                orders,
-                total,
-            })
-        );
+        const [orders, total] = await Promise.all([
+            OrderModel.find(filter)
+                .populate("store")
+                .sort({ createdAt: parseInt(date) || -1 })
+                .skip(skip)
+                .limit(take || 10),
+            OrderModel.countDocuments(filter),
+        ]);
+
+        return res.status(statusCode.OK).json(BaseResponse.success("Lấy các đơn hàng thành công", { orders, total }));
     },
 
     async createSellerOrders(req, res) {
