@@ -16,5 +16,6 @@ export { default as GroupByProduct } from "./GroupByProduct";
 export { default as My } from "./My";
 export { default as Account } from "./My/Account";
 export { default as OrderList } from "./My/OrderList";
+export { default as OrderDetails } from "./My/OrderDetails";
 export { default as Delivery } from "./My/Delivery";
 export { default as Profile } from "./My/Profile";

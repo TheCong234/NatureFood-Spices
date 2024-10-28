@@ -59,6 +59,7 @@ import {
     Account,
     OrderList,
     Profile,
+    OrderDetails,
 } from "../pages/Customer";
 
 export const router = createBrowserRouter([
@@ -166,6 +167,10 @@ export const router = createBrowserRouter([
                             {
                                 path: "order-list",
                                 element: <OrderList />,
+                            },
+                            {
+                                path: "order-details/:orderId",
+                                element: <OrderDetails />,
                             },
                             {
                                 path: "profile",

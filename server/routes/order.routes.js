@@ -5,7 +5,7 @@ import OrderController from "../controllers/order.controller.js";
 
 const router = express.Router();
 
-router.get("/my-orders", authJwt, asyncHandler(OrderController.getMyOrders));
+router.get("/customer/all", authJwt, asyncHandler(OrderController.getCustomerOrders));
 
 router.post("/customer/create", authJwt, asyncHandler(OrderController.createCustomerOrders));
 router.post("/new", authJwt, asyncHandler(OrderController.createSellerOrders));

@@ -149,57 +149,6 @@ const Header = () => {
                     </Box>
                 </Container>
             </div>
-            {/* <Popper 
-                sx={{ zIndex: 1200 }}
-                open={openPerson}
-                anchorEl={anchorEl}
-                placement="bottom-end"
-                transition
-            >
-                {({ TransitionProps }) => (
-                    <Fade {...TransitionProps} timeout={350}>
-                        <Paper className="rounded-3xl mt-2">
-                            <Box>
-                                <nav aria-label="main mailbox folders">
-                                    <List>
-                                        <ListItem
-                                            className="hover:bg-gray-100 cursor-pointer text-inherit hover:text-green-600"
-                                            component={Link}
-                                            to="/my/account"
-                                        >
-                                            <div className="flex w-full ">
-                                                <PersonIcon />
-                                                <p className="ml-3">Tài khoản</p>
-                                            </div>
-                                        </ListItem>
-                                        <ListItem className="hover:bg-gray-100 cursor-pointer">
-                                            <div className="flex w-full ">
-                                                <PersonIcon />
-                                                <p className="ml-3">Hỗ trợ</p>
-                                            </div>
-                                        </ListItem>
-                                    </List>
-                                </nav>
-                                <Divider />
-                                <nav aria-label="secondary mailbox folders">
-                                    <List>
-                                        <ListItem disablePadding>
-                                            <ListItemButton>
-                                                <ListItemText primary="Trash" />
-                                            </ListItemButton>
-                                        </ListItem>
-                                        <ListItem disablePadding>
-                                            <ListItemButton component="a" href="#simple-list">
-                                                <ListItemText primary="Spam" />
-                                            </ListItemButton>
-                                        </ListItem>
-                                    </List>
-                                </nav>
-                            </Box>
-                        </Paper>
-                    </Fade>
-                )}
-            </Popper> */}
             <Fragment>
                 <Menu
                     anchorEl={anchorEl}

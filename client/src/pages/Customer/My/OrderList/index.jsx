@@ -1,152 +1,134 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import { Box, Button, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { ChipStyled, Nodata } from "../../../../components";
+import { useDispatch, useSelector } from "react-redux";
+import { getCustomerOrdersAction } from "../../../../hooks/Redux/Order/orderAction";
+import { formatDate, formatPrice, useQuery } from "../../../../services/functions";
+import useSnackNotify from "../../../../components/SnackNotify";
+import { ORDER_STATUS } from "../../../../constants/enum";
+import { useNavigate } from "react-router-dom";
 
-const orders = [
-    {
-        id: "#181",
-        user: "Ricky Antony",
-        email: "ricky@example.com",
-        date: "20/04/2019",
-        shipTo: "2392 Main Avenue, Penasauka, New Jersey 02149",
-        method: "Via Flat Rate",
-        status: "Completed",
-        amount: "$99",
-    },
-    {
-        id: "#182",
-        user: "Kin Rossow",
-        email: "kin@example.com",
-        date: "20/04/2019",
-        shipTo: "1 Hollywood Blvd,Beverly Hills, California 90210",
-        method: "Via Free Shipping",
-        status: "Processing",
-        amount: "$120",
-    },
-];
+const productsEachPage = 10;
 
 const OrderList = () => {
-    const [selectedOrders, setSelectedOrders] = useState([]);
-    const [menuOpen, setMenuOpen] = useState(null);
-    const [selectAll, setSelectAll] = useState(false);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const query = useQuery();
+    const snackNotify = useSnackNotify();
+    const { data: orderData, loading: orderLoading } = useSelector((state) => state.order);
 
-    const handleSelectAll = () => {
-        if (selectAll) {
-            setSelectedOrders([]);
-        } else {
-            setSelectedOrders(orders.map((order) => order.id));
-        }
-        setSelectAll(!selectAll);
-    };
-
-    const handleSelectOrder = (id) => {
-        if (selectedOrders.includes(id)) {
-            setSelectedOrders(selectedOrders.filter((orderId) => orderId !== id));
-        } else {
-            setSelectedOrders([...selectedOrders, id]);
+    const handleGetData = async () => {
+        const params = {
+            skip: query.get("skip"),
+            take: query.get("take"),
+            type: query.get("type"),
+            date: query.get("date"),
+        };
+        const response = await dispatch(getCustomerOrdersAction(params));
+        if (response?.error) {
+            snackNotify("error")("Lấy danh sách đơn hàng thất bại");
         }
     };
 
-    const toggleMenu = (index) => {
-        setMenuOpen(menuOpen === index ? null : index);
+    const handlePaginationChange = (event, value) => {
+        navigate(
+            `/my/order-list?skip=${(value - 1) * productsEachPage}&take=${productsEachPage}&type=${query.get("type") || "all"}&date=${
+                query.get("date") || -1
+            }`
+        );
     };
 
+    useEffect(() => {
+        handleGetData();
+    }, [query.get("skip"), query.get("take"), query.get("type"), query.get("date")]);
     return (
-        <div className="p-6">
-            <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">Đặt hàng</h2>
-                {selectedOrders.length > 0 ? (
-                    <div className="flex space-x-2">
-                        <select className="bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-100">
-                            <option>Chọn tất cả</option>
-                            <option>Đền bù</option>
-                            <option>Xóa</option>
-                            <option>Lưu trữ</option>
-                        </select>
-                        <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Áp dụng</button>
+        <Box>
+            <Paper>
+                <div className=" p-[20px] flex justify-between items-center">
+                    <p className="text-xl font-bold">Đơn hàng</p>
+                    <div className="flex items-center">
+                        <Button
+                            variant="outlined"
+                            startIcon={<NavigateBeforeIcon />}
+                            size="small"
+                            sx={{ textTransform: "none", mr: 1 }}
+                            onClick={() => navigate("/product/list?skip=0&take=10")}
+                        >
+                            Tiếp tục mua sắm
+                        </Button>
                     </div>
-                ) : (
-                    <div className="flex space-x-2">
-                        <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Làm mới</button>
-                        <button className="bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-100">Lọc</button>
-                        <button className="bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-100">Xuất ra</button>
-                    </div>
-                )}
-            </div>
-
-            <div className="border rounded-lg overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <input type="checkbox" checked={selectAll} onChange={handleSelectAll} />
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Đặt hàng</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Địa chỉ</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Số tiền</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                        {orders.map((order, index) => (
-                            <tr key={index}>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <input type="checkbox" checked={selectedOrders.includes(order.id)} onChange={() => handleSelectOrder(order.id)} />
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <span className="font-medium text-blue-600">
-                                        {order.id} by {order.user}
-                                    </span>
-                                    <p className="text-sm text-gray-500">{order.email}</p>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">{order.date}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <p>{order.shipTo}</p>
-                                    <p className="text-sm text-gray-500">{order.method}</p>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <span
-                                        className={`px-3 py-1 rounded-full text-sm ${
-                                            order.status === "Completed"
-                                                ? "bg-green-100 text-green-800"
-                                                : order.status === "Processing"
-                                                ? "bg-blue-100 text-blue-800"
-                                                : order.status === "Pending"
-                                                ? "bg-orange-100 text-orange-800"
-                                                : "bg-gray-100 text-gray-800"
-                                        }`}
+                </div>
+                <Box>
+                    <TableContainer component={Paper}>
+                        <Table aria-label="simple table">
+                            <TableHead className="na-table-header-tini">
+                                <TableRow>
+                                    <TableCell className="na-table-cell-tini">Tên cửa hàng</TableCell>
+                                    <TableCell className="na-table-cell-tini" align="right">
+                                        Ngày đặt
+                                    </TableCell>
+                                    <TableCell className="na-table-cell-tini" align="right">
+                                        Tổng tiền
+                                    </TableCell>
+                                    <TableCell className="na-table-cell-tini" align="right">
+                                        Trạng thái
+                                    </TableCell>
+                                    <TableCell className="na-table-cell-tini" align="right" sx={{ whiteSpace: "nowrap" }}>
+                                        Tùy chọn
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody className="na-table-body-tini">
+                                {orderData?.orders?.map((order) => (
+                                    <TableRow
+                                        key={order?._id}
+                                        sx={{
+                                            "&:last-child td, &:last-child th": { border: 0 },
+                                        }}
+                                        className="na-table-row "
                                     >
-                                        {order.status}
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">{order.amount}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right">
-                                    <div className="relative">
-                                        <button className="text-gray-500 hover:text-gray-700" onClick={() => toggleMenu(index)}>
-                                            <MoreVertIcon />
-                                        </button>
-                                        {menuOpen === index && (
-                                            <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-10">
-                                                <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
-                                                    Đã hoàn tất
-                                                </button>
-                                                <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
-                                                    Đang xử lý
-                                                </button>
-                                                <button className="block px-4 py-2 text-sm text-red-600 hover:bg-red-100 w-full text-left">
-                                                    đang chờ
-                                                </button>
+                                        <TableCell>
+                                            <div className="na-fs-16 ">{order?.store?.name}</div>
+                                        </TableCell>
+                                        <TableCell align="right">{formatDate(order?.createdAt)}</TableCell>
+                                        <TableCell align="right">
+                                            <div className="na-fs-16  font-semibold text-orange">
+                                                <small>₫</small>
+                                                {formatPrice(order?.totalAmount)}
                                             </div>
-                                        )}
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            <ChipStyled label={ORDER_STATUS[order?.status]} color="warning" />
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            <Button
+                                                variant="contained"
+                                                color="success"
+                                                size="small"
+                                                className="na-text-transform-none"
+                                                onClick={() => navigate(`/my/order-details/${order?._id}1`)}
+                                            >
+                                                Xem chi tiết
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                        {orderData?.total == 0 && <Nodata content={"Bạn chưa có đơn đặt hàng nào"} />}
+                    </TableContainer>
+                </Box>
+            </Paper>
+            <Pagination
+                className="pt-6 flex justify-center"
+                count={Math.floor(orderData?.total / productsEachPage + 1)}
+                page={Math.floor(query.get("skip") / productsEachPage + 1) || 1}
+                onChange={handlePaginationChange}
+                color="success"
+            />
+        </Box>
     );
 };
 
