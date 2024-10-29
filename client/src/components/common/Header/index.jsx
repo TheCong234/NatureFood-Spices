@@ -190,7 +190,7 @@ const Header = () => {
                         <Avatar /> Profile
                     </MenuItem>
                     <MenuItem>
-                        <Box component={Link} to="/my" className="text-inherit hover:text-green-600 flex items-center">
+                        <Box component={Link} to="/my/account" className="text-inherit hover:text-green-600 flex items-center">
                             <Avatar /> Tài khoản của tôi
                         </Box>
                     </MenuItem>

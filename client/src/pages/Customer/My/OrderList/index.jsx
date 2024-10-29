@@ -5,7 +5,7 @@ import { Box, Button, Pagination, Paper, Table, TableBody, TableCell, TableConta
 import { ChipStyled, Nodata } from "../../../../components";
 import { useDispatch, useSelector } from "react-redux";
 import { getCustomerOrdersAction } from "../../../../hooks/Redux/Order/orderAction";
-import { formatDate, formatPrice, useQuery } from "../../../../services/functions";
+import { formatDate, formatPrice, splitDeliveryString, useQuery } from "../../../../services/functions";
 import useSnackNotify from "../../../../components/SnackNotify";
 import { ORDER_STATUS } from "../../../../constants/enum";
 import { useNavigate } from "react-router-dom";
@@ -65,7 +65,7 @@ const OrderList = () => {
                         <Table aria-label="simple table">
                             <TableHead className="na-table-header-tini">
                                 <TableRow>
-                                    <TableCell className="na-table-cell-tini">Tên cửa hàng</TableCell>
+                                    <TableCell className="na-table-cell-tini">Địa chỉ nhận</TableCell>
                                     <TableCell className="na-table-cell-tini" align="right">
                                         Ngày đặt
                                     </TableCell>
@@ -90,9 +90,21 @@ const OrderList = () => {
                                         className="na-table-row "
                                     >
                                         <TableCell>
-                                            <div className="na-fs-16 ">{order?.store?.name}</div>
+                                            <div className="na-fs-16 ">
+                                                {(() => {
+                                                    const deliveryString = splitDeliveryString(order?.delivery);
+                                                    return (
+                                                        <div>
+                                                            {`${deliveryString.street}, ${deliveryString.ward}, ${deliveryString.district}, ${deliveryString.city}`}
+                                                            <p className="text-sm text-gray-500">{deliveryString.ownerName}</p>
+                                                        </div>
+                                                    );
+                                                })()}
+                                            </div>
                                         </TableCell>
-                                        <TableCell align="right">{formatDate(order?.createdAt)}</TableCell>
+                                        <TableCell align="right" className="na-fs-16 ">
+                                            {formatDate(order?.createdAt)}
+                                        </TableCell>
                                         <TableCell align="right">
                                             <div className="na-fs-16  font-semibold text-orange">
                                                 <small>₫</small>
@@ -108,7 +120,7 @@ const OrderList = () => {
                                                 color="success"
                                                 size="small"
                                                 className="na-text-transform-none"
-                                                onClick={() => navigate(`/my/order-details/${order?._id}1`)}
+                                                onClick={() => navigate(`/my/order-details/${order?._id}`)}
                                             >
                                                 Xem chi tiết
                                             </Button>

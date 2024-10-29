@@ -1,99 +1,119 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import useSnackNotify from "../../../../components/SnackNotify";
+import { getCustomerOrderAction } from "../../../../hooks/Redux/Order/orderAction";
+import { formatDate, formatPrice, formatTime, splitDeliveryString } from "../../../../services/functions";
+import { ChipStyled, Nodata } from "../../../../components";
+import { DELIVERY_METHOD, ORDER_STATUS, PAYMENT_METHOD } from "../../../../constants/enum";
+import { Button, Typography } from "@mui/material";
 
 const OrderDetails = () => {
+    const dispatch = useDispatch();
+    const snackNotify = useSnackNotify();
     const { orderId } = useParams();
-    console.log(orderId);
+    const { order, loading: orderLoading } = useSelector((state) => state.order);
 
+    const handleGetData = async () => {
+        const response = await dispatch(getCustomerOrderAction(orderId));
+        if (response?.error) {
+            snackNotify("error")("Lấy thông tin đơn hàng lỗi");
+        }
+    };
+
+    useEffect(() => {
+        handleGetData();
+    }, [orderId]);
     return (
-        <>
-            {/* Order Details Header */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
-                <div className="flex justify-between">
-                    <div>
-                        <h2 className="text-lg font-semibold">Chi tiết đơn hàng :#2737</h2>
-                        <p className="text-gray-500">Ngày 21 tháng 4 năm 2019, 5:33 chiều</p>
+        <div>
+            {order ? (
+                <div>
+                    {/* Order Details Header */}
+                    <div className="bg-white p-6 rounded-lg shadow-md">
+                        <div className="flex justify-between">
+                            <div>
+                                <h2 className="text-lg font-semibold">Chi tiết đơn hàng:&nbsp;{orderId}</h2>
+                                <p className="text-gray-500">{`${formatDate(order?.createdAt)}, ${formatTime(order?.createdAt)}`}</p>
+                            </div>
+                            <div>
+                                <ChipStyled label={ORDER_STATUS[order?.status]} color="warning" />
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <span className="bg-green-100 text-green-600 px-4 py-2 rounded-full">Hoàn thành</span>
+
+                    <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {(() => {
+                            const deliveryString = splitDeliveryString(order?.delivery);
+
+                            return (
+                                <div className="bg-white p-6 rounded-lg shadow-md">
+                                    <h3 className="font-semibold">Địa chỉ thanh toán</h3>
+                                    <p>Người nhận:&nbsp;{deliveryString?.ownerName}</p>
+                                    <p>Người số diện thoại:&nbsp;{deliveryString?.phone}</p>
+                                    <p>
+                                        Địa chỉ:&nbsp;
+                                        {`${deliveryString?.street}, ${deliveryString?.ward}, ${deliveryString?.district}, ${deliveryString?.city}`}
+                                    </p>
+                                </div>
+                            );
+                        })()}
+                        <div className="bg-white p-6 rounded-lg shadow-md">
+                            <h3 className="font-semibold">Phương thức giao hàng</h3>
+                            <p>{DELIVERY_METHOD[order?.deliveryMethod]}</p>
+                        </div>
+                        <div className="bg-white p-6 rounded-lg shadow-md">
+                            <h3 className="font-semibold">Phương thức thanh toán</h3>
+                            <p>{PAYMENT_METHOD[order?.paymentMethod]}</p>
+                        </div>
+                    </div>
+
+                    {/* Products */}
+                    <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
+                        <div className="flex justify-between items-center">
+                            <div className="text-xl font-semibold px-4 border-b-2 border-orange-500">Sản phẩm</div>
+                        </div>
+                        <table className="min-w-full table-auto mt-3">
+                            <thead>
+                                <tr className="bg-gray-100 text-left">
+                                    <th className="px-4 py-2 font-semibold text-gray-600">Sản phẩm</th>
+                                    <th className="px-4 py-2 font-semibold text-gray-600">Cửa hàng</th>
+                                    <th className="px-4 py-2 font-semibold text-gray-600">Số lượng</th>
+                                    <th className="px-4 py-2 font-semibold text-gray-600">Đơn giá</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {order?.products.map((product) => (
+                                    <tr>
+                                        <td className="border px-4 py-2">
+                                            <div className="flex">
+                                                <div className="min-w-[90px] h-full mr-3 rounded-sm overflow-hidden">
+                                                    <img
+                                                        src={product?.storeProduct?.productId?.images?.[0]?.url}
+                                                        alt="product image"
+                                                        className="h-[64px] w-full object-cover"
+                                                    />
+                                                </div>
+                                                <Typography variant="body1" className="text-truncate-3">
+                                                    {product?.storeProduct?.productId?.name}
+                                                </Typography>
+                                            </div>
+                                        </td>
+                                        <td className="border px-4 py-2">{order?.store?.name}</td>
+                                        <td className="border px-4 py-2">{product?.quantity}</td>
+                                        <td className="border px-4 py-2">{product?.price}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <div className="flex justify-end mt-4">
+                            <span className="text-lg font-semibold">Tổng cộng:&nbsp;{formatPrice(order?.totalAmount)}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            {/* Billing, Shipping and Payment Info */}
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h3 className="font-semibold">Địa chỉ thanh toán</h3>
-                    <p>Anh Dương Pro</p>
-                    <p>123 Nguyễn Tất Thành</p>
-                    <p>Hoài Ân -Bình Định </p>
-                    <p>
-                        Email:{" "}
-                        <a href="mailto:antony@example.com" className="text-blue-600 hover:underline">
-                            antony@example.com
-                        </a>
-                    </p>
-                    <p>
-                        Số điện thoại:{" "}
-                        <a href="tel:7897987987" className="text-blue-600 hover:underline">
-                            7897987987
-                        </a>
-                    </p>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h3 className="font-semibold">Xác nhận giao hàng</h3>
-                    <p>Anh Dương Pro</p>
-                    <p>123 Nguyễn Tất Thành</p>
-                    <p>Hoài Ân - Bình Định</p>
-                    <p>(Miễn phí giao hàng)</p>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h3 className="font-semibold">Phương thức thanh toán</h3>
-                    <p>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa" className="inline-block w-10" /> Anh Dương
-                        Pro
-                    </p>
-                    <p>**** **** **** 9809</p>
-                </div>
-            </div>
-
-            {/* Products */}
-            <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
-                <table className="min-w-full table-auto">
-                    <thead>
-                        <tr className="bg-gray-100 text-left">
-                            <th className="px-4 py-2 font-semibold text-gray-600">Sản phẩm</th>
-                            <th className="px-4 py-2 font-semibold text-gray-600">Số lượng</th>
-                            <th className="px-4 py-2 font-semibold text-gray-600">Đơn giá</th>
-                            <th className="px-4 py-2 font-semibold text-gray-600">Tổng tiền</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td className="border px-4 py-2">NT Dương</td>
-                            <td className="border px-4 py-2">2</td>
-                            <td className="border px-4 py-2">$65.00</td>
-                            <td className="border px-4 py-2">$130.00</td>
-                        </tr>
-                        <tr>
-                            <td className="border px-4 py-2">Công gà công nghiệp</td>
-                            <td className="border px-4 py-2">1</td>
-                            <td className="border px-4 py-2">$2,100.00</td>
-                            <td className="border px-4 py-2">$2,100.00</td>
-                        </tr>
-                        <tr>
-                            <td className="border px-4 py-2">Em mi nơ keke</td>
-                            <td className="border px-4 py-2">8</td>
-                            <td className="border px-4 py-2">$500.00</td>
-                            <td className="border px-4 py-2">$4,000.00</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div className="flex justify-end mt-4">
-                    <span className="text-lg font-semibold">Tổng cộng: $6,230.00</span>
-                </div>
-            </div>
-        </>
+            ) : (
+                <Nodata content={`Không tìm thấy đơn hàng ${orderId}`} />
+            )}
+        </div>
     );
 };
 

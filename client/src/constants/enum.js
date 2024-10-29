@@ -18,6 +18,13 @@ export const PAYMENT_METHOD = {
     3: "MoMo",
 };
 
+export const DELIVERY_METHOD = {
+    0: "Miễn phí giao hàng",
+    1: "Vận chuyển tiêu chuẩn",
+    2: "Giao hành nhanh",
+    3: "Giao hàng trong ngày",
+};
+
 export const USER_STATUS = {
     0: "Hoạt động",
     1: "Tạm khóa",

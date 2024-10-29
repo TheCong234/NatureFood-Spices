@@ -2,8 +2,18 @@ import { BaseResponse } from "../config/BaseResponse.config.js";
 import { statusCode } from "../config/statusCode.config.js";
 import OrderModel from "../models/order.model.js";
 import CartModel from "../models/cart.model.js";
+import UserModel from "../models/user.model.js";
 
 const OrderController = {
+    async getCustomerOrder(req, res) {
+        const { orderId } = req.params;
+        const order = await OrderModel.findById(orderId).populate("store").populate({
+            path: "products.storeProduct",
+            populate: "productId",
+        });
+        return res.status(statusCode.OK).json(BaseResponse.success("Lấy thông tin đơn hàng thành công", order));
+    },
+
     async getCustomerOrders(req, res) {
         const user = req.user._id;
         const { skip, take, type, date } = req.query;
@@ -34,6 +44,7 @@ const OrderController = {
 
     async createCustomerOrders(req, res) {
         const { delivery, paymentMethod, deliveryMethod, carts } = req.body;
+
         const user = req.user._id;
         const groupProducts = carts.reduce((acc, product) => {
             const storeId = product.storeProduct.storeId.toString();
@@ -49,31 +60,23 @@ const OrderController = {
             let totalAmount = 0;
             for (let product of groupProducts[store]) {
                 const item = {
-                    productId: product._id,
+                    storeProduct: product.storeProduct._id,
                     quantity: product.quantity,
                     price: product.storeProduct.productId.salePrice * (1 - product.storeProduct.discountPrice),
                 };
                 totalAmount += product.storeProduct.productId.salePrice * (1 - product.storeProduct.discountPrice) * product.quantity;
                 products.push(item);
             }
-            const order = new OrderModel({ user, delivery, paymentMethod, deliveryMethod, totalAmount, products, store });
+            const userDetails = await UserModel.findById(user).populate("delivery.address");
+            const deliveryDetails = userDetails.delivery.find((d) => d._id.toString() == delivery);
+            const deliveryString = `ownerName: ${deliveryDetails.ownerName}, phone: ${deliveryDetails.phone}, street: ${deliveryDetails.address.street}, ward: ${deliveryDetails.address.ward}, district: ${deliveryDetails.address.district}, city: ${deliveryDetails.address.city}`;
+
+            const order = new OrderModel({ user, delivery: deliveryString, paymentMethod, deliveryMethod, totalAmount, products, store });
             const newOrder = await order.save();
             if (newOrder?._id) {
                 await CartModel.deleteMany({ user });
             }
         }
-
-        // let products = [];
-        // for (let product of carts) {
-        //     const item = {
-        //         productId: product._id,
-        //         quantity: product.quantity,
-        //         price: product.storeProduct.productId.salePrice * (1 - product.storeProduct.discountPrice),
-        //     };
-        //     products.push(item);
-        // }
-        // const order = new OrderModel({ user, delivery, paymentMethod, deliveryMethod, totalAmount, products });
-
         return res.status(statusCode.CREATED).json(BaseResponse.success("Tạo đơn hàng thành công", null));
     },
 
