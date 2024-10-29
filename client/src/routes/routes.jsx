@@ -60,6 +60,7 @@ import {
     OrderList,
     Profile,
     OrderDetails,
+    Search,
 } from "../pages/Customer";
 
 export const router = createBrowserRouter([
@@ -151,6 +152,10 @@ export const router = createBrowserRouter([
                     {
                         path: "/notification",
                         element: <Notification />,
+                    },
+                    {
+                        path: "/search",
+                        element: <Search />,
                     },
                     {
                         path: "/my",

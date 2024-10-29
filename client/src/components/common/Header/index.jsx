@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import "../../../assets/styles/main.css";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -29,7 +29,7 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItemsAction } from "../../../hooks/Redux/Cart/cartAction";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
@@ -65,6 +65,7 @@ const items = [
 ];
 
 const Header = () => {
+    const [keyword, setKeyword] = useState();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { data: cartData } = useSelector((state) => state.cart);
@@ -75,6 +76,11 @@ const Header = () => {
     const handleClickPersonIcon = (event) => {
         setAnchorEl(event.currentTarget);
         setOpenPerson(!openPerson);
+    };
+
+    const handleSearch = () => {
+        setKeyword("");
+        navigate(`/search?keyword=${keyword}&skip=0&take=10`);
     };
 
     // const handleGetData = async
@@ -92,25 +98,30 @@ const Header = () => {
                         <div className="relative flex-1 px-20">
                             <InputBase
                                 startAdornment={
-                                    <InputAdornment position="start">
-                                        <SearchIcon
-                                            sx={{
-                                                fontSize: "30px",
-                                                paddingLeft: "10px",
-                                                opacity: "0.6",
-                                            }}
-                                        />
+                                    <InputAdornment position="start" onClick={handleSearch} className="ml-2">
+                                        <IconButton>
+                                            <SearchIcon
+                                                sx={{
+                                                    fontSize: "20px",
+                                                    opacity: "0.6",
+                                                    cursor: "pointer",
+                                                }}
+                                            />
+                                        </IconButton>
                                     </InputAdornment>
                                 }
                                 placeholder="Search…"
                                 style={{
                                     width: "640px",
-                                    paddingLeft: "17px",
-                                    padding: "3px",
                                     borderRadius: "17px",
                                     backgroundColor: "white",
+                                    padding: "4px ",
+                                    outline: "1px solid grey",
                                 }}
+                                value={keyword}
                                 inputProps={{ "aria-label": "search" }}
+                                onChange={(e) => setKeyword(e.target.value)}
+                                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                             />
                         </div>
                         <Stack direction="row" spacing={0}>

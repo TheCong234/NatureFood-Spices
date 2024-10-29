@@ -4,14 +4,14 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Pagination as PaginationSwipper } from "swiper/modules";
 import { formatPrice } from "../../../services/functions";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getStoreProductsAction } from "../../../hooks/Redux/StoreProduct/storeProductAction";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { addFavoriteStoreProductAction, deleteFavoriteStoreProductAction } from "../../../hooks/Redux/Favorite/favoriteAction";
 import useSnackNotify from "../../../components/SnackNotify";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { createCartItemAction } from "../../../hooks/Redux/Cart/cartAction";
 
@@ -72,7 +72,7 @@ export default function Products() {
             <Grid container spacing={2}>
                 {productData?.products?.map((product) => (
                     <Grid item xs={6} md={3} key={product?._id}>
-                        <Card className="product_card-primary" key={product?._id}>
+                        <Card className="product_card-primary">
                             <Box className="cursor-pointer" onClick={() => navigate(`/product/details/${product?._id}`)}>
                                 <Swiper className="product_card-primary_swiper " pagination={true} modules={[PaginationSwipper]}>
                                     {product?.productId?.images?.map((image) => (
