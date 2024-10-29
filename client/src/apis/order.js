@@ -1,5 +1,9 @@
 import { apiClient } from "./config.api";
 import { OrderV1 } from "../constants/endpoints.const";
+export const getCustomerOrderApi = async (orderId) => {
+    const result = await apiClient.get(OrderV1.GET_CUSTOMER_ORDER + orderId);
+    return result.data;
+};
 
 export const getCustomerOrdersApi = async (params) => {
     const result = await apiClient.get(OrderV1.GET_CUSTOMER_ORDERS, { params });

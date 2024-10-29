@@ -96,4 +96,5 @@ export const CartV1 = {
 export const OrderV1 = {
     CREATE_CUSTOMER_ORDER: "/order/customer/create",
     GET_CUSTOMER_ORDERS: "/order/customer/all",
+    GET_CUSTOMER_ORDER: "/order/customer/",
 };

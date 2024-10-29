@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createCustomerOrderAction, getCustomerOrdersAction } from "./orderAction";
+import { createCustomerOrderAction, getCustomerOrderAction, getCustomerOrdersAction } from "./orderAction";
 
 const orderSlice = createSlice({
     name: "order",
     initialState: {
         data: { orders: [], total: 0 },
+        order: null,
         loading: false,
         error: null,
     },
@@ -12,6 +13,20 @@ const orderSlice = createSlice({
     extraReducers: (builder) => {
         builder
             //*********** customer ************
+            //get customer order
+            .addCase(getCustomerOrderAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getCustomerOrderAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.order = action.payload;
+            })
+            .addCase(getCustomerOrderAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
             //get customer orders
             .addCase(getCustomerOrdersAction.pending, (state) => {
                 state.loading = true;

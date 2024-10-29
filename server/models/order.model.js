@@ -15,9 +15,9 @@ const OrderSchema = new Schema(
         },
         products: [
             {
-                productId: {
+                storeProduct: {
                     type: Schema.Types.ObjectId,
-                    ref: "Product",
+                    ref: "StoreProduct",
                     required: true,
                 },
                 quantity: {
@@ -46,8 +46,13 @@ const OrderSchema = new Schema(
             enum: [0, 1, 2, 3],
             required: true,
         },
+        deliveryMethod: {
+            type: Number,
+            enum: [0, 1, 2, 3],
+            required: true,
+        },
         delivery: {
-            type: Schema.Types.ObjectId,
+            type: String,
             required: true,
         },
     },

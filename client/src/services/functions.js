@@ -68,3 +68,21 @@ export function formatDate(dateString) {
 
     return `${day}-${month}-${year}`;
 }
+
+export function splitDeliveryString(inputString) {
+    const deliveryObject = inputString.split(", ").reduce((acc, item) => {
+        const [key, value] = item.split(": ");
+        acc[key.trim()] = value.trim(); // Thêm vào đối tượng
+        return acc;
+    }, {});
+
+    return deliveryObject;
+}
+
+export function formatTime(dateString) {
+    const date = new Date(dateString);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    return `${hours}:${minutes}:${seconds}`;
+}
