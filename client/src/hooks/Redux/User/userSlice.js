@@ -20,7 +20,15 @@ const userSlice = createSlice({
         loading: false,
         error: null,
     },
-    reducers: {},
+    reducers: {
+        logout: (state) => {
+            state.data = { user: [], total: 0 };
+            localStorage.setItem("token", "");
+            state.token = "";
+            state.currentUser = null;
+            state.delivery = { delivery: [], total: 0 };
+        },
+    },
     extraReducers: (builder) => {
         builder
             //post login
@@ -126,4 +134,5 @@ const userSlice = createSlice({
     },
 });
 
+export const { logout } = userSlice.actions;
 export default userSlice.reducer;

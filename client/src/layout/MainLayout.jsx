@@ -13,7 +13,7 @@ const Index = () => {
         dispatch(getFavoriteStoreProductsAction());
     }, []);
     return (
-        <div>
+        <div className="relative">
             <Header />
             <div className="bg-[#f5f5f5]">
                 <Container className="pt-36 pb-6">
