@@ -2,21 +2,24 @@ import React, { useEffect } from "react";
 import { AppBar, Toolbar, Typography, Container, Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { Footer, Header } from "../components/common";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getFavoriteStoreProductsAction } from "../hooks/Redux/Favorite/favoriteAction";
 
 const Index = () => {
     const dispatch = useDispatch();
+    const { token } = useSelector((state) => state.user);
 
-    const handleGetData = async () => {};
+    const handleGetData = async () => {
+        await dispatch(getFavoriteStoreProductsAction());
+    };
     useEffect(() => {
-        dispatch(getFavoriteStoreProductsAction());
-    }, []);
+        handleGetData();
+    }, [token]);
     return (
         <div className="relative">
             <Header />
             <div className="bg-[#f5f5f5]">
-                <Container className="pt-36 pb-6">
+                <Container className="py-6">
                     <Outlet />
                 </Container>
             </div>

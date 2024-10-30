@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AdminLayout, EmptyLayout, MainLayout, SellerLayout } from "../layout";
-import { RegisterPage, LoginPage, ForgotPage } from "../pages/Common";
+import { RegisterPage, LoginPage, ForgotPage, Logout } from "../pages/Common";
 import {
     DashboardSeller,
     EventStore,
@@ -156,6 +156,10 @@ export const router = createBrowserRouter([
                     {
                         path: "/search",
                         element: <Search />,
+                    },
+                    {
+                        path: "/logout",
+                        element: <Logout />,
                     },
                     {
                         path: "/my",

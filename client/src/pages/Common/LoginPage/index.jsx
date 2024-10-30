@@ -10,11 +10,13 @@ import useSnackNotify from "../../../components/SnackNotify";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../../../hooks/Redux/User/userSlice";
 
 const LoginPage = () => {
     const dispatch = useDispatch();
     const snackNotify = useSnackNotify();
     const navigate = useNavigate();
+    const { currentUser } = useSelector((state) => state.user);
     const {
         register,
         handleSubmit,
@@ -28,12 +30,19 @@ const LoginPage = () => {
         const response = await dispatch(loginAction(data));
         if (response?.payload?.token) {
             snackNotify("success")("Đăng nhập thành công!");
-            navigate("/home");
+
             reset();
+            window.location.href = "/";
         } else {
             snackNotify("error")(`Lỗi, tài khoản hoạc mật khẩu không chính xác`);
         }
     };
+
+    useEffect(() => {
+        if (currentUser) {
+            dispatch(logout());
+        }
+    }, [currentUser]);
 
     return (
         <Box className="bg-[url('/assets/images/bg-login.jpg')] min-h-[100vh]  grid place-items-center">
@@ -102,7 +111,7 @@ const LoginPage = () => {
                     <Grid item xs={12} md={6} lg={7} style={{ padding: "2rem" }}>
                         <Box sx={{ textAlign: "center" }}>
                             <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold" }}>
-                                Đăng nhập tài khoản
+                                Đăng nhập
                             </Typography>
                         </Box>
 

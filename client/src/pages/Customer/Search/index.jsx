@@ -23,15 +23,25 @@ export default function Search() {
     const query = useQuery();
     const { search: searchData, loading: searchLoading } = useSelector((state) => state.storeProduct);
     const { data: favoriteData } = useSelector((state) => state.favorite);
+    const { token } = useSelector((state) => state.user);
+    const keyword = query.get("keyword");
+    const skip = query.get("skip");
+    const take = query.get("take");
+    const date = query.get("date");
+    const price = query.get("price");
     const params = {
-        keyword: query.get("keyword"),
-        skip: query.get("skip"),
-        take: query.get("take"),
-        date: query.get("date"),
-        price: query.get("price"),
+        keyword,
+        skip,
+        take,
+        date,
+        price,
     };
 
     const handleAddToCart = async (storeProductId) => {
+        if (!token) {
+            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+            return;
+        }
         const response = await dispatch(createCartItemAction({ storeProduct: storeProductId, quantity: 1 }));
         if (response?.error) {
             snackNotify("error")("Thêm vào giỏ thất bại");
@@ -41,6 +51,10 @@ export default function Search() {
     };
 
     const handleAddFavoriteStoreProduct = async (storeProductId) => {
+        if (!token) {
+            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+            return;
+        }
         const response = await dispatch(addFavoriteStoreProductAction(storeProductId));
         if (response?.error) {
             snackNotify("error")("Thêm yêu thích thất bại");
@@ -50,6 +64,10 @@ export default function Search() {
     };
 
     const handleRemoveFavoriteStoreProduct = async (storeProductId) => {
+        if (!token) {
+            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+            return;
+        }
         const response = await dispatch(deleteFavoriteStoreProductAction(storeProductId));
         if (response?.error) {
             snackNotify("error")("Bỏ yêu thích thất bại");

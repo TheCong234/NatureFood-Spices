@@ -10,7 +10,7 @@ export default function Logout() {
     useEffect(() => {
         dispatch(logout());
         snackNotify("success")("Đăng xuất thành công");
-        navigate("/");
+        window.location.href = "/";
     }, []);
-    return {};
+    return <div>logout</div>;
 }

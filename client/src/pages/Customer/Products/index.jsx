@@ -27,8 +27,13 @@ export default function Products() {
     const query = useQuery();
     const { data: productData, loading: productLoading } = useSelector((state) => state.storeProduct);
     const { data: favoriteData } = useSelector((state) => state.favorite);
+    const { token } = useSelector((state) => state.user);
 
     const handleAddToCart = async (storeProductId) => {
+        if (!token) {
+            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+            return;
+        }
         const response = await dispatch(createCartItemAction({ storeProduct: storeProductId, quantity: 1 }));
         if (response?.error) {
             snackNotify("error")("Thêm vào giỏ thất bại");
@@ -38,6 +43,10 @@ export default function Products() {
     };
 
     const handleAddFavoriteStoreProduct = async (storeProductId) => {
+        if (!token) {
+            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+            return;
+        }
         const response = await dispatch(addFavoriteStoreProductAction(storeProductId));
         if (response?.error) {
             snackNotify("error")("Thêm yêu thích thất bại");
@@ -47,6 +56,10 @@ export default function Products() {
     };
 
     const handleRemoveFavoriteStoreProduct = async (storeProductId) => {
+        if (!token) {
+            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+            return;
+        }
         const response = await dispatch(deleteFavoriteStoreProductAction(storeProductId));
         if (response?.error) {
             snackNotify("error")("Bỏ yêu thích thất bại");

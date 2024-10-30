@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
     getcurrentUserAction,
-    updateEmailVerify,
     loginAction,
     registerAction,
     getPeopleAction,

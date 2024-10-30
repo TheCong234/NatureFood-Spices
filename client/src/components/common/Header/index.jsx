@@ -58,11 +58,11 @@ const items = [
 ];
 
 const Header = () => {
-    const [keyword, setKeyword] = useState();
+    const [keyword, setKeyword] = useState("");
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { data: cartData } = useSelector((state) => state.cart);
-    const { currentUser } = useSelector((state) => state.user);
+    const { currentUser, token } = useSelector((state) => state.user);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [openPerson, setOpenPerson] = useState(false);
@@ -105,7 +105,7 @@ const Header = () => {
                                     </InputAdornment>
                                 }
                                 endAdornment={
-                                    <InputAdornment position="start" onClick={handleSearch} className="">
+                                    <InputAdornment position="start" onClick={() => setKeyword("")} className="">
                                         <CloseOutlinedIcon
                                             sx={{
                                                 opacity: "0.6",
@@ -133,19 +133,46 @@ const Header = () => {
                         </div>
                         <Stack direction="row" spacing={0}>
                             <Tooltip title="Yêu thích">
-                                <IconButton color="inherit">
+                                <IconButton
+                                    color="inherit"
+                                    onClick={() => {
+                                        if (!token) {
+                                            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+                                            return;
+                                        }
+                                        navigate("/wishlist");
+                                    }}
+                                >
                                     <FavoriteIcon color="error" />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Giỏ hàng">
-                                <IconButton color="inherit" onClick={() => navigate("/cart?skip=0&take=10")}>
+                                <IconButton
+                                    color="inherit"
+                                    onClick={() => {
+                                        if (!token) {
+                                            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+                                            return;
+                                        }
+                                        navigate("/cart?skip=0&take=10");
+                                    }}
+                                >
                                     <Badge badgeContent={cartData?.total} color="success" showZero>
                                         <ShoppingCartIcon />
                                     </Badge>
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Thông báo">
-                                <IconButton color="inherit" onClick={() => navigate("/notification?skip=0&take=10")}>
+                                <IconButton
+                                    color="inherit"
+                                    onClick={() => {
+                                        if (!token) {
+                                            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+                                            return;
+                                        }
+                                        navigate("/notification?skip=0&take=10");
+                                    }}
+                                >
                                     <Badge badgeContent={0} color="success" showZero>
                                         <NotificationsActiveIcon />
                                     </Badge>
@@ -224,41 +251,49 @@ const Header = () => {
                     transformOrigin={{ horizontal: "right", vertical: "top" }}
                     anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                 >
-                    <MenuItem sx={{ bgcolor: "#ecfccb" }}>
-                        <Box component={Link} to="/my/account" className="text-inherit hover:text-green-600 flex items-center  ">
-                            <Avatar />
-                            <div>
-                                <p>{currentUser?.username}</p>
-                                <p className="text-sm font-normal text-gray-400">Thông tin hồ sơ của bạn</p>
-                            </div>
+                    {currentUser && (
+                        <Box>
+                            <MenuItem sx={{ bgcolor: "#ecfccb" }}>
+                                <Box component={Link} to="/my/account" className="w-full text-inherit hover:text-green-600 flex items-center ">
+                                    <Avatar />
+                                    <div>
+                                        <p>{currentUser?.username}</p>
+                                        <p className="text-sm font-normal text-gray-400">Thông tin hồ sơ của bạn</p>
+                                    </div>
+                                </Box>
+                            </MenuItem>
+                            <MenuItem>
+                                <Box component={Link} to="/my/order-list" className="w-full text-inherit hover:text-green-600 flex items-center">
+                                    <ListItemIcon>
+                                        <ReceiptLongOutlinedIcon />
+                                    </ListItemIcon>
+                                    Đơn hàng
+                                </Box>
+                            </MenuItem>
+                            {currentUser?.role == "seller" ? (
+                                <MenuItem>
+                                    <Box component={Link} to="/seller" className="w-full text-inherit hover:text-green-600 flex items-center">
+                                        <ListItemIcon>
+                                            <StoreMallDirectoryOutlinedIcon fontSize="small" />
+                                        </ListItemIcon>
+                                        {currentUser.store.name}
+                                    </Box>
+                                </MenuItem>
+                            ) : (
+                                <MenuItem>
+                                    <Box
+                                        component={Link}
+                                        to="/seller-register"
+                                        className="w-full text-inherit hover:text-green-600 flex items-center"
+                                    >
+                                        <ListItemIcon>
+                                            <StoreMallDirectoryOutlinedIcon fontSize="small" />
+                                        </ListItemIcon>
+                                        Đăng kí bán hàng
+                                    </Box>
+                                </MenuItem>
+                            )}
                         </Box>
-                    </MenuItem>
-                    <MenuItem>
-                        <Box component={Link} to="/my/order-list" className="text-inherit hover:text-green-600 flex items-center">
-                            <ListItemIcon>
-                                <ReceiptLongOutlinedIcon />
-                            </ListItemIcon>
-                            Đơn hàng
-                        </Box>
-                    </MenuItem>
-                    {currentUser?.role == "seller" ? (
-                        <MenuItem>
-                            <Box component={Link} to="/seller" className="text-inherit hover:text-green-600 flex items-center">
-                                <ListItemIcon>
-                                    <StoreMallDirectoryOutlinedIcon fontSize="small" />
-                                </ListItemIcon>
-                                {currentUser.store.name}
-                            </Box>
-                        </MenuItem>
-                    ) : (
-                        <MenuItem>
-                            <Box component={Link} to="/seller-register" className="text-inherit hover:text-green-600 flex items-center">
-                                <ListItemIcon>
-                                    <StoreMallDirectoryOutlinedIcon fontSize="small" />
-                                </ListItemIcon>
-                                Đăng kí bán hàng
-                            </Box>
-                        </MenuItem>
                     )}
 
                     <Divider />
@@ -271,14 +306,14 @@ const Header = () => {
 
                     <MenuItem>
                         {currentUser ? (
-                            <Box component={Link} to="/logout" className="text-inherit hover:text-green-600 flex items-center">
+                            <Box component={Link} to="/logout" className="w-full text-inherit hover:text-green-600 flex items-center">
                                 <ListItemIcon>
                                     <Logout fontSize="small" />
                                 </ListItemIcon>
                                 Đăng xuất
                             </Box>
                         ) : (
-                            <Box component={Link} to="/login" className="text-inherit hover:text-green-600 flex items-center">
+                            <Box component={Link} to="/login" className="w-full text-inherit hover:text-green-600 flex items-center">
                                 <ListItemIcon>
                                     <Logout fontSize="small" />
                                 </ListItemIcon>
