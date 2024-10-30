@@ -4,6 +4,7 @@ import { statusCode } from "../config/statusCode.config.js";
 import StoreProductModel from "../models/product.store.model.js";
 import StoreCartModel from "../models/store.cart.model.js";
 import CategoryModel from "../models/category.model.js";
+import ProductModel from "../models/product.model.js";
 
 const StoreProductController = {
     async getStoreProducts(req, res) {
@@ -100,6 +101,21 @@ const StoreProductController = {
         }
         await StoreCartModel.deleteMany({ store });
         return res.status(statusCode.OK).json(BaseResponse.success("Thêm sản phẩm cửa hàng thành công", null));
+    },
+
+    async searchCustomer(req, res) {
+        const { keyword, skip, take, date, price } = req.query;
+        const products = await ProductModel.find({ name: { $regex: keyword, $options: "i" } });
+        const productIds = products.map((product) => product._id);
+        const storeProducts = await StoreProductModel.find({
+            productId: { $in: productIds },
+        })
+            .populate("productId")
+            .populate("storeId")
+            .skip(parseInt(skip))
+            .limit(parseInt(take));
+        const total = await StoreProductModel.countDocuments({ productId: { $in: productIds } });
+        return res.status(statusCode.OK).json(BaseResponse.success("Tìm sản phẩm thành công", { product: { products: storeProducts, total } }));
     },
 };
 

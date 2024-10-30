@@ -1,7 +1,7 @@
 import { TextField, Typography, Rating, Box, Button, Stack, CircularProgress } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import SwitchRightIcon from "@mui/icons-material/SwitchRight";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CreateReviewYup } from "../../validations/yup.validations";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -26,6 +26,7 @@ export default function ReviewForm({ product }) {
     const snackNotify = useSnackNotify();
     const [rating, setRating] = useState(5);
     const [hover, setHover] = useState(-1);
+    const { currentUser } = useSelector((state) => state.user);
     const {
         register,
         handleSubmit,
@@ -99,8 +100,15 @@ export default function ReviewForm({ product }) {
                         )}
                     </Box>
                     <Box sx={{ position: "relative" }}>
-                        <Button size="small" variant="contained" color="success" type="submit" sx={{ textTransform: "none", mt: 2 }}>
-                            Đánh giá
+                        <Button
+                            size="small"
+                            variant="contained"
+                            color="success"
+                            type="submit"
+                            sx={{ textTransform: "none", mt: 2 }}
+                            disabled={!currentUser}
+                        >
+                            {!currentUser ? "Mua hàng để đánh giá" : "Đánh giá"}
                         </Button>
                     </Box>
                 </Box>

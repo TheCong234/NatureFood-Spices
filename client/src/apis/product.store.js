@@ -22,3 +22,8 @@ export const getStoreProductsByProductApi = async (productId) => {
     const response = await apiClient.get(StoreProductV1.GET_STORE_PRODUCT_BY_PRODUCT + productId);
     return response.data;
 };
+
+export const searchCustomerApi = async (params) => {
+    const response = await apiClient.get(StoreProductV1.SEARCH, { params });
+    return response.data;
+};

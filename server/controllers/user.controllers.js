@@ -32,7 +32,8 @@ const UserController = {
     },
 
     async getCurrentUser(req, res) {
-        return res.status(statusCode.OK).json(BaseResponse.success("Tìm thấy current user", req.user));
+        const user = await UserModel.findById(req.user._id).populate("store");
+        return res.status(statusCode.OK).json(BaseResponse.success("Tìm thấy current user", user));
     },
 
     async getCurrentUserDelivery(req, res) {

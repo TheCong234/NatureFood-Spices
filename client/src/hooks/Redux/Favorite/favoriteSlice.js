@@ -45,6 +45,7 @@ const favoriteSlice = createSlice({
             .addCase(getFavoriteStoreProductsAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+                state.data = { products: [], total: 0 };
             })
 
             //delete favorite store product

@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AdminLayout, EmptyLayout, MainLayout, SellerLayout } from "../layout";
-import { RegisterPage, LoginPage, ForgotPage } from "../pages/Common";
+import { RegisterPage, LoginPage, ForgotPage, Logout } from "../pages/Common";
 import {
     DashboardSeller,
     EventStore,
@@ -60,6 +60,7 @@ import {
     OrderList,
     Profile,
     OrderDetails,
+    Search,
 } from "../pages/Customer";
 
 export const router = createBrowserRouter([
@@ -151,6 +152,14 @@ export const router = createBrowserRouter([
                     {
                         path: "/notification",
                         element: <Notification />,
+                    },
+                    {
+                        path: "/search",
+                        element: <Search />,
+                    },
+                    {
+                        path: "/logout",
+                        element: <Logout />,
                     },
                     {
                         path: "/my",

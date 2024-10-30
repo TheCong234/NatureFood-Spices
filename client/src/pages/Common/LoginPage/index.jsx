@@ -1,23 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { LoginYup } from "../../../validations/yup.validations";
-import {
-    TextField,
-    Button,
-    Typography,
-    Link,
-    Box,
-    Grid,
-    Checkbox,
-    FormControlLabel,
-    Divider,
-    Container,
-} from "@mui/material";
-import {
-    Google as GoogleIcon,
-    Facebook as FacebookIcon,
-} from "@mui/icons-material";
-import backgroundImagenaturefood from "/src/assets/images/bg-login-naturefood.jpg";
-import backgroundImage from "/src/assets/images/bg-login.jpg";
+import { TextField, Button, Typography, Link, Box, Grid, Checkbox, FormControlLabel, Divider, Container, Paper } from "@mui/material";
+import { Google as GoogleIcon, Facebook as FacebookIcon } from "@mui/icons-material";
 import { blue } from "../../../theme/colors";
 import { white } from "../../../theme/colors";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,11 +10,13 @@ import useSnackNotify from "../../../components/SnackNotify";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../../../hooks/Redux/User/userSlice";
 
 const LoginPage = () => {
     const dispatch = useDispatch();
     const snackNotify = useSnackNotify();
     const navigate = useNavigate();
+    const { currentUser } = useSelector((state) => state.user);
     const {
         register,
         handleSubmit,
@@ -44,66 +30,29 @@ const LoginPage = () => {
         const response = await dispatch(loginAction(data));
         if (response?.payload?.token) {
             snackNotify("success")("Đăng nhập thành công!");
-            navigate("/home");
+
             reset();
+            window.location.href = "/";
         } else {
-            snackNotify("error")(
-                `Lỗi, tài khoản hoạc mật khẩu không chính xác`
-            );
+            snackNotify("error")(`Lỗi, tài khoản hoạc mật khẩu không chính xác`);
         }
     };
+
+    useEffect(() => {
+        if (currentUser) {
+            dispatch(logout());
+        }
+    }, [currentUser]);
+
     return (
-        <Box
-            sx={{
-                height: "100vh",
-                display: "grid",
-                placeItems: "center",
-                px: { md: "13%" },
-                backgroundImage: `url(${backgroundImage})`,
-            }}
-        >
-            <Container>
-                <Grid
-                    container
-                    sx={{
-                        borderRadius: 2,
-                        boxShadow: "0px 0px 15px rgba(0,0,0,0.1)",
-                        overflow: "hidden",
-                    }}
-                >
-                    <Grid
-                        item
-                        xs={12}
-                        md={6}
-                        lg={5}
-                        style={{
-                            backgroundImage: `url(${backgroundImagenaturefood})`,
-                            backgroundPosition: "center",
-                            backgroundSize: "cover",
-                            backgroundRepeat: "no-repeat",
-                        }}
-                    >
+        <Box className="bg-[url('/assets/images/bg-login.jpg')] min-h-[100vh]  grid place-items-center">
+            <Paper className="w-[70%]">
+                <Grid container>
+                    <Grid item xs={12} md={6} lg={5} className="bg-[url('/assets/images/bg-login-naturefood.jpg')] bg-center bg-cover bg-no-repeat">
                         <Box sx={{ textAlign: "center", padding: 4 }}>
-                            <Typography
-                                variant="h4"
-                                sx={{
-                                    color: "white",
-                                    fontWeight: "bold",
-                                    mb: 2,
-                                    paddingTop: "10px",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <img
-                                    src="src/assets/images/logo.png"
-                                    alt="Logo"
-                                    style={{
-                                        height: "80px",
-                                        width: "170px",
-                                    }}
-                                />
-                            </Typography>
+                            <div className="flex - justify-center mb-6">
+                                <img src="/assets/images/logo.png" alt="Logo" className="w-[80px]" />
+                            </div>
                             <Typography
                                 variant="body1"
                                 sx={{
@@ -112,9 +61,7 @@ const LoginPage = () => {
                                     paddingTop: "20px",
                                 }}
                             >
-                                Nature Food cung cấp gia vị thiên nhiên chất
-                                lượng, an toàn, giúp bữa ăn thêm ngon và bảo vệ
-                                sức khỏe người dùng !
+                                Nature Food cung cấp gia vị thiên nhiên chất lượng, an toàn, giúp bữa ăn thêm ngon và bảo vệ sức khỏe người dùng !
                             </Typography>
                             {/* Footer */}
                             <Typography
@@ -136,7 +83,7 @@ const LoginPage = () => {
                                         justifyContent: "center",
                                     }}
                                 >
-                                    Đăng nhập !
+                                    Đăng ký?
                                 </Link>
                             </Typography>
                             <Typography
@@ -149,32 +96,22 @@ const LoginPage = () => {
                                 }}
                             >
                                 {" "}
-                                <Link href="#" color={"inherit"}>
-                                    điều khoản
+                                <Link href="/" color={"inherit"}>
+                                    Điều khoản
                                 </Link>{" "}
                                 và{" "}
-                                <Link href="#" color={"inherit"}>
-                                    dịch vụ
+                                <Link href="/" color={"inherit"}>
+                                    Dịch vụ
                                 </Link>
-                                .
                             </Typography>
                         </Box>
                     </Grid>
 
                     {/* Right Side: Account Login Form */}
-                    <Grid
-                        item
-                        xs={12}
-                        md={6}
-                        lg={7}
-                        style={{ padding: "2rem" }}
-                    >
+                    <Grid item xs={12} md={6} lg={7} style={{ padding: "2rem" }}>
                         <Box sx={{ textAlign: "center" }}>
-                            <Typography
-                                variant="h5"
-                                sx={{ mb: 2, fontWeight: "bold" }}
-                            >
-                                Đăng nhập tài khoản
+                            <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold" }}>
+                                Đăng nhập
                             </Typography>
                         </Box>
 
@@ -201,20 +138,8 @@ const LoginPage = () => {
                                 error={!!errors.password}
                                 helperText={errors?.password?.message}
                             />
-                            <FormControlLabel
-                                control={
-                                    <Checkbox defaultChecked color="primary" />
-                                }
-                                label="Nhớ mật khẩu "
-                                sx={{ mt: 1 }}
-                            />
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                sx={{ my: 2 }}
-                            >
+                            <FormControlLabel control={<Checkbox defaultChecked color="primary" />} label="Nhớ mật khẩu " sx={{ mt: 1 }} />
+                            <Button type="submit" fullWidth variant="contained" color="primary" sx={{ my: 2 }}>
                                 Đăng nhập
                             </Button>
                         </form>
@@ -264,7 +189,7 @@ const LoginPage = () => {
                         </Grid>
                     </Grid>
                 </Grid>
-            </Container>
+            </Paper>
         </Box>
     );
 };
