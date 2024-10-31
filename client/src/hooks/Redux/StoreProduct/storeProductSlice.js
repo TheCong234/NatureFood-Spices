@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createStoreProductsAction, getStoreProductsAction } from "./storeProductAction";
+import { createStoreProductsAction, getStoreProductsAction, searchCustomerAction } from "./storeProductAction";
 
 const storeProductSlice = createSlice({
-    name: "tag",
+    name: "storeProduct",
     initialState: {
         data: { products: [], total: 0 },
+        search: { product: { products: [], total: 0 } },
         loading: false,
         error: null,
     },
@@ -35,6 +36,20 @@ const storeProductSlice = createSlice({
                 state.loading = false;
             })
             .addCase(createStoreProductsAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+            //search store products
+            .addCase(searchCustomerAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(searchCustomerAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.search = action.payload;
+            })
+            .addCase(searchCustomerAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });

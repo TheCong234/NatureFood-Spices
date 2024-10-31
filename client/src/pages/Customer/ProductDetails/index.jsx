@@ -23,8 +23,13 @@ const ProductDetail = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { storeProductId } = useParams();
+    const { token } = useSelector((state) => state.user);
 
     const createStoreCartItem = async () => {
+        if (!token) {
+            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+            return;
+        }
         const response = await dispatch(createCartItemAction({ storeProduct: product?._id, quantity }));
         if (response?.error) {
             snackNotify("error")("Thêm sản phẩm vào giỏ hàng thất bại");

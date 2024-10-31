@@ -134,7 +134,7 @@ const ProfileSettings = () => {
 
                     {/* Avatar Section */}
                     <div className="w-1/3 flex flex-col items-center justify-center bg-white shadow-md p-4">
-                        <img src="/src/assets/images/anhdeptroai2.jpg" alt="Profile" className="rounded-full w-32 h-32 object-cover mb-4" />
+                        <img src="/assets/images/anhdeptroai2.jpg" alt="Profile" className="rounded-full w-32 h-32 object-cover mb-4" />
                         <button className="bg-gray-200 px-4 py-2 rounded border">Đổi ảnh đại diện</button>
                     </div>
                 </div>

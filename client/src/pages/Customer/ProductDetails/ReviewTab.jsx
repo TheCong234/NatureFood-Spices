@@ -27,6 +27,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 export default function ReviewTab({ product }) {
     const dispatch = useDispatch();
     const { data: reviewData } = useSelector((state) => state.review);
+    const { currentUser } = useSelector((state) => state.user);
 
     const handleGetData = async () => {
         const data = {
@@ -120,8 +121,10 @@ export default function ReviewTab({ product }) {
             </Stack>
 
             <Box sx={{ mt: 2 }}>
+                {" "}
                 <ReviewForm product={product} />
             </Box>
+
             <Divider sx={{ mt: 4 }} />
             {reviewData?.total == 0 ? (
                 <Nodata content={"Chưa có đánh giá nào, hãy mua hàng và để lại đánh giá của bạn nhé"} />

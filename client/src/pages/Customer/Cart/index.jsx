@@ -15,6 +15,7 @@ export default function Cart() {
     const navigate = useNavigate();
     const snackNotify = useSnackNotify();
     const { data: cartData, loading: cartLoading } = useSelector((state) => state.cart);
+    const { token } = useSelector((state) => state.user);
 
     const handelDeleteCartItem = async (data) => {
         const response = await dispatch(deleteCartItemAction(data));
@@ -34,7 +35,13 @@ export default function Cart() {
         }
     };
 
-    useEffect(() => {}, []);
+    useEffect(() => {
+        if (!token) {
+            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+            navigate("/login");
+            return;
+        }
+    }, [token]);
     return (
         <Box>
             <Paper>

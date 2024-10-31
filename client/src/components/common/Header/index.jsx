@@ -1,41 +1,34 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import "../../../assets/styles/main.css";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import {
-    AppBar,
     Avatar,
     Badge,
     Box,
-    Button,
     Container,
     Divider,
-    Fade,
     IconButton,
     InputAdornment,
     InputBase,
-    List,
-    ListItem,
-    ListItemButton,
     ListItemIcon,
-    ListItemText,
     Menu,
     MenuItem,
-    Paper,
-    Popper,
     Stack,
-    Toolbar,
     Tooltip,
-    Typography,
 } from "@mui/material";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItemsAction } from "../../../hooks/Redux/Cart/cartAction";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import PersonIcon from "@mui/icons-material/Person";
-import ArrowRight from "@mui/icons-material/ArrowRight";
-import { Logout, Person, Settings } from "@mui/icons-material";
+import { Logout, Settings } from "@mui/icons-material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
+import StoreMallDirectoryOutlinedIcon from "@mui/icons-material/StoreMallDirectoryOutlined";
+import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 const items = [
     {
@@ -65,9 +58,11 @@ const items = [
 ];
 
 const Header = () => {
+    const [keyword, setKeyword] = useState("");
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { data: cartData } = useSelector((state) => state.cart);
+    const { currentUser, token } = useSelector((state) => state.user);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [openPerson, setOpenPerson] = useState(false);
@@ -77,27 +72,47 @@ const Header = () => {
         setOpenPerson(!openPerson);
     };
 
+    const handleSearch = () => {
+        setKeyword("");
+        navigate(`/search?keyword=${keyword}&skip=0&take=10`);
+    };
+
     // const handleGetData = async
     useEffect(() => {
         dispatch(getCartItemsAction({ skip: 0, take: 10 }));
     }, []);
     return (
-        <Box className="w-full fixed z-[999] ">
+        <div className="sticky top-0 z-50">
             <Box className=" mainlayout-header">
                 <Container>
                     <div className="header-top flex items-center justify-between p-4">
                         <div className="">
-                            <img src="/src/assets/images/logo.png" alt="Logo" className="w-[80px]" />
+                            <img src="/assets/images/logo.png" alt="Logo" className="w-[80px]" />
                         </div>
                         <div className="relative flex-1 px-20">
                             <InputBase
                                 startAdornment={
-                                    <InputAdornment position="start">
-                                        <SearchIcon
+                                    <InputAdornment position="start" onClick={handleSearch} className="">
+                                        <IconButton>
+                                            <SearchIcon
+                                                sx={{
+                                                    fontSize: "20px",
+                                                    opacity: "0.6",
+                                                    cursor: "pointer",
+                                                }}
+                                            />
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                endAdornment={
+                                    <InputAdornment position="start" onClick={() => setKeyword("")} className="">
+                                        <CloseOutlinedIcon
                                             sx={{
-                                                fontSize: "30px",
-                                                paddingLeft: "10px",
                                                 opacity: "0.6",
+                                                cursor: "pointer",
+                                                ":hover": {
+                                                    opacity: "1",
+                                                },
                                             }}
                                         />
                                     </InputAdornment>
@@ -105,34 +120,79 @@ const Header = () => {
                                 placeholder="Search…"
                                 style={{
                                     width: "640px",
-                                    paddingLeft: "17px",
-                                    padding: "3px",
                                     borderRadius: "17px",
                                     backgroundColor: "white",
+                                    padding: "4px ",
+                                    outline: "1px solid grey",
                                 }}
+                                value={keyword}
                                 inputProps={{ "aria-label": "search" }}
+                                onChange={(e) => setKeyword(e.target.value)}
+                                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                             />
                         </div>
                         <Stack direction="row" spacing={0}>
-                            <IconButton color="inherit">
-                                <LightModeIcon />
-                            </IconButton>
-                            <IconButton color="inherit" onClick={() => navigate("/cart?skip=0&take=10")}>
-                                <Badge badgeContent={cartData?.total} color="success" showZero>
-                                    <ShoppingCartIcon />
-                                </Badge>
-                            </IconButton>
-                            <IconButton color="inherit" onClick={() => navigate("/notification?skip=0&take=10")}>
-                                <Badge badgeContent={0} color="success" showZero>
-                                    <NotificationsActiveIcon />
-                                </Badge>
-                            </IconButton>
-
-                            <div className="flex bg-green-700 items-center pr-3 rounded-[20px] ml-2 cursor-pointer " onClick={handleClickPersonIcon}>
-                                <IconButton color="inherit" sx={{ bgcolor: "#f3f4f6", border: "1px solid green", "&:hover": { bgcolor: "white" } }}>
-                                    <PersonIcon fontSize="small" />
+                            <Tooltip title="Yêu thích">
+                                <IconButton
+                                    color="inherit"
+                                    onClick={() => {
+                                        if (!token) {
+                                            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+                                            return;
+                                        }
+                                        navigate("/wishlist");
+                                    }}
+                                >
+                                    <FavoriteIcon color="error" />
                                 </IconButton>
-                                <p className="ml-1">The</p>
+                            </Tooltip>
+                            <Tooltip title="Giỏ hàng">
+                                <IconButton
+                                    color="inherit"
+                                    onClick={() => {
+                                        if (!token) {
+                                            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+                                            return;
+                                        }
+                                        navigate("/cart?skip=0&take=10");
+                                    }}
+                                >
+                                    <Badge badgeContent={cartData?.total} color="success" showZero>
+                                        <ShoppingCartIcon />
+                                    </Badge>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Thông báo">
+                                <IconButton
+                                    color="inherit"
+                                    onClick={() => {
+                                        if (!token) {
+                                            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+                                            return;
+                                        }
+                                        navigate("/notification?skip=0&take=10");
+                                    }}
+                                >
+                                    <Badge badgeContent={0} color="success" showZero>
+                                        <NotificationsActiveIcon />
+                                    </Badge>
+                                </IconButton>
+                            </Tooltip>
+
+                            <div className="flex items-center">
+                                <div
+                                    className="flex bg-green-700 items-center pr-3 rounded-[20px] ml-2 cursor-pointer hover:bg-green-600"
+                                    onClick={handleClickPersonIcon}
+                                >
+                                    <IconButton
+                                        color="inherit"
+                                        sx={{ bgcolor: "#f3f4f6", border: "1px solid green", "&:hover": { bgcolor: "white" } }}
+                                        size="small"
+                                    >
+                                        <PersonIcon fontSize="small" />
+                                    </IconButton>
+                                    <p className="ml-1">{currentUser && currentUser?.username?.split(" ")[0]}</p>
+                                </div>
                             </div>
                         </Stack>
                     </div>
@@ -151,6 +211,7 @@ const Header = () => {
             </div>
             <Fragment>
                 <Menu
+                    sx={{}}
                     anchorEl={anchorEl}
                     open={openPerson}
                     onClose={() => setOpenPerson(false)}
@@ -162,6 +223,7 @@ const Header = () => {
                                 overflow: "visible",
                                 filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
                                 mt: 1.5,
+                                paddingTop: 0,
                                 "& .MuiAvatar-root": {
                                     width: 32,
                                     height: 32,
@@ -180,42 +242,88 @@ const Header = () => {
                                     // transform: "translateY(-50%) rotate(45deg)",
                                     zIndex: 0,
                                 },
+                                "& .css-1toxriw-MuiList-root-MuiMenu-list": {
+                                    paddingTop: 0,
+                                },
                             },
                         },
                     }}
                     transformOrigin={{ horizontal: "right", vertical: "top" }}
                     anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                 >
-                    <MenuItem>
-                        <Avatar /> Profile
-                    </MenuItem>
-                    <MenuItem>
-                        <Box component={Link} to="/my/account" className="text-inherit hover:text-green-600 flex items-center">
-                            <Avatar /> Tài khoản của tôi
+                    {currentUser && (
+                        <Box>
+                            <MenuItem sx={{ bgcolor: "#ecfccb" }}>
+                                <Box component={Link} to="/my/account" className="w-full text-inherit hover:text-green-600 flex items-center ">
+                                    <Avatar />
+                                    <div>
+                                        <p>{currentUser?.username}</p>
+                                        <p className="text-sm font-normal text-gray-400">Thông tin hồ sơ của bạn</p>
+                                    </div>
+                                </Box>
+                            </MenuItem>
+                            <MenuItem>
+                                <Box component={Link} to="/my/order-list" className="w-full text-inherit hover:text-green-600 flex items-center">
+                                    <ListItemIcon>
+                                        <ReceiptLongOutlinedIcon />
+                                    </ListItemIcon>
+                                    Đơn hàng
+                                </Box>
+                            </MenuItem>
+                            {currentUser?.role == "seller" ? (
+                                <MenuItem>
+                                    <Box component={Link} to="/seller" className="w-full text-inherit hover:text-green-600 flex items-center">
+                                        <ListItemIcon>
+                                            <StoreMallDirectoryOutlinedIcon fontSize="small" />
+                                        </ListItemIcon>
+                                        {currentUser.store.name}
+                                    </Box>
+                                </MenuItem>
+                            ) : (
+                                <MenuItem>
+                                    <Box
+                                        component={Link}
+                                        to="/seller-register"
+                                        className="w-full text-inherit hover:text-green-600 flex items-center"
+                                    >
+                                        <ListItemIcon>
+                                            <StoreMallDirectoryOutlinedIcon fontSize="small" />
+                                        </ListItemIcon>
+                                        Đăng kí bán hàng
+                                    </Box>
+                                </MenuItem>
+                            )}
                         </Box>
-                    </MenuItem>
+                    )}
+
                     <Divider />
                     <MenuItem>
                         <ListItemIcon>
-                            <PersonIcon fontSize="small" />
+                            <HelpOutlineOutlinedIcon fontSize="small" />
                         </ListItemIcon>
-                        Add another account
+                        Trợ giúp
                     </MenuItem>
+
                     <MenuItem>
-                        <ListItemIcon>
-                            <Settings fontSize="small" />
-                        </ListItemIcon>
-                        Settings
-                    </MenuItem>
-                    <MenuItem>
-                        <ListItemIcon>
-                            <Logout fontSize="small" />
-                        </ListItemIcon>
-                        Logout
+                        {currentUser ? (
+                            <Box component={Link} to="/logout" className="w-full text-inherit hover:text-green-600 flex items-center">
+                                <ListItemIcon>
+                                    <Logout fontSize="small" />
+                                </ListItemIcon>
+                                Đăng xuất
+                            </Box>
+                        ) : (
+                            <Box component={Link} to="/login" className="w-full text-inherit hover:text-green-600 flex items-center">
+                                <ListItemIcon>
+                                    <Logout fontSize="small" />
+                                </ListItemIcon>
+                                Đăng nhập/Đăng ký
+                            </Box>
+                        )}
                     </MenuItem>
                 </Menu>
             </Fragment>
-        </Box>
+        </div>
     );
 };
 

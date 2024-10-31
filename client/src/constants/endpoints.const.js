@@ -40,6 +40,7 @@ export const StoreProductV1 = {
     GET_STORE_PRODUCT: "/store-product/details/",
     GET_STORE_PRODUCT_BY_CATEGORY: "/store-product/category/",
     GET_STORE_PRODUCT_BY_PRODUCT: "/store-product/group-by-product/",
+    SEARCH: "/store-product/search",
 };
 
 export const BannerV1 = {
