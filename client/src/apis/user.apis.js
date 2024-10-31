@@ -22,10 +22,7 @@ export const registerApi = async (data) => {
         },
     });
     if (response.data.success) {
-        Cookies.set("token", response.data.data.token, {
-            expires: 7,
-            secure: true,
-        });
+        localStorage.setItem("token", response.data.data.token);
         return response.data;
     }
     return response;

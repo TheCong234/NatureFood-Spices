@@ -1,4 +1,4 @@
-import { Box, Button, Rating, Stack, Typography, Tab, Divider, Avatar } from "@mui/material";
+import { Box, Button, Rating, Stack, Typography, Tab, Divider, Avatar, IconButton, Tooltip } from "@mui/material";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ProductImagesCarousel from "./ProductImagesCarousel";
 import { useEffect, useState } from "react";
@@ -13,6 +13,9 @@ import { formatPrice } from "../../../services/functions";
 import { QuantityInput } from "../../../components";
 import { createCartItemAction } from "../../../hooks/Redux/Cart/cartAction";
 import useSnackNotify from "../../../components/SnackNotify";
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
+import { addFavoriteStoreProductAction, deleteFavoriteStoreProductAction } from "../../../hooks/Redux/Favorite/favoriteAction";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
 const ProductDetail = () => {
     const [product, setProduct] = useState();
@@ -23,7 +26,8 @@ const ProductDetail = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { storeProductId } = useParams();
-    const { token } = useSelector((state) => state.user);
+    const { currentUser, token } = useSelector((state) => state.user);
+    const { data: favoriteData } = useSelector((state) => state.favorite);
 
     const createStoreCartItem = async () => {
         if (!token) {
@@ -35,6 +39,32 @@ const ProductDetail = () => {
             snackNotify("error")("Thêm sản phẩm vào giỏ hàng thất bại");
         } else {
             snackNotify("success")("Đã thêm sản phẩm vào giỏ hàng");
+        }
+    };
+
+    const handleAddFavoriteStoreProduct = async () => {
+        if (!token) {
+            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+            return;
+        }
+        const response = await dispatch(addFavoriteStoreProductAction(product?._id));
+        if (response?.error) {
+            snackNotify("error")("Thêm yêu thích thất bại");
+        } else {
+            snackNotify("success")("Thêm yêu thích thành công");
+        }
+    };
+
+    const handleRemoveFavoriteStoreProduct = async () => {
+        if (!token) {
+            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
+            return;
+        }
+        const response = await dispatch(deleteFavoriteStoreProductAction(product?._id));
+        if (response?.error) {
+            snackNotify("error")("Bỏ yêu thích thất bại");
+        } else {
+            snackNotify("success")("Bỏ yêu thích thành công");
         }
     };
 
@@ -53,8 +83,23 @@ const ProductDetail = () => {
     return (
         <Box>
             <Box className="flex">
-                <Box className="w-1/2 pr-8">
+                <Box className="w-1/2 pr-8 relative">
                     <ProductImagesCarousel product={product} />
+                    <div className="absolute top-3 z-10 right-11">
+                        {favoriteData?.products?.some((f) => f.user == currentUser?._id) ? (
+                            <Tooltip title="Bỏ yêu thích">
+                                <IconButton color="error" onClick={handleRemoveFavoriteStoreProduct}>
+                                    <FavoriteOutlinedIcon fontSize="large" />
+                                </IconButton>
+                            </Tooltip>
+                        ) : (
+                            <Tooltip title="Thêm yêu thích">
+                                <IconButton color="error" onClick={handleAddFavoriteStoreProduct}>
+                                    <FavoriteBorderOutlinedIcon fontSize="large" />
+                                </IconButton>
+                            </Tooltip>
+                        )}
+                    </div>
                 </Box>
                 <Box className="w-1/2">
                     <Typography component="h2" variant="h5" sx={{ fontWeight: "bold" }}>

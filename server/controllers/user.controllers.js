@@ -9,10 +9,7 @@ import AddressModel from "../models/address.model.js";
 const UserController = {
     async register(req, res) {
         const user = await UserModel.create(req.body);
-        const newUser = await user.save();
-
-        const cart = new CartModel({ user: newUser._id });
-        await cart.save();
+        await user.save();
         const token = user.createToken();
         return res.status(statusCode.CREATED).json(BaseResponse.success("Đăng ký tài khoản thành công", { token }));
     },

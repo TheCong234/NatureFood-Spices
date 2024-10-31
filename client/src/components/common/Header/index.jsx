@@ -29,6 +29,7 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import StoreMallDirectoryOutlinedIcon from "@mui/icons-material/StoreMallDirectoryOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import useSnackNotify from "../../../components/SnackNotify";
 
 const items = [
     {
@@ -61,8 +62,10 @@ const Header = () => {
     const [keyword, setKeyword] = useState("");
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const snackNotify = useSnackNotify();
     const { data: cartData } = useSelector((state) => state.cart);
     const { currentUser, token } = useSelector((state) => state.user);
+    const { data: favoriteData } = useSelector((state) => state.favorite);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [openPerson, setOpenPerson] = useState(false);
@@ -89,8 +92,9 @@ const Header = () => {
                         <div className="">
                             <img src="/assets/images/logo.png" alt="Logo" className="w-[80px]" />
                         </div>
-                        <div className="relative flex-1 px-20">
+                        <div className="relative flex-[0.8]">
                             <InputBase
+                                className="w-full"
                                 startAdornment={
                                     <InputAdornment position="start" onClick={handleSearch} className="">
                                         <IconButton>
@@ -119,7 +123,6 @@ const Header = () => {
                                 }
                                 placeholder="Search…"
                                 style={{
-                                    width: "640px",
                                     borderRadius: "17px",
                                     backgroundColor: "white",
                                     padding: "4px ",
@@ -143,9 +146,12 @@ const Header = () => {
                                         navigate("/wishlist");
                                     }}
                                 >
-                                    <FavoriteIcon color="error" />
+                                    <Badge badgeContent={favoriteData?.total} color="error" showZero>
+                                        <FavoriteIcon />
+                                    </Badge>
                                 </IconButton>
                             </Tooltip>
+
                             <Tooltip title="Giỏ hàng">
                                 <IconButton
                                     color="inherit"
@@ -173,7 +179,7 @@ const Header = () => {
                                         navigate("/notification?skip=0&take=10");
                                     }}
                                 >
-                                    <Badge badgeContent={0} color="success" showZero>
+                                    <Badge badgeContent={0} color="warning" showZero>
                                         <NotificationsActiveIcon />
                                     </Badge>
                                 </IconButton>
@@ -198,7 +204,7 @@ const Header = () => {
                     </div>
                 </Container>
             </Box>
-            <div className="bg-gray-100 pt-2 pb-2">
+            <div className="bg-[#fff7ed] pt-2 pb-2">
                 <Container className="flex justify-center">
                     <Box>
                         {items.map((item, index) => (
