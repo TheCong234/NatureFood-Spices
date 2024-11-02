@@ -7,6 +7,7 @@ import {
     updateUserByIdAction,
     createDeliveryAction,
     getCurrentUserDeliveryAction,
+    updateCurrentUserAction,
 } from "./userAction";
 
 const userSlice = createSlice({
@@ -110,6 +111,20 @@ const userSlice = createSlice({
                 state.data.users[index] = action.payload;
             })
             .addCase(updateUserByIdAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+            //update current user
+            .addCase(updateCurrentUserAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateCurrentUserAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.currentUser = action.payload;
+            })
+            .addCase(updateCurrentUserAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             })

@@ -38,32 +38,14 @@ function ProfileSettings() {
         handleClose(); // Close modal after saving
     };
 
-    const buttonStyles = {
-        marginTop: "20px",
-        border: "2px solid #545454",
-        borderRadius: "10px",
-        backgroundColor: "white",
-        color: "black",
-        transition: "all 0.2s ease",
-        boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)",
-        fontSize: "12px",
-        "&:hover": {
-            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
-            backgroundColor: "white",
-        },
-    };
-
     return (
         <div className="flex flex-col items-center p-6 min-h-screen">
             <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg">
-                <h2 className="text-center text-lg font-semibold mb-4">Mọi thay đổi ở đây sẽ được mọi người đều thấy</h2>
-
                 <div className="flex flex-col items-center mb-4">
                     <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-2">
-                        {/* Placeholder for profile picture */}
                         <span className="text-gray-500">Ảnh đại diện</span>
                     </div>
-                    <Button onClick={handleButtonClick} sx={buttonStyles}>
+                    <Button onClick={handleButtonClick} variant="outlined" color="warning" size="small" className="na-text-transform-none">
                         Tải ảnh lên
                     </Button>
                     <input
@@ -215,7 +197,7 @@ function ProfileSettings() {
                 </div>
             </div>
 
-            <Button sx={buttonStyles}>Lưu thay đổi lại</Button>
+            <Button>Lưu thay đổi lại</Button>
         </div>
     );
 }

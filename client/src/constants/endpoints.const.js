@@ -8,6 +8,7 @@ export const UserV1 = {
     UPDATE_USER_BY_ID: "/user/",
     CREATE_DELIVERY: "/user/delivery/create",
     GET_DELIVERY: "/user/delivery/all",
+    CHANGE_PASSWORD: "/user/change-password",
 };
 
 export const StoreV1 = {

@@ -21,10 +21,10 @@ router.post("/delivery/create", authJwt, asyncHandler(UserController.createDeliv
 
 router.post("/verify-email/otp", authJwt, asyncHandler(UserController.sendOtpToEmail));
 
-router.put("/me", authJwt, UserController.updateUser);
+router.put("/me", authJwt, asyncHandler(UserController.updateUser));
 router.put("/image", authJwt, upload.single("image"), UserController.updateUserImage);
 
+router.patch("/change-password", authJwt, asyncHandler(UserController.changePassword));
 router.patch("/:id", asyncHandler(UserController.updateUserById));
 
-router.put("/change-password/:email", UserController.changePassword);
 export default router;

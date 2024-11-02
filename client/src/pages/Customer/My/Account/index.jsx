@@ -1,22 +1,18 @@
 import React, { useState } from "react";
-import {
-    TextField,
-    Button,
-    Select,
-    MenuItem,
-    Typography,
-    Box,
-    Paper,
-    InputAdornment,
-    IconButton,
-    Link,
-    Divider,
-    FormControlLabel,
-    Switch,
-} from "@mui/material";
+import { TextField, Button, Typography, Box, Paper, InputAdornment, IconButton, Link, Divider } from "@mui/material";
 import { styled } from "@mui/system";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useDispatch, useSelector } from "react-redux";
+import { formatDate } from "../../../../services/functions";
+import { Link as LinkRouter } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ChangeEmailYup, ChangePasswordYup } from "../../../../validations/yup.validations";
+import { tryCatchWrapper } from "../../../../utils/asyncHelper";
+import { changePasswordApi } from "../../../../apis/user.apis";
+import useSnackNotify from "../../../../components/SnackNotify";
+import { updateCurrentUserAction } from "../../../../hooks/Redux/User/userAction";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(4),
@@ -29,15 +25,53 @@ function ProfileSettings() {
         new: false,
         confirm: false,
     });
-    const [postalMail, setPostalMail] = useState(false);
-    const [phoneCalls, setPhoneCalls] = useState(false);
+    const dispatch = useDispatch();
+    const { currentUser } = useSelector((state) => state.user);
+    const snackNotify = useSnackNotify();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm({
+        resolver: yupResolver(ChangePasswordYup),
+    });
+
+    const {
+        register: registerChangeEmail,
+        handleSubmit: handleSubmitChangeEmail,
+        formState: { errors: errorsChangeEmail },
+    } = useForm({
+        resolver: yupResolver(ChangeEmailYup),
+    });
 
     const toggleShowPassword = (field) => {
         setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
     };
 
+    const onSubmitPassword = async (data) => {
+        const { result, error } = await tryCatchWrapper(changePasswordApi, data);
+        console.log(result, error);
+        if (error) {
+            snackNotify("error")(error?.response?.data?.data.split("\n")[0]);
+        } else {
+            snackNotify("success")(result.message);
+            reset();
+        }
+    };
+
+    const onSubmitEmail = async (data) => {
+        const response = await dispatch(updateCurrentUserAction(data));
+        console.log(response);
+        if (response.error) {
+            snackNotify("error")(response.payload.response.data.data.split("\n")[0]);
+        } else {
+            snackNotify("success")("Cập nhật thông tin thành công");
+        }
+    };
+
     return (
-        <Box className="flex flex-col items-center bg-gray-100 min-h-screen py-10">
+        <Box className="flex flex-col items-center bg-gray-100 min-h-screen py-3">
             <StyledPaper
                 elevation={3}
                 className="w-3/4 "
@@ -51,16 +85,18 @@ function ProfileSettings() {
                 <Box className="mb-4">
                     <Typography variant="body1">Tên:</Typography>
                     <Typography variant="body1" color="textSecondary" className="font-semibold">
-                        Duong Nguyen
+                        {currentUser?.username}
                     </Typography>
                 </Box>
                 <Box className="mb-4">
                     <Typography variant="body1">Là thành viên từ ngày:</Typography>
                     <Typography variant="body1" color="textSecondary" className="font-semibold">
-                        Ngày 29 tháng 10 năm 2024
+                        {formatDate(currentUser?.createdAt)}
                     </Typography>
                 </Box>
                 <Button
+                    component={LinkRouter}
+                    to="/my/profile"
                     sx={{
                         border: "2px solid #545454",
                         borderRadius: "25px",
@@ -79,7 +115,7 @@ function ProfileSettings() {
                 </Button>
             </StyledPaper>
 
-            <StyledPaper
+            {/* <StyledPaper
                 elevation={3}
                 className="w-3/4"
                 sx={{
@@ -136,154 +172,180 @@ function ProfileSettings() {
                 >
                     Lưu cài đặt
                 </Button>
-            </StyledPaper>
-            <Box
+            </StyledPaper> */}
+            <StyledPaper
+                elevation={3}
+                className="w-3/4 "
                 sx={{
-                    width: "75%",
-
-                    margin: "auto",
-                    padding: 3,
-                    border: "1px solid #ddd",
                     borderRadius: "14px",
-                    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-                    backgroundColor: "white",
-                    mb: 4,
                 }}
             >
-                <Typography variant="h6" gutterBottom>
-                    Mật khẩu
-                </Typography>
-                <TextField
-                    label="Mật khẩu hiện tại"
-                    variant="outlined"
-                    type={showPassword.current ? "text" : "password"}
-                    fullWidth
-                    margin="normal"
-                    size="small"
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton onClick={() => toggleShowPassword("current")} edge="end">
-                                    {showPassword.current ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                <TextField
-                    label="Mật khẩu mới"
-                    variant="outlined"
-                    type={showPassword.new ? "text" : "password"}
-                    fullWidth
-                    margin="normal"
-                    size="small"
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton onClick={() => toggleShowPassword("new")} edge="end">
-                                    {showPassword.new ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                <TextField
-                    label="Nhập lại mật khẩu mới "
-                    variant="outlined"
-                    type={showPassword.confirm ? "text" : "password"}
-                    fullWidth
-                    margin="normal"
-                    size="small"
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton onClick={() => toggleShowPassword("confirm")} edge="end">
-                                    {showPassword.confirm ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                <Button
-                    sx={{
-                        border: "2px solid #545454",
-                        borderRadius: "25px",
-                        backgroundColor: "black",
-                        color: "white",
-                        transition: "all 0.2s ease",
-                        boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)",
-                        fontSize: "12px",
-                        "&:hover": {
-                            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.7)",
-                            backgroundColor: "#333",
-                        },
-                    }}
-                >
-                    Lưu thay đổi mật khẩu
-                </Button>
-                <Typography variant="body2" sx={{ marginTop: 2, textAlign: "center" }}>
+                <form onSubmit={handleSubmit(onSubmitPassword)}>
+                    <Typography variant="h6" gutterBottom>
+                        Mật khẩu
+                    </Typography>
+                    <TextField
+                        {...register("currentPassword")}
+                        label="Mật khẩu hiện tại"
+                        variant="outlined"
+                        type={showPassword.current ? "text" : "password"}
+                        fullWidth
+                        margin="normal"
+                        size="small"
+                        error={!!errors.currentPassword}
+                        helperText={errors.currentPassword && errors.currentPassword.message}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton onClick={() => toggleShowPassword("current")} edge="end">
+                                        {showPassword.current ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <TextField
+                        {...register("password")}
+                        label="Mật khẩu mới"
+                        variant="outlined"
+                        type={showPassword.new ? "text" : "password"}
+                        fullWidth
+                        margin="normal"
+                        size="small"
+                        error={!!errors.password}
+                        helperText={errors.password && errors.password.message}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton onClick={() => toggleShowPassword("new")} edge="end">
+                                        {showPassword.new ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <TextField
+                        {...register("confirmPassword")}
+                        label="Nhập lại mật khẩu mới "
+                        variant="outlined"
+                        type={showPassword.confirm ? "text" : "password"}
+                        fullWidth
+                        margin="normal"
+                        size="small"
+                        error={!!errors.confirmPassword}
+                        helperText={errors.confirmPassword && errors.confirmPassword.message}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton onClick={() => toggleShowPassword("confirm")} edge="end">
+                                        {showPassword.confirm ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <Button
+                        sx={{
+                            border: "2px solid #545454",
+                            borderRadius: "25px",
+                            backgroundColor: "black",
+                            color: "white",
+                            transition: "all 0.2s ease",
+                            boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)",
+                            fontSize: "12px",
+                            "&:hover": {
+                                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.7)",
+                                backgroundColor: "#333",
+                            },
+                        }}
+                        type="submit"
+                    >
+                        Lưu thay đổi mật khẩu
+                    </Button>
+                    {/* <Typography variant="body2" sx={{ marginTop: 2, textAlign: "center" }}>
                     Cần trợ giúp ?{" "}
                     <Link href="https://help.etsy.com" target="_blank" rel="noopener">
                         Tìm câu trả lời tại Trung tâm trợ giúp NatureFood
                     </Link>
-                </Typography>
-            </Box>
+                </Typography> */}
+                </form>
+            </StyledPaper>
 
-            <Box
+            <StyledPaper
+                elevation={3}
+                className="w-3/4 "
                 sx={{
-                    width: "75%",
-                    margin: "auto",
-                    padding: 3,
-                    border: "1px solid #ddd",
                     borderRadius: "14px",
-                    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-                    mb: 4,
-                    backgroundColor: "white",
                 }}
             >
                 <Typography variant="h6" gutterBottom>
                     Email
                 </Typography>
-                <Typography variant="body2">email hiện tại</Typography>
-                <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                    denchenhvenh@gmail.com
+                <Typography variant="body2">Email hiện tại</Typography>
+                <Typography variant="body1" sx={{ fontWeight: "bold" }} gutterBottom>
+                    {currentUser?.email}
                 </Typography>
                 <Typography variant="body2">Trạng thái </Typography>
-                <Typography variant="body1" sx={{ fontWeight: "bold", color: "green" }}>
-                    Đã xác nhận
-                </Typography>
+
+                {currentUser?.emailVerify ? (
+                    <Typography variant="body1" sx={{ fontWeight: "bold", color: "green" }}>
+                        Đã xác nhận
+                    </Typography>
+                ) : (
+                    <Typography component={LinkRouter} variant="body1" sx={{ fontWeight: "bold", color: "orange" }}>
+                        Chưa xác thực
+                    </Typography>
+                )}
 
                 <Divider sx={{ my: 2 }} />
 
                 <Typography variant="h6" gutterBottom>
-                    Lưu email của bạn
+                    Cập nhật email
                 </Typography>
-                <TextField label="email mới" variant="outlined" fullWidth margin="normal" size="small" />
-                <TextField label="nhập lại email mới" variant="outlined" fullWidth margin="normal" size="small" />
-                <TextField label="Mật khẩu NatureFood của bạn" variant="outlined" type="password" fullWidth margin="normal" size="small" />
-                <Button
-                    sx={{
-                        border: "2px solid #545454",
-                        borderRadius: "25px",
-                        backgroundColor: "black",
-                        color: "white",
-                        transition: "all 0.2s ease",
-                        boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)",
-                        fontSize: "12px",
-                        "&:hover": {
-                            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.7)",
-                            backgroundColor: "#333",
-                        },
-                    }}
-                >
-                    Lưu thay đổi
-                </Button>
-                <Typography variant="body2" sx={{ marginTop: 2 }}>
-                    Địa chỉ email của bạn sẽ không thay đổi cho đến khi bạn xác nhận qua email.
-                </Typography>
-            </Box>
+                <form onSubmit={handleSubmitChangeEmail(onSubmitEmail)}>
+                    <TextField
+                        {...registerChangeEmail("email")}
+                        label="Email mới"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        size="small"
+                        error={!!errorsChangeEmail.email}
+                        helperText={errorsChangeEmail.email && errorsChangeEmail.email.message}
+                    />
+                    <TextField
+                        {...registerChangeEmail("password")}
+                        label="Mật khẩu đăng nhập vào Nature Food"
+                        variant="outlined"
+                        type="password"
+                        fullWidth
+                        margin="normal"
+                        size="small"
+                        error={!!errorsChangeEmail.password}
+                        helperText={errorsChangeEmail.password && errorsChangeEmail.password.message}
+                    />
+                    <Button
+                        sx={{
+                            border: "2px solid #545454",
+                            borderRadius: "25px",
+                            backgroundColor: "black",
+                            color: "white",
+                            transition: "all 0.2s ease",
+                            boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)",
+                            fontSize: "12px",
+                            "&:hover": {
+                                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.7)",
+                                backgroundColor: "#333",
+                            },
+                        }}
+                        type="submit"
+                    >
+                        Lưu thay đổi
+                    </Button>
+                </form>
+            </StyledPaper>
 
-            <Box
+            {/* <Box
                 sx={{
                     width: "75%",
                     margin: "auto",
@@ -329,7 +391,7 @@ function ProfileSettings() {
                 >
                     Lưu sở thích giao tiếp
                 </Button>
-            </Box>
+            </Box> */}
             <Box
                 className="p-6 w-3/4 mx-auto border border-gray-300 rounded-md mb-6 mt-6 "
                 sx={{
@@ -354,13 +416,13 @@ function ProfileSettings() {
                     </Link>{" "}
                     để được giúp đỡ.
                 </Typography>
-                <Typography className="mb-4 text-sm text-gray-600">
+                {/* <Typography className="mb-4 text-sm text-gray-600">
                     Bạn muốn xóa vĩnh viễn tài khoản của mình? Hãy đến{" "}
                     <Link href="#" underline="hover">
                         Cài đặt quyền riêng tư
                     </Link>{" "}
                     và nhấp vào "Yêu cầu xóa dữ liệu của bạn".
-                </Typography>
+                </Typography> */}
                 <hr />
                 <Button
                     sx={{
