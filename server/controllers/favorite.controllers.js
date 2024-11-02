@@ -29,7 +29,13 @@ const FavoriteController = {
 
     async getFavoriteStoreProducts(req, res) {
         const { skip, take } = req.query;
-        const products = await FavoriteModel.find({ user: req.user._id }).skip(skip).limit(take);
+        const products = await FavoriteModel.find({ user: req.user._id })
+            .populate({
+                path: "storeProduct",
+                populate: [{ path: "productId" }, { path: "storeId" }],
+            })
+            .skip(skip)
+            .limit(take);
         const total = await FavoriteModel.countDocuments({
             user: req.user._id,
         });

@@ -7,8 +7,8 @@ export const addFavoriteStoreProductApi = async (storeProductId) => {
     return result.data;
 };
 
-export const getFavoriteStoreProductsApi = async () => {
-    const result = await apiClient.get(FavoriteV1.GET_FAVORITE_STORE_PRODUCT);
+export const getFavoriteStoreProductsApi = async (params) => {
+    const result = await apiClient.get(FavoriteV1.GET_FAVORITE_STORE_PRODUCT, { params });
     return result.data;
 };
 

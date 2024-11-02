@@ -17,8 +17,8 @@ export const addFavoriteStoreProductAction = createAsyncThunk("user/addFavoriteS
     return result.data;
 });
 
-export const getFavoriteStoreProductsAction = createAsyncThunk("user/getFavoriteStoreProductsAction", async (_, thunkAPI) => {
-    const { result, error } = await tryCatchWrapper(getFavoriteStoreProductsApi);
+export const getFavoriteStoreProductsAction = createAsyncThunk("user/getFavoriteStoreProductsAction", async (data, thunkAPI) => {
+    const { result, error } = await tryCatchWrapper(getFavoriteStoreProductsApi, data);
     if (error) {
         return thunkAPI.rejectWithValue(error.response);
     }

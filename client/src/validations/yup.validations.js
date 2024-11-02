@@ -155,3 +155,34 @@ export const CheckoutYup = yup.object().shape({
     paymentMethod: yup.number().required("Phương thức thanh toán là bắt buộc"),
     deliveryMethod: yup.number().required("Cách thức giao hàng là bắt buộc"),
 });
+
+export const ChangePasswordYup = yup.object().shape({
+    currentPassword: yup
+        .string()
+        .required("Vui lòng nhập mật khẩu hiện tại")
+        .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+        .matches(/[A-Z]/, "Mật khẩu phải có ít nhất một chữ cái viết hoa") // Kiểm tra chữ cái viết hoa
+        .matches(/\d/, "Mật khẩu phải có ít nhất một chữ số"), // Kiểm tra chữ số
+
+    password: yup
+        .string()
+        .required("Vui lòng nhập mật khẩu")
+        .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+        .matches(/[A-Z]/, "Mật khẩu phải có ít nhất một chữ cái viết hoa") // Kiểm tra chữ cái viết hoa
+        .matches(/\d/, "Mật khẩu phải có ít nhất một chữ số"), // Kiểm tra chữ số
+
+    confirmPassword: yup
+        .string()
+        .required("Vui lòng xác nhận mật khẩu")
+        .oneOf([yup.ref("password"), null], "Mật khẩu xác nhận không khớp"),
+});
+
+export const ChangeEmailYup = yup.object().shape({
+    email: yup.string().email("Vui lòng nhập một địa chỉ email hợp lệ").required("Vui lòng nhập email"),
+    password: yup
+        .string()
+        .required("Vui lòng nhập mật khẩu")
+        .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+        .matches(/[A-Z]/, "Mật khẩu phải có ít nhất một chữ cái viết hoa") // Kiểm tra chữ cái viết hoa
+        .matches(/\d/, "Mật khẩu phải có ít nhất một chữ số"), // Kiểm tra chữ số
+});

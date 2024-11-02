@@ -14,7 +14,7 @@ const Index = () => {
                             <img src="/assets/images/logo.png" alt="Phoenix Logo" className="w-[80px] h-[40px]" />
                         </div>
                         <div className="">
-                            <p className="text-3xl font-bold ml-3">Thực Phẩm Tự Nhiên</p>
+                            <p className="text-3xl font-bold ml-3">NatureFood</p>
                         </div>
                     </div>
                     <p className="mt-3">

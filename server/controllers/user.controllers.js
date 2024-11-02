@@ -9,10 +9,7 @@ import AddressModel from "../models/address.model.js";
 const UserController = {
     async register(req, res) {
         const user = await UserModel.create(req.body);
-        const newUser = await user.save();
-
-        const cart = new CartModel({ user: newUser._id });
-        await cart.save();
+        await user.save();
         const token = user.createToken();
         return res.status(statusCode.CREATED).json(BaseResponse.success("Đăng ký tài khoản thành công", { token }));
     },
@@ -55,8 +52,13 @@ const UserController = {
     },
 
     async updateUser(req, res) {
+        const { password } = req.body;
+        const user = await UserModel.findById(req.user._id);
+        if (!user.authenticateUser(password)) {
+            throw new Error("Mật khẩu không đúng");
+        }
         const updatedUser = await UserModel.findByIdAndUpdate(req.user._id, req.body, { new: true });
-        return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật người dùng thành công", updatedUser));
+        return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật thông tin thành công", updatedUser));
     },
 
     async updateUserImage(req, res) {
@@ -85,17 +87,14 @@ const UserController = {
     },
 
     async changePassword(req, res) {
-        try {
-            const { email } = req.params;
-            const { password } = req.body;
-            const user = await UserModel.findOne({ email: email });
-            user.password = password;
-            const updatedUser = await user.save();
-            return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật mật khẩu mới thành công", updatedUser));
-        } catch (error) {
-            console.log("change password: ", error);
-            return res.status(statusCode.NOT_FOUND).json(BaseResponse.success("Không tìm thấy người dùng"), error);
+        const { currentPassword, password } = req.body;
+        const user = await UserModel.findById(req.user._id);
+        if (!user.authenticateUser(currentPassword)) {
+            throw new Error("Mật khẩu hiện tại không đúng");
         }
+        user.password = password;
+        const updatedUser = await user.save();
+        return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật mật khẩu mới thành công", updatedUser));
     },
 
     async sendOtpToEmail(req, res) {

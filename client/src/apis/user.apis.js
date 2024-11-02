@@ -1,6 +1,5 @@
 import { UserV1 } from "../constants/endpoints.const";
 import { apiClient } from "./config.api";
-import Cookies from "js-cookie";
 
 export const loginApi = async (data) => {
     const response = await apiClient.post(UserV1.USER_LOGIN, data, {
@@ -22,10 +21,7 @@ export const registerApi = async (data) => {
         },
     });
     if (response.data.success) {
-        Cookies.set("token", response.data.data.token, {
-            expires: 7,
-            secure: true,
-        });
+        localStorage.setItem("token", response.data.data.token);
         return response.data;
     }
     return response;
@@ -73,5 +69,15 @@ export const createDeliveryApi = async (data) => {
 
 export const getCurrentUserDeliveryApi = async (data) => {
     const response = await apiClient.get(UserV1.GET_DELIVERY);
+    return response.data;
+};
+
+export const changePasswordApi = async (data) => {
+    const response = await apiClient.patch(UserV1.CHANGE_PASSWORD, data);
+    return response.data;
+};
+
+export const updateCurrentUserApi = async (data) => {
+    const response = await apiClient.put(UserV1.USER_UPDATE, data);
     return response.data;
 };
