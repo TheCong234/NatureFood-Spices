@@ -13,6 +13,7 @@ export default function ReviewTag({ review, product }) {
     const [isOpenFeedback, setIsOpenFeedBack] = useState(false);
     const dispatch = useDispatch();
     const snackNotify = useSnackNotify();
+    const { currentUser } = useSelector((state) => state.user);
 
     const {
         register,
@@ -57,18 +58,23 @@ export default function ReviewTag({ review, product }) {
                         {`Đã đăng: ${convertTimeDuration(review?.createdAt)}`}
                     </Typography>
                     <div>
-                        <Button variant="text" color="warning" size="small" className="na-text-transform-none" onClick={deleteReview}>
-                            Xóa
-                        </Button>
-                        <Button
-                            variant="text"
-                            color="primary"
-                            size="small"
-                            sx={{ textTransform: "none" }}
-                            onClick={() => setIsOpenFeedBack(!isOpenFeedback)}
-                        >
-                            {isOpenFeedback ? "Đóng" : "Trả lời"}
-                        </Button>
+                        {currentUser?._id == review?.author?._id && (
+                            <Button variant="text" color="warning" size="small" className="na-text-transform-none" onClick={deleteReview}>
+                                Xóa
+                            </Button>
+                        )}
+
+                        {currentUser?.store == product?.storeId?._id && (
+                            <Button
+                                variant="text"
+                                color="primary"
+                                size="small"
+                                sx={{ textTransform: "none" }}
+                                onClick={() => setIsOpenFeedBack(!isOpenFeedback)}
+                            >
+                                {isOpenFeedback ? "Đóng" : "Trả lời"}
+                            </Button>
+                        )}
                     </div>
                 </Box>
                 <Collapse in={isOpenFeedback} timeout="auto" unmountOnExit>

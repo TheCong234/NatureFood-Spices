@@ -143,7 +143,7 @@ const Header = () => {
                                             snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
                                             return;
                                         }
-                                        navigate("/wishlist");
+                                        navigate("/wishlist?skip=0&take=10");
                                     }}
                                 >
                                     <Badge badgeContent={favoriteData?.total} color="error" showZero>

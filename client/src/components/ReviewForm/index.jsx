@@ -10,11 +10,11 @@ import { createReviewAction } from "../../hooks/Redux/Review/reviewAction";
 import useSnackNotify from "../SnackNotify";
 
 const labels = {
-    1: "Useless+",
-    2: "Poor+",
-    3: "Ok+",
-    4: "Good+",
-    5: "Excellent+",
+    1: "Rất tệ",
+    2: "Tệ",
+    3: "Trung bình",
+    4: "Tốt",
+    5: "Rất tốt",
 };
 
 function getLabelText(value) {
@@ -81,7 +81,6 @@ export default function ReviewForm({ product }) {
                                     sx={{
                                         padding: 0,
                                         textTransform: "none",
-                                        px: 2,
                                         zIndex: 1,
                                         width: "96px",
                                     }}
