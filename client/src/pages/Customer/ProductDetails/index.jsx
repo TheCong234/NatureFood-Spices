@@ -10,7 +10,7 @@ import DetailsTab from "./DetailsTab";
 import ReviewTab from "./ReviewTab";
 import { getStoreProductApi } from "../../../apis/product.store";
 import { formatPrice } from "../../../services/functions";
-import { QuantityInput } from "../../../components";
+import { ChipStyled, QuantityInput } from "../../../components";
 import { createCartItemAction } from "../../../hooks/Redux/Cart/cartAction";
 import useSnackNotify from "../../../components/SnackNotify";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
@@ -109,11 +109,20 @@ const ProductDetail = () => {
                         <Rating name="size-small" value={3} readOnly size="small" className="flex items-center mr-2 " />
                         <span>(3.0)</span>
                     </Stack>
-                    <div>
-                        <p className="text-3xl font-bold text-orange">
-                            <small>₫</small>
-                            {product && formatPrice(product?.productId?.salePrice)}
-                        </p>
+                    <div className="flex text-[#d26426] items-center">
+                        <div>
+                            <div className="text-2xl font-bold">
+                                {formatPrice(product?.productId.salePrice * (1 - product?.discountPrice))}
+                                <sup>đ</sup>
+                            </div>
+                            {product?.discountPrice > 0 && (
+                                <del className="flex items-center ml-3 font-semibold text-gray-500">
+                                    <small>₫</small>
+                                    {formatPrice(product?.productId.salePrice)}
+                                </del>
+                            )}
+                        </div>
+                        {product?.discountPrice > 0 && <ChipStyled label={`Giảm ${product?.discountPrice * 100}%`} color="error" className="ml-3" />}
                     </div>
 
                     <hr className="my-4" />

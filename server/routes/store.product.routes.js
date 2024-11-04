@@ -9,8 +9,11 @@ router.get("/category/:categoryId", asyncHandler(StoreProductController.getStore
 router.get("/group-by-product/:productId", asyncHandler(StoreProductController.getStoreProductsByProduct));
 router.get("/details/:storeProductId", asyncHandler(StoreProductController.getStoreProduct));
 router.get("/all", asyncHandler(StoreProductController.getStoreProducts));
+router.get("/store", authJwt, asyncHandler(StoreProductController.getStoreProductsByStore));
 router.get("/search", asyncHandler(StoreProductController.searchCustomer));
 
 router.post("/create", authJwt, asyncHandler(StoreProductController.createStoreProducts));
+
+router.put("/:storeProductId", asyncHandler(StoreProductController.updateStoreProduct));
 
 export default router;

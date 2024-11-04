@@ -9,10 +9,26 @@ import ProductModel from "../models/product.model.js";
 const StoreProductController = {
     async getStoreProducts(req, res) {
         const { skip, take } = req.query;
-        const products = await StoreProductModel.find().populate("productId").skip(skip).limit(take);
+        const products = await StoreProductModel.find({ status: true })
+            .populate("productId")
+            .populate({ path: "storeId", populate: "address" })
+            .skip(skip)
+            .limit(take);
         const total = await StoreProductModel.countDocuments();
         return res.status(statusCode.OK).json(
             BaseResponse.success("Lấy sản phẩm sale thành công", {
+                products,
+                total,
+            })
+        );
+    },
+
+    async getStoreProductsByStore(req, res) {
+        const { skip, take, type } = req.query;
+        const products = await StoreProductModel.find({ storeId: req.user.store }).populate("productId").skip(skip).limit(take);
+        const total = await StoreProductModel.countDocuments({ storeId: req.user.store });
+        return res.status(statusCode.OK).json(
+            BaseResponse.success("Lấy sản phẩm của cửa hàng thành công", {
                 products,
                 total,
             })
@@ -116,6 +132,12 @@ const StoreProductController = {
             .limit(parseInt(take));
         const total = await StoreProductModel.countDocuments({ productId: { $in: productIds } });
         return res.status(statusCode.OK).json(BaseResponse.success("Tìm sản phẩm thành công", { product: { products: storeProducts, total } }));
+    },
+
+    async updateStoreProduct(req, res) {
+        const { storeProductId } = req.params;
+        const storeProduct = await StoreProductModel.findByIdAndUpdate(storeProductId, req.body, { new: true }).populate("productId");
+        return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật sản phẩm thành công", storeProduct));
     },
 };
 

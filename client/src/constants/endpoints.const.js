@@ -38,10 +38,12 @@ export const ProductV1 = {
 export const StoreProductV1 = {
     CREATE: "/store-product/create",
     GET_STORE_PRODUCTS: "/store-product/all",
+    GET_STORE_PRODUCTS_BY_STORE: "/store-product/store",
     GET_STORE_PRODUCT: "/store-product/details/",
     GET_STORE_PRODUCT_BY_CATEGORY: "/store-product/category/",
     GET_STORE_PRODUCT_BY_PRODUCT: "/store-product/group-by-product/",
     SEARCH: "/store-product/search",
+    UPDATE: "/store-product/",
 };
 
 export const BannerV1 = {

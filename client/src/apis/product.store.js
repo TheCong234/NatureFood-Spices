@@ -8,6 +8,13 @@ export const getStoreProductsApi = async (params) => {
     return response.data;
 };
 
+export const getStoreProductsByStoreApi = async (params) => {
+    const response = await apiClient.get(StoreProductV1.GET_STORE_PRODUCTS_BY_STORE, {
+        params,
+    });
+    return response.data;
+};
+
 export const getStoreProductApi = async (storeProductId) => {
     const response = await apiClient.get(StoreProductV1.GET_STORE_PRODUCT + storeProductId);
     return response.data;
@@ -25,5 +32,10 @@ export const getStoreProductsByProductApi = async (productId) => {
 
 export const searchCustomerApi = async (params) => {
     const response = await apiClient.get(StoreProductV1.SEARCH, { params });
+    return response.data;
+};
+
+export const updateStoreProductApi = async (data) => {
+    const response = await apiClient.put(StoreProductV1.UPDATE + data.storeProductId, data.formData);
     return response.data;
 };
