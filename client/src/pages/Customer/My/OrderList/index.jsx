@@ -90,23 +90,23 @@ const OrderList = () => {
                                         className="na-table-row "
                                     >
                                         <TableCell>
-                                            <div className="na-fs-16 ">
+                                            <div className="na-fs-16 min-w-[200px]">
                                                 {(() => {
                                                     const deliveryString = splitDeliveryString(order?.delivery);
                                                     return (
                                                         <div>
-                                                            {`${deliveryString.street}, ${deliveryString.ward}, ${deliveryString.district}, ${deliveryString.city}`}
+                                                            <p className="line-clamp-1">{`${deliveryString.street}, ${deliveryString.ward}, ${deliveryString.district}, ${deliveryString.city}`}</p>
                                                             <p className="text-sm text-gray-500">{deliveryString.ownerName}</p>
                                                         </div>
                                                     );
                                                 })()}
                                             </div>
                                         </TableCell>
-                                        <TableCell align="right" className="na-fs-16 ">
+                                        <TableCell align="right" className="na-fs-16 whitespace-nowrap">
                                             {formatDate(order?.createdAt)}
                                         </TableCell>
                                         <TableCell align="right">
-                                            <div className="na-fs-16  font-semibold text-orange">
+                                            <div className="na-fs-16  font-semibold text-orange whitespace-nowrap">
                                                 <small>₫</small>
                                                 {formatPrice(order?.totalAmount)}
                                             </div>
@@ -119,8 +119,8 @@ const OrderList = () => {
                                                 variant="contained"
                                                 color="success"
                                                 size="small"
-                                                className="na-text-transform-none"
-                                                onClick={() => navigate(`/my/order-details/${order?._id}`)}
+                                                className="na-text-transform-none whitespace-nowrap"
+                                                onClick={() => navigate(`/my/order/${order?._id}`)}
                                             >
                                                 Xem chi tiết
                                             </Button>

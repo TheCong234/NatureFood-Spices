@@ -51,14 +51,28 @@ const UserController = {
         }
     },
 
-    async updateUser(req, res) {
+    async updateCurrentUser(req, res) {
         const { password } = req.body;
         const user = await UserModel.findById(req.user._id);
         if (!user.authenticateUser(password)) {
             throw new Error("Mật khẩu không đúng");
         }
-        const updatedUser = await UserModel.findByIdAndUpdate(req.user._id, req.body, { new: true });
-        return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật thông tin thành công", updatedUser));
+        if (req.file) {
+            if (req.user.image.filename) {
+                await cloudinary.uploader.destroy(req.user.image.filename);
+            }
+            delete req.body.password;
+            const updatedUser = await UserModel.findByIdAndUpdate(
+                req.user._id,
+                { ...req.body, image: { url: req.file.path, filename: req.file.filename } },
+                { new: true }
+            );
+            return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật thông tin thành công", updatedUser));
+        } else {
+            delete req.body.password;
+            const updatedUser = await UserModel.findByIdAndUpdate(req.user._id, req.body, { new: true });
+            return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật thông tin thành công", updatedUser));
+        }
     },
 
     async updateUserImage(req, res) {
