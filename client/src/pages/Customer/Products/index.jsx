@@ -14,6 +14,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { createCartItemAction } from "../../../hooks/Redux/Cart/cartAction";
+import { ChipStyled } from "@components";
 
 const productsEachPage = 10;
 const useQuery = () => {
@@ -85,7 +86,7 @@ export default function Products() {
             <Grid container spacing={2}>
                 {productData?.products?.map((product) => (
                     <Grid item xs={6} md={3} key={product?._id}>
-                        <Card className="product_card-primary">
+                        <Card className="product_card-primary relative">
                             <Box className="cursor-pointer" onClick={() => navigate(`/product/details/${product?._id}`)}>
                                 <Swiper className="product_card-primary_swiper " pagination={true} modules={[PaginationSwipper]}>
                                     {product?.productId?.images?.map((image) => (
@@ -96,28 +97,33 @@ export default function Products() {
                                 </Swiper>
                             </Box>
                             <Box className="px-5 cursor-pointer" onClick={() => navigate(`/product/details/${product?._id}`)}>
-                                <p className="font-semibold text-truncate-2 text-lg leading-5">{product?.productId?.name}</p>
-                                <Typography variant="body2" sx={{ color: "text.secondary", my: 1 }}>
-                                    {product?.productId?.category?.name}
-                                </Typography>
-                                <div className="flex text-[#d26426]">
-                                    <div className="text-2xl font-semibold">
-                                        <small>₫</small>
-                                        {formatPrice(product?.productId?.salePrice)}
+                                <p className="text-base line-clamp-2 leading-5 min-h-[40px] font-semibold">{product?.productId?.name}</p>
+                                <div className="flex text-[#d26426] justify-between items-center">
+                                    <div className="min-h-[56px]">
+                                        <div className="text-2xl font-bold">
+                                            {formatPrice(product?.productId.salePrice * (1 - product?.discountPrice))}
+                                            <sup>đ</sup>
+                                        </div>
+                                        {product?.discountPrice > 0 && (
+                                            <del className="flex items-centerfont-semibold text-gray-500">
+                                                <small>₫</small>
+                                                {formatPrice(product?.productId.salePrice)}
+                                            </del>
+                                        )}
                                     </div>
-                                    <del className="flex items-center ml-3 font-semibold text-gray-500">
-                                        <small>₫</small>
-                                        {formatPrice(product?.productId?.salePrice + product?.productId?.salePrice * 0.1)}
-                                    </del>
+                                    {product?.discountPrice > 0 && <ChipStyled label={`Giảm ${product?.discountPrice * 100}%`} color="error" />}
                                 </div>
-                                <Typography variant="body2" sx={{ color: "text.secondary", my: 1 }}>
-                                    Stock: <span className="text-green-500 font-semibold">{product?.stock}</span>
-                                </Typography>
+                                <div className="flex justify-between text-sm text-gray-400">
+                                    <p className="">
+                                        Sẵn có: <span className="text-green-500 font-semibold">{product?.stock}</span>
+                                    </p>
+                                    <p>{product?.storeId.address.city}</p>
+                                </div>
                             </Box>
-                            <Box className="px-4 pb-4 flex justify-between">
+                            <Box className="px-4 pb-4 flex justify-between mt-2">
                                 <Rating name="read-only" value={product?.rating} readOnly />
                                 <Stack direction={"row"} spacing={1}>
-                                    {favoriteData?.products?.some((f) => f?.storeProduct == product?._id) ? (
+                                    {favoriteData?.products?.some((f) => f?.storeProduct._id == product?._id) ? (
                                         <Tooltip title="Bỏ yêu thích" placement="top">
                                             <Button
                                                 variant="outlined"
@@ -164,6 +170,9 @@ export default function Products() {
                                     </Tooltip>
                                 </Stack>
                             </Box>
+                            <div className="absolute top-3 -left-2 z-10">
+                                <ChipStyled label={product?.storeId?.name} color="success" />
+                            </div>
                         </Card>
                     </Grid>
                 ))}

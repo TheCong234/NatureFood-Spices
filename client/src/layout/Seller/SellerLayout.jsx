@@ -18,7 +18,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import { rootColor } from "../theme/colors";
+import { rootColor } from "../../theme/colors";
 import PeopleIcon from "@mui/icons-material/People";
 import ProductIcon from "@mui/icons-material/ShoppingCart";
 import EventIcon from "@mui/icons-material/Event";
@@ -38,9 +38,8 @@ import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Collapse } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getCurrentStoreAction } from "../hooks/Redux/Store/storeAction";
-
-const drawerWidth = 240;
+import { getCurrentStoreAction } from "../../hooks/Redux/Store/storeAction";
+import { AppBar, Drawer, DrawerHeader } from "./Drawer";
 
 const items = [
     {
@@ -48,21 +47,6 @@ const items = [
         icon: <DashboardIcon />,
         text: "Dashboard",
     },
-    // {
-    //     to: "/seller/customer",
-    //     icon: <PeopleIcon />,
-    //     text: "Người dùng",
-    // },
-    // {
-    //     to: "/seller/store",
-    //     icon: <SupervisedUserCircleIcon />,
-    //     text: "Cửa hàng",
-    // },
-    // {
-    //     to: "/seller/category",
-    //     icon: <CategoryIcon />,
-    //     text: "Danh mục",
-    // },
     {
         icon: <ProductIcon />,
         text: "Sản phẩm cty",
@@ -79,7 +63,7 @@ const items = [
         ],
     },
     {
-        to: "/seller/store-product/list",
+        to: "/seller/store-product/list?skip=0&take=10&type=",
         icon: <PeopleIcon />,
         text: "Sản phẩm cửa hàng",
     },
@@ -150,84 +134,6 @@ const items = [
     },
 ];
 
-const openedMixin = (theme) => ({
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-    }),
-    overflowX: "hidden",
-});
-
-const closedMixin = (theme) => ({
-    transition: theme.transitions.create("width", {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: "hidden",
-    width: `calc(${theme.spacing(7)} + 1px)`,
-    [theme.breakpoints.up("sm")]: {
-        width: `calc(${theme.spacing(8)} + 1px)`,
-    },
-});
-
-const DrawerHeader = styled("div")(({ theme }) => ({
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-}));
-
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== "open",
-})(({ theme }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    variants: [
-        {
-            props: ({ open }) => open,
-            style: {
-                marginLeft: drawerWidth,
-                width: `calc(100% - ${drawerWidth}px)`,
-                transition: theme.transitions.create(["width", "margin"], {
-                    easing: theme.transitions.easing.sharp,
-                    duration: theme.transitions.duration.enteringScreen,
-                }),
-            },
-        },
-    ],
-}));
-
-const Drawer = styled(MuiDrawer, {
-    shouldForwardProp: (prop) => prop !== "open",
-})(({ theme }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: "nowrap",
-    boxSizing: "border-box",
-    variants: [
-        {
-            props: ({ open }) => open,
-            style: {
-                ...openedMixin(theme),
-                "& .MuiDrawer-paper": openedMixin(theme),
-            },
-        },
-        {
-            props: ({ open }) => !open,
-            style: {
-                ...closedMixin(theme),
-                "& .MuiDrawer-paper": closedMixin(theme),
-            },
-        },
-    ],
-}));
-
 export default function MiniDrawer() {
     const theme = useTheme();
     const [open, setOpen] = useState(true);
@@ -277,13 +183,7 @@ export default function MiniDrawer() {
             </AppBar>
             <Drawer variant="permanent" open={open}>
                 <DrawerHeader>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === "rtl" ? (
-                            <ChevronRightIcon />
-                        ) : (
-                            <ChevronLeftIcon />
-                        )}
-                    </IconButton>
+                    <IconButton onClick={handleDrawerClose}>{theme.direction === "rtl" ? <ChevronRightIcon /> : <ChevronLeftIcon />}</IconButton>
                 </DrawerHeader>
                 <Divider />
                 <List>
@@ -293,44 +193,25 @@ export default function MiniDrawer() {
                                 key={index}
                                 to={item.to}
                                 className={({ isActive }) =>
-                                    isActive
-                                        ? "group text-green-700 font-semibold"
-                                        : "group text-inherit  hover:font-semibold font-normal"
+                                    isActive ? "group text-green-700 font-semibold" : "group text-inherit  hover:font-semibold font-normal"
                                 }
                             >
                                 <ListItemButton>
-                                    <ListItemIcon className="group-hover:text-green-700 ">
-                                        {item.icon}
-                                    </ListItemIcon>
-                                    <p className="group-hover:text-green-700">
-                                        {item.text}
-                                    </p>
+                                    <ListItemIcon className="group-hover:text-green-700 ">{item.icon}</ListItemIcon>
+                                    <p className="group-hover:text-green-700">{item.text}</p>
                                 </ListItemButton>
                             </NavLink>
                         ) : (
                             <Box key={index}>
-                                <ListItemButton
-                                    onClick={() => handleClick(item.fieldName)}
-                                >
+                                <ListItemButton onClick={() => handleClick(item.fieldName)}>
                                     <ListItemIcon>{item.icon}</ListItemIcon>
                                     <ListItemText primary={item.text} />
-                                    {open[item.fieldName] ? (
-                                        <ExpandLess />
-                                    ) : (
-                                        <ExpandMore />
-                                    )}
+                                    {open[item.fieldName] ? <ExpandLess /> : <ExpandMore />}
                                 </ListItemButton>
-                                <Collapse
-                                    in={open[item.fieldName]}
-                                    timeout="auto"
-                                    unmountOnExit
-                                >
+                                <Collapse in={open[item.fieldName]} timeout="auto" unmountOnExit>
                                     <List component="div" disablePadding>
                                         {item.listItems.map((i, ind) => (
-                                            <ListItemButton
-                                                key={`collaspse-${ind}`}
-                                                sx={{ pl: 9 }}
-                                            >
+                                            <ListItemButton key={`collaspse-${ind}`} sx={{ pl: 9 }}>
                                                 <NavLink
                                                     to={i.to}
                                                     className={({ isActive }) =>

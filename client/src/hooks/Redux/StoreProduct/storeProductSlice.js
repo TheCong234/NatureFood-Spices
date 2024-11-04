@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createStoreProductsAction, getStoreProductsAction, searchCustomerAction } from "./storeProductAction";
+import {
+    createStoreProductsAction,
+    getStoreProductsAction,
+    getStoreProductsByStoreAction,
+    searchCustomerAction,
+    updateStoreProductAction,
+} from "./storeProductAction";
 
 const storeProductSlice = createSlice({
     name: "storeProduct",
@@ -27,6 +33,20 @@ const storeProductSlice = createSlice({
                 state.error = action.error.message;
             })
 
+            //get store products by store
+            .addCase(getStoreProductsByStoreAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getStoreProductsByStoreAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = action.payload;
+            })
+            .addCase(getStoreProductsByStoreAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
             //create store products
             .addCase(createStoreProductsAction.pending, (state) => {
                 state.loading = true;
@@ -50,6 +70,21 @@ const storeProductSlice = createSlice({
                 state.search = action.payload;
             })
             .addCase(searchCustomerAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+            //update store product
+            .addCase(updateStoreProductAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateStoreProductAction.fulfilled, (state, action) => {
+                state.loading = false;
+                const existIndex = state.data.products.findIndex((p) => p._id == action.payload._id);
+                state.data.products[existIndex] = action.payload;
+            })
+            .addCase(updateStoreProductAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });
