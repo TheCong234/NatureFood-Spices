@@ -186,3 +186,20 @@ export const ChangeEmailYup = yup.object().shape({
         .matches(/[A-Z]/, "Mật khẩu phải có ít nhất một chữ cái viết hoa") // Kiểm tra chữ cái viết hoa
         .matches(/\d/, "Mật khẩu phải có ít nhất một chữ số"), // Kiểm tra chữ số
 });
+
+export const ProfileYup = yup.object().shape({
+    username: yup
+        .string()
+        .required("Username is required")
+        .min(3, "Username must be at least 3 characters long")
+        .max(30, "Username must be at most 30 characters long"),
+
+    phone: yup
+        .string()
+        .required("Phone number is required")
+        .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits"), // Ví dụ: số điện thoại 10 chữ số
+
+    gender: yup.number().required("Gender is required").oneOf([0, 1, 2], "Gender must be one of the following: 0 (Male), 1 (Female), 2 (Other)"),
+
+    birthday: yup.date().required("Birthday is required").max(new Date(), "Birthday cannot be in the future"), // Ngày sinh không được lớn hơn ngày hiện tại
+});

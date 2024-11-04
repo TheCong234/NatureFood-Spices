@@ -71,6 +71,14 @@ const UserSchema = Schema(
         phone: {
             type: String,
         },
+        gender: {
+            type: Number,
+            enum: [0, 1, 2],
+            default: 0,
+        },
+        birthday: {
+            type: Date,
+        },
         image: ImageSchema,
         role: {
             type: String,
