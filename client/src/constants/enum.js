@@ -6,9 +6,18 @@ export const STORE_STATUS = {
 
 export const ORDER_STATUS = {
     0: "Đang xác minh",
-    1: "Đang vận chuyển",
-    2: "Đã giao",
-    3: "Đã hủy bỏ",
+    1: "Người bán đang chuẩn bị hàng",
+    2: "Đã giao cho đơn vị vận chuyển",
+    3: "Đã giao thành công",
+    4: "Đã hủy bỏ",
+};
+
+export const ORDER_STATUS_COLOR = {
+    0: "",
+    1: "warning",
+    2: "secondary",
+    3: "success",
+    4: "error",
 };
 
 export const PAYMENT_METHOD = {

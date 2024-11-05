@@ -101,4 +101,6 @@ export const OrderV1 = {
     CREATE_CUSTOMER_ORDER: "/order/customer/create",
     GET_CUSTOMER_ORDERS: "/order/customer/all",
     GET_CUSTOMER_ORDER: "/order/customer/",
+    GET_CUSTOMER_ORDERS_MY_STORE: "/order/my-store",
+    UPDATE: "/order/",
 };

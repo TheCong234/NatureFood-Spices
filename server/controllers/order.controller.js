@@ -16,8 +16,8 @@ const OrderController = {
 
     async getCustomerOrders(req, res) {
         const user = req.user._id;
-        const { skip, take, type, date } = req.query;
-        const filter = { user, ...(type !== "all" && { status: parseInt(type) || 0 }) };
+        const { skip, take, status, date } = req.query;
+        const filter = { user, ...(status !== "all" && { status: parseInt(status) }) };
 
         const [orders, total] = await Promise.all([
             OrderModel.find(filter)
@@ -28,6 +28,16 @@ const OrderController = {
             OrderModel.countDocuments(filter),
         ]);
 
+        return res.status(statusCode.OK).json(BaseResponse.success("Lấy các đơn hàng thành công", { orders, total }));
+    },
+
+    async getCustomerOrdersByStore(req, res) {
+        const { skip, take, status } = req.query;
+        const filter = { store: req.user.store, ...(status !== "all" && { status: parseInt(status) }) };
+        const [orders, total] = await Promise.all([
+            OrderModel.find(filter).populate("user").populate({ path: "products.storeProduct", populate: "productId" }).skip(skip).limit(take),
+            OrderModel.countDocuments({ store: req.user.store }),
+        ]);
         return res.status(statusCode.OK).json(BaseResponse.success("Lấy các đơn hàng thành công", { orders, total }));
     },
 
@@ -80,11 +90,14 @@ const OrderController = {
         return res.status(statusCode.CREATED).json(BaseResponse.success("Tạo đơn hàng thành công", null));
     },
 
-    async updateOrder(req, res) {
-        const { id, status } = req.params;
-        const updatedOrder = await OrderModel.findByIdAndUpdate(id, { status: status }, { new: true, runValidators: true });
+    async updateCustomerOrder(req, res) {
+        const { orderId } = req.params;
+        const { status } = req.body;
+        const updatedOrder = await OrderModel.findByIdAndUpdate(orderId, { status: status }, { new: true, runValidators: true })
+            .populate("user")
+            .populate({ path: "products.storeProduct", populate: "productId" });
         if (!updatedOrder) {
-            return res.status(statusCode.NOT_FOUND).json(BaseResponse.error("Lỗi, không tìm thấy đơn hàng", null));
+            throw new Error("Lỗi, không tìm thấy đơn hàng");
         }
         return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật đơn hàng thành công", updatedOrder));
     },

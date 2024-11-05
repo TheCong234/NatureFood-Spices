@@ -87,7 +87,7 @@ const items = [
         ],
     },
     {
-        to: "/seller/order",
+        to: "/seller/orders?skip=0&take=10&status=all",
         icon: <GradingIcon />,
         text: "Đơn hàng",
     },

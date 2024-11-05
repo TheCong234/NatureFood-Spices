@@ -5,7 +5,7 @@ import useSnackNotify from "../../../../components/SnackNotify";
 import { getCustomerOrderAction } from "../../../../hooks/Redux/Order/orderAction";
 import { formatDate, formatPrice, formatTime, splitDeliveryString } from "../../../../services/functions";
 import { ChipStyled, Nodata } from "../../../../components";
-import { DELIVERY_METHOD, ORDER_STATUS, PAYMENT_METHOD } from "../../../../constants/enum";
+import { DELIVERY_METHOD, ORDER_STATUS, ORDER_STATUS_COLOR, PAYMENT_METHOD } from "../../../../constants/enum";
 import { Button, Typography } from "@mui/material";
 
 const OrderDetails = () => {
@@ -36,7 +36,7 @@ const OrderDetails = () => {
                                 <p className="text-gray-500">{`${formatDate(order?.createdAt)}, ${formatTime(order?.createdAt)}`}</p>
                             </div>
                             <div>
-                                <ChipStyled label={ORDER_STATUS[order?.status]} color="warning" />
+                                <ChipStyled label={ORDER_STATUS[order?.status]} color={ORDER_STATUS_COLOR[order?.status]} />
                             </div>
                         </div>
                     </div>
