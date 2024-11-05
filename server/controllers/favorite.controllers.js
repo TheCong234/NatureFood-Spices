@@ -16,7 +16,11 @@ const FavoriteController = {
             storeProduct: req.params.storeProductId,
         });
         const newFavorite = await favorite.save();
-        return res.status(statusCode.CREATED).json(BaseResponse.success("Thêm yêu thích thành công", newFavorite));
+        const returnValue = await FavoriteModel.findById(newFavorite._id).populate({
+            path: "storeProduct",
+            populate: [{ path: "productId" }, { path: "storeId" }],
+        });
+        return res.status(statusCode.CREATED).json(BaseResponse.success("Thêm yêu thích thành công", returnValue));
     },
 
     async deleteFavoriteStoreProduct(req, res) {

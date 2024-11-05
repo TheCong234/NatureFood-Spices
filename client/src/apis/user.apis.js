@@ -78,6 +78,10 @@ export const changePasswordApi = async (data) => {
 };
 
 export const updateCurrentUserApi = async (data) => {
-    const response = await apiClient.put(UserV1.USER_UPDATE, data);
+    const response = await apiClient.put(UserV1.USER_UPDATE, data, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
     return response.data;
 };

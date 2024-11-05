@@ -17,9 +17,11 @@ import { updateCurrentUserAction } from "../../../../hooks/Redux/User/userAction
 const StyledPaper = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(4),
     marginBottom: theme.spacing(4),
+    width: "100%",
+    borderRadius: "10px",
 }));
 
-function ProfileSettings() {
+function Account() {
     const [showPassword, setShowPassword] = useState({
         current: false,
         new: false,
@@ -71,14 +73,8 @@ function ProfileSettings() {
     };
 
     return (
-        <Box className="flex flex-col items-center bg-gray-100 min-h-screen py-3">
-            <StyledPaper
-                elevation={3}
-                className="w-3/4 "
-                sx={{
-                    borderRadius: "14px",
-                }}
-            >
+        <Box className="flex flex-col items-center bg-gray-100 min-h-screen">
+            <StyledPaper elevation={3}>
                 <Typography variant="h6" className="mb-4 font-semibold">
                     Thông tin người dùng
                 </Typography>
@@ -173,13 +169,7 @@ function ProfileSettings() {
                     Lưu cài đặt
                 </Button>
             </StyledPaper> */}
-            <StyledPaper
-                elevation={3}
-                className="w-3/4 "
-                sx={{
-                    borderRadius: "14px",
-                }}
-            >
+            <StyledPaper elevation={3}>
                 <form onSubmit={handleSubmit(onSubmitPassword)}>
                     <Typography variant="h6" gutterBottom>
                         Mật khẩu
@@ -271,13 +261,7 @@ function ProfileSettings() {
                 </form>
             </StyledPaper>
 
-            <StyledPaper
-                elevation={3}
-                className="w-3/4 "
-                sx={{
-                    borderRadius: "14px",
-                }}
-            >
+            <StyledPaper elevation={3}>
                 <Typography variant="h6" gutterBottom>
                     Email
                 </Typography>
@@ -392,13 +376,7 @@ function ProfileSettings() {
                     Lưu sở thích giao tiếp
                 </Button>
             </Box> */}
-            <Box
-                className="p-6 w-3/4 mx-auto border border-gray-300 rounded-md mb-6 mt-6 "
-                sx={{
-                    borderRadius: "14px",
-                    backgroundColor: "white",
-                }}
-            >
+            <StyledPaper elevation={3}>
                 <Typography variant="h6" className="font-bold mb-2">
                     Khóa tài khoản của bạn
                 </Typography>
@@ -442,14 +420,8 @@ function ProfileSettings() {
                 >
                     Khóa tài khoản
                 </Button>
-            </Box>
-            <Box
-                className="p-6 w-3/4 mx-auto border border-gray-300 rounded-md"
-                sx={{
-                    borderRadius: "14px",
-                    backgroundColor: "white",
-                }}
-            >
+            </StyledPaper>
+            <StyledPaper elevation={3}>
                 <Typography className="mb-2 font-bold">Các thiết lập khác</Typography>
                 <Link href="#" underline="hover" className="block mb-1">
                     Ứng dụng
@@ -457,9 +429,9 @@ function ProfileSettings() {
                 <Link href="#" underline="hover" className="block">
                     Nguyên mẫu
                 </Link>
-            </Box>
+            </StyledPaper>
         </Box>
     );
 }
 
-export default ProfileSettings;
+export default Account;

@@ -64,7 +64,7 @@ export default function ReviewTag({ review, product }) {
                             </Button>
                         )}
 
-                        {currentUser?.store.toString() == product?.storeId?._id.toString() && (
+                        {currentUser?.store?._id == product?.storeId?._id && (
                             <Button
                                 variant="text"
                                 color="primary"

@@ -174,11 +174,11 @@ export const router = createBrowserRouter([
                                 element: <Account />,
                             },
                             {
-                                path: "order-list",
+                                path: "orders",
                                 element: <OrderList />,
                             },
                             {
-                                path: "order-details/:orderId",
+                                path: "order/:orderId",
                                 element: <OrderDetails />,
                             },
                             {

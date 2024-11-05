@@ -32,6 +32,10 @@ const StoreProductSchema = mongoose.Schema(
             max: 0.99,
         },
         stock: Number,
+        status: {
+            type: Boolean,
+            default: true,
+        },
     },
     {
         timestamps: true,

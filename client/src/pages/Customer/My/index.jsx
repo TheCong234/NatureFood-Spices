@@ -1,38 +1,64 @@
-import Tab from "@mui/material/Tab";
+import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
-import { useEffect, useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Paper, Tabs } from "@mui/material";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import { NavLink, Outlet } from "react-router-dom";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import GradingOutlinedIcon from "@mui/icons-material/GradingOutlined";
+import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 
-export default function My() {
-    const location = useLocation();
-    const [value, setValue] = useState(location.pathname.split("/")[2]);
-    const navigate = useNavigate();
+const drawerWidth = 240;
+const links = [
+    { text: "Tài khoản", path: "/my/account", icon: <AccountCircleOutlinedIcon /> },
+    { text: "Hồ sơ", path: "/my/profile", icon: <AssignmentIndIcon /> },
+    { text: "Đơn đặt hàng", path: "/my/orders", icon: <GradingOutlinedIcon /> },
+    { text: "Vận chuyển", path: "/my/delivery", icon: <LocalShippingOutlinedIcon /> },
+];
 
-    const handleTabChange = (event, newValue) => {
-        setValue(newValue);
-        navigate(`/my/${newValue}`);
-    };
+function My(props) {
+    const drawer = (
+        <Box sx={{ width: drawerWidth }}>
+            <List>
+                {links.map((item, index) => (
+                    <ListItem key={index} disablePadding>
+                        <NavLink
+                            to={item.path}
+                            className={({ isActive }) =>
+                                `flex items-center py-2 px-4 text-lg w-full hover:bg-[#f3f4f6] hover:text-green-500 font-normal  ${
+                                    isActive ? "bg-[#f3f4f6] text-green-500 font-semibold" : "text-gray-700"
+                                }`
+                            }
+                        >
+                            {item.icon}
+                            <p className="ml-4">{item.text}</p>
+                        </NavLink>
+                    </ListItem>
+                ))}
+            </List>
+        </Box>
+    );
+
     return (
-        <div>
-            <Box sx={{ bgcolor: "background.paper" }}>
-                <Tabs
-                    value={value}
-                    onChange={handleTabChange}
-                    variant="scrollable"
-                    scrollButtons
-                    allowScrollButtonsMobile
-                    aria-label="scrollable force tabs example"
-                >
-                    <Tab label="Tài khoản" value={"account"} />
-                    <Tab label="Đơn đặt hàng" value={"order-list"} />
-                    <Tab label="Hồ sơ cá nhân" value={"profile"} />
-                    <Tab label="Vận chuyển và thanh toán" value={"delivery"} />
-                </Tabs>
+        <Box sx={{ display: "flex", maxHeight: "80vh", minHeight: "50vh" }}>
+            <Box component="nav" sx={{ minWidth: drawerWidth }} className="bg-white overflow-y-auto rounded-lg h-full" aria-label="mailbox folders">
+                {drawer}
             </Box>
-            <Box className="mt-5">
+            <Box component="main" sx={{ px: 3, overflowY: "scroll", width: "100%" }}>
                 <Outlet />
             </Box>
-        </div>
+        </Box>
     );
 }
+
+My.propTypes = {
+    /**
+     * Injected by the documentation to work in an iframe.
+     * Remove this when copying and pasting into your project.
+     */
+    window: PropTypes.func,
+};
+
+export default My;
