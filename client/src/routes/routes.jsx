@@ -10,6 +10,7 @@ import {
     RegisterSeller,
     ProductCartSeller,
     StoreProductSeller,
+    Orders,
 } from "../pages/Seller";
 
 import {
@@ -220,6 +221,10 @@ export const router = createBrowserRouter([
                     {
                         path: "promote",
                         element: <PromoteStore />,
+                    },
+                    {
+                        path: "orders",
+                        element: <Orders />,
                     },
                 ],
             },

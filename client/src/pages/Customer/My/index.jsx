@@ -14,11 +14,11 @@ const drawerWidth = 240;
 const links = [
     { text: "Tài khoản", path: "/my/account", icon: <AccountCircleOutlinedIcon /> },
     { text: "Hồ sơ", path: "/my/profile", icon: <AssignmentIndIcon /> },
-    { text: "Đơn đặt hàng", path: "/my/orders", icon: <GradingOutlinedIcon /> },
+    { text: "Đơn đặt hàng", path: "/my/orders?skip=0&take=10&status=all", icon: <GradingOutlinedIcon /> },
     { text: "Vận chuyển", path: "/my/delivery", icon: <LocalShippingOutlinedIcon /> },
 ];
 
-function My(props) {
+function My() {
     const drawer = (
         <Box sx={{ width: drawerWidth }}>
             <List>

@@ -6,11 +6,12 @@ import OrderController from "../controllers/order.controller.js";
 const router = express.Router();
 
 router.get("/customer/all", authJwt, asyncHandler(OrderController.getCustomerOrders));
+router.get("/my-store", authJwt, asyncHandler(OrderController.getCustomerOrdersByStore));
 router.get("/customer/:orderId", authJwt, asyncHandler(OrderController.getCustomerOrder));
 
 router.post("/customer/create", authJwt, asyncHandler(OrderController.createCustomerOrders));
 router.post("/new", authJwt, asyncHandler(OrderController.createSellerOrders));
 
-router.patch("/:id/update/:status", authJwt, asyncHandler(OrderController.updateOrder));
+router.patch("/:orderId", authJwt, asyncHandler(OrderController.updateCustomerOrder));
 
 export default router;

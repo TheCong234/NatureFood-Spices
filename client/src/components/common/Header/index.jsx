@@ -269,7 +269,11 @@ const Header = () => {
                                 </Box>
                             </MenuItem>
                             <MenuItem>
-                                <Box component={Link} to="/my/order-list" className="w-full text-inherit hover:text-green-600 flex items-center">
+                                <Box
+                                    component={Link}
+                                    to="/my/orders?skip=0&take=10&status=all"
+                                    className="w-full text-inherit hover:text-green-600 flex items-center"
+                                >
                                     <ListItemIcon>
                                         <ReceiptLongOutlinedIcon />
                                     </ListItemIcon>

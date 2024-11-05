@@ -1,46 +1,42 @@
-import React, { useEffect, useState } from "react";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import { Box, Button, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { ChipStyled, Nodata } from "../../../../components";
 import { useDispatch, useSelector } from "react-redux";
-import { getCustomerOrdersAction } from "../../../../hooks/Redux/Order/orderAction";
-import { formatDate, formatPrice, splitDeliveryString, useQuery } from "../../../../services/functions";
-import useSnackNotify from "../../../../components/SnackNotify";
-import { ORDER_STATUS, ORDER_STATUS_COLOR } from "../../../../constants/enum";
+import useSnackNotify from "../../../components/SnackNotify";
+import { useEffect, useState } from "react";
+import { getCustomerOrdersMyStoreAction } from "../../../hooks/Redux/Order/orderAction";
+import { formatDate, formatPrice, splitDeliveryString, useQuery } from "../../../services/functions";
+import { Box, Button, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import { ChipStyled, Nodata } from "../../../components";
+import { ORDER_STATUS, ORDER_STATUS_COLOR } from "../../../constants/enum";
+import OrderDetails from "./OrderDetails";
 
 const productsEachPage = 10;
 
-const OrderList = () => {
+export default function Index() {
+    const [selectedOrder, setSelectedOrder] = useState();
+    const [openDetails, setOpenDetails] = useState(false);
     const dispatch = useDispatch();
+    const snackNotify = useSnackNotify();
     const navigate = useNavigate();
     const query = useQuery();
-    const snackNotify = useSnackNotify();
-    const { data: orderData, loading: orderLoading } = useSelector((state) => state.order);
-
-    const handleGetData = async () => {
-        const params = {
-            skip: query.get("skip"),
-            take: query.get("take"),
-            status: query.get("status"),
-            date: query.get("date"),
-        };
-        const response = await dispatch(getCustomerOrdersAction(params));
-        if (response?.error) {
-            snackNotify("error")("Lấy danh sách đơn hàng thất bại");
-        }
+    const { data: orderData, loading } = useSelector((state) => state.order);
+    const params = {
+        skip: query.get("skip"),
+        take: query.get("take"),
+        status: query.get("status"),
     };
 
     const handlePaginationChange = (event, value) => {
-        navigate(
-            `/my/orders?skip=${(value - 1) * productsEachPage}&take=${productsEachPage}&type=${query.get("status")}&date=${query.get("date") || -1}`
-        );
+        navigate(`/seller/orders?skip=${(value - 1) * productsEachPage}&take=${productsEachPage}&status=${query.get("status")}`);
     };
 
+    const handleGetData = async () => {
+        const response = await dispatch(getCustomerOrdersMyStoreAction(params));
+        console.log(response);
+    };
     useEffect(() => {
         handleGetData();
-    }, [query.get("skip"), query.get("take"), query.get("type"), query.get("date")]);
+    }, [params.skip, query.take, query.type]);
     return (
         <Box>
             <Paper>
@@ -118,7 +114,10 @@ const OrderList = () => {
                                                 color="success"
                                                 size="small"
                                                 className="na-text-transform-none whitespace-nowrap"
-                                                onClick={() => navigate(`/my/order/${order?._id}`)}
+                                                onClick={() => {
+                                                    setSelectedOrder(order);
+                                                    setOpenDetails(true);
+                                                }}
                                             >
                                                 Xem chi tiết
                                             </Button>
@@ -127,10 +126,11 @@ const OrderList = () => {
                                 ))}
                             </TableBody>
                         </Table>
-                        {orderData?.total == 0 && <Nodata content={"Bạn chưa có đơn đặt hàng nào"} />}
+                        {orderData?.total == 0 && <Nodata content={"Bạn không có đơn đặt hàng nào"} />}
                     </TableContainer>
                 </Box>
             </Paper>
+            <OrderDetails order={selectedOrder} openDetails={openDetails} setOpenDetails={setOpenDetails} />
             <Pagination
                 className="pt-6 flex justify-center"
                 count={Math.floor(orderData?.total / productsEachPage + 1)}
@@ -140,6 +140,4 @@ const OrderList = () => {
             />
         </Box>
     );
-};
-
-export default OrderList;
+}

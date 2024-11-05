@@ -38,7 +38,7 @@ const OrderSchema = new Schema(
         },
         status: {
             type: Number,
-            enum: [0, 1, 2, 3],
+            enum: [0, 1, 2, 3, 4],
             default: 0,
         },
         paymentMethod: {
