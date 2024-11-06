@@ -90,7 +90,21 @@ const Favorite = () => {
                                 </div>
                                 <p style={{ color: "green" }}>Miễn phí vận chuyển</p>
                                 <div className="mt-1">
-                                    <Button variant="contained" color="success" size="small" className="na-text-transform-none">
+                                    <Button
+                                        sx={{
+                                            borderRadius: "15px",
+                                            backgroundColor: "#F5F5F5",
+                                            color: "black",
+                                            transition: "all 0.2s ease",
+                                            boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)",
+                                            textTransform: "none",
+                                            fontSize: "14px",
+                                            "&:hover": {
+                                                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+                                                backgroundColor: "white",
+                                            },
+                                        }}
+                                    >
                                         Mua ngay
                                     </Button>
                                 </div>
