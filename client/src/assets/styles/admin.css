@@ -16,7 +16,7 @@
 .product_card-primary_swiper .swiper-slide_styled img {
   height: 100%;
   object-fit: contain;
-  background-color: white;
+  /* background-color: white; */
 }
 
 .swiper-pagination-bullet-active{

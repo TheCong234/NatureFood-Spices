@@ -86,11 +86,11 @@ export default function Products() {
             <Grid container spacing={2}>
                 {productData?.products?.map((product) => (
                     <Grid item xs={6} md={3} key={product?._id}>
-                        <Card className="product_card-primary relative">
+                        <Box className="hover:shadow-custom transition-shadow duration-200  relative rounded-xl overflow-hidden">
                             <Box className="cursor-pointer" onClick={() => navigate(`/product/details/${product?._id}`)}>
                                 <Swiper className="product_card-primary_swiper " pagination={true} modules={[PaginationSwipper]}>
                                     {product?.productId?.images?.map((image) => (
-                                        <SwiperSlide key={image?._id} className="swiper-slide_styled">
+                                        <SwiperSlide key={image?._id} className="swiper-slide_styled bg-inherit">
                                             <img src={image?.url} alt="product image" />
                                         </SwiperSlide>
                                     ))}
@@ -173,7 +173,7 @@ export default function Products() {
                             <div className="absolute top-3 -left-2 z-10">
                                 <ChipStyled label={product?.storeId?.name} color="success" />
                             </div>
-                        </Card>
+                        </Box>
                     </Grid>
                 ))}
             </Grid>
