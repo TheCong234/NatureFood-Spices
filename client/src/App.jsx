@@ -1,19 +1,16 @@
-import { useEffect, useState } from "react";
-import { RouterProvider } from "react-router-dom";
-import { router } from "./routes/routes";
+import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getcurrentUserAction } from "./hooks/Redux/User/userAction";
-import "./assets/styles/base.css";
 import { io } from "socket.io-client";
-import { Slide, Snackbar } from "@mui/material";
-const socket = io(import.meta.env.VITE_APP_DOMAIN);
+import { Alert, Slide, Snackbar } from "@mui/material";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
 
-function SlideTransition(props) {
-    return <Slide {...props} direction="left" />;
-}
+const socket = io(import.meta.env.VITE_APP_DOMAIN);
 
 function App() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const { token, currentUser } = useSelector((state) => state.user);
     const [notifyData, setNotifyData] = useState();
@@ -42,16 +39,25 @@ function App() {
     }, [currentUser]);
     return (
         <>
-            <RouterProvider router={router} />
+            <Outlet />
             <Snackbar
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 open={open}
+                autoHideDuration={2500}
                 onClose={() => setOpen(false)}
-                TransitionComponent={SlideTransition}
-                message={notifyData?.message}
-                key={"SlideTransition"}
-                autoHideDuration={3000}
-            />
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                onClick={() => navigate(notifyData?.url || "/notification")}
+                className="cursor-pointer"
+            >
+                <Alert
+                    onClose={() => setOpen(false)}
+                    severity="success"
+                    variant="filled"
+                    sx={{ maxWidth: "300px" }}
+                    icon={<NotificationsActiveOutlinedIcon />}
+                >
+                    {notifyData?.message || "Bạn có thông báo mới"}
+                </Alert>
+            </Snackbar>
         </>
     );
 }

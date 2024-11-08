@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import { getStoreProductsByCategoryApi } from "../../../apis/product.store";
 import { Box, Button, Card, Grid, Rating, Stack, Tooltip, Typography, Pagination, Paper } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
+
 import { Pagination as PaginationSwipper } from "swiper/modules";
 import { formatPrice } from "../../../services/functions";
 import { ChipStyled, Nodata } from "../../../components";

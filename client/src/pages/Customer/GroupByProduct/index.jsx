@@ -5,8 +5,7 @@ import { getStoreProductsByProductApi } from "../../../apis/product.store";
 import { useEffect, useState } from "react";
 import { Box, Button, Card, Grid, Rating, Stack, Tooltip, Typography, Pagination } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
+
 import { Pagination as PaginationSwipper } from "swiper/modules";
 import { formatPrice } from "../../../services/functions";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";

@@ -4,8 +4,7 @@ import useSnackNotify from "../../../components/SnackNotify";
 import { Box, Button, Card, CardActions, Divider, Paper } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
+
 import { Navigation, Pagination, Pagination as PaginationSwipper } from "swiper/modules";
 import { formatPrice } from "../../../services/functions";
 
@@ -16,7 +15,6 @@ export default function Categories() {
 
     const handleGetData = async () => {
         const response = await getProductsEachCategoryApi();
-        console.log(response);
         if (response?.success) {
             setCategoryData(response);
         } else {
@@ -65,7 +63,9 @@ export default function Categories() {
                                                 <Swiper className="product_card-primary_swiper " pagination={true} modules={[PaginationSwipper]}>
                                                     {product?.images?.map((image) => (
                                                         <SwiperSlide key={image?._id} className="swiper-slide_styled">
-                                                            <img src={image?.url} alt="product image" />
+                                                            <div className="h-full flex justify-center">
+                                                                <img src={image?.url} alt="product image" className="h-full" />
+                                                            </div>
                                                         </SwiperSlide>
                                                     ))}
                                                 </Swiper>

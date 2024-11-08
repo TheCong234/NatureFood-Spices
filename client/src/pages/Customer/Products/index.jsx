@@ -1,7 +1,6 @@
 import { Box, Button, Card, Grid, Rating, Stack, Tooltip, Typography, Pagination } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
+
 import { Pagination as PaginationSwipper } from "swiper/modules";
 import { formatPrice } from "../../../services/functions";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +13,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { createCartItemAction } from "../../../hooks/Redux/Cart/cartAction";
-import { ChipStyled } from "@components";
+import { ChipStyled } from "../../../components";
 
 const productsEachPage = 10;
 const useQuery = () => {
@@ -91,7 +90,9 @@ export default function Products() {
                                 <Swiper className="product_card-primary_swiper " pagination={true} modules={[PaginationSwipper]}>
                                     {product?.productId?.images?.map((image) => (
                                         <SwiperSlide key={image?._id} className="swiper-slide_styled bg-inherit">
-                                            <img src={image?.url} alt="product image" />
+                                            <div className="h-full flex justify-center">
+                                                <img src={image?.url} alt="product image" className="h-full" />
+                                            </div>
                                         </SwiperSlide>
                                     ))}
                                 </Swiper>

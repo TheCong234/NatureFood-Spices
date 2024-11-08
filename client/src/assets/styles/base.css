@@ -8,6 +8,10 @@
     --bg-soft-grey: #f9fafd
 }
 
+*{
+    box-sizing: border-box;
+  }
+
 .text-truncate{
   overflow: hidden;
     white-space: nowrap;
@@ -88,3 +92,5 @@
     margin-top: 0.5rem !important;
     margin-bottom: 0.5rem !important;
 }
+
+
