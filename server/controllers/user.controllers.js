@@ -58,7 +58,7 @@ const UserController = {
             throw new Error("Mật khẩu không đúng");
         }
         if (req.file) {
-            if (req.user.image.filename) {
+            if (req.user?.image?.filename) {
                 await cloudinary.uploader.destroy(req.user.image.filename);
             }
             delete req.body.password;

@@ -6,10 +6,7 @@ const NotificationController = {
     async getNotifications(req, res) {
         const { skip, take, isRead } = req.query;
         const user = req.user._id;
-
         const filter = { user, ...(parseInt(isRead) != -1 && { isRead: parseInt(isRead) }) };
-        console.log("filter", filter);
-
         const [notifications, total] = await Promise.all([
             NotificationModel.find(filter)
                 .sort({ createdAt: -1 })
@@ -30,6 +27,18 @@ const NotificationController = {
         const notification = new NotificationModel(req.body);
         const newNotification = await notification.save();
         return res.status(statusCode.CREATED).json(BaseResponse.success("Tạo thông báo thành công", newNotification));
+    },
+
+    async updateNotification(req, res) {
+        const { notificationId } = req.params;
+        const updatedNotification = await NotificationModel.findByIdAndUpdate(notificationId, { isRead: true }, { new: true });
+        return res.status(statusCode.CREATED).json(BaseResponse.success("Cập nhật thông báo thành công", updatedNotification));
+    },
+
+    async updateNotifications(req, res) {
+        const user = req.user._id;
+        await NotificationModel.updateMany({ user }, { $set: { isRead: true } }, { returnNewDocument: true });
+        return res.status(statusCode.CREATED).json(BaseResponse.success("Cập nhật thông báo thành công", null));
     },
 };
 

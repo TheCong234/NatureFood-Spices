@@ -108,4 +108,5 @@ export const OrderV1 = {
 export const NotificationV1 = {
     GET_ALL: "/notification/all",
     GET_UNREAD_TOTAL: "/notification/unread",
+    UPDATE: "/notification/",
 };

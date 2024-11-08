@@ -10,4 +10,7 @@ router.get("/unread", authJwt, asyncHandler(NotificationController.getUnreadNoti
 
 router.post("/", asyncHandler(NotificationController.createNotification));
 
+router.patch("/", authJwt, asyncHandler(NotificationController.updateNotifications));
+router.patch("/:notificationId", asyncHandler(NotificationController.updateNotification));
+
 export default router;

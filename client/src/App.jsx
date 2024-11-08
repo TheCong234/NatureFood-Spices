@@ -5,17 +5,27 @@ import { io } from "socket.io-client";
 import { Alert, Slide, Snackbar } from "@mui/material";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
-import { getNotificationsAction, getUnreadNotificationsAction } from "./hooks/Redux/Notification/notificationAction";
+import { getNotificationsAction, getUnreadNotificationsAction, updateNotificationAction } from "./hooks/Redux/Notification/notificationAction";
 import { increaseUnreadNotificationsTotal } from "./hooks/Redux/Notification/notificationSlice";
+import useSnackNotify from "@components/SnackNotify";
 
 const socket = io(import.meta.env.VITE_APP_DOMAIN);
 
 function App() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const snackNotify = useSnackNotify();
     const [open, setOpen] = useState(false);
     const { token, currentUser } = useSelector((state) => state.user);
     const [notifyData, setNotifyData] = useState();
+
+    const handleClick = async () => {
+        const response = await dispatch(updateNotificationAction(notifyData._id));
+        if (response.error) {
+            snackNotify("error")("Lỗi, vui lòng thử lại");
+        }
+        navigate(notifyData?.url || "/notification?skip=0&take=10&isRead=-1");
+    };
 
     const handleGetData = async () => {
         await dispatch(getcurrentUserAction(token));
@@ -46,10 +56,10 @@ function App() {
             <Outlet />
             <Snackbar
                 open={open}
-                autoHideDuration={2500}
+                autoHideDuration={6000}
                 onClose={() => setOpen(false)}
                 anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                onClick={() => navigate(notifyData?.url || "/notification?skip=0&take=10&isRead=-1")}
+                onClick={handleClick}
                 className="cursor-pointer"
             >
                 <Alert

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getNotificationsAction, getUnreadNotificationsAction } from "./notificationAction";
+import { getNotificationsAction, getUnreadNotificationsAction, updateNotificationAction, updateNotificationsAction } from "./notificationAction";
 
 const notificationSlice = createSlice({
     name: "notification",
@@ -43,6 +43,37 @@ const notificationSlice = createSlice({
                 state.unreadNotificationsTotal = action.payload;
             })
             .addCase(getUnreadNotificationsAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            //update notification
+            .addCase(updateNotificationAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateNotificationAction.fulfilled, (state, action) => {
+                state.loading = false;
+                const index = state.data.notifications.findIndex((n) => n._id == action.payload._id);
+                state.data.notifications[index] = action.payload;
+                state.unreadNotificationsTotal -= 1;
+            })
+            .addCase(updateNotificationAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            //update notifications
+            .addCase(updateNotificationsAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateNotificationsAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data.notifications.forEach((n) => (n.isRead = true));
+                state.unreadNotificationsTotal = 0;
+            })
+            .addCase(updateNotificationsAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });

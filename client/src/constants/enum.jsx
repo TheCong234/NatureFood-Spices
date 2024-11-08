@@ -58,10 +58,10 @@ export const BANNER_STATUS = {
     1: "Đã dừng",
 };
 export const ICON_MAPING = {
-    order: <OrderIcon />,
-    favorite: <FavoriteIcon />,
-    gift: <GiftIcon />,
-    calendar: <CalendarIcon />,
+    order: <OrderIcon color="success" />,
+    favorite: <FavoriteIcon color="error" />,
+    gift: <GiftIcon color="warning" />,
+    calendar: <CalendarIcon color="primary" />,
     check: <CheckIcon />,
-    notification: <NotificationIcon />,
+    notification: <NotificationIcon color="secondary" />,
 };

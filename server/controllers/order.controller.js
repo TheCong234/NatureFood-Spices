@@ -5,6 +5,7 @@ import CartModel from "../models/cart.model.js";
 import UserModel from "../models/user.model.js";
 import { io, userSockets } from "../config/socket.js";
 import NotificationModel from "../models/notifycation.model.js";
+import StoreModel from "../models/store.models.js";
 
 const OrderController = {
     async getCustomerOrder(req, res) {
@@ -85,6 +86,25 @@ const OrderController = {
 
             const order = new OrderModel({ user, delivery: deliveryString, paymentMethod, deliveryMethod, totalAmount, products, store });
             const newOrder = await order.save();
+
+            //Tạo thông báo
+            const storeInfo = await StoreModel.findById(store);
+            const notifyData = {
+                user: storeInfo.owner,
+                // imageUrl: updatedOrder.store.image.url,
+                message: `Có đơn hàng mới. Địa chỉ nhận: ${deliveryDetails.address.street}, ${deliveryDetails.address.ward}, ${deliveryDetails.address.district}, ${deliveryDetails.address.city}`,
+                url: "/seller/orders?skip=0&take=10&status=all",
+                type: "order",
+            };
+            const notify = new NotificationModel(notifyData);
+            await notify.save();
+
+            const userSocketId = userSockets.get(storeInfo.owner.toString());
+            if (userSocketId) {
+                io.to(userSocketId).emit("receiveNotification", notifyData);
+            }
+
+            //Xóa cart
             if (newOrder?._id) {
                 await CartModel.deleteMany({ user });
             }
