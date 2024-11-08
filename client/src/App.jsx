@@ -5,6 +5,8 @@ import { io } from "socket.io-client";
 import { Alert, Slide, Snackbar } from "@mui/material";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
+import { getNotificationsAction, getUnreadNotificationsAction } from "./hooks/Redux/Notification/notificationAction";
+import { increaseUnreadNotificationsTotal } from "./hooks/Redux/Notification/notificationSlice";
 
 const socket = io(import.meta.env.VITE_APP_DOMAIN);
 
@@ -17,6 +19,7 @@ function App() {
 
     const handleGetData = async () => {
         await dispatch(getcurrentUserAction(token));
+        await dispatch(getUnreadNotificationsAction());
     };
     useEffect(() => {
         handleGetData();
@@ -31,6 +34,7 @@ function App() {
                 console.log("Notification received:", data);
                 setNotifyData(data);
                 setOpen(true);
+                dispatch(increaseUnreadNotificationsTotal());
             });
         }
         return () => {
@@ -45,12 +49,15 @@ function App() {
                 autoHideDuration={2500}
                 onClose={() => setOpen(false)}
                 anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                onClick={() => navigate(notifyData?.url || "/notification")}
+                onClick={() => navigate(notifyData?.url || "/notification?skip=0&take=10&isRead=-1")}
                 className="cursor-pointer"
             >
                 <Alert
-                    onClose={() => setOpen(false)}
-                    severity="success"
+                    onClose={(e) => {
+                        e.stopPropagation();
+                        setOpen(false);
+                    }}
+                    severity="warning"
                     variant="filled"
                     sx={{ maxWidth: "300px" }}
                     icon={<NotificationsActiveOutlinedIcon />}

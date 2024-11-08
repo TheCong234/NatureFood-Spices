@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import "../../../assets/styles/main.css";
-import LightModeIcon from "@mui/icons-material/LightMode";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import {
@@ -66,6 +65,7 @@ const Header = () => {
     const { data: cartData } = useSelector((state) => state.cart);
     const { currentUser, token } = useSelector((state) => state.user);
     const { data: favoriteData } = useSelector((state) => state.favorite);
+    const { unreadNotificationsTotal } = useSelector((state) => state.notification);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [openPerson, setOpenPerson] = useState(false);
@@ -176,10 +176,10 @@ const Header = () => {
                                             snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
                                             return;
                                         }
-                                        navigate("/notification?skip=0&take=10");
+                                        navigate("/notification?skip=0&take=10&isRead=-1");
                                     }}
                                 >
-                                    <Badge badgeContent={0} color="warning" showZero>
+                                    <Badge badgeContent={unreadNotificationsTotal} color="warning" showZero>
                                         <NotificationsActiveIcon />
                                     </Badge>
                                 </IconButton>

@@ -104,3 +104,8 @@ export const OrderV1 = {
     GET_CUSTOMER_ORDERS_MY_STORE: "/order/my-store",
     UPDATE: "/order/",
 };
+
+export const NotificationV1 = {
+    GET_ALL: "/notification/all",
+    GET_UNREAD_TOTAL: "/notification/unread",
+};
