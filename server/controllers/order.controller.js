@@ -3,6 +3,8 @@ import { statusCode } from "../config/statusCode.config.js";
 import OrderModel from "../models/order.model.js";
 import CartModel from "../models/cart.model.js";
 import UserModel from "../models/user.model.js";
+import NotifyModel from "../models/notify.model.js";
+import { io, userSockets } from "../config/socket.js";
 
 const OrderController = {
     async getCustomerOrder(req, res) {
@@ -98,6 +100,20 @@ const OrderController = {
             .populate({ path: "products.storeProduct", populate: "productId" });
         if (!updatedOrder) {
             throw new Error("Lỗi, không tìm thấy đơn hàng");
+        }
+
+        //gửi thông báo qua socket io
+        const notifyData = {
+            user: updatedOrder.user._id,
+            message: "Trạng thái đơn hàng của bạn đã được thay đổi",
+            url: `/my/order/${updatedOrder._id}`,
+        };
+        const notify = new NotifyModel(notifyData);
+        const newNotify = await notify.save();
+
+        const userSocketId = userSockets.get(updatedOrder.user._id.toString());
+        if (userSocketId) {
+            io.to(userSocketId).emit("receiveNotification", notifyData);
         }
         return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật đơn hàng thành công", updatedOrder));
     },

@@ -16,15 +16,21 @@ import {
     RefundRoutes,
     StoreCartRoutes,
     BlogRoutes,
+    NotifyRoutes,
 } from "./routes/index.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import cors from "cors";
 import { BaseResponse } from "./config/BaseResponse.config.js";
+import http from "http";
+import { Server } from "socket.io";
+import { setupSocket } from "./config/socket.js";
 
 const app = express();
 const apiVersion = "/api/v1";
 dotenv.config();
+const server = http.createServer(app);
+const io = setupSocket(server);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -85,13 +91,14 @@ app.use(`${apiVersion}/order`, OrderRoutes);
 app.use(`${apiVersion}/refund`, RefundRoutes);
 app.use(`${apiVersion}/store-cart`, StoreCartRoutes);
 app.use(`${apiVersion}/blog`, BlogRoutes);
+app.use(`${apiVersion}/notify`, NotifyRoutes);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
     return res.status(500).json(BaseResponse.error(err.name, err.stack));
 });
 
-app.listen(3000, () => {
+server.listen(3000, () => {
     const PORT = process.env.PORT || 8888;
     console.log(`SERVER ON PORT: ${PORT}`);
 });

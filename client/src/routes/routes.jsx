@@ -63,6 +63,7 @@ import {
     OrderDetails,
     Search,
 } from "../pages/Customer";
+import TestSecket from "../pages/testSocket";
 
 export const router = createBrowserRouter([
     {
@@ -84,6 +85,10 @@ export const router = createBrowserRouter([
             {
                 path: "/register-seller",
                 element: <RegisterSeller />,
+            },
+            {
+                path: "/test",
+                element: <TestSecket />,
             },
 
             {
