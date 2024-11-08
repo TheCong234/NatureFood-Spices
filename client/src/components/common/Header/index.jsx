@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import "../../../assets/styles/main.css";
-import LightModeIcon from "@mui/icons-material/LightMode";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import {
@@ -66,6 +65,7 @@ const Header = () => {
     const { data: cartData } = useSelector((state) => state.cart);
     const { currentUser, token } = useSelector((state) => state.user);
     const { data: favoriteData } = useSelector((state) => state.favorite);
+    const { unreadNotificationsTotal } = useSelector((state) => state.notification);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [openPerson, setOpenPerson] = useState(false);
@@ -176,10 +176,10 @@ const Header = () => {
                                             snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
                                             return;
                                         }
-                                        navigate("/notification?skip=0&take=10");
+                                        navigate("/notification?skip=0&take=10&isRead=-1");
                                     }}
                                 >
-                                    <Badge badgeContent={0} color="warning" showZero>
+                                    <Badge badgeContent={unreadNotificationsTotal} color="warning" showZero>
                                         <NotificationsActiveIcon />
                                     </Badge>
                                 </IconButton>
@@ -187,17 +187,19 @@ const Header = () => {
 
                             <div className="flex items-center">
                                 <div
-                                    className="flex bg-green-700 items-center pr-3 rounded-[20px] ml-2 cursor-pointer hover:bg-green-600"
+                                    className="flex bg-green-700 items-center pr-1 rounded-[20px] ml-2 max-w-[100px]  cursor-pointer hover:bg-green-600"
                                     onClick={handleClickPersonIcon}
                                 >
-                                    <IconButton
-                                        color="inherit"
-                                        sx={{ bgcolor: "#f3f4f6", border: "1px solid green", "&:hover": { bgcolor: "white" } }}
-                                        size="small"
-                                    >
-                                        <PersonIcon fontSize="small" />
-                                    </IconButton>
-                                    <p className="ml-1">{currentUser && currentUser?.username?.split(" ")[0]}</p>
+                                    {currentUser && (
+                                        <Avatar
+                                            src={currentUser?.image?.url || ""}
+                                            sx={{
+                                                border: "2px solid #ffffff",
+                                            }}
+                                        />
+                                    )}
+
+                                    <p className="ml-1 text-truncate py-1">{currentUser ? currentUser?.username : "Đăng nhập"}</p>
                                 </div>
                             </div>
                         </Stack>

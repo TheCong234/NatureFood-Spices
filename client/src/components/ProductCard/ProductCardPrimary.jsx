@@ -2,8 +2,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
+
 import { Pagination } from "swiper/modules";
 import { formatPrice } from "../../services/functions";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";

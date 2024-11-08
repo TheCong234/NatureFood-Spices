@@ -3,6 +3,9 @@ import { statusCode } from "../config/statusCode.config.js";
 import OrderModel from "../models/order.model.js";
 import CartModel from "../models/cart.model.js";
 import UserModel from "../models/user.model.js";
+import { io, userSockets } from "../config/socket.js";
+import NotificationModel from "../models/notifycation.model.js";
+import StoreModel from "../models/store.models.js";
 
 const OrderController = {
     async getCustomerOrder(req, res) {
@@ -83,6 +86,25 @@ const OrderController = {
 
             const order = new OrderModel({ user, delivery: deliveryString, paymentMethod, deliveryMethod, totalAmount, products, store });
             const newOrder = await order.save();
+
+            //Tạo thông báo
+            const storeInfo = await StoreModel.findById(store);
+            const notifyData = {
+                user: storeInfo.owner,
+                // imageUrl: updatedOrder.store.image.url,
+                message: `Có đơn hàng mới. Địa chỉ nhận: ${deliveryDetails.address.street}, ${deliveryDetails.address.ward}, ${deliveryDetails.address.district}, ${deliveryDetails.address.city}`,
+                url: "/seller/orders?skip=0&take=10&status=all",
+                type: "order",
+            };
+            const notify = new NotificationModel(notifyData);
+            await notify.save();
+
+            const userSocketId = userSockets.get(storeInfo.owner.toString());
+            if (userSocketId) {
+                io.to(userSocketId).emit("receiveNotification", notifyData);
+            }
+
+            //Xóa cart
             if (newOrder?._id) {
                 await CartModel.deleteMany({ user });
             }
@@ -95,9 +117,41 @@ const OrderController = {
         const { status } = req.body;
         const updatedOrder = await OrderModel.findByIdAndUpdate(orderId, { status: status }, { new: true, runValidators: true })
             .populate("user")
-            .populate({ path: "products.storeProduct", populate: "productId" });
+            .populate({ path: "products.storeProduct", populate: "productId" })
+            .populate("store");
         if (!updatedOrder) {
             throw new Error("Lỗi, không tìm thấy đơn hàng");
+        }
+
+        //gửi thông báo qua socket io
+        let message = "";
+        switch (updatedOrder.status) {
+            case 1:
+                message = "Đơn hàng của bạn đã được chấp nhận, người bán đang chuẩn bị hàng";
+                break;
+            case 2:
+                message = "Đơn hàng của bạn đã được giao cho đơn vị vận chuyển, vui lòng để ý điện thoại nhận hàng";
+                break;
+            case 3:
+                message = "Đơn hàng của bạn đã được giao thành công, cảm ơn bạn đã sử dụng dịch vụ";
+                break;
+            case 4:
+                message = "Đơn hàng của bạn đã bị hủy";
+                break;
+        }
+        const notifyData = {
+            user: updatedOrder.user._id,
+            imageUrl: updatedOrder.store.image.url,
+            message,
+            url: `/my/order/${updatedOrder._id}`,
+            type: "order",
+        };
+        const notify = new NotificationModel(notifyData);
+        const newNotify = await notify.save();
+
+        const userSocketId = userSockets.get(updatedOrder.user._id.toString());
+        if (userSocketId) {
+            io.to(userSocketId).emit("receiveNotification", notifyData);
         }
         return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật đơn hàng thành công", updatedOrder));
     },

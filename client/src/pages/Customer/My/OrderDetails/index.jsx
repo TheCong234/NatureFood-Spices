@@ -83,7 +83,7 @@ const OrderDetails = () => {
                             </thead>
                             <tbody>
                                 {order?.products.map((product) => (
-                                    <tr>
+                                    <tr key={product?._id}>
                                         <td className="border px-4 py-2">
                                             <div className="flex">
                                                 <div className="min-w-[90px] h-full mr-3 rounded-sm overflow-hidden">

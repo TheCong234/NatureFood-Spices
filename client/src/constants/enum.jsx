@@ -1,3 +1,10 @@
+import OrderIcon from "@mui/icons-material/ShoppingCart"; // Biểu tượng cho "order"
+import FavoriteIcon from "@mui/icons-material/Favorite"; // Biểu tượng cho "favorite"
+import GiftIcon from "@mui/icons-material/CardGiftcard"; // Biểu tượng cho "gift"
+import CalendarIcon from "@mui/icons-material/CalendarToday"; // Biểu tượng cho "calendar"
+import CheckIcon from "@mui/icons-material/CheckCircle"; // Biểu tượng cho "check"
+import NotificationIcon from "@mui/icons-material/Notifications";
+
 export const STORE_STATUS = {
     0: "Đang xác minh",
     1: "Đang hoạt động",
@@ -49,4 +56,12 @@ export const REFUND_STATUS = {
 export const BANNER_STATUS = {
     0: "Đang hoạt động",
     1: "Đã dừng",
+};
+export const ICON_MAPING = {
+    order: <OrderIcon color="success" />,
+    favorite: <FavoriteIcon color="error" />,
+    gift: <GiftIcon color="warning" />,
+    calendar: <CalendarIcon color="primary" />,
+    check: <CheckIcon />,
+    notification: <NotificationIcon color="secondary" />,
 };

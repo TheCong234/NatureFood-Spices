@@ -70,7 +70,7 @@ function ProfileSettings() {
                                 "/assets/images/famale-no-avatar.png"
                             }
                             alt="avatar"
-                            className="rounded-full"
+                            className="object-cover h-full w-full rounded-full"
                         />
                     </div>
                     <div>

@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-import "../../../assets/styles/categoryCarousel.css";
 import { Navigation, Pagination } from "swiper/modules";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesAction } from "../../../hooks/Redux/Category/categoryAction";

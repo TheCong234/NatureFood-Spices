@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AdminLayout, EmptyLayout, MainLayout, SellerLayout } from "../layout";
 import { RegisterPage, LoginPage, ForgotPage, Logout } from "../pages/Common";
 import {
@@ -63,277 +63,305 @@ import {
     OrderDetails,
     Search,
 } from "../pages/Customer";
+import TestSecket from "../pages/testSocket";
+import { lazy, Suspense } from "react";
 
-export const router = createBrowserRouter([
+/* ---------------- Lazy loads various components ------------------------- */
+const App = lazy(() => import("../App"));
+const Splash = lazy(() => import("../components/Loading/Splash"));
+
+const routes = [
     {
-        path: "",
-        element: <EmptyLayout />,
+        element: (
+            // <Suspense fallback={<Splash />}>
+            //     <App />
+            // </Suspense>
+            <App />
+        ),
         children: [
             {
-                path: "/login",
-                element: <LoginPage />,
-            },
-            {
-                path: "/register",
-                element: <RegisterPage />,
-            },
-            {
-                path: "/forgot",
-                element: <ForgotPage />,
-            },
-            {
-                path: "/register-seller",
-                element: <RegisterSeller />,
-            },
-
-            {
-                path: "/",
-                element: <MainLayout />,
+                path: "",
+                element: <EmptyLayout />,
                 children: [
                     {
-                        path: "",
-                        element: <HomePage />,
+                        path: "/login",
+                        element: <LoginPage />,
                     },
                     {
-                        path: "/home",
-                        element: <HomePage />,
+                        path: "/register",
+                        element: <RegisterPage />,
                     },
                     {
-                        path: "/product/details/:storeProductId",
-                        element: <ProductDetail />,
+                        path: "/forgot",
+                        element: <ForgotPage />,
                     },
                     {
-                        path: "/wishlist",
-                        element: <Wishlist />,
+                        path: "/register-seller",
+                        element: <RegisterSeller />,
                     },
                     {
-                        path: "/shipping",
-                        element: <Shipping />,
+                        path: "/test",
+                        element: <TestSecket />,
                     },
+
                     {
-                        path: "/vendor",
-                        element: <Vendor />,
-                    },
-                    {
-                        path: "/trackOrder",
-                        element: <TrackOrder />,
-                    },
-                    {
-                        path: "/checkout",
-                        element: <Checkout />,
-                    },
-                    {
-                        path: "/blog/list",
-                        element: <Blogs />,
-                    },
-                    {
-                        path: "/blog/:slug",
-                        element: <Blog />,
-                    },
-                    {
-                        path: "/product/list",
-                        element: <Products />,
-                    },
-                    {
-                        path: "/product/category/:categoryId",
-                        element: <Category />,
-                    },
-                    {
-                        path: "/group-by-product/:productId",
-                        element: <GroupByProduct />,
-                    },
-                    {
-                        path: "/categories",
-                        element: <Categories />,
-                    },
-                    {
-                        path: "/cart",
-                        element: <Cart />,
-                    },
-                    {
-                        path: "/notification",
-                        element: <Notification />,
-                    },
-                    {
-                        path: "/search",
-                        element: <Search />,
-                    },
-                    {
-                        path: "/logout",
-                        element: <Logout />,
-                    },
-                    {
-                        path: "/my",
-                        element: <My />,
+                        path: "/",
+                        element: <MainLayout />,
                         children: [
                             {
                                 path: "",
-                                element: <Account />,
+                                element: <HomePage />,
                             },
                             {
-                                path: "account",
-                                element: <Account />,
+                                path: "/home",
+                                element: <HomePage />,
+                            },
+                            {
+                                path: "/product/details/:storeProductId",
+                                element: <ProductDetail />,
+                            },
+                            {
+                                path: "/wishlist",
+                                element: <Wishlist />,
+                            },
+                            {
+                                path: "/shipping",
+                                element: <Shipping />,
+                            },
+                            {
+                                path: "/vendor",
+                                element: <Vendor />,
+                            },
+                            {
+                                path: "/trackOrder",
+                                element: <TrackOrder />,
+                            },
+                            {
+                                path: "/checkout",
+                                element: <Checkout />,
+                            },
+                            {
+                                path: "/blog/list",
+                                element: <Blogs />,
+                            },
+                            {
+                                path: "/blog/:slug",
+                                element: <Blog />,
+                            },
+                            {
+                                path: "/product/list",
+                                element: <Products />,
+                            },
+                            {
+                                path: "/product/category/:categoryId",
+                                element: <Category />,
+                            },
+                            {
+                                path: "/group-by-product/:productId",
+                                element: <GroupByProduct />,
+                            },
+                            {
+                                path: "/categories",
+                                element: <Categories />,
+                            },
+                            {
+                                path: "/cart",
+                                element: <Cart />,
+                            },
+                            {
+                                path: "/notification",
+                                element: <Notification />,
+                            },
+                            {
+                                path: "/search",
+                                element: <Search />,
+                            },
+                            {
+                                path: "/logout",
+                                element: <Logout />,
+                            },
+                            {
+                                path: "/my",
+                                element: <My />,
+                                children: [
+                                    {
+                                        path: "",
+                                        element: <Account />,
+                                    },
+                                    {
+                                        path: "account",
+                                        element: <Account />,
+                                    },
+                                    {
+                                        path: "orders",
+                                        element: <OrderList />,
+                                    },
+                                    {
+                                        path: "order/:orderId",
+                                        element: <OrderDetails />,
+                                    },
+                                    {
+                                        path: "profile",
+                                        element: <Profile />,
+                                    },
+                                    {
+                                        path: "delivery",
+                                        element: <Delivery />,
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        path: "/seller",
+                        element: <SellerLayout />,
+                        children: [
+                            {
+                                path: "dashboard",
+                                element: <DashboardSeller />,
+                            },
+                            {
+                                path: "product/list",
+                                element: <ProductListSeller />,
+                            },
+                            {
+                                path: "product/cart",
+                                element: <ProductCartSeller />,
+                            },
+                            {
+                                path: "store-product/list",
+                                element: <StoreProductSeller />,
+                            },
+                            {
+                                path: "setting",
+                                element: <SettingStore />,
+                            },
+                            {
+                                path: "promote",
+                                element: <PromoteStore />,
                             },
                             {
                                 path: "orders",
-                                element: <OrderList />,
+                                element: <Orders />,
+                            },
+                        ],
+                    },
+                    {
+                        path: "/admin",
+                        element: <AdminLayout />,
+                        children: [
+                            {
+                                path: "dashboard",
+                                element: <DashboardAdmin />,
                             },
                             {
-                                path: "order/:orderId",
-                                element: <OrderDetails />,
+                                path: "customer",
+                                element: <UserAdmin />,
+                            },
+                            {
+                                path: "store",
+                                element: <StoresAdmin />,
+                            },
+                            {
+                                path: "category",
+                                element: <CategoryProductAdmin />,
+                            },
+                            {
+                                path: "banner",
+                                element: <BannerAdmin />,
+                            },
+                            {
+                                path: "product/list",
+                                element: <ProductAdmin />,
+                            },
+                            {
+                                path: "product/create",
+                                element: <CreateProductAdmin />,
+                            },
+                            {
+                                path: "event",
+                                element: <EventListAdmin />,
+                            },
+                            {
+                                path: "event/create",
+                                element: <EventCreateAdmin />,
+                            },
+                            {
+                                path: "event/:id",
+                                element: <EventDetailAdmin />,
+                            },
+                            {
+                                path: "order",
+                                element: <OrderAdmin />,
+                            },
+                            {
+                                path: "message",
+                                element: <MessageAdmin />,
+                            },
+                            {
+                                path: "email/inbox",
+                                element: <EmailInboxAdmin />,
+                            },
+                            {
+                                path: "email/create",
+                                element: <EmailCreateAdmin />,
+                            },
+                            {
+                                path: "notification",
+                                element: <NotificationAdmin />,
+                            },
+                            {
+                                path: "bill",
+                                element: <BillAdmin />,
+                            },
+                            {
+                                path: "report",
+                                element: <ReportAdmin />,
+                            },
+                            {
+                                path: "blog/list",
+                                element: <BlogListAdmin />,
+                            },
+                            {
+                                path: "blog/create",
+                                element: <BlogCreateAdmin />,
+                            },
+                            {
+                                path: "notify",
+                                element: <NotificationAdmin />,
+                            },
+                            {
+                                path: "bill",
+                                element: <BillAdmin />,
+                            },
+                            {
+                                path: "report",
+                                element: <ReportAdmin />,
                             },
                             {
                                 path: "profile",
-                                element: <Profile />,
-                            },
-                            {
-                                path: "delivery",
-                                element: <Delivery />,
+                                element: <ProfilerAdmin />,
                             },
                         ],
                     },
                 ],
             },
             {
-                path: "/seller",
-                element: <SellerLayout />,
-                children: [
-                    {
-                        path: "dashboard",
-                        element: <DashboardSeller />,
-                    },
-                    {
-                        path: "product/list",
-                        element: <ProductListSeller />,
-                    },
-                    {
-                        path: "product/cart",
-                        element: <ProductCartSeller />,
-                    },
-                    {
-                        path: "store-product/list",
-                        element: <StoreProductSeller />,
-                    },
-                    {
-                        path: "setting",
-                        element: <SettingStore />,
-                    },
-                    {
-                        path: "promote",
-                        element: <PromoteStore />,
-                    },
-                    {
-                        path: "orders",
-                        element: <Orders />,
-                    },
-                ],
+                path: "/error-500",
+                element: <Error500 />,
             },
             {
-                path: "/admin",
-                element: <AdminLayout />,
-                children: [
-                    {
-                        path: "dashboard",
-                        element: <DashboardAdmin />,
-                    },
-                    {
-                        path: "customer",
-                        element: <UserAdmin />,
-                    },
-                    {
-                        path: "store",
-                        element: <StoresAdmin />,
-                    },
-                    {
-                        path: "category",
-                        element: <CategoryProductAdmin />,
-                    },
-                    {
-                        path: "banner",
-                        element: <BannerAdmin />,
-                    },
-                    {
-                        path: "product/list",
-                        element: <ProductAdmin />,
-                    },
-                    {
-                        path: "product/create",
-                        element: <CreateProductAdmin />,
-                    },
-                    {
-                        path: "event",
-                        element: <EventListAdmin />,
-                    },
-                    {
-                        path: "event/create",
-                        element: <EventCreateAdmin />,
-                    },
-                    {
-                        path: "event/:id",
-                        element: <EventDetailAdmin />,
-                    },
-                    {
-                        path: "order",
-                        element: <OrderAdmin />,
-                    },
-                    {
-                        path: "message",
-                        element: <MessageAdmin />,
-                    },
-                    {
-                        path: "email/inbox",
-                        element: <EmailInboxAdmin />,
-                    },
-                    {
-                        path: "email/create",
-                        element: <EmailCreateAdmin />,
-                    },
-                    {
-                        path: "notification",
-                        element: <NotificationAdmin />,
-                    },
-                    {
-                        path: "bill",
-                        element: <BillAdmin />,
-                    },
-                    {
-                        path: "report",
-                        element: <ReportAdmin />,
-                    },
-                    {
-                        path: "blog/list",
-                        element: <BlogListAdmin />,
-                    },
-                    {
-                        path: "blog/create",
-                        element: <BlogCreateAdmin />,
-                    },
-                    {
-                        path: "notify",
-                        element: <NotificationAdmin />,
-                    },
-                    {
-                        path: "bill",
-                        element: <BillAdmin />,
-                    },
-                    {
-                        path: "report",
-                        element: <ReportAdmin />,
-                    },
-                    {
-                        path: "profile",
-                        element: <ProfilerAdmin />,
-                    },
-                ],
+                path: "/error-404",
+                element: <Error404 />,
+            },
+            {
+                path: "*",
+                element: <Navigate to="/error-404" replace />,
             },
         ],
     },
-    {
-        path: "/error-500",
-        element: <Error500 />,
-    },
-    {
-        path: "*",
-        element: <Error404 />,
-    },
-]);
+];
+
+const router = createBrowserRouter(routes);
+
+export default router;

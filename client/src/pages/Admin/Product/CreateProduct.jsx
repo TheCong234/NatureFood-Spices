@@ -25,9 +25,7 @@ import { CreateProductYup } from "../../../validations/yup.validations";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCards } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/effect-cards";
-import "../../../assets/styles/swiper.css";
+
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesAction } from "../../../hooks/Redux/Category/categoryAction";
 import { getTagsAction } from "../../../hooks/Redux/Tag/tagAction";

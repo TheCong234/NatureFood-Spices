@@ -1,9 +1,5 @@
 import React, { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import "../../../assets/styles/home.css";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import { Box, Button, Typography } from "@mui/material";
 import { useEffect } from "react";
@@ -39,11 +35,13 @@ const Index = () => {
                     }}
                     navigation={true}
                     modules={[Autoplay, Pagination, Navigation]}
-                    className="mySwiper h-[500px] w-full rounded-md"
+                    className="mySwiper  rounded-md"
                 >
                     {bannerData?.banners?.map((banner, index) => (
-                        <SwiperSlide key={`swipperSlide-${index}`} className="text-black bg-white border-none">
-                            <img src={banner.image.url} alt="banner image" width="100%" />
+                        <SwiperSlide key={`swipperSlide-${index}`} className="text-black bg-white">
+                            <div className="w-full h-[400px]">
+                                <img src={banner.image.url} alt="banner image" className="object-cover w-full h-full" />
+                            </div>
                         </SwiperSlide>
                     ))}
                 </Swiper>
@@ -64,7 +62,7 @@ const Index = () => {
             <section className="py-6 mt-6">
                 <div className="flex flex-col items-center mb-3">
                     <p className="text-3xl font-bold mr-2">Sản phẩm mới nhất</p>
-                    <p className="w-1/2 text-slate-500 text-md text-center">
+                    <p className="w-1/2 text-slate-500 text-md text-center test-bg">
                         Hãy khám phá bộ sưu tập gia vị mới nhất của chúng tôi để nâng tầm bữa ăn của bạn!
                     </p>
                 </div>

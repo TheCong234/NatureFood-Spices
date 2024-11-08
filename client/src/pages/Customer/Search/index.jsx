@@ -8,8 +8,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
+
 import { Pagination as PaginationSwipper } from "swiper/modules";
 import { ChipStyled, Nodata } from "../../../components";
 import { createCartItemAction } from "../../../hooks/Redux/Cart/cartAction";
