@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useSnackNotify from "../../../components/SnackNotify";
 import { formatPrice, useQuery } from "../../../services/functions";
 import { useEffect } from "react";
-import { Box, Button, Card, Grid, Pagination, Paper, Rating, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Card, Grid, MenuItem, Pagination, Paper, Rating, Select, Stack, Tooltip, Typography } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -13,27 +13,25 @@ import { Pagination as PaginationSwipper } from "swiper/modules";
 import { ChipStyled, Nodata } from "../../../components";
 import { createCartItemAction } from "../../../hooks/Redux/Cart/cartAction";
 import { addFavoriteStoreProductAction, deleteFavoriteStoreProductAction } from "../../../hooks/Redux/Favorite/favoriteAction";
+import { useNavigate } from "react-router-dom";
 
 const productsEachPage = 10;
 
 export default function Search() {
     const dispatch = useDispatch();
     const snackNotify = useSnackNotify();
+    const navigate = useNavigate();
     const query = useQuery();
     const { search: searchData, loading: searchLoading } = useSelector((state) => state.storeProduct);
     const { data: favoriteData } = useSelector((state) => state.favorite);
     const { token } = useSelector((state) => state.user);
-    const keyword = query.get("keyword");
-    const skip = query.get("skip");
-    const take = query.get("take");
-    const date = query.get("date");
-    const price = query.get("price");
     const params = {
-        keyword,
-        skip,
-        take,
-        date,
-        price,
+        keyword: query.get("keyword"),
+        skip: query.get("skip"),
+        take: query.get("take"),
+        date: query.get("date"),
+        price: query.get("price"),
+        discount: query.get("discount"),
     };
 
     const handleAddToCart = async (storeProductId) => {
@@ -75,35 +73,78 @@ export default function Search() {
         }
     };
 
-    const handleGetData = async () => {
-        const response = await dispatch(searchCustomerAction(params));
-        console.log(response);
-
-        if (response?.error) {
-            snackNotify("error")("Tìm sản phẩm thất bại");
-        }
-    };
-
     const handlePaginationChange = (event, value) => {
-        navigate(`/search?keyword=${keyword}&date=${date}&price=${price}&skip=${(value - 1) * productsEachPage}&take=${productsEachPage}`);
+        navigate(
+            `/search?keyword=${params.keyword}&skip=${(value - 1) * productsEachPage}&take=${productsEachPage}&date=${params.date}&price=${
+                params.price
+            }&discount=${params.discount}`
+        );
     };
 
     useEffect(() => {
-        handleGetData();
-    }, [query.get("keyword"), query.get("skip"), query.get("take"), query.get("date"), query.get("price")]);
+        (async () => {
+            const response = await dispatch(searchCustomerAction(params));
+            console.log(response);
+
+            if (response?.error) {
+                snackNotify("error")("Tìm sản phẩm thất bại");
+            }
+        })();
+    }, [params.skip, params.take, params.keyword, params.date, params.price, params.discount]);
     return (
         <Box>
-            <Paper className=" p-[20px] flex justify-between items-center mb-6">
-                <Typography variant="body1">Hiển thị 1-24 trong 205 sản phẩm</Typography>
-                <div className="flex items-center">
-                    <Button
-                        variant="outlined"
-                        size="small"
-                        sx={{ textTransform: "none", mr: 1 }}
-                        onClick={() => navigate("/product/list?skip=0&take=10")}
-                    >
-                        Tiếp tục mua sắm
-                    </Button>
+            <Paper className="p-4 mb-4">
+                <div className="flex justify-between items-center">
+                    <p>
+                        Kết quả tìm kiếm: "<strong className="text-green-600">{params.keyword}</strong>"
+                    </p>
+                    <div className="flex space-x-2 items-center">
+                        <p className=" text-gray-600">Sắp xếp theo:</p>
+                        <Button
+                            variant={params.date == "-1" ? "contained" : "outlined"}
+                            size="small"
+                            color="success"
+                            onClick={() =>
+                                navigate(
+                                    `/search?keyword=${params.keyword}&skip=${params.skip}&take=${productsEachPage}&date=${
+                                        params.date == "-1" ? 1 : -1
+                                    }&price=${params.price}&discount=${params.discount}`
+                                )
+                            }
+                        >
+                            Mới nhất
+                        </Button>
+                        <Button
+                            variant={params.discount == "1" ? "contained" : "outlined"}
+                            size="small"
+                            color="success"
+                            onClick={() =>
+                                navigate(
+                                    `/search?keyword=${params.keyword}&skip=${params.skip}&take=${productsEachPage}&date=${params.date}&price=${
+                                        params.price
+                                    }&discount=${params.discount == "1" ? 0 : 1}`
+                                )
+                            }
+                        >
+                            Khuyến mãi
+                        </Button>
+                        <Select
+                            variant="standard"
+                            labelId="demo-select-small-label"
+                            id="demo-select-small"
+                            value={params.price}
+                            size="small"
+                            onChange={(e) =>
+                                navigate(
+                                    `/search?keyword=${params.keyword}&skip=${params.skip}&take=${productsEachPage}&date=${params.date}&price=${e.target.value}&discount=${params.discount}`
+                                )
+                            }
+                            sx={{ minWidth: "140px" }}
+                        >
+                            <MenuItem value={-1}>Giá giảm dần</MenuItem>
+                            <MenuItem value={1}>Giá tăng dần</MenuItem>
+                        </Select>
+                    </div>
                 </div>
             </Paper>
             <div className="text-xl font-bold mb-3  flex">
@@ -118,7 +159,9 @@ export default function Search() {
                                     <Swiper className="product_card-primary_swiper " pagination={true} modules={[PaginationSwipper]}>
                                         {product?.productId?.images?.map((image) => (
                                             <SwiperSlide key={image?._id} className="swiper-slide_styled">
-                                                <img src={image?.url} alt="product image" />
+                                                <div className="h-full flex justify-center">
+                                                    <img src={image?.url} alt="product image" className="h-full" />
+                                                </div>
                                             </SwiperSlide>
                                         ))}
                                     </Swiper>
@@ -200,13 +243,13 @@ export default function Search() {
                     ))}
                 </Grid>
             ) : (
-                <Nodata content={`Không tìm thấy sản phẩm nào cho từ khóa "${keyword}"`} />
+                <Nodata content={`Không tìm thấy sản phẩm nào cho từ khóa "${params.keyword}"`} />
             )}
 
             <Pagination
                 className="pt-6 flex justify-center"
                 count={Math.floor(searchData?.product?.total / productsEachPage + 1)}
-                page={Math.floor(query.get("skip") / productsEachPage + 1) || 1}
+                page={Math.floor(params.skip / productsEachPage + 1) || 1}
                 onChange={handlePaginationChange}
                 color="success"
             />

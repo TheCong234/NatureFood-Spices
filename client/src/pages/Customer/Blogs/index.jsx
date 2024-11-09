@@ -1,4 +1,4 @@
-import { Button, Paper, Typography } from "@mui/material";
+import { Button, MenuItem, Pagination, Paper, Select, Typography } from "@mui/material";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import { formatDate, useQuery } from "../../../services/functions";
 import { useNavigate } from "react-router-dom";
@@ -7,42 +7,60 @@ import useSnackNotify from "../../../components/SnackNotify";
 import { useEffect } from "react";
 import { getBlogsAction } from "../../../hooks/Redux/Blog/blogAction";
 
+const productsEachPage = 10;
+
 export default function Blogs() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const snackNotify = useSnackNotify();
     const query = useQuery();
     const { data: blogData } = useSelector((state) => state.blog);
+    const params = {
+        skip: query.get("skip"),
+        take: query.get("take"),
+        date: query.get("date"),
+        type: "enable",
+    };
 
-    const handleGetData = async () => {
-        const data = {
-            skip: query.get("skip"),
-            take: query.get("take"),
-            type: "enable",
-        };
-        const response = await dispatch(getBlogsAction(data));
-        if (response?.error) {
-            snackNotify("error")("Lấy blogs lỗi");
-        }
+    const handlePaginationChange = (event, value) => {
+        navigate(`/blog/list?skip=${(value - 1) * productsEachPage}&take=${productsEachPage}&date=${params.date}`);
     };
 
     useEffect(() => {
-        handleGetData();
-    }, [query.get("skip"), query.get("take")]);
+        (async () => {
+            console.log("boggggg: ", params);
+            const response = await dispatch(getBlogsAction(params));
+
+            if (response?.error) {
+                snackNotify("error")("Lấy blogs lỗi");
+            }
+        })();
+    }, [params.skip, params.take, params.date]);
     return (
         <div>
-            <Paper className=" p-[20px] flex justify-between items-center">
-                <Typography variant="body1">Hiển thị 1-24 trong 205 bài viết</Typography>
-                <div className="flex items-center">
-                    <Button
-                        variant="outlined"
-                        startIcon={<NavigateBeforeIcon />}
-                        size="small"
-                        sx={{ textTransform: "none", mr: 1 }}
-                        onClick={() => navigate("/product/list?skip=0&take=10")}
-                    >
-                        Trở lại trang mua sắm
-                    </Button>
+            <Paper className="p-4">
+                <div className="flex justify-between items-center">
+                    <p>
+                        Hiển thị&nbsp;
+                        <strong className="text-orange">{productsEachPage > blogData?.total ? blogData?.total : productsEachPage}</strong>
+                        &nbsp;trong&nbsp;
+                        <strong className="text-green-700">{blogData?.total}</strong>&nbsp;bài viết
+                    </p>
+                    <div className="flex space-x-2 items-center">
+                        <p className=" text-gray-600">Sắp xếp theo:</p>
+                        <Select
+                            variant="standard"
+                            labelId="demo-select-small-label"
+                            id="demo-select-small"
+                            value={params.date}
+                            size="small"
+                            onChange={(e) => navigate(`/blog/list?skip=${params.skip}&take=${params.take}&date=${e.target.value}`)}
+                            sx={{ minWidth: "100px" }}
+                        >
+                            <MenuItem value={-1}>Mới nhất</MenuItem>
+                            <MenuItem value={1}>Cũ nhất</MenuItem>
+                        </Select>
+                    </div>
                 </div>
             </Paper>
             <div className="mt-4">
@@ -73,6 +91,13 @@ export default function Blogs() {
                     </div>
                 ))}
             </div>
+            <Pagination
+                className=" flex justify-center"
+                count={Math.floor(blogData?.total / productsEachPage + 1)}
+                page={Math.floor(params.skip / productsEachPage + 1) || 1}
+                onChange={handlePaginationChange}
+                color="success"
+            />
         </div>
         //fix blog
     );

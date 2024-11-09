@@ -19,14 +19,12 @@ const CategoryCarousel = () => {
             <Swiper
                 slidesPerView={5}
                 spaceBetween={30}
-                centeredSlides={true}
                 pagination={{
                     clickable: true,
                 }}
                 navigation={true}
                 modules={[Pagination, Navigation]}
                 className="mySwiper w-full h-auto"
-                initialSlide={2}
             >
                 {categoryData?.categories?.map((item) => (
                     <SwiperSlide key={item?._id} className="border-none my-2 shadow-lg shadow-black-500/50">

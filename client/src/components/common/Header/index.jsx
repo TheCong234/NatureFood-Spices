@@ -36,11 +36,11 @@ const items = [
         text: "Trang chủ",
     },
     {
-        to: "/product/list?skip=0&take=10",
+        to: "/product/list?skip=0&take=10&date=-1&price=-1&discount=0",
         text: " Sản phẩm",
     },
     {
-        to: "/blog/list?skip=0&take=10",
+        to: "/blog/list?skip=0&take=10&date=-1",
         text: "Blogs",
     },
     {
@@ -51,10 +51,10 @@ const items = [
         to: "/register-seller",
         text: " Trở thành người bán",
     },
-    {
-        to: "/trackOrder",
-        text: "  Theo dõi đơn hàng",
-    },
+    // {
+    //     to: "/trackOrder",
+    //     text: "  Theo dõi đơn hàng",
+    // },
 ];
 
 const Header = () => {
@@ -77,7 +77,7 @@ const Header = () => {
 
     const handleSearch = () => {
         setKeyword("");
-        navigate(`/search?keyword=${keyword}&skip=0&take=10`);
+        navigate(`/search?keyword=${keyword}&skip=0&take=10&date=-1&price=1&discount=0`);
     };
 
     // const handleGetData = async
@@ -187,7 +187,7 @@ const Header = () => {
 
                             <div className="flex items-center">
                                 <div
-                                    className="flex bg-green-700 items-center pr-1 rounded-[20px] ml-2 max-w-[100px]  cursor-pointer hover:bg-green-600"
+                                    className="flex bg-green-700 items-center pr-1 rounded-[20px] ml-2 max-w-[80px]  cursor-pointer hover:bg-green-600"
                                     onClick={handleClickPersonIcon}
                                 >
                                     {currentUser && (
@@ -195,6 +195,8 @@ const Header = () => {
                                             src={currentUser?.image?.url || ""}
                                             sx={{
                                                 border: "2px solid #ffffff",
+                                                width: 32,
+                                                height: 32,
                                             }}
                                         />
                                     )}

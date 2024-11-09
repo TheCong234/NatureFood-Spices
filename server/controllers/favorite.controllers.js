@@ -28,6 +28,8 @@ const FavoriteController = {
             user: req.user._id,
             storeProduct: req.params.storeProductId,
         });
+        console.log(favorite);
+
         return res.status(statusCode.OK).json(BaseResponse.success("Xóa yêu thích thành công", favorite));
     },
 

@@ -8,13 +8,29 @@ import ProductModel from "../models/product.model.js";
 
 const StoreProductController = {
     async getStoreProducts(req, res) {
-        const { skip, take } = req.query;
-        const products = await StoreProductModel.find({ status: true })
-            .populate("productId")
-            .populate({ path: "storeId", populate: "address" })
-            .skip(skip)
-            .limit(take);
-        const total = await StoreProductModel.countDocuments();
+        const { skip = 0, take = 10, date, price, discount } = req.query;
+
+        const filter = { status: true, ...(discount == "1" && { discountPrice: { $gt: 0 } }) };
+        const sortOptions = {};
+        if (date) sortOptions.createdAt = parseInt(date); // -1 (giảm dần) hoặc 1 (tăng dần)
+
+        let [products, total] = await Promise.all([
+            StoreProductModel.find(filter)
+                .populate("productId")
+                .populate({ path: "storeId", populate: "address" })
+                .sort(sortOptions)
+                .skip(parseInt(skip))
+                .limit(parseInt(take)),
+            StoreProductModel.countDocuments(filter),
+        ]);
+
+        if (price) {
+            const sortOrder = parseInt(price); // -1 hoặc 1
+            products = products.sort((a, b) => {
+                return (a.productId.salePrice * (1 - a.discountPrice) - b.productId.salePrice * (1 - b.discountPrice)) * sortOrder;
+            });
+        }
+
         return res.status(statusCode.OK).json(
             BaseResponse.success("Lấy sản phẩm sale thành công", {
                 products,
