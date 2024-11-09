@@ -6,6 +6,11 @@ export const getCategoriesApi = async () => {
     return response.data;
 };
 
+export const getProductsEachCategoryApi = async () => {
+    const response = await apiClient.get(CategoryV1.GET_PRODUCTS_EACH_CATEGORY);
+    return response.data;
+};
+
 export const createCategoryApi = async (data) => {
     const response = await apiClient.post(CategoryV1.CREATE, data);
     return response.data;

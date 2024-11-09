@@ -10,7 +10,7 @@ import CreateBannerModal from "../../../components/Modals/CreateBannerModal";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getBannersByCurrentUserAction } from "../../../hooks/Redux/Banner/bannerAction";
-import NoData from "../../../components/Notify/NoData";
+import { Nodata } from "../../../components";
 
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
@@ -27,11 +27,7 @@ const rows = [
 const headerItems = ["Hình ảnh", "Ngày đk", "Ngày hết hạn", "Link", "Tùy chọn"];
 const Index = () => {
     const dispatch = useDispatch();
-    const {
-        data: bannerData,
-        loading: bannerLoading,
-        error: bannerError,
-    } = useSelector((state) => state.banner);
+    const { data: bannerData, loading: bannerLoading, error: bannerError } = useSelector((state) => state.banner);
     const [isOpenCreateBanner, setIsOpenCreateBanner] = useState(false);
     useEffect(() => {
         dispatch(getBannersByCurrentUserAction());
@@ -41,36 +37,24 @@ const Index = () => {
         <Box className="">
             <Box className="flex justify-between p-2">
                 <p>Tìm kiếm</p>
-                <Button
-                    variant="contained"
-                    color="success"
-                    sx={{ textTransform: "none" }}
-                    onClick={() => setIsOpenCreateBanner(true)}
-                >
+                <Button variant="contained" color="success" sx={{ textTransform: "none" }} onClick={() => setIsOpenCreateBanner(true)}>
                     Đăng ký Banner
                 </Button>
             </Box>
 
             {bannerLoading ? (
-                <Box
-                    className="grid h-96 place-items-center border-t-2"
-                    sx={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
-                >
+                <Box className="grid h-96 place-items-center border-t-2" sx={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}>
                     <CircularProgress color="warning" />
                 </Box>
             ) : bannerData.length === 0 ? (
-                <NoData message="Bạn chưa đăng ký banner nào" />
+                <Nodata content="Bạn chưa đăng ký banner nào" />
             ) : (
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead sx={{ backgroundColor: "black" }}>
                             <TableRow>
                                 {headerItems.map((item, index) => (
-                                    <TableCell
-                                        key={`header cell ${index}`}
-                                        sx={{ color: "white" }}
-                                        align={index === 0 ? "left" : "right"}
-                                    >
+                                    <TableCell key={`header cell ${index}`} sx={{ color: "white" }} align={index === 0 ? "left" : "right"}>
                                         {item}
                                     </TableCell>
                                 ))}
@@ -87,18 +71,10 @@ const Index = () => {
                                     }}
                                 >
                                     <TableCell component="th" scope="row">
-                                        <img
-                                            src={banner.image.url}
-                                            alt=""
-                                            width="150px"
-                                        />
+                                        <img src={banner.image.url} alt="" width="150px" />
                                     </TableCell>
-                                    <TableCell align="right">
-                                        {banner.createdAt}
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        {banner.updatedAt}
-                                    </TableCell>
+                                    <TableCell align="right">{banner.createdAt}</TableCell>
+                                    <TableCell align="right">{banner.updatedAt}</TableCell>
                                     <TableCell
                                         align="right"
                                         sx={{
@@ -137,12 +113,7 @@ const Index = () => {
                                             >
                                                 Sửa
                                             </Button>
-                                            <Button
-                                                variant="contained"
-                                                color="error"
-                                                size="small"
-                                                sx={{ textTransform: "none" }}
-                                            >
+                                            <Button variant="contained" color="error" size="small" sx={{ textTransform: "none" }}>
                                                 Xóa
                                             </Button>
                                         </Box>
@@ -153,10 +124,7 @@ const Index = () => {
                     </Table>
                 </TableContainer>
             )}
-            <CreateBannerModal
-                open={isOpenCreateBanner}
-                setIsOpenCreateBanner={setIsOpenCreateBanner}
-            />
+            <CreateBannerModal open={isOpenCreateBanner} setIsOpenCreateBanner={setIsOpenCreateBanner} />
         </Box>
     );
 };

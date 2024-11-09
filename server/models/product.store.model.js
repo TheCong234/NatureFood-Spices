@@ -32,12 +32,10 @@ const StoreProductSchema = mongoose.Schema(
             max: 0.99,
         },
         stock: Number,
-        reviews: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Review",
-            },
-        ],
+        status: {
+            type: Boolean,
+            default: true,
+        },
     },
     {
         timestamps: true,
@@ -47,7 +45,6 @@ const StoreProductSchema = mongoose.Schema(
 //xóa liên quan đến sản phẩm (reviews)
 StoreProductSchema.post("findOneAndDelete", async function (doc) {
     if (doc) {
-        await ReviewModel.deleteMany({ _id: { $in: doc.reviews } });
         await CartModel.deleteMany({ productId: _id });
     }
 });

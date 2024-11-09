@@ -6,6 +6,9 @@ export const UserV1 = {
     USER_UPDATE: "/user/me",
     GET_PEOPLE: "/user/all",
     UPDATE_USER_BY_ID: "/user/",
+    CREATE_DELIVERY: "/user/delivery/create",
+    GET_DELIVERY: "/user/delivery/all",
+    CHANGE_PASSWORD: "/user/change-password",
 };
 
 export const StoreV1 = {
@@ -18,6 +21,7 @@ export const CategoryV1 = {
     CREATE: "/category/create",
     CATEGORY_GET_ALL: "/category/all",
     DELETE: "/category/",
+    GET_PRODUCTS_EACH_CATEGORY: "/category/products-each-category",
 };
 
 export const TagV1 = {
@@ -32,8 +36,14 @@ export const ProductV1 = {
 };
 
 export const StoreProductV1 = {
-    CREATE: "/store-product/",
+    CREATE: "/store-product/create",
     GET_STORE_PRODUCTS: "/store-product/all",
+    GET_STORE_PRODUCTS_BY_STORE: "/store-product/store",
+    GET_STORE_PRODUCT: "/store-product/details/",
+    GET_STORE_PRODUCT_BY_CATEGORY: "/store-product/category/",
+    GET_STORE_PRODUCT_BY_PRODUCT: "/store-product/group-by-product/",
+    SEARCH: "/store-product/search",
+    UPDATE: "/store-product/",
 };
 
 export const BannerV1 = {
@@ -47,10 +57,14 @@ export const BannerV1 = {
 export const BlogV1 = {
     CREATE: "/blog/create",
     GET_BLOGS: "/blog/list",
+    GET_BLOG: "/blog/",
 };
 
 export const ReviewV1 = {
-    REVIEW_CREATE: "/review/",
+    CREATE: "/review/",
+    GET_ALL: "/review/",
+    UPDATE: "/review/",
+    DELETE: "/review/",
 };
 
 export const FavoriteV1 = {
@@ -64,6 +78,11 @@ export const FavoriteV1 = {
     DELETE_FAVORITE_STORE_PRODUCT: "/favorite/store-product/",
 };
 
+export const StoreFavoriteV1 = {
+    MODIFY: "/favorite/product/",
+    GET_ITEMS: "favorite/product/all",
+};
+
 export const StoreCartV1 = {
     ADD: "/store-cart/",
     DELETE: "/store-cart/items/",
@@ -74,4 +93,20 @@ export const StoreCartV1 = {
 export const CartV1 = {
     CREATE: "/cart",
     GET_ALL: "/cart/all",
+    UPDATE_ITEM: "/cart/",
+    DELETE: "/cart/",
+};
+
+export const OrderV1 = {
+    CREATE_CUSTOMER_ORDER: "/order/customer/create",
+    GET_CUSTOMER_ORDERS: "/order/customer/all",
+    GET_CUSTOMER_ORDER: "/order/customer/",
+    GET_CUSTOMER_ORDERS_MY_STORE: "/order/my-store",
+    UPDATE: "/order/",
+};
+
+export const NotificationV1 = {
+    GET_ALL: "/notification/all",
+    GET_UNREAD_TOTAL: "/notification/unread",
+    UPDATE: "/notification/",
 };

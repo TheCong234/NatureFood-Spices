@@ -20,6 +20,22 @@ const ImageSchema = new Schema({
     },
 });
 
+const deliverySchema = new Schema({
+    address: {
+        type: Schema.Types.ObjectId,
+        ref: "Address",
+        required: true,
+    },
+    ownerName: {
+        type: String,
+        required: true,
+    },
+    phone: {
+        type: String,
+        required: true,
+    },
+});
+
 const UserSchema = Schema(
     {
         email: {
@@ -29,12 +45,9 @@ const UserSchema = Schema(
             trim: true,
             validate: {
                 validator: function (v) {
-                    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-                        v
-                    );
+                    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
                 },
-                message: (props) =>
-                    `${props.value} is not a valid email address`,
+                message: (props) => `${props.value} is not a valid email address`,
             },
             required: true,
         },
@@ -58,15 +71,19 @@ const UserSchema = Schema(
         phone: {
             type: String,
         },
+        gender: {
+            type: Number,
+            enum: [0, 1, 2],
+            default: 0,
+        },
+        birthday: {
+            type: Date,
+        },
         image: ImageSchema,
         role: {
             type: String,
             enum: ["admin", "seller", "user"],
             default: "user",
-        },
-        cart: {
-            type: Schema.Types.ObjectId,
-            ref: "Cart",
         },
         store: {
             type: Schema.Types.ObjectId,
@@ -81,6 +98,7 @@ const UserSchema = Schema(
             enum: [0, 1],
             default: 0,
         },
+        delivery: [deliverySchema],
     },
     {
         timestamps: true,

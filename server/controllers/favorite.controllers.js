@@ -5,6 +5,7 @@ import UserModel from "../models/user.model.js";
 import StoreModel from "../models/store.models.js";
 import ProductModel from "../models/product.model.js";
 import FavoriteModel from "../models/favorite.model.js";
+import StoreFavoriteModel from "../models/favorite.store.model.js";
 
 const FavoriteController = {
     //************customer***********
@@ -15,11 +16,11 @@ const FavoriteController = {
             storeProduct: req.params.storeProductId,
         });
         const newFavorite = await favorite.save();
-        return res
-            .status(statusCode.CREATED)
-            .json(
-                BaseResponse.success("Thêm yêu thích thành công", newFavorite)
-            );
+        const returnValue = await FavoriteModel.findById(newFavorite._id).populate({
+            path: "storeProduct",
+            populate: [{ path: "productId" }, { path: "storeId" }],
+        });
+        return res.status(statusCode.CREATED).json(BaseResponse.success("Thêm yêu thích thành công", returnValue));
     },
 
     async deleteFavoriteStoreProduct(req, res) {
@@ -27,14 +28,18 @@ const FavoriteController = {
             user: req.user._id,
             storeProduct: req.params.storeProductId,
         });
-        return res
-            .status(statusCode.OK)
-            .json(BaseResponse.success("Xóa yêu thích thành công", favorite));
+        console.log(favorite);
+
+        return res.status(statusCode.OK).json(BaseResponse.success("Xóa yêu thích thành công", favorite));
     },
 
     async getFavoriteStoreProducts(req, res) {
         const { skip, take } = req.query;
         const products = await FavoriteModel.find({ user: req.user._id })
+            .populate({
+                path: "storeProduct",
+                populate: [{ path: "productId" }, { path: "storeId" }],
+            })
             .skip(skip)
             .limit(take);
         const total = await FavoriteModel.countDocuments({
@@ -49,70 +54,31 @@ const FavoriteController = {
     },
 
     //************store**********
-    async modifyFavorite(req, res) {
-        try {
-            const { id } = req.params;
-            let favoriteList = req.user.favorite;
-            let mess = "";
-            if (favoriteList.includes(id)) {
-                favoriteList = favoriteList.filter((f) => f != id);
-                mess = "Bỏ yêu thích thành công";
-            } else {
-                favoriteList.push(id);
-                mess = "Thêm yêu thích thành công";
-            }
-            const user = await UserModel.findByIdAndUpdate(
-                req.user._id,
-                { favorite: favoriteList },
-                { new: true }
-            );
-            return res
-                .status(statusCode.OK)
-                .json(BaseResponse.success(mess, user.favorite));
-        } catch (error) {
-            console.log("Modify favorite: ", error);
-            return res
-                .status(statusCode.INTERNAL_SERVER_ERROR)
-                .json(
-                    BaseResponse.error(
-                        "Lấy danh sách yêu thích thất bại",
-                        error
-                    )
-                );
+
+    async modifyStoreFavoriteItem(req, res) {
+        const { productId } = req.params;
+        const store = req.user.store;
+        const existingItem = await StoreFavoriteModel.findOne({ store, product: productId });
+        console.log(existingItem);
+
+        let returnItem = null;
+        if (existingItem) {
+            returnItem = await StoreFavoriteModel.findByIdAndDelete(existingItem._id);
+        } else {
+            const item = new StoreFavoriteModel({ store, product: productId });
+            returnItem = await item.save();
         }
+
+        return res.status(statusCode.OK).json(BaseResponse.success("Đã cập nhật yêu thích", returnItem));
     },
 
-    async addFavoriteProduct(req, res) {
-        const product = await ProductModel.findById(req.params.id);
-        const store = await StoreModel.findOneAndUpdate(
-            { owner: req.user._id },
-            { $addToSet: { favorite: product } }
-        );
-
-        return res
-            .status(statusCode.OK)
-            .json(BaseResponse.success("Đã thêm vào yêu thích", product));
-    },
-
-    async removeFavoriteProduct(req, res) {
-        const store = await StoreModel.findOneAndUpdate(
-            { owner: req.user._id },
-            { $pull: { favorite: req.params.id } }
-        );
-        const product = await ProductModel.findById(req.params.id);
-        return res
-            .status(statusCode.OK)
-            .json(BaseResponse.success("Đã xóa yêu thích", product));
-    },
-
-    async getFavoriteProducts(req, res) {
-        const store = await StoreModel.findOne({
-            owner: req.user._id,
-        }).populate("favorite");
-        const total = store?.favorite?.length;
+    async getStoreFavoriteItems(req, res) {
+        const store = req.user.store;
+        const products = await StoreFavoriteModel.find({ store });
+        const total = await StoreFavoriteModel.countDocuments({ store });
         return res.status(statusCode.OK).json(
             BaseResponse.success("Thành công", {
-                favorite: store?.favorite,
+                products,
                 total,
             })
         );

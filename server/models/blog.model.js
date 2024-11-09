@@ -41,9 +41,9 @@ const BlogSchema = new Schema(
         ],
         image: ImageSchema,
         status: {
-            type: Boolean,
+            type: Number,
             enum: [0, 1],
-            default: 0,
+            default: 1,
         },
     },
     {

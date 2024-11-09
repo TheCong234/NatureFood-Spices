@@ -10,6 +10,9 @@ import favoriteReducer from "./Favorite/favoriteSlice";
 import cartReducer from "./Cart/cartSlice";
 import storeProductReducer from "./StoreProduct/storeProductSlice";
 import blogReducer from "./Blog/blogSlice";
+import orderReducer from "./Order/orderSlice";
+import reviewReducer from "./Review/reviewSlice";
+import notificationReducer from "./Notification/notificationSlice";
 
 export const store = configureStore({
     reducer: {
@@ -24,5 +27,8 @@ export const store = configureStore({
         cart: cartReducer,
         storeProduct: storeProductReducer,
         blog: blogReducer,
+        order: orderReducer,
+        review: reviewReducer,
+        notification: notificationReducer,
     },
 });

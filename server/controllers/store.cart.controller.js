@@ -7,100 +7,45 @@ import { BaseResponse } from "../config/BaseResponse.config.js";
 import StoreCartModel from "../models/store.cart.model.js";
 
 const StoreCartController = {
-    async addProductToStoreCart(req, res) {
-        const { product, quantity } = req.body;
-        const storeCart = await StoreCart.findOne({
-            store: req.params.storeId,
-        });
-
-        const productIndex = storeCart.items.findIndex(
-            (item) => item.product.toString() == product.toString()
-        );
-        if (productIndex !== -1) {
-            storeCart.items[productIndex].quantity += quantity;
+    async createStoreCartItem(req, res) {
+        const { quantity } = req.body;
+        const { productId } = req.params;
+        const store = req.user.store;
+        const existingCart = await StoreCart.findOne({ store, product: productId });
+        let newItem = null;
+        if (existingCart) {
+            existingCart.quantity += quantity;
+            newItem = await existingCart.save();
         } else {
-            storeCart.items.push({ product, quantity });
+            const item = new StoreCartModel({ store, product: productId, quantity });
+            newItem = await item.save();
         }
-        await storeCart.save();
-        return res.status(statusCode.OK).json(
-            BaseResponse.success("Thêm vào giỏ hàng thành công", {
-                index: productIndex,
-                quantity,
-            })
-        );
+        return res.status(statusCode.OK).json(BaseResponse.success("Thêm vào giỏ hàng thành công", newItem));
     },
 
     async deleteStoreCartItem(req, res) {
-        await StoreCartModel.findOneAndUpdate(
-            { store: req.user.store },
-            { $pull: { items: { _id: req.params.id } } }
-        );
-        return res.status(statusCode.OK).json(
-            BaseResponse.success("Xóa item giỏ hàng thành công", {
-                id: req.params.id,
-            })
-        );
+        const { storeCartId } = req.params;
+        const deletedItem = await StoreCartModel.findByIdAndDelete(storeCartId);
+        return res.status(statusCode.OK).json(BaseResponse.success("Xóa item giỏ hàng thành công", deletedItem));
     },
 
     async getStoreCartItems(req, res) {
-        const storeCart = await StoreCartModel.findOne({
-            store: req.user.store,
-        }).populate("items.product");
-        if (storeCart) {
-            const products = storeCart.items;
-            const total = storeCart.items.length;
-            return res.status(statusCode.OK).json(
-                BaseResponse.success("Lấy giỏ hàng thành công", {
-                    products,
-                    total,
-                })
-            );
-        }
+        const store = req.user.store;
+        const products = await StoreCartModel.find({ store }).populate("product");
+        const total = await StoreCartModel.countDocuments({ store });
         return res.status(statusCode.OK).json(
             BaseResponse.success("Lấy giỏ hàng thành công", {
-                products: [],
-                total: 0,
+                products,
+                total,
             })
         );
     },
 
     async adjustmentStoreCartItem(req, res) {
+        const { storeCartId } = req.params;
         const { quantity } = req.body;
-        const storeCart = await StoreCartModel.findOne({
-            store: req.user.store,
-        });
-
-        const item = storeCart.items.find(
-            (i) => i._id.toString() == req.params.id
-        );
-
-        const newQuantity = item.quantity + quantity;
-
-        if (newQuantity > 1) {
-            const storeCart = await StoreCartModel.findOneAndUpdate(
-                {
-                    store: req.user.store,
-                },
-                {
-                    $set: {
-                        "items.$[elem].quantity": newQuantity, // Cập nhật số lượng item
-                    },
-                },
-                {
-                    new: true, // Trả về document đã được cập nhật
-                    arrayFilters: [{ "elem._id": req.params.id }], // Lọc để cập nhật item đúng
-                }
-            );
-            return res.status(statusCode.OK).json(
-                BaseResponse.success("Cập nhật số lượng thành công", {
-                    id: req.params.id,
-                    quantity: newQuantity,
-                })
-            );
-        }
-        return res
-            .status(statusCode.OK)
-            .json(BaseResponse.success("Cập nhật số lượng thành công", null));
+        const updatedItem = await StoreCartModel.findByIdAndUpdate(storeCartId, { $inc: { quantity } }, { new: true }).populate("product");
+        return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật số lượng thành công", updatedItem));
     },
 };
 

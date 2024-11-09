@@ -2,15 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {
-    TextField,
-    Button,
-    Checkbox,
-    FormControlLabel,
-    Grid,
-    Box,
-    Typography,
-} from "@mui/material";
+import { TextField, Button, Checkbox, FormControlLabel, Grid, Box, Typography } from "@mui/material";
 import { CreateBlogYup } from "../../../validations/yup.validations";
 import { useDispatch, useSelector } from "react-redux";
 import { createBlogAction } from "../../../hooks/Redux/Blog/blogAction";
@@ -70,14 +62,7 @@ const Index = () => {
 
                 {/* Slug */}
                 <Grid item xs={12}>
-                    <TextField
-                        size="small"
-                        fullWidth
-                        label="Slug"
-                        {...register("slug")}
-                        error={!!errors.slug}
-                        helperText={errors.slug?.message}
-                    />
+                    <TextField size="small" fullWidth label="Slug" {...register("slug")} error={!!errors.slug} helperText={errors.slug?.message} />
                 </Grid>
 
                 {/* Nội dung */}
@@ -112,10 +97,9 @@ const Index = () => {
                 <Grid item xs={12}>
                     <TextField
                         sx={{
-                            ".css-1sh6wjw-MuiInputBase-input-MuiOutlinedInput-input":
-                                {
-                                    py: 2,
-                                },
+                            ".css-1sh6wjw-MuiInputBase-input-MuiOutlinedInput-input": {
+                                py: 2,
+                            },
                         }}
                         size="small"
                         type="file"
@@ -129,14 +113,10 @@ const Index = () => {
                     />
                 </Grid>
                 {selectedImage && (
-                    <Box mt={2}>
+                    <Grid item xs={12}>
                         <Typography>Ảnh đã chọn:</Typography>
-                        <img
-                            src={URL.createObjectURL(selectedImage)}
-                            alt="Selected"
-                            className="w-1/2 "
-                        />
-                    </Box>
+                        <img src={URL.createObjectURL(selectedImage)} alt="Selected" className="w-1/2 " />
+                    </Grid>
                 )}
 
                 {/* Nút Submit */}

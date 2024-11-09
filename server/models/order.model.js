@@ -8,16 +8,16 @@ const OrderSchema = new Schema(
             ref: "User",
             required: true,
         },
-        // store: {
-        //     type: Schema.Types.ObjectId,
-        //     ref: "Store",
-        //     required: true,
-        // },
+        store: {
+            type: Schema.Types.ObjectId,
+            ref: "Store",
+            required: true,
+        },
         products: [
             {
-                productId: {
+                storeProduct: {
                     type: Schema.Types.ObjectId,
-                    ref: "Product",
+                    ref: "StoreProduct",
                     required: true,
                 },
                 quantity: {
@@ -36,22 +36,23 @@ const OrderSchema = new Schema(
             type: Number,
             required: true,
         },
-        orderDate: {
-            type: Date,
-            default: Date.now,
-        },
         status: {
             type: Number,
-            enum: [0, 1, 2, 3],
+            enum: [0, 1, 2, 3, 4],
             default: 0,
-        },
-        shippingAddress: {
-            type: String,
-            required: true,
         },
         paymentMethod: {
             type: Number,
             enum: [0, 1, 2, 3],
+            required: true,
+        },
+        deliveryMethod: {
+            type: Number,
+            enum: [0, 1, 2, 3],
+            required: true,
+        },
+        delivery: {
+            type: String,
             required: true,
         },
     },

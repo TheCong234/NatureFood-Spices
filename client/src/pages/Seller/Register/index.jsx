@@ -47,27 +47,14 @@ const Index = () => {
         <Box>
             <Box className="register-seller">
                 <Box className="register-seller_form-container">
-                    <Typography
-                        component="h1"
-                        variant="h6"
-                        sx={{ fontWeight: "bold" }}
-                    >
+                    <Typography component="h1" variant="h6" sx={{ fontWeight: "bold" }}>
                         Đăng ký bán hàng với Nature Food
                     </Typography>
-                    <Typography
-                        component="p"
-                        variant=""
-                        sx={{ fontStyle: "italic" }}
-                    >
-                        Điền đầy đủ thông tin của cửa hàng vào form để đăng ký
-                        bán hàng trong hệ thống
+                    <Typography component="p" variant="" sx={{ fontStyle: "italic" }}>
+                        Điền đầy đủ thông tin của cửa hàng vào form để đăng ký bán hàng trong hệ thống
                     </Typography>
 
-                    <form
-                        onSubmit={handleSubmit(onSubmit)}
-                        noValidate
-                        className="mt-6"
-                    >
+                    <form onSubmit={handleSubmit(onSubmit)} noValidate className="mt-6">
                         <TextField
                             {...register("name")}
                             margin="normal"
@@ -119,9 +106,20 @@ const Index = () => {
 
                         <div className="flex">
                             <TextField
+                                {...register("ward")}
+                                margin="normal"
+                                label="Phường/xã"
+                                type="text"
+                                error={!!errors.ward}
+                                helperText={errors.ward?.message}
+                                size="small"
+                                className="na-mr-2"
+                                fullWidth
+                            />
+                            <TextField
                                 {...register("street")}
                                 margin="normal"
-                                label="Số nhà - đường (Thôn xóm)"
+                                label="Địa chỉ chi tiết"
                                 type="text"
                                 error={!!errors.street}
                                 helperText={errors.street?.message}
@@ -129,29 +127,29 @@ const Index = () => {
                                 className="na-mr-2"
                                 fullWidth
                             />
-                            <TextField
-                                {...register("image")}
-                                margin="normal"
-                                type="file"
-                                size="small"
-                                onChange={handleChangeInputFile}
-                                fullWidth
-                                label="Ảnh đại diện cửa hàng"
-                                InputLabelProps={{ shrink: true }}
-                                inputProps={{ accept: "image/*" }}
-                                error={!!errors.image}
-                                helperText={errors?.image?.message}
-                            />
                         </div>
+                        <TextField
+                            {...register("image")}
+                            margin="normal"
+                            type="file"
+                            size="small"
+                            onChange={handleChangeInputFile}
+                            fullWidth
+                            label="Ảnh đại diện cửa hàng"
+                            InputLabelProps={{ shrink: true }}
+                            inputProps={{ accept: "image/*" }}
+                            error={!!errors.image}
+                            helperText={errors?.image?.message}
+                        />
 
-                        <Box sx={{ textAlign: "center", my: 4 }}>
+                        <Box className="text-center mt-3">
                             <LoadingButton
                                 type="submit"
                                 variant="contained"
                                 color="success"
-                                sx={{ mt: "24px", textTransform: "none" }}
                                 loading={loading}
                                 loadingPosition="center"
+                                className="na-text-transform-none "
                             >
                                 Đăng ký cửa hàng
                             </LoadingButton>

@@ -5,7 +5,12 @@
     --peach-color: #FFF7ED;
     --white-color: #FFFFFF;
     --light-green:#ECFCCB;
+    --bg-soft-grey: #f9fafd
 }
+
+*{
+    box-sizing: border-box;
+  }
 
 .text-truncate{
   overflow: hidden;
@@ -79,7 +84,13 @@
     padding-right: 4px !important;
 }
 
-/* .na-table-body-tini .na-table-row td{
-    padding-left: 4px;
-    padding-right: 4px;
-} */
+.na-text-transform-none{
+    text-transform: none !important;
+}
+
+.na-my-2{
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+

@@ -6,22 +6,14 @@ import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import {
     Collapse,
-    Container,
     InputAdornment,
     InputBase,
     Stack,
@@ -90,7 +82,7 @@ const items = [
         fieldName: "products",
         listItems: [
             {
-                to: "/admin/product",
+                to: "/admin/product/list?skip=0&take=10&type=all",
                 text: "Danh sách",
             },
             {
@@ -181,7 +173,7 @@ const items = [
     {
         to: "/admin/profile",
         icon: <AccountCircleIcon />,
-        text: "Hồ sơ",
+        text: " Chỉnh sửa hồ sơ",
     },
 ];
 
@@ -245,6 +237,7 @@ const Drawer = styled(MuiDrawer, {
     flexShrink: 0,
     whiteSpace: "nowrap",
     boxSizing: "border-box",
+
     variants: [
         {
             props: ({ open }) => open,
@@ -252,7 +245,6 @@ const Drawer = styled(MuiDrawer, {
                 ...openedMixin(theme),
                 "& .MuiDrawer-paper": {
                     ...openedMixin(theme),
-                    position: "fixed", // Đặt vị trí fixed cho Paper
                 },
             },
         },
@@ -262,7 +254,6 @@ const Drawer = styled(MuiDrawer, {
                 ...closedMixin(theme),
                 "& .MuiDrawer-paper": {
                     ...closedMixin(theme),
-                    position: "fixed", // Đặt vị trí fixed cho Paper
                 },
             },
         },

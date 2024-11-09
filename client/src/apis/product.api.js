@@ -11,11 +11,6 @@ export const getProductsApi = async (params) => {
     return response.data;
 };
 
-export const getProductById = async (productId) => {
-    const response = await apiClient.get(ProductV1.PRODUCT_DETAILS + productId);
-    return response.data;
-};
-
 export const createProductApi = async (data) => {
     const response = await apiClient.post(ProductV1.PRODUCT_CREATE, data, {
         headers: {
@@ -25,9 +20,7 @@ export const createProductApi = async (data) => {
     return response.data;
 };
 
-export const createStoreProductsApi = async (storeId) => {
-    const response = await apiClient.post(
-        `${StoreProductV1.CREATE}${storeId}/create`
-    );
+export const createStoreProductsApi = async () => {
+    const response = await apiClient.post(StoreProductV1.CREATE);
     return response.data;
 };
