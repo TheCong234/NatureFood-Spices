@@ -77,7 +77,7 @@ const Header = () => {
 
     const handleSearch = () => {
         setKeyword("");
-        navigate(`/search?keyword=${keyword}&skip=0&take=10`);
+        navigate(`/search?keyword=${keyword}&skip=0&take=10&date=-1&price=1&discount=0`);
     };
 
     // const handleGetData = async

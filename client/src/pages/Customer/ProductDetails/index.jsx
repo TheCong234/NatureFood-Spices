@@ -1,4 +1,4 @@
-import { Box, Button, Rating, Stack, Typography, Tab, Divider, Avatar, IconButton, Tooltip } from "@mui/material";
+import { Box, Button, Rating, Stack, Typography, Tab, Divider, Avatar, IconButton, Tooltip, Paper, Grid } from "@mui/material";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ProductImagesCarousel from "./ProductImagesCarousel";
 import { useEffect, useState } from "react";
@@ -16,6 +16,8 @@ import useSnackNotify from "../../../components/SnackNotify";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { addFavoriteStoreProductAction, deleteFavoriteStoreProductAction } from "../../../hooks/Redux/Favorite/favoriteAction";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import QuestionAnswerOutlinedIcon from "@mui/icons-material/QuestionAnswerOutlined";
+import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 
 const ProductDetail = () => {
     const [product, setProduct] = useState();
@@ -82,25 +84,31 @@ const ProductDetail = () => {
     };
     return (
         <Box>
-            <Box className="flex">
-                <Box className="w-1/2 pr-8 relative">
+            <Paper className="flex p-4 space-x-6">
+                <Box className="w-1/2 relative">
                     <ProductImagesCarousel product={product} />
-                    <div className="absolute top-3 z-10 right-11">
-                        {favoriteData?.products?.some((f) => f.user == currentUser?._id) ? (
+                    <div className="absolute top-1 z-10 right-11">
+                        {favoriteData?.products?.some((f) => f.storeProduct._id == product?._id) ? (
                             <Tooltip title="Bỏ yêu thích">
-                                <IconButton color="error" onClick={handleRemoveFavoriteStoreProduct}>
-                                    <FavoriteOutlinedIcon fontSize="large" />
+                                <IconButton color="error" size="small" onClick={handleRemoveFavoriteStoreProduct} sx={{ outline: "1px solid red" }}>
+                                    <FavoriteOutlinedIcon fontSize="medium" />
                                 </IconButton>
                             </Tooltip>
                         ) : (
                             <Tooltip title="Thêm yêu thích">
-                                <IconButton color="error" onClick={handleAddFavoriteStoreProduct}>
-                                    <FavoriteBorderOutlinedIcon fontSize="large" />
+                                <IconButton
+                                    color="error"
+                                    size="small"
+                                    onClick={handleAddFavoriteStoreProduct}
+                                    sx={{ ":hover": { outline: "1px solid red" } }}
+                                >
+                                    <FavoriteBorderOutlinedIcon fontSize="medium" />
                                 </IconButton>
                             </Tooltip>
                         )}
                     </div>
                 </Box>
+                <Divider orientation="vertical" variant="middle" flexItem />
                 <Box className="w-1/2">
                     <Typography component="h2" variant="h5" sx={{ fontWeight: "bold" }}>
                         {product?.productId?.name}
@@ -149,19 +157,9 @@ const ProductDetail = () => {
                             </Typography>
                         </Box>
                     </Stack>
-
                     <hr className="my-4" />
 
-                    <div>
-                        <p>Được đăng bán bởi</p>
-                        <Box component={Link} to={"/"} className="flex items-center mt-3 text-inherit hover:text-green-500">
-                            <Avatar sizes="small" src="/assets/images/no-avatar.png" />
-                            <p className="font-semibold text-xl ml-2">{product?.storeId?.name}</p>
-                        </Box>
-                    </div>
-                    <hr className="my-4" />
-
-                    <Box sx={{ py: 3 }}>
+                    <Box>
                         <Typography variant="body1" gutterBottom>
                             <strong>Bạn cần nó</strong> - hãy thêm vào giỏ hàng của bạn
                         </Typography>
@@ -189,9 +187,80 @@ const ProductDetail = () => {
                         </div>
                     </Box>
                 </Box>
-            </Box>
+            </Paper>
 
-            <Box sx={{ width: "100%", typography: "body1" }}>
+            <Paper className="p-4 mt-4">
+                <div className="flex items-center">
+                    <Avatar src={product?.storeId.image.url} sx={{ height: "62px", width: "62px" }} />
+                    <div className="ml-4">
+                        <p className="text-lg font-semibold">{product?.storeId?.name}</p>
+                        <p className="text-sm text-gray-500">HCM</p>
+                        <div className="flex space-x-3 mt-2 mr-6">
+                            <Button
+                                variant="outlined"
+                                color="success"
+                                size="small"
+                                startIcon={<QuestionAnswerOutlinedIcon />}
+                                className="na-text-transform-none"
+                            >
+                                Nhắn tin
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                color="info"
+                                size="small"
+                                startIcon={<StorefrontOutlinedIcon />}
+                                className="na-text-transform-none"
+                            >
+                                Xem store
+                            </Button>
+                        </div>
+                    </div>
+                    <Divider orientation="vertical" variant="middle" flexItem />
+                    <div className="ml-6 flex-1">
+                        <Grid container spacing={3}>
+                            <Grid item md={4}>
+                                <div>
+                                    <div className="flex justify-between ">
+                                        <p className="text-gray-400">Đánh giá</p>
+                                        <p className="text-green-600">3 004</p>
+                                    </div>
+                                    <div className="flex justify-between mt-2">
+                                        <p className="text-gray-400">Sản phẩm</p>
+                                        <p className="text-green-600">106</p>
+                                    </div>
+                                </div>
+                            </Grid>
+                            <Grid item md={4}>
+                                <div>
+                                    <div className="flex justify-between ">
+                                        <p className="text-gray-400">Đánh giá</p>
+                                        <p className="text-green-600">3 004</p>
+                                    </div>
+                                    <div className="flex justify-between mt-2">
+                                        <p className="text-gray-400">Sản phẩm</p>
+                                        <p className="text-green-600">106</p>
+                                    </div>
+                                </div>
+                            </Grid>
+                            <Grid item md={4}>
+                                <div>
+                                    <div className="flex justify-between ">
+                                        <p className="text-gray-400">Đánh giá</p>
+                                        <p className="text-green-600">3 004</p>
+                                    </div>
+                                    <div className="flex justify-between mt-2">
+                                        <p className="text-gray-400">Sản phẩm</p>
+                                        <p className="text-green-600">106</p>
+                                    </div>
+                                </div>
+                            </Grid>
+                        </Grid>
+                    </div>
+                </div>
+            </Paper>
+
+            <Paper className="mt-4">
                 <TabContext value={valueTab}>
                     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                         <TabList onChange={handleTabChange} aria-label="lab API tabs example">
@@ -206,7 +275,7 @@ const ProductDetail = () => {
                         <ReviewTab product={product} />
                     </TabPanel>
                 </TabContext>
-            </Box>
+            </Paper>
         </Box>
     );
 };
