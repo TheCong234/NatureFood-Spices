@@ -62,6 +62,7 @@ import {
     Profile,
     OrderDetails,
     Search,
+    Store,
 } from "../pages/Customer";
 import TestSecket from "../pages/testSocket";
 import { lazy, Suspense } from "react";
@@ -179,6 +180,10 @@ const routes = [
                             {
                                 path: "/logout",
                                 element: <Logout />,
+                            },
+                            {
+                                path: "/store/:id",
+                                element: <Store />,
                             },
                             {
                                 path: "/my",

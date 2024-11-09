@@ -20,3 +20,4 @@ export { default as OrderDetails } from "./My/OrderDetails";
 export { default as Delivery } from "./My/Delivery";
 export { default as Profile } from "./My/Profile";
 export { default as Search } from "./Search";
+export { default as Store } from "./Store";
