@@ -100,7 +100,7 @@ export default function Search() {
                         variant="outlined"
                         size="small"
                         sx={{ textTransform: "none", mr: 1 }}
-                        onClick={() => navigate("/product/list?skip=0&take=10")}
+                        onClick={() => navigate("/product/list?skip=0&take=10&date=-1&price=-1&discount=0")}
                     >
                         Tiếp tục mua sắm
                     </Button>

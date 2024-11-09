@@ -83,7 +83,9 @@ export default function GroupByProduct() {
                                 <Swiper className="product_card-primary_swiper " pagination={true} modules={[PaginationSwipper]}>
                                     {product?.productId?.images?.map((image) => (
                                         <SwiperSlide key={image?._id} className="swiper-slide_styled">
-                                            <img src={image?.url} alt="product image" />
+                                            <div className="h-full flex justify-center">
+                                                <img src={image?.url} alt="product image" className="h-full" />
+                                            </div>
                                         </SwiperSlide>
                                     ))}
                                 </Swiper>

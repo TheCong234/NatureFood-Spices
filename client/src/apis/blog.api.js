@@ -1,8 +1,8 @@
 import { apiClient } from "./config.api";
 import { BlogV1 } from "../constants/endpoints.const";
 
-export const getBlogsApi = async (data) => {
-    const result = await apiClient.get(BlogV1.GET_BLOGS, data);
+export const getBlogsApi = async (params) => {
+    const result = await apiClient.get(BlogV1.GET_BLOGS, { params });
     return result.data;
 };
 

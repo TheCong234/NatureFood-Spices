@@ -21,9 +21,12 @@ export default function ProductImagesCarousel({ product }) {
             >
                 {product?.productId?.images?.map((item) => (
                     <SwiperSlide key={item?._id}>
-                        <div className="h-full">
-                            <img src={item?.url} alt="image store product" className="object-cover" />
+                        <div className="h-full flex justify-center">
+                            <img src={item?.url} alt="product image" className="h-full" />
                         </div>
+                        {/* <div className="h-full">
+                            <img src={item?.url} alt="image store product" className="object-cover" />
+                        </div> */}
                     </SwiperSlide>
                 ))}
                 <SwiperSlide>
@@ -48,8 +51,8 @@ export default function ProductImagesCarousel({ product }) {
             >
                 {product?.productId?.images?.map((item) => (
                     <SwiperSlide key={item?._id}>
-                        <div className="h-full">
-                            <img src={item?.url} alt="image store product" className="object-cover" />
+                        <div className="h-full flex justify-center">
+                            <img src={item?.url} alt="product image" className="h-full" />
                         </div>
                     </SwiperSlide>
                 ))}

@@ -362,7 +362,7 @@ export default function CheckoutForm() {
                     keepMounted
                     onClose={() => {
                         setOpenDialog(false);
-                        navigate("/product/list?skip=0&take=10");
+                        navigate("/product/list?skip=0&take=10&date=-1&price=-1&discount=0");
                     }}
                     aria-describedby="alert-dialog-slide-description"
                 >
@@ -374,7 +374,10 @@ export default function CheckoutForm() {
 
                         <p className="mt-2">
                             Đặt hàng thành công&nbsp;
-                            <Link to={"/product/list?skip=0&take=10"} className="hover:underline underline-offset-4  hover:text-green-700">
+                            <Link
+                                to={"/product/list?skip=0&take=10&date=-1&price=-1&discount=0"}
+                                className="hover:underline underline-offset-4  hover:text-green-700"
+                            >
                                 tiếp tục mua sắm
                             </Link>
                         </p>
@@ -386,7 +389,7 @@ export default function CheckoutForm() {
                             color="success"
                             onClick={() => {
                                 setOpenDialog(false);
-                                navigate("/product/list?skip=0&take=10");
+                                navigate("/product/list?skip=0&take=10&date=-1&price=-1&discount=0");
                             }}
                         >
                             Đồng ý
