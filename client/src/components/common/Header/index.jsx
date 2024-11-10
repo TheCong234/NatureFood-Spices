@@ -208,7 +208,7 @@ const Header = () => {
                     </div>
                 </Container>
             </Box>
-            <div className="bg-[#fff7ed] pt-2 pb-2">
+            <Box className="bg-[#fff7ed] pt-2 pb-2 " sx={{ boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)" }}>
                 <Container className="flex justify-center">
                     <Box>
                         {items.map((item, index) => (
@@ -218,7 +218,7 @@ const Header = () => {
                         ))}
                     </Box>
                 </Container>
-            </div>
+            </Box>
             <Fragment>
                 <Menu
                     sx={{}}
