@@ -44,7 +44,7 @@ export default function Categories() {
                             </div>
                         </div>
                         <Divider />
-                        <div className="mx-4">
+                        <div className="p-4">
                             <Swiper
                                 slidesPerView={5}
                                 spaceBetween={30}
@@ -53,7 +53,7 @@ export default function Categories() {
                                 }}
                                 navigation={true}
                                 modules={[Pagination, Navigation]}
-                                className="mySwiper w-full h-auto"
+                                className="mySwiper w-full h-auto bg-primary na-px-4"
                                 initialSlide={2}
                             >
                                 {item?.products?.map((product) => (

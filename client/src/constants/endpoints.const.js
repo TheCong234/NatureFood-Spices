@@ -9,6 +9,7 @@ export const UserV1 = {
     CREATE_DELIVERY: "/user/delivery/create",
     GET_DELIVERY: "/user/delivery/all",
     CHANGE_PASSWORD: "/user/change-password",
+    FORGOT_PASSWORD: "/user/forgot-password",
 };
 
 export const StoreV1 = {

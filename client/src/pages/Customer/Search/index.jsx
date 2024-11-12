@@ -1,19 +1,13 @@
 import { searchCustomerAction } from "../../../hooks/Redux/StoreProduct/storeProductAction";
 import { useDispatch, useSelector } from "react-redux";
 import useSnackNotify from "../../../components/SnackNotify";
-import { formatPrice, useQuery } from "../../../services/functions";
 import { useEffect } from "react";
-import { Box, Button, Card, Grid, MenuItem, Pagination, Paper, Rating, Select, Stack, Tooltip, Typography } from "@mui/material";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { Swiper, SwiperSlide } from "swiper/react";
-
-import { Pagination as PaginationSwipper } from "swiper/modules";
-import { ChipStyled, Nodata } from "../../../components";
-import { createCartItemAction } from "../../../hooks/Redux/Cart/cartAction";
-import { addFavoriteStoreProductAction, deleteFavoriteStoreProductAction } from "../../../hooks/Redux/Favorite/favoriteAction";
+import { Box, Button, Card, CardMedia, Grid, MenuItem, Pagination, Paper, Select } from "@mui/material";
+import { useQuery } from "../../../services/functions";
+import { Nodata, ProductCardCustomer } from "../../../components";
 import { useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination as PaginationSwiper } from "swiper/modules";
 
 const productsEachPage = 10;
 
@@ -23,8 +17,6 @@ export default function Search() {
     const navigate = useNavigate();
     const query = useQuery();
     const { search: searchData, loading: searchLoading } = useSelector((state) => state.storeProduct);
-    const { data: favoriteData } = useSelector((state) => state.favorite);
-    const { token } = useSelector((state) => state.user);
     const params = {
         keyword: query.get("keyword"),
         skip: query.get("skip"),
@@ -32,45 +24,6 @@ export default function Search() {
         date: query.get("date"),
         price: query.get("price"),
         discount: query.get("discount"),
-    };
-
-    const handleAddToCart = async (storeProductId) => {
-        if (!token) {
-            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
-            return;
-        }
-        const response = await dispatch(createCartItemAction({ storeProduct: storeProductId, quantity: 1 }));
-        if (response?.error) {
-            snackNotify("error")("Thêm vào giỏ thất bại");
-        } else {
-            snackNotify("success")("Thêm vào giỏ thành công");
-        }
-    };
-
-    const handleAddFavoriteStoreProduct = async (storeProductId) => {
-        if (!token) {
-            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
-            return;
-        }
-        const response = await dispatch(addFavoriteStoreProductAction(storeProductId));
-        if (response?.error) {
-            snackNotify("error")("Thêm yêu thích thất bại");
-        } else {
-            snackNotify("success")("Thêm yêu thích thành công");
-        }
-    };
-
-    const handleRemoveFavoriteStoreProduct = async (storeProductId) => {
-        if (!token) {
-            snackNotify("error")("Bạn phải ĐĂNG NHẬP để sử dụng chức năng này");
-            return;
-        }
-        const response = await dispatch(deleteFavoriteStoreProductAction(storeProductId));
-        if (response?.error) {
-            snackNotify("error")("Bỏ yêu thích thất bại");
-        } else {
-            snackNotify("success")("Bỏ yêu thích thành công");
-        }
     };
 
     const handlePaginationChange = (event, value) => {
@@ -147,103 +100,94 @@ export default function Search() {
                     </div>
                 </div>
             </Paper>
-            <div className="text-xl font-bold mb-3  flex">
-                <div className=" border-b-2 border-green-600 pr-6">Sản phẩm</div>
-            </div>
-            {searchData?.product?.total != 0 ? (
-                <Grid container spacing={2}>
-                    {searchData?.product?.products?.map((product) => (
-                        <Grid item xs={6} md={3} key={product?._id}>
-                            <Card className="product_card-primary relative">
-                                <Box className="cursor-pointer" onClick={() => navigate(`/product/details/${product?._id}`)}>
-                                    <Swiper className="product_card-primary_swiper " pagination={true} modules={[PaginationSwipper]}>
-                                        {product?.productId?.images?.map((image) => (
-                                            <SwiperSlide key={image?._id} className="swiper-slide_styled">
-                                                <div className="h-full flex justify-center">
-                                                    <img src={image?.url} alt="product image" className="h-full" />
-                                                </div>
-                                            </SwiperSlide>
-                                        ))}
-                                    </Swiper>
-                                </Box>
-                                <Box className="px-5 cursor-pointer" onClick={() => navigate(`/product/details/${product?._id}`)}>
-                                    <p className="font-semibold text-truncate-2 text-lg leading-5">{product?.productId?.name}</p>
-                                    <Typography variant="body2" sx={{ color: "text.secondary", my: 1 }}>
-                                        {product?.productId?.category?.name}
-                                    </Typography>
-                                    <div className="flex text-[#d26426]">
-                                        <div className="text-2xl font-semibold">
-                                            <small>₫</small>
-                                            {formatPrice(product?.productId?.salePrice)}
-                                        </div>
-                                        <del className="flex items-center ml-3 font-semibold text-gray-500">
-                                            <small>₫</small>
-                                            {formatPrice(product?.productId?.salePrice + product?.productId?.salePrice * 0.1)}
-                                        </del>
-                                    </div>
-                                    <Typography variant="body2" sx={{ color: "text.secondary", my: 1 }}>
-                                        Stock: <span className="text-green-500 font-semibold">{product?.stock}</span>
-                                    </Typography>
-                                </Box>
-                                <Box className="px-4 pb-4 flex justify-between">
-                                    <Rating name="read-only" value={product?.rating || 4} readOnly />
-                                    <Stack direction={"row"} spacing={1}>
-                                        {favoriteData?.products?.some((f) => f?.storeProduct == product?._id) ? (
-                                            <Tooltip title="Bỏ yêu thích" placement="top">
-                                                <Button
-                                                    variant="outlined"
-                                                    sx={{
-                                                        padding: "3px 12px",
-                                                        minWidth: "10px",
-                                                    }}
-                                                    size="small"
-                                                    className="btn-product-cart"
-                                                    onClick={() => handleRemoveFavoriteStoreProduct(product?._id)}
-                                                >
-                                                    <FavoriteIcon fontSize="small" color="error" />
-                                                </Button>
-                                            </Tooltip>
-                                        ) : (
-                                            <Tooltip title="Thêm vào yêu thích" placement="top">
-                                                <Button
-                                                    variant="outlined"
-                                                    sx={{
-                                                        padding: "3px 12px",
-                                                        minWidth: "10px",
-                                                    }}
-                                                    size="small"
-                                                    className="btn-product-cart"
-                                                    onClick={() => handleAddFavoriteStoreProduct(product?._id)}
-                                                >
-                                                    <FavoriteBorderIcon fontSize="small" />
-                                                </Button>
-                                            </Tooltip>
-                                        )}
-
-                                        <Tooltip title="Thêm vào giỏ hàng" placement="top">
-                                            <Button
-                                                variant="outlined"
-                                                sx={{
-                                                    padding: "3px 12px",
-                                                    minWidth: "10px",
-                                                }}
-                                                size="small"
-                                                onClick={() => handleAddToCart(product?._id)}
-                                            >
-                                                <AddShoppingCartIcon fontSize="small" />
-                                            </Button>
-                                        </Tooltip>
-                                    </Stack>
-                                </Box>
-                                <div className="absolute top-3 -left-2 z-10">
-                                    <ChipStyled label={product?.storeId?.name} color="success" />
-                                </div>
-                            </Card>
+            <section>
+                <Paper className="p-4">
+                    <div className="text-xl font-bold mb-3  flex">
+                        <div className=" border-b-2 border-green-600 pr-6">Sản phẩm</div>
+                    </div>
+                    {searchData?.product?.total != 0 ? (
+                        <Grid container spacing={2}>
+                            {searchData?.product?.products?.map((product) => (
+                                <Grid item xs={6} md={3} key={product?._id}>
+                                    <ProductCardCustomer product={product} />
+                                </Grid>
+                            ))}
                         </Grid>
-                    ))}
-                </Grid>
-            ) : (
-                <Nodata content={`Không tìm thấy sản phẩm nào cho từ khóa "${params.keyword}"`} />
+                    ) : (
+                        <Nodata content={`Không tìm thấy sản phẩm nào cho từ khóa "${params.keyword}"`} />
+                    )}
+                </Paper>
+            </section>
+            {searchData?.categoies?.length > 0 && (
+                <section className="mt-4">
+                    <Paper className=" p-4">
+                        <div className="text-xl font-bold mb-3  flex">
+                            <div className=" border-b-2 border-green-600 pr-6">Danh mục</div>
+                        </div>
+                        <Swiper
+                            slidesPerView={5}
+                            spaceBetween={30}
+                            pagination={{
+                                clickable: true,
+                            }}
+                            navigation={true}
+                            modules={[PaginationSwiper, Navigation]}
+                            className="mySwiper w-full h-auto bg-primary na-px-4"
+                        >
+                            {searchData?.categories?.map((item) => (
+                                <SwiperSlide key={item?._id} className="border-none my-2 shadow-lg shadow-black-500/50">
+                                    <Card className="w-full cursor-pointer" onClick={() => navigate(`/product/category/${item?._id}?skip=0&take=10`)}>
+                                        <CardMedia
+                                            component="img"
+                                            style={{ height: 200, width: "100%", objectFit: "cover" }}
+                                            image={item?.image?.url}
+                                            alt="category img"
+                                        />
+                                        <div className="px-4 py-2">
+                                            <p className="line-clamp-1 text-xl text-left">{item?.name}</p>
+                                        </div>
+                                    </Card>
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    </Paper>
+                </section>
+            )}
+
+            {searchData?.stores?.length > 0 && (
+                <section className="mt-4">
+                    <Paper className=" p-4">
+                        <div className="text-xl font-bold mb-3  flex">
+                            <div className=" border-b-2 border-green-600 pr-6">Cửa hàng</div>
+                        </div>
+                        <Swiper
+                            slidesPerView={5}
+                            spaceBetween={30}
+                            pagination={{
+                                clickable: true,
+                            }}
+                            navigation={true}
+                            modules={[PaginationSwiper, Navigation]}
+                            className="mySwiper w-full h-auto bg-primary na-px-4"
+                        >
+                            {searchData?.stores?.map((item) => (
+                                <SwiperSlide key={item?._id} className="border-none my-2 shadow-lg shadow-black-500/50">
+                                    <Card className="w-full cursor-pointer" onClick={() => navigate(`/store/${item?._id}`)}>
+                                        <CardMedia
+                                            component="img"
+                                            style={{ height: 200, width: "100%", objectFit: "cover" }}
+                                            image={item?.image?.url}
+                                            alt="category img"
+                                        />
+                                        <div className="px-4 py-2">
+                                            <p className="line-clamp-1 text-xl text-left">{item?.name}</p>
+                                        </div>
+                                    </Card>
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    </Paper>
+                </section>
             )}
 
             <Pagination

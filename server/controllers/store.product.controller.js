@@ -5,6 +5,7 @@ import StoreProductModel from "../models/product.store.model.js";
 import StoreCartModel from "../models/store.cart.model.js";
 import CategoryModel from "../models/category.model.js";
 import ProductModel from "../models/product.model.js";
+import StoreModel from "../models/store.models.js";
 
 const StoreProductController = {
     async getStoreProducts(req, res) {
@@ -136,18 +137,50 @@ const StoreProductController = {
     },
 
     async searchCustomer(req, res) {
-        const { keyword, skip, take, date, price } = req.query;
+        const { keyword, skip, take, date, price, discount } = req.query;
         const products = await ProductModel.find({ name: { $regex: keyword, $options: "i" } });
         const productIds = products.map((product) => product._id);
-        const storeProducts = await StoreProductModel.find({
+
+        // Xây dựng bộ lọc cho StoreProduct
+        const storeProductFilter = {
             productId: { $in: productIds },
-        })
+        };
+        if (parseInt(discount) === 1) {
+            storeProductFilter.discountPrice = { $gt: 0 };
+        }
+        let storeProducts = await StoreProductModel.find(storeProductFilter)
             .populate("productId")
             .populate("storeId")
+            .sort({ createdAt: parseInt(date) })
             .skip(parseInt(skip))
             .limit(parseInt(take));
-        const total = await StoreProductModel.countDocuments({ productId: { $in: productIds } });
-        return res.status(statusCode.OK).json(BaseResponse.success("Tìm sản phẩm thành công", { product: { products: storeProducts, total } }));
+        const total = await StoreProductModel.countDocuments(storeProductFilter);
+        if (price) {
+            const sortOrder = parseInt(price); // -1 hoặc 1
+            storeProducts = storeProducts.sort((a, b) => {
+                return (a.productId.salePrice * (1 - a.discountPrice) - b.productId.salePrice * (1 - b.discountPrice)) * sortOrder;
+            });
+        }
+
+        //search category
+        let categories = await CategoryModel.find({ name: { $regex: keyword, $options: "i" } })
+            .sort({ createdAt: parseInt(date) })
+            .skip(parseInt(skip))
+            .limit(parseInt(take));
+
+        //search store
+        let stores = await StoreModel.find({ name: { $regex: keyword, $options: "i" } })
+            .sort({ createdAt: parseInt(date) })
+            .skip(parseInt(skip))
+            .limit(parseInt(take));
+
+        return res.status(statusCode.OK).json(
+            BaseResponse.success("Tìm sản phẩm thành công", {
+                product: { products: storeProducts, total },
+                categories,
+                stores,
+            })
+        );
     },
 
     async updateStoreProduct(req, res) {

@@ -222,7 +222,7 @@ const routes = [
                         element: <SellerLayout />,
                         children: [
                             {
-                                path: "dashboard",
+                                path: "",
                                 element: <DashboardSeller />,
                             },
                             {
@@ -248,6 +248,10 @@ const routes = [
                             {
                                 path: "orders",
                                 element: <Orders />,
+                            },
+                            {
+                                path: "notification",
+                                element: <Notification />,
                             },
                         ],
                     },
