@@ -8,19 +8,15 @@ export default function Error500() {
         <body className="error-body">
             <div className="error-page">
                 <div className="falcon-logo">
-                    <img src="src/assets/images/logo.png" alt="falcon logo" />
+                    <img src="assets/images/logo.png" alt="falcon logo" />
                 </div>
                 <div className="error-content">
                     <h1 className="error-h">500</h1>
                     <p className="error-message">Ồ, có gì đó không ổn rồi!</p>
                     <hr></hr>
                     <p className="error-details">
-                        Hãy thử làm mới trang hoặc quay lại và thử hành động một
-                        lần nữa. Nếu vấn đề này vẫn tiếp diễn,{" "}
-                        <a href="mailto:support@example.com">
-                            liên hệ với chúng tôi
-                        </a>
-                        .
+                        Hãy thử làm mới trang hoặc quay lại và thử hành động một lần nữa. Nếu vấn đề này vẫn tiếp diễn,{" "}
+                        <a href="mailto:support@example.com">liên hệ với chúng tôi</a>.
                     </p>
                     {/* <Button variant="contained" startIcon={<DeleteIcon />}>
                     Delete

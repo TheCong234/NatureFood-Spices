@@ -18,6 +18,7 @@ import Menu from "@mui/material/Menu";
 import Fade from "@mui/material/Fade";
 import { Link } from "react-router-dom";
 import { ButtonNa } from "../../../components";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 export default function ShopHeader() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -147,6 +148,7 @@ export default function ShopHeader() {
                 <div className="absolute -bottom-12 left-24 ">
                     <ButtonNa color="black" variant="outlined" sx={{ textTransform: "none" }}>
                         Theo dõi cửa hàng
+                        <FavoriteIcon />
                     </ButtonNa>
                 </div>
             </div>
@@ -205,7 +207,7 @@ export default function ShopHeader() {
                             <div className="flex items-center space-x-2">
                                 <TextField
                                     variant="outlined"
-                                    placeholder="Search all 708 items"
+                                    placeholder="Tìm kiếm "
                                     size="small"
                                     InputProps={{
                                         endAdornment: (
