@@ -121,7 +121,7 @@ const Header = () => {
                                         />
                                     </InputAdornment>
                                 }
-                                placeholder="Search…"
+                                placeholder="Tìm kiếm ..."
                                 style={{
                                     borderRadius: "17px",
                                     backgroundColor: "white",

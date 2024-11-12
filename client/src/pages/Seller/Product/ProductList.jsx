@@ -1,13 +1,114 @@
-import { Button, FormControlLabel, Grid, MenuItem, Paper, Select, Switch, Typography } from "@mui/material";
+import { Button, Card, Grid, MenuItem, Paper, Rating, Select, Stack, Switch, Tooltip, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import ProductCardPrimary from "../../../components/ProductCard/ProductCardPrimary";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getProductsAction } from "../../../hooks/Redux/Product/productAction";
 import { getStoreFavoriteItemsAction } from "../../../hooks/Redux/Favorite/favoriteAction";
 import { useQuery } from "../../../services/functions";
 import { useNavigate } from "react-router-dom";
-import useSnackNotify from "../../../components/SnackNotify";
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+import { Pagination } from "swiper/modules";
+import { formatPrice } from "@services/functions";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import useSnackNotify from "@components/SnackNotify";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { addProductToStoreCartAction } from "../../../hooks/Redux/Cart/cartAction";
+import { modifyStoreFavoriteItemAction } from "../../../hooks/Redux/Favorite/favoriteAction";
+
+const ProductCard = ({ product }) => {
+    const dispatch = useDispatch();
+    const snackNotify = useSnackNotify();
+    const { data: favoriteData } = useSelector((state) => state.favorite);
+    const { currentStore } = useSelector((state) => state.store);
+
+    //favorite features
+    const modifyStoreFavoriteItem = async () => {
+        const response = await dispatch(modifyStoreFavoriteItemAction(product?._id));
+        if (response?.error) {
+            snackNotify("error")("Cập nhật danh sách yêu thích thất bại");
+        } else {
+            snackNotify("success")("Đã cập nhật danh sách yêu thích");
+        }
+    };
+
+    //Cart features
+    const createStoreCartItem = async () => {
+        const response = await dispatch(addProductToStoreCartAction({ quantity: 1, productId: product?._id }));
+        if (response?.error) {
+            snackNotify("error")("Thêm vào giỏ hàng thất bại");
+        } else {
+            snackNotify("success")("Đã thêm vào giỏ hàng");
+        }
+        console.log(response);
+    };
+    return (
+        <Card className="product_card-primary">
+            <Box>
+                <Swiper className="product_card-primary_swiper " pagination={true} modules={[Pagination]}>
+                    {product?.images?.map((image, index) => (
+                        <SwiperSlide key={index} className="swiper-slide_styled">
+                            <div className="h-full flex justify-center">
+                                <img src={image?.url} alt="product image" className="h-full" />
+                            </div>
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            </Box>
+            <Box className="px-5">
+                <p className="font-semibold text-base leading-5 line-clamp-2 h-10">{product?.name}</p>
+                <div className="flex text-[#d26426]">
+                    <div className="text-2xl font-semibold">
+                        <small>₫</small>
+                        {formatPrice(product?.price)}
+                    </div>
+                </div>
+                <Typography variant="body2" sx={{ color: "text.secondary", my: 1 }}>
+                    Sẵn có:&nbsp;
+                    <span className="text-green-500 font-semibold">{product?.inventory}</span>
+                </Typography>
+            </Box>
+            <Box className="px-4 pb-4 flex justify-between">
+                <Rating name="read-only" value={product?.rating} readOnly />
+                <Stack direction={"row"} spacing={1}>
+                    {favoriteData?.products?.some((f) => f.product == product._id) ? (
+                        <Tooltip title="Bỏ yêu thích" placement="top">
+                            <Button
+                                variant="outlined"
+                                sx={{ padding: "3px 12px", minWidth: "10px" }}
+                                size="small"
+                                className="btn-product-cart"
+                                onClick={modifyStoreFavoriteItem}
+                            >
+                                <FavoriteIcon fontSize="small" color="error" />
+                            </Button>
+                        </Tooltip>
+                    ) : (
+                        <Tooltip title="Thêm vào yêu thích" placement="top">
+                            <Button
+                                variant="outlined"
+                                sx={{ padding: "3px 12px", minWidth: "10px" }}
+                                size="small"
+                                className="btn-product-cart"
+                                onClick={modifyStoreFavoriteItem}
+                            >
+                                <FavoriteBorderIcon fontSize="small" />
+                            </Button>
+                        </Tooltip>
+                    )}
+
+                    <Tooltip title="Thêm vào giỏ hàng" placement="top">
+                        <Button variant="outlined" sx={{ padding: "3px 12px", minWidth: "10px" }} size="small" onClick={createStoreCartItem}>
+                            <AddShoppingCartIcon fontSize="small" />
+                        </Button>
+                    </Tooltip>
+                </Stack>
+            </Box>
+        </Card>
+    );
+};
 
 const Index = () => {
     const dispatch = useDispatch();
@@ -57,8 +158,8 @@ const Index = () => {
             </Paper>
             <Grid container spacing={2}>
                 {productData?.products?.map((product) => (
-                    <Grid item md={3} key={product._id}>
-                        <ProductCardPrimary product={product} />
+                    <Grid item md={2} key={product._id}>
+                        <ProductCard product={product} />
                     </Grid>
                 ))}
             </Grid>

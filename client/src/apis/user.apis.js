@@ -85,3 +85,8 @@ export const updateCurrentUserApi = async (data) => {
     });
     return response.data;
 };
+
+export const forgotPasswordApi = async (data) => {
+    const response = await apiClient.patch(UserV1.FORGOT_PASSWORD, data);
+    return response.data;
+};

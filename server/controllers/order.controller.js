@@ -35,10 +35,16 @@ const OrderController = {
     },
 
     async getCustomerOrdersByStore(req, res) {
-        const { skip, take, status } = req.query;
-        const filter = { store: req.user.store, ...(status !== "all" && { status: parseInt(status) }) };
+        const { skip, take, status, date = -1 } = req.query;
+        const filter = { store: req.user.store, ...(status !== "-1" && { status: parseInt(status) }) };
+        const sorts = { createdAt: parseInt(date) };
         const [orders, total] = await Promise.all([
-            OrderModel.find(filter).populate("user").populate({ path: "products.storeProduct", populate: "productId" }).skip(skip).limit(take),
+            OrderModel.find(filter)
+                .populate("user")
+                .populate({ path: "products.storeProduct", populate: "productId" })
+                .sort(sorts)
+                .skip(skip)
+                .limit(take),
             OrderModel.countDocuments({ store: req.user.store }),
         ]);
         return res.status(statusCode.OK).json(BaseResponse.success("Lấy các đơn hàng thành công", { orders, total }));
@@ -137,6 +143,9 @@ const OrderController = {
                 break;
             case 4:
                 message = "Đơn hàng của bạn đã bị hủy";
+                break;
+            case 5:
+                message = "Yêu cầu hủy đơn hàng";
                 break;
         }
         const notifyData = {

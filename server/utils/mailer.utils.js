@@ -18,11 +18,15 @@ export const sendMail = (to, subject, template) => {
         subject: subject,
         html: template,
     };
-    return transport.sendMail(options, (error, info) => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("Gửi email thành công", info.response);
-        }
+    return new Promise((resolve, reject) => {
+        transport.sendMail(options, (error, info) => {
+            if (error) {
+                console.log("Lỗi khi gửi email:", error);
+                reject({ success: false, error: error.message });
+            } else {
+                console.log("Gửi email thành công:", info.response);
+                resolve({ success: true, response: info.response });
+            }
+        });
     });
 };

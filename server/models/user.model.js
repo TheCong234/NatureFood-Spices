@@ -36,6 +36,12 @@ const deliverySchema = new Schema({
     },
 });
 
+const OtpSChema = new Schema({
+    OTP: { type: String },
+    createdAt: { type: Date, default: Date.now },
+    // createdAt: { type: Date, default: Date.now, expires: "1m" },
+});
+
 const UserSchema = Schema(
     {
         email: {
@@ -99,6 +105,7 @@ const UserSchema = Schema(
             default: 0,
         },
         delivery: [deliverySchema],
+        OTP: OtpSChema,
     },
     {
         timestamps: true,

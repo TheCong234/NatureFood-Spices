@@ -1,8 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 import { TextField, Button, Typography, Link, Box, Grid, Container, Paper } from "@mui/material";
 import { Link as LinkRouter } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { ForgotYup } from "../../../validations/yup.validations";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { forgotPasswordApi } from "../../../apis/user.apis";
+import LoadingButton from "@mui/lab/LoadingButton";
+import useSnackNotify from "@components/SnackNotify";
+import OtpInput from "react-otp-input";
 
 const ForgotPage = () => {
+    const [loading, setLoading] = useState(false);
+    const [sentOTP, setSentOTP] = useState(true);
+    const [otpInput, setOtpInput] = useState("");
+    const [formData, setFormData] = useState({
+        password: "",
+        confirmPassword: "",
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    const snackNotify = useSnackNotify();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm({
+        resolver: yupResolver(ForgotYup),
+    });
+
+    const onSubmit = async (data) => {
+        if (sentOTP) {
+            if (formData.password != confirmPassword) {
+                return snackNotify("error")("Mật khẩu phải giống Mật khẩu xác thực");
+            }
+        } else {
+            setLoading(true);
+            const response = await forgotPasswordApi(data);
+            setLoading(false);
+            console.log(response);
+            if (response.success) {
+                snackNotify("success")("Gửi OTP thành công");
+                setSentOTP(true);
+            } else {
+                snackNotify("error")("Gửi OTP thất bại, vui lòng kiểm tra lại email");
+            }
+        }
+    };
     return (
         <Box className="min-h-[100vh]  grid place-items-center bg-[url('/assets/images/bg-login.jpg')]">
             <Paper className="w-[60%]">
@@ -46,36 +97,83 @@ const ForgotPage = () => {
 
                     {/* Right Side: Account Login Form */}
                     <Grid item xs={12} md={6} lg={7} style={{ padding: "2rem" }}>
-                        <Box
-                            sx={{
-                                paddingTop: "50px",
-                                fontWeight: 800,
-                            }}
-                        >
+                        <Box className="font-bold text-center">
                             <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold" }}>
                                 Quên mật khẩu
                             </Typography>
                         </Box>
-                        <span>Nhập mail để nhận đổi mật khẩu</span>
+                        <span>Nhập mail đăng ký tài khoản của bạn</span>
                         {/* Login Form */}
-                        <TextField fullWidth label="Email address" variant="outlined" margin="normal" size="small" />
+                        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                            <TextField
+                                {...register("email")}
+                                fullWidth
+                                type="email"
+                                label="Email"
+                                variant="outlined"
+                                margin="normal"
+                                size="small"
+                                error={!!errors.email}
+                                helperText={errors?.email?.message}
+                            />
+                            {sentOTP && (
+                                <div>
+                                    <p>Mã otp đã được gửi, Vui lòng kiểm tra email và điền mã OTP được kèm theo vào bên dưới để tiếp tục</p>
+                                    <div className="flex justify-center items-center my-5">
+                                        <OtpInput
+                                            value={otpInput}
+                                            onChange={setOtpInput}
+                                            numInputs={6}
+                                            renderSeparator={<span className="mx-2 text-2xl">-</span>} // Dấu phân cách
+                                            renderInput={(props) => (
+                                                <input
+                                                    {...props}
+                                                    className="text-2xl text-center border-2 border-gray-300 rounded focus:outline-none focus:border-blue-500 transition duration-200"
+                                                    maxLength={1} // Đảm bảo chỉ nhập một ký tự
+                                                />
+                                            )}
+                                        />
+                                    </div>
+                                    <TextField
+                                        fullWidth
+                                        type="text"
+                                        label="Mật khẩu mới"
+                                        variant="outlined"
+                                        margin="normal"
+                                        size="small"
+                                        name="password"
+                                        onChange={handleInputChange}
+                                    />
 
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            sx={{
-                                my: 2,
-                                fontWeight: 800,
-                                textTransform: "none",
-                            }}
-                        >
-                            Gửi
-                        </Button>
-                        {/* <Link href="/" underline="hover">
-                            {"Tôi không lấy lại được mật khẩu→"}
-                        </Link>
-                        <br /> */}
+                                    <TextField
+                                        fullWidth
+                                        type="text"
+                                        label="Nhập lại mật khẩu mới"
+                                        variant="outlined"
+                                        margin="normal"
+                                        size="small"
+                                        name="confirmPassword"
+                                        onChange={handleInputChange}
+                                    />
+                                </div>
+                            )}
+                            <LoadingButton
+                                fullWidth
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                loading={loading}
+                                loadingIndicator="Đang gửi..."
+                                sx={{
+                                    my: 2,
+                                    fontWeight: 800,
+                                    textTransform: "none",
+                                }}
+                            >
+                                Gửi
+                            </LoadingButton>
+                        </form>
+
                         <Link href="/login" underline="hover">
                             {"Trang đăng nhập"}
                         </Link>

@@ -143,7 +143,7 @@ const LoginPage = () => {
                                 Đăng nhập
                             </Button>
                         </form>
-                        <Link href="#" underline="hover">
+                        <Link href="/forgot" underline="hover">
                             Quên mật khẩu ?
                         </Link>
 

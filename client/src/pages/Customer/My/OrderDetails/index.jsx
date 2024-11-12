@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import useSnackNotify from "../../../../components/SnackNotify";
-import { getCustomerOrderAction } from "../../../../hooks/Redux/Order/orderAction";
+import { getCustomerOrderAction, updateCustomerOrderAction } from "../../../../hooks/Redux/Order/orderAction";
 import { formatDate, formatPrice, formatTime, splitDeliveryString } from "../../../../services/functions";
 import { ChipStyled, Nodata } from "../../../../components";
 import { DELIVERY_METHOD, ORDER_STATUS, ORDER_STATUS_COLOR, PAYMENT_METHOD } from "../../../../constants/enum";
@@ -13,6 +13,19 @@ const OrderDetails = () => {
     const snackNotify = useSnackNotify();
     const { orderId } = useParams();
     const { order, loading: orderLoading } = useSelector((state) => state.order);
+    const status = useRef(0);
+    const [reRender, setRender] = useState(false);
+
+    const updateCustomerOrder = async () => {
+        const data = { orderId, data: { status: status.current } };
+        const response = await dispatch(updateCustomerOrderAction(data));
+        if (response.error) {
+            snackNotify("error")("Cập nhật đơn hàng lỗi");
+        } else {
+            snackNotify("success")("Cập nhật đơn hàng thành công");
+            setRender(!reRender);
+        }
+    };
 
     const handleGetData = async () => {
         const response = await dispatch(getCustomerOrderAction(orderId));
@@ -23,7 +36,7 @@ const OrderDetails = () => {
 
     useEffect(() => {
         handleGetData();
-    }, [orderId]);
+    }, [orderId, reRender]);
     return (
         <div>
             {order ? (
@@ -106,7 +119,41 @@ const OrderDetails = () => {
                             </tbody>
                         </table>
                         <div className="flex justify-end mt-4">
-                            <span className="text-lg font-semibold">Tổng cộng:&nbsp;{formatPrice(order?.totalAmount)}</span>
+                            <p className="font-semibold text-lg mr-4">
+                                Tổng cộng:&nbsp;<span className="text-xl font-bold text-orange">{formatPrice(order?.totalAmount)}</span>
+                                <sup className=" text-orange">đ</sup>
+                            </p>
+                            {order?.status == 2 ? (
+                                <Button
+                                    variant="outlined"
+                                    color="success"
+                                    size="small"
+                                    className="na-text-transform-none"
+                                    sx={{ ":hover": { bgcolor: "orange", color: "white", borderColor: "yellow" } }}
+                                    onClick={() => {
+                                        status.current = 3;
+                                        updateCustomerOrder();
+                                    }}
+                                >
+                                    Đã nhận được hàng
+                                </Button>
+                            ) : (
+                                order?.status == 3 && (
+                                    <Button
+                                        variant="outlined"
+                                        color="success"
+                                        size="small"
+                                        className="na-text-transform-none"
+                                        sx={{ ":hover": { bgcolor: "orange", color: "white", borderColor: "yellow" } }}
+                                        onClick={() => {
+                                            status.current = 5;
+                                            updateCustomerOrder();
+                                        }}
+                                    >
+                                        Hoàn trả
+                                    </Button>
+                                )
+                            )}
                         </div>
                     </div>
                 </div>

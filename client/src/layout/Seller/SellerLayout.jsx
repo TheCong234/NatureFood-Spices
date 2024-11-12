@@ -18,7 +18,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import { rootColor } from "../../theme/colors";
+import { green, rootColor } from "../../theme/colors";
 import PeopleIcon from "@mui/icons-material/People";
 import ProductIcon from "@mui/icons-material/ShoppingCart";
 import EventIcon from "@mui/icons-material/Event";
@@ -33,13 +33,15 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import BookIcon from "@mui/icons-material/Book";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { Collapse } from "@mui/material";
+import { Avatar, Badge, Collapse, InputAdornment, InputBase } from "@mui/material";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getCurrentStoreAction } from "../../hooks/Redux/Store/storeAction";
 import { AppBar, Drawer, DrawerHeader } from "./Drawer";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import useSnackNotify from "@components/SnackNotify";
 
 const items = [
     {
@@ -87,7 +89,7 @@ const items = [
         ],
     },
     {
-        to: "/seller/orders?skip=0&take=10&status=all",
+        to: "/seller/orders?skip=0&take=10&date=-1&status=-1",
         icon: <GradingIcon />,
         text: "Đơn hàng",
     },
@@ -113,7 +115,7 @@ const items = [
     },
 
     {
-        to: "/seller/notify",
+        to: "/seller/notification?skip=0&take=10&isRead=-1",
         icon: <NotificationsActiveIcon />,
         text: "Thông báo ",
     },
@@ -138,6 +140,10 @@ export default function MiniDrawer() {
     const theme = useTheme();
     const [open, setOpen] = useState(true);
     const dispatch = useDispatch();
+    const snackNotify = useSnackNotify();
+    const navigate = useNavigate();
+    const { currentStore } = useSelector((state) => state.store);
+    const { unreadNotificationsTotal } = useSelector((state) => state.notification);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -150,39 +156,64 @@ export default function MiniDrawer() {
         setOpen((prev) => ({ ...prev, [menu]: !prev[menu] }));
     };
 
-    const handleGetData = async () => {
-        await dispatch(getCurrentStoreAction());
-    };
-
     useEffect(() => {
-        handleGetData();
-    }, []);
+        (async () => {
+            const response = await dispatch(getCurrentStoreAction());
+            // if (!response.error && !currentStore) {
+            //     snackNotify("error")("Bạn không phải là chủ cửa hàng");
+            //     navigate("/");
+            // }
+        })();
+    }, [currentStore]);
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
-            <AppBar position="fixed" open={open}>
+            <AppBar position="fixed" open={open} sx={{ bgcolor: green[100], color: "inherit" }}>
                 <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        sx={[
-                            {
-                                marginRight: 5,
-                            },
-                            open && { display: "none" },
-                        ]}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        Mini variant drawer
-                    </Typography>
+                    <Box className="flex items-center justify-between  w-full">
+                        <div className="flex items-center justify-start">
+                            {!open && (
+                                <div className="flex">
+                                    <IconButton
+                                        color="inherit"
+                                        aria-label="open drawer"
+                                        onClick={handleDrawerOpen}
+                                        edge="start"
+                                        sx={[
+                                            {
+                                                marginRight: 5,
+                                            },
+                                            // open && { display: "none" },
+                                        ]}
+                                    >
+                                        <MenuIcon />
+                                    </IconButton>
+                                    <div className="max-h-[55px] p-1">
+                                        <img src="/assets/images/logo.png" alt="logo" className="object-cover h-full" />
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        <div style={{ display: "flex" }}>
+                            <IconButton color="inherit" onClick={() => navigate("/seller/notification?skip=0&take=10&isRead=-1")}>
+                                <Badge badgeContent={unreadNotificationsTotal} color="secondary">
+                                    <NotificationsNoneOutlinedIcon />
+                                </Badge>
+                            </IconButton>
+                            <div className="flex items-center bg-white rounded-2xl border border-rose-600 px-1 ml-2">
+                                <Avatar alt="store image" src={currentStore?.image?.url} sx={{ width: "32px", height: "32px" }} />
+                                <p className="font-lg font-bold ml-2 whitespace-nowrap">{currentStore?.name}</p>
+                            </div>
+                        </div>
+                    </Box>
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>
                 <DrawerHeader>
+                    <div className="h-[65px] p-2 w-full flex justify-center">
+                        <img src="/assets/images/logo.png" alt="logo" className="object-cover h-full" />
+                    </div>
                     <IconButton onClick={handleDrawerClose}>{theme.direction === "rtl" ? <ChevronRightIcon /> : <ChevronLeftIcon />}</IconButton>
                 </DrawerHeader>
                 <Divider />

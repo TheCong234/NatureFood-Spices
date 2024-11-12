@@ -5,6 +5,7 @@ import CartModel from "../models/cart.model.js";
 import { otpTemplate } from "../config/otp.template.config.js";
 import { sendMail } from "../utils/mailer.utils.js";
 import AddressModel from "../models/address.model.js";
+import crypto from "crypto";
 
 const UserController = {
     async register(req, res) {
@@ -128,6 +129,34 @@ const UserController = {
         };
         const updatedUser = await UserModel.findByIdAndUpdate(req.user._id, { $push: { delivery } }, { new: true, useFindAndModify: false });
         return res.status(statusCode.OK).json(BaseResponse.success("Thêm địa chỉ nhận hàng thành công", updatedUser.delivery));
+    },
+
+    async forgotPasswordSendOTP(req, res) {
+        const { email } = req.body;
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            throw new Error("Không tìm thấy tài khoản");
+        }
+        const OTP = crypto.randomInt(100000, 999999).toString();
+        const template = otpTemplate(email, OTP);
+        const response = await sendMail(email, "Xác thực thay đổi mật khẩu", template);
+        console.log("controller: ", response);
+
+        if (response.success) {
+            user.OTP = { OTP };
+            await user.save();
+            return res.status(statusCode.OK).json(BaseResponse.success("Gửi OTP thành công", response.response));
+        } else {
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).json(BaseResponse.error("Gửi OTP thất bại", response.error));
+        }
+    },
+
+    async forgotPasswordConfirmOTP(req, res) {
+        const { email, OTP } = req.body;
+        const user = await UserModel.findOne({ email, OTP: { OTP } });
+        if (!user) {
+            throw new Error("OTP sai, vui lòng kiểm tra lại");
+        }
     },
 };
 
