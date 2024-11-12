@@ -3,11 +3,12 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import "../../../assets/styles/main.css";
 import { Container, Grid, Typography } from "@mui/material";
+import NoteIcon from "@mui/icons-material/Note";
 
 const Index = () => {
     return (
         <footer className="footer">
-            <Container className="flex py-16">
+            <Container className="flex">
                 <div className="w-1/3">
                     <div className="flex">
                         <div className="">
@@ -36,7 +37,10 @@ const Index = () => {
                         <Grid item xs={6} md={3}>
                             <div className="footer-column">
                                 <h3>Giữ Liên Lạc</h3>
-                                <a href="#">Blog</a>
+                                <a href="#">
+                                    <NoteIcon />
+                                    Blog
+                                </a>
                                 <a href="#">
                                     <FacebookIcon /> Facebook
                                 </a>
