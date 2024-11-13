@@ -33,7 +33,7 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import BookIcon from "@mui/icons-material/Book";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Avatar, Badge, Collapse, InputAdornment, InputBase } from "@mui/material";
 import { useState, useEffect } from "react";
@@ -69,71 +69,71 @@ const items = [
         icon: <PeopleIcon />,
         text: "Sản phẩm cửa hàng",
     },
-    {
-        icon: <EventIcon />,
-        text: "Sự kiện",
-        fieldName: "event",
-        listItems: [
-            {
-                to: "/seller/event",
-                text: "Danh sách",
-            },
-            {
-                to: "/seller/event/:id",
-                text: "Chi tiết",
-            },
-            {
-                to: "/seller/product/create",
-                text: "Thêm mới",
-            },
-        ],
-    },
+    // {
+    //     icon: <EventIcon />,
+    //     text: "Sự kiện",
+    //     fieldName: "event",
+    //     listItems: [
+    //         {
+    //             to: "/seller/event",
+    //             text: "Danh sách",
+    //         },
+    //         {
+    //             to: "/seller/event/:id",
+    //             text: "Chi tiết",
+    //         },
+    //         {
+    //             to: "/seller/product/create",
+    //             text: "Thêm mới",
+    //         },
+    //     ],
+    // },
     {
         to: "/seller/orders?skip=0&take=10&date=-1&status=-1",
         icon: <GradingIcon />,
         text: "Đơn hàng",
     },
-    {
-        to: "/seller/message",
-        icon: <MessageIcon />,
-        text: "Tin nhắn",
-    },
-    {
-        icon: <EmailIcon />,
-        text: "Email",
-        fieldName: "email",
-        listItems: [
-            {
-                to: "/seller/email/inbox",
-                text: "Hộp thư đến",
-            },
-            {
-                to: "/seller/email/create",
-                text: "Soạn email",
-            },
-        ],
-    },
+    // {
+    //     to: "/seller/message",
+    //     icon: <MessageIcon />,
+    //     text: "Tin nhắn",
+    // },
+    // {
+    //     icon: <EmailIcon />,
+    //     text: "Email",
+    //     fieldName: "email",
+    //     listItems: [
+    //         {
+    //             to: "/seller/email/inbox",
+    //             text: "Hộp thư đến",
+    //         },
+    //         {
+    //             to: "/seller/email/create",
+    //             text: "Soạn email",
+    //         },
+    //     ],
+    // },
 
     {
         to: "/seller/notification?skip=0&take=10&isRead=-1",
         icon: <NotificationsActiveIcon />,
         text: "Thông báo ",
     },
-    {
-        to: "/seller/bill",
-        icon: <PaymentsIcon />,
-        text: "Hóa đơn",
-    },
-    {
-        to: "/seller/report",
-        icon: <PriorityHighIcon />,
-        text: "Báo cáo",
-    },
-    {
-        to: "/seller/profile",
-        icon: <AccountCircleIcon />,
-        text: "Hồ sơ",
-    },
+    // {
+    //     to: "/seller/bill",
+    //     icon: <PaymentsIcon />,
+    //     text: "Hóa đơn",
+    // },
+    // {
+    //     to: "/seller/report",
+    //     icon: <PriorityHighIcon />,
+    //     text: "Báo cáo",
+    // },
+    // {
+    //     to: "/seller/profile",
+    //     icon: <AccountCircleIcon />,
+    //     text: "Hồ sơ",
+    // },
 ];
 
 export default function MiniDrawer() {
@@ -188,16 +188,16 @@ export default function MiniDrawer() {
                                     >
                                         <MenuIcon />
                                     </IconButton>
-                                    <div className="max-h-[55px] p-1">
+                                    <Box className="max-h-[55px] p-1" component={Link} to="/">
                                         <img src="/assets/images/logo.png" alt="logo" className="object-cover h-full" />
-                                    </div>
+                                    </Box>
                                 </div>
                             )}
                         </div>
 
                         <div style={{ display: "flex" }}>
                             <IconButton color="inherit" onClick={() => navigate("/seller/notification?skip=0&take=10&isRead=-1")}>
-                                <Badge badgeContent={unreadNotificationsTotal} color="secondary">
+                                <Badge badgeContent={unreadNotificationsTotal} color="secondary" showZero>
                                     <NotificationsNoneOutlinedIcon />
                                 </Badge>
                             </IconButton>
@@ -211,9 +211,9 @@ export default function MiniDrawer() {
             </AppBar>
             <Drawer variant="permanent" open={open}>
                 <DrawerHeader>
-                    <div className="h-[65px] p-2 w-full flex justify-center">
+                    <Box className="h-[65px] p-2 w-full flex justify-center" component={Link} to="/">
                         <img src="/assets/images/logo.png" alt="logo" className="object-cover h-full" />
-                    </div>
+                    </Box>
                     <IconButton onClick={handleDrawerClose}>{theme.direction === "rtl" ? <ChevronRightIcon /> : <ChevronLeftIcon />}</IconButton>
                 </DrawerHeader>
                 <Divider />
@@ -262,7 +262,7 @@ export default function MiniDrawer() {
                     )}
                 </List>
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3, overflowX: "auto" }}>
+            <Box component="main" sx={{ flexGrow: 1, overflowX: "auto" }}>
                 <DrawerHeader />
                 <Outlet />
             </Box>

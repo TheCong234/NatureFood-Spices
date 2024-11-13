@@ -98,7 +98,7 @@ const Index = () => {
         setFormData({ status: selectedProduct?.status || true, stock: selectedProduct?.stock, discountPrice: selectedProduct?.discountPrice });
     }, [selectedProduct]);
     return (
-        <Box sx={{ width: "100%" }}>
+        <Box className="p-6">
             <Paper className="mb-4 p-[20px] flex justify-between items-center">
                 <p>
                     Hiển thị&nbsp;

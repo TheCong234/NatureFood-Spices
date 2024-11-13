@@ -6,6 +6,7 @@ import UserModel from "../models/user.model.js";
 import { io, userSockets } from "../config/socket.js";
 import NotificationModel from "../models/notifycation.model.js";
 import StoreModel from "../models/store.models.js";
+import mongoose from "mongoose";
 
 const OrderController = {
     async getCustomerOrder(req, res) {
@@ -163,6 +164,62 @@ const OrderController = {
             io.to(userSocketId).emit("receiveNotification", notifyData);
         }
         return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật đơn hàng thành công", updatedOrder));
+    },
+
+    async getOrdersCountByDay(req, res) {
+        const storeId = req.user.store;
+        const today = new Date();
+        const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay())); // Tính ngày đầu tuần hiện tại
+        const startOfLastWeek = new Date(startOfWeek);
+        startOfLastWeek.setDate(startOfLastWeek.getDate() - 7); // Tính ngày đầu tuần trước
+
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(endOfWeek.getDate() + 7); // Tính ngày cuối tuần hiện tại
+
+        const currentWeekStart = startOfWeek.toISOString();
+        const currentWeekEnd = endOfWeek.toISOString();
+        const lastWeekStart = startOfLastWeek.toISOString();
+        const lastWeekEnd = startOfWeek.toISOString();
+
+        const currentWeekOrders = await OrderModel.aggregate([
+            {
+                $match: {
+                    createdAt: {
+                        $gte: new Date(currentWeekStart),
+                        $lt: new Date(currentWeekEnd),
+                    },
+                    store: new mongoose.Types.ObjectId(storeId),
+                },
+            },
+            {
+                $group: {
+                    _id: { $dayOfWeek: "$createdAt" }, // Nhóm theo ngày trong tuần (1: Chủ nhật, 7: Thứ bảy)
+                    count: { $sum: 1 },
+                },
+            },
+        ]);
+
+        const lastWeekOrders = await OrderModel.aggregate([
+            {
+                $match: {
+                    createdAt: {
+                        $gte: new Date(lastWeekStart),
+                        $lt: new Date(lastWeekEnd),
+                    },
+                    store: new mongoose.Types.ObjectId(storeId),
+                },
+            },
+            {
+                $group: {
+                    _id: { $dayOfWeek: "$createdAt" },
+                    count: { $sum: 1 },
+                },
+            },
+        ]);
+        lastWeekOrders.sort((a, b) => a._id - b._id);
+        currentWeekOrders.sort((a, b) => a._id - b._id);
+
+        return res.status(statusCode.OK).json(BaseResponse.success("Thành công", { currentWeekOrders, lastWeekOrders }));
     },
 };
 
