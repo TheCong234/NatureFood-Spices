@@ -45,9 +45,9 @@ import useSnackNotify from "@components/SnackNotify";
 
 const items = [
     {
-        to: "/seller/dashboard",
+        to: "/seller",
         icon: <DashboardIcon />,
-        text: "Dashboard",
+        text: "Bảng điều khiển",
     },
     {
         icon: <ProductIcon />,

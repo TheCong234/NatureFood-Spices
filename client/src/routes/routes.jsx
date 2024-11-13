@@ -11,6 +11,7 @@ import {
     ProductCartSeller,
     StoreProductSeller,
     Orders,
+    EditProduct,
 } from "../pages/Seller";
 
 import {
@@ -64,7 +65,6 @@ import {
     Search,
     Store,
 } from "../pages/Customer";
-import TestSecket from "../pages/testSocket";
 import { lazy, Suspense } from "react";
 
 /* ---------------- Lazy loads various components ------------------------- */
@@ -99,10 +99,6 @@ const routes = [
                     {
                         path: "/register-seller",
                         element: <RegisterSeller />,
-                    },
-                    {
-                        path: "/test",
-                        element: <TestSecket />,
                     },
 
                     {
@@ -252,6 +248,10 @@ const routes = [
                             {
                                 path: "notification",
                                 element: <Notification />,
+                            },
+                            {
+                                path: "product/:productId/edit",
+                                element: <EditProduct />,
                             },
                         ],
                     },

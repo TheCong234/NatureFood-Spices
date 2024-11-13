@@ -31,6 +31,7 @@ export const TagV1 = {
 
 export const ProductV1 = {
     GET_PRODUCTS: "/product/all",
+    GET_PRODUCT: "/product/",
     PRODUCT_CREATE: "/product/create",
     PRODUCT_NEWEST: "/product/newest",
     PRODUCT_DETAILS: "/product/",

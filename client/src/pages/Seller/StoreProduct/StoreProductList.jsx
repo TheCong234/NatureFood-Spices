@@ -8,6 +8,7 @@ import {
     Grid,
     IconButton,
     MenuItem,
+    Pagination,
     Paper,
     Rating,
     Select,
@@ -25,7 +26,7 @@ import { useQuery } from "../../../services/functions";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { Pagination } from "swiper/modules";
+import { Pagination as PaginationSwiper } from "swiper/modules";
 import { formatPrice } from "../../../services/functions";
 import useSnackNotify from "../../../components/SnackNotify";
 import { ChipStyled } from "../../../components";
@@ -80,6 +81,9 @@ const Index = () => {
             snackNotify("success")("Cập nhật sản phẩm thành công");
         }
     };
+    const handlePaginationChange = (event, value) => {
+        navigate(`/seller/product/list?skip=${(value - 1) * params.take}&take=${params.take}&type=all`);
+    };
     const handleGetData = async () => {
         const response = await dispatch(getStoreProductsByStoreAction(params));
         if (response.error) {
@@ -96,7 +100,12 @@ const Index = () => {
     return (
         <Box sx={{ width: "100%" }}>
             <Paper className="mb-4 p-[20px] flex justify-between items-center">
-                <Typography variant="body1">Hiển thị 1-24 trong 205 sản phẩm</Typography>
+                <p>
+                    Hiển thị&nbsp;
+                    <strong className="text-orange">{params.take > productData?.total ? productData?.total : params.take}</strong>
+                    &nbsp;trong&nbsp;
+                    <strong className="text-green-700">{productData?.total}</strong>&nbsp;sản phẩm
+                </p>
                 <div className="flex items-center">
                     <div className="mr-3">
                         <span className="mr-2">Sắp xếp theo</span>
@@ -117,13 +126,15 @@ const Index = () => {
             </Paper>
             <Grid container spacing={2}>
                 {productData?.products?.map((product) => (
-                    <Grid item md={3} key={product._id}>
+                    <Grid item md={2} key={product._id}>
                         <Card className="product_card-primary relative">
                             <Box>
-                                <Swiper className="product_card-primary_swiper " pagination={true} modules={[Pagination]}>
+                                <Swiper className="product_card-primary_swiper " pagination={true} modules={[PaginationSwiper]}>
                                     {product?.productId?.images?.map((image, index) => (
                                         <SwiperSlide key={index} className="swiper-slide_styled">
-                                            <img src={image?.url} alt="product image" />
+                                            <div className="h-full flex justify-center">
+                                                <img src={image?.url} alt="product image" className="h-full" />
+                                            </div>
                                         </SwiperSlide>
                                     ))}
                                 </Swiper>
@@ -136,11 +147,13 @@ const Index = () => {
                                             <small>₫</small>
                                             {formatPrice(product?.productId.salePrice * (1 - product?.discountPrice))}
                                         </div>
-                                        {product?.discountPrice > 0 && (
+                                        {product?.discountPrice > 0 ? (
                                             <del className="flex items-center ml-3 font-semibold text-gray-500">
                                                 <small>₫</small>
                                                 {formatPrice(product?.productId.salePrice)}
                                             </del>
+                                        ) : (
+                                            <p>&nbsp;</p>
                                         )}
                                     </div>
                                     {product?.discountPrice > 0 && <ChipStyled label={`Giảm ${product?.discountPrice * 100}%`} color="error" />}
@@ -251,11 +264,18 @@ const Index = () => {
                             Hủy
                         </Button>
                         <LoadingButton loading={loading} loadingPosition="center" variant="contained" color="success" size="small" onClick={onSubmit}>
-                            Save changes
+                            Lưu thay đổi
                         </LoadingButton>
                     </DialogActions>
                 </BootstrapDialog>
             </Fragment>
+            <Pagination
+                className="pt-6 flex justify-center"
+                count={Math.floor(productData?.total / parseInt(params.take) + 1)}
+                page={Math.floor(parseInt(params.skip) / parseInt(params.take) + 1)}
+                onChange={handlePaginationChange}
+                color="success"
+            />
         </Box>
     );
 };
