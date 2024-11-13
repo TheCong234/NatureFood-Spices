@@ -37,7 +37,7 @@ export default function Index() {
         })();
     }, [params.skip, params.take, params.status, params.date]);
     return (
-        <Box>
+        <Box className="p-6">
             <Paper>
                 <div className=" p-[20px] flex justify-between items-center">
                     <p className="text-xl font-bold">Đơn hàng</p>

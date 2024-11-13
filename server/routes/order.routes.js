@@ -6,6 +6,7 @@ import OrderController from "../controllers/order.controller.js";
 const router = express.Router();
 
 router.get("/customer/all", authJwt, asyncHandler(OrderController.getCustomerOrders));
+router.get("/my-store/total-sells", authJwt, asyncHandler(OrderController.getOrdersCountByDay));
 router.get("/my-store", authJwt, asyncHandler(OrderController.getCustomerOrdersByStore));
 router.get("/customer/:orderId", authJwt, asyncHandler(OrderController.getCustomerOrder));
 

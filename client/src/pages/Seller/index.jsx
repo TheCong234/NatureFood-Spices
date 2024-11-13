@@ -9,3 +9,4 @@ export { default as SettingStore } from "./Setting";
 export { default as ListProductStore } from "./Product/ProductList";
 export { default as PromoteStore } from "./Promote/index";
 export { default as Orders } from "./Orders";
+export { default as EditProduct } from "../Admin/Product/Edit";

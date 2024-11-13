@@ -1,4 +1,4 @@
-import { Button, Card, Grid, MenuItem, Paper, Rating, Select, Stack, Switch, Tooltip, Typography } from "@mui/material";
+import { Button, Card, Grid, MenuItem, Pagination, Paper, Rating, Select, Stack, Switch, Tooltip, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { Pagination } from "swiper/modules";
+import { Pagination as PaginationSwiper } from "swiper/modules";
 import { formatPrice } from "@services/functions";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -47,7 +47,7 @@ const ProductCard = ({ product }) => {
     return (
         <Card className="product_card-primary">
             <Box>
-                <Swiper className="product_card-primary_swiper " pagination={true} modules={[Pagination]}>
+                <Swiper className="product_card-primary_swiper " pagination={true} modules={[PaginationSwiper]}>
                     {product?.images?.map((image, index) => (
                         <SwiperSlide key={index} className="swiper-slide_styled">
                             <div className="h-full flex justify-center">
@@ -59,11 +59,20 @@ const ProductCard = ({ product }) => {
             </Box>
             <Box className="px-5">
                 <p className="font-semibold text-base leading-5 line-clamp-2 h-10">{product?.name}</p>
-                <div className="flex text-[#d26426]">
-                    <div className="text-2xl font-semibold">
-                        <small>₫</small>
-                        {formatPrice(product?.price)}
+                <div className="flex items-center">
+                    <p>Giá kho:&nbsp;</p>
+                    <div className="flex text-[#d26426]">
+                        <div className="text-2xl font-semibold">
+                            <small>₫</small>
+                            {formatPrice(product?.price)}
+                        </div>
                     </div>
+                </div>
+                <div className="flex items-center">
+                    <p>
+                        Giá bán ra: {formatPrice(product?.salePrice)}
+                        <sup>đ</sup>
+                    </p>
                 </div>
                 <Typography variant="body2" sx={{ color: "text.secondary", my: 1 }}>
                     Sẵn có:&nbsp;
@@ -116,28 +125,36 @@ const Index = () => {
     const navigate = useNavigate();
     const [sortby, setSortby] = useState(10);
     const snackNotify = useSnackNotify();
-
+    const params = {
+        skip: query.get("skip"),
+        take: query.get("take"),
+        type: query.get("type"),
+    };
     const { data: productData, loading: productLoading } = useSelector((state) => state.product);
+
+    const handlePaginationChange = (event, value) => {
+        navigate(`/seller/store-product/list?skip=${(value - 1) * params.take}&take=${params.take}&type=all`);
+    };
 
     const handleSortbyChange = (event) => {
         setSortby(event.target.value);
     };
     const handleGetData = async () => {
-        const params = {
-            skip: query.get("skip"),
-            take: query.get("take"),
-            type: query.get("type"),
-        };
         await dispatch(getProductsAction(params));
         await dispatch(getStoreFavoriteItemsAction());
     };
     useEffect(() => {
         handleGetData();
-    }, [query.get("skip"), query.get("take"), query.get("type")]);
+    }, [params.skip, params.take]);
     return (
-        <Box sx={{ width: "100%" }}>
+        <Box className="p-6">
             <Paper className="mb-4 p-[20px] flex justify-between items-center">
-                <Typography variant="body1">Hiển thị 1-24 trong 205 sản phẩm</Typography>
+                <p>
+                    Hiển thị&nbsp;
+                    <strong className="text-orange">{params.take > productData?.total ? productData?.total : params.take}</strong>
+                    &nbsp;trong&nbsp;
+                    <strong className="text-green-700">{productData?.total}</strong>&nbsp;sản phẩm
+                </p>
                 <div className="flex items-center">
                     <div className="mr-3">
                         <span className="mr-2">Sắp xếp theo</span>
@@ -163,6 +180,13 @@ const Index = () => {
                     </Grid>
                 ))}
             </Grid>
+            <Pagination
+                className="pt-6 flex justify-center"
+                count={Math.floor(productData?.total / parseInt(params.take) + 1)}
+                page={Math.floor(parseInt(params.skip) / parseInt(params.take) + 1)}
+                onChange={handlePaginationChange}
+                color="success"
+            />
         </Box>
     );
 };

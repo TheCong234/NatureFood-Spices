@@ -11,6 +11,11 @@ export const getProductsApi = async (params) => {
     return response.data;
 };
 
+export const getProductApi = async (productId) => {
+    const response = await apiClient.get(ProductV1.GET_PRODUCT + productId);
+    return response.data;
+};
+
 export const createProductApi = async (data) => {
     const response = await apiClient.post(ProductV1.PRODUCT_CREATE, data, {
         headers: {

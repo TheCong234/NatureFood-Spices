@@ -24,3 +24,8 @@ export const updateCustomerOrderApi = async (data) => {
     const result = await apiClient.patch(OrderV1.UPDATE + data.orderId, data.data);
     return result.data;
 };
+
+export const getOrdersCountByDayApi = async (data) => {
+    const result = await apiClient.get(OrderV1.GET_COUNT_ORDER_BY_DAY);
+    return result.data;
+};

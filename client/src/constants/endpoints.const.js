@@ -31,6 +31,7 @@ export const TagV1 = {
 
 export const ProductV1 = {
     GET_PRODUCTS: "/product/all",
+    GET_PRODUCT: "/product/",
     PRODUCT_CREATE: "/product/create",
     PRODUCT_NEWEST: "/product/newest",
     PRODUCT_DETAILS: "/product/",
@@ -66,6 +67,7 @@ export const ReviewV1 = {
     GET_ALL: "/review/",
     UPDATE: "/review/",
     DELETE: "/review/",
+    GET_REVIEWS_BY_STORE: "/review/store",
 };
 
 export const FavoriteV1 = {
@@ -104,6 +106,7 @@ export const OrderV1 = {
     GET_CUSTOMER_ORDER: "/order/customer/",
     GET_CUSTOMER_ORDERS_MY_STORE: "/order/my-store",
     UPDATE: "/order/",
+    GET_COUNT_ORDER_BY_DAY: "/order/my-store/total-sells",
 };
 
 export const NotificationV1 = {
