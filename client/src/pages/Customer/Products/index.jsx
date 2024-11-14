@@ -96,7 +96,7 @@ export default function Products() {
             <div className="mt-3">
                 <Grid container spacing={2}>
                     {productData?.products?.map((product) => (
-                        <Grid item xs={6} md={3} key={product?._id}>
+                        <Grid item xs={6} md={2} key={product?._id}>
                             <ProductCardCustomer product={product} />
                         </Grid>
                     ))}

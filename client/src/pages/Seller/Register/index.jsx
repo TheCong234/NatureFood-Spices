@@ -43,7 +43,7 @@ const Index = () => {
         }
     };
     useEffect(() => {
-        if (currentUser.store) {
+        if (currentUser?.store) {
             navigate("/seller");
         }
     }, []);

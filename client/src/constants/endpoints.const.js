@@ -115,3 +115,7 @@ export const NotificationV1 = {
     GET_UNREAD_TOTAL: "/notification/unread",
     UPDATE: "/notification/",
 };
+
+export const PaymentV1 = {
+    CREATE_LINK_MOMO: "/payment",
+};

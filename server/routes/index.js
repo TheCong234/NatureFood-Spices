@@ -14,3 +14,4 @@ export { default as RefundRoutes } from "./refund.routes.js";
 export { default as StoreCartRoutes } from "./store.cart.routes.js";
 export { default as BlogRoutes } from "./blog.routes.js";
 export { default as NotificationRoutes } from "./notification.routes.js";
+export { default as PaymentRoutes } from "./payment.routes.js";
