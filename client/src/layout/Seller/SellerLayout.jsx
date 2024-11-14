@@ -201,9 +201,9 @@ export default function MiniDrawer() {
                                     <NotificationsNoneOutlinedIcon />
                                 </Badge>
                             </IconButton>
-                            <div className="flex items-center bg-white rounded-2xl border border-rose-600 px-1 ml-2">
-                                <Avatar alt="store image" src={currentStore?.image?.url} sx={{ width: "32px", height: "32px" }} />
-                                <p className="font-lg font-bold ml-2 whitespace-nowrap">{currentStore?.name}</p>
+                            <div className="flex items-center bg-white rounded-[18px] border border-rose-600 pr-1 ml-2">
+                                <Avatar alt="store image" src={currentStore?.image?.url} sx={{ width: "36px", height: "36px" }} />
+                                <p className="font-lg font-bold ml-1 whitespace-nowrap">{currentStore?.name}</p>
                             </div>
                         </div>
                     </Box>

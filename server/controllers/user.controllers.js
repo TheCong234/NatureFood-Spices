@@ -133,6 +133,8 @@ const UserController = {
 
     async forgotPasswordSendOTP(req, res) {
         const { email } = req.body;
+        console.log(email);
+
         const user = await UserModel.findOne({ email });
         if (!user) {
             throw new Error("Không tìm thấy tài khoản");
@@ -140,10 +142,9 @@ const UserController = {
         const OTP = crypto.randomInt(100000, 999999).toString();
         const template = otpTemplate(email, OTP);
         const response = await sendMail(email, "Xác thực thay đổi mật khẩu", template);
-        console.log("controller: ", response);
 
         if (response.success) {
-            user.OTP = { OTP };
+            user.OTP = OTP;
             await user.save();
             return res.status(statusCode.OK).json(BaseResponse.success("Gửi OTP thành công", response.response));
         } else {
@@ -152,11 +153,16 @@ const UserController = {
     },
 
     async forgotPasswordConfirmOTP(req, res) {
-        const { email, OTP } = req.body;
-        const user = await UserModel.findOne({ email, OTP: { OTP } });
+        const { email, OTP, password } = req.body;
+        console.log(req.body);
+
+        const user = await UserModel.findOne({ email, OTP });
         if (!user) {
-            throw new Error("OTP sai, vui lòng kiểm tra lại");
+            throw new Error("Mã OTP không đúng, vui lòng kiểm tra lại");
         }
+        user.password = password;
+        await user.save();
+        return res.status(statusCode.OK).json(BaseResponse.success("Thay đổi mật khẩu thành công", null));
     },
 };
 

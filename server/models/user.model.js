@@ -105,7 +105,7 @@ const UserSchema = Schema(
             default: 0,
         },
         delivery: [deliverySchema],
-        OTP: OtpSChema,
+        OTP: String,
     },
     {
         timestamps: true,

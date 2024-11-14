@@ -10,6 +10,7 @@ export const UserV1 = {
     GET_DELIVERY: "/user/delivery/all",
     CHANGE_PASSWORD: "/user/change-password",
     FORGOT_PASSWORD: "/user/forgot-password",
+    FORGOT_PASSWORD_CONFIRM: "/user/confirm-otp-fp",
 };
 
 export const StoreV1 = {

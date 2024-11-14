@@ -7,7 +7,7 @@ import { Container, Grid, Typography } from "@mui/material";
 const Index = () => {
     return (
         <footer className="footer">
-            <Container className="flex py-16">
+            <Container className="flex py-6" maxWidth="xl">
                 <div className="w-1/3">
                     <div className="flex">
                         <div className="">

@@ -87,7 +87,7 @@ const Header = () => {
     return (
         <div className="sticky top-0 z-50">
             <Box className=" mainlayout-header">
-                <Container>
+                <Container maxWidth="xl">
                     <div className="header-top flex items-center justify-between p-4">
                         <div className="">
                             <img src="/assets/images/logo.png" alt="Logo" className="w-[80px]" />
@@ -297,7 +297,7 @@ const Header = () => {
                                 <MenuItem>
                                     <Box
                                         component={Link}
-                                        to="/seller-register"
+                                        to="/register-seller"
                                         className="w-full text-inherit hover:text-green-600 flex items-center"
                                     >
                                         <ListItemIcon>

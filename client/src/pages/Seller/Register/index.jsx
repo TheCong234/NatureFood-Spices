@@ -1,7 +1,7 @@
 import { Box, Divider, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RegisterStoreYup } from "../../../validations/yup.validations";
 import { createStoreAction } from "../../../hooks/Redux/Store/storeAction";
@@ -12,7 +12,7 @@ import { LoadingButton } from "@mui/lab";
 const Index = () => {
     const snackNotify = useSnackNotify();
     const navigate = useNavigate();
-    const { token } = useSelector((state) => state.user);
+    const { currentUser, token } = useSelector((state) => state.user);
     const { loading } = useSelector((state) => state.store);
     const dispatch = useDispatch();
 
@@ -39,14 +39,19 @@ const Index = () => {
         } else {
             snackNotify("success")("Đăng ký cửa hàng thành công");
             reset();
-            navigate("/seller/dashboard");
+            navigate("/seller");
         }
     };
+    useEffect(() => {
+        if (currentUser.store) {
+            navigate("/seller");
+        }
+    }, []);
 
     return (
-        <Box>
-            <Box className="register-seller">
-                <Box className="register-seller_form-container">
+        <Box className="md:p-10 min-h-screen bg-[url('/assets/images/bg-shopping-with-naturefood.jpg')] bg-cover bg-center ">
+            <Box className="md:w-1/3">
+                <Box className="">
                     <Typography component="h1" variant="h6" sx={{ fontWeight: "bold" }}>
                         Đăng ký bán hàng với Nature Food
                     </Typography>

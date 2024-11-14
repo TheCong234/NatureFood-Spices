@@ -4,14 +4,15 @@ import { Link as LinkRouter } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ForgotYup } from "../../../validations/yup.validations";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { forgotPasswordApi } from "../../../apis/user.apis";
+import { forgotPasswordApi, forgotPasswordConfirmOTPApi } from "../../../apis/user.apis";
 import LoadingButton from "@mui/lab/LoadingButton";
 import useSnackNotify from "@components/SnackNotify";
 import OtpInput from "react-otp-input";
+import { tryCatchWrapper } from "../../../utils/asyncHelper";
 
 const ForgotPage = () => {
     const [loading, setLoading] = useState(false);
-    const [sentOTP, setSentOTP] = useState(true);
+    const [sentOTP, setSentOTP] = useState(false);
     const [otpInput, setOtpInput] = useState("");
     const [formData, setFormData] = useState({
         password: "",
@@ -38,19 +39,29 @@ const ForgotPage = () => {
 
     const onSubmit = async (data) => {
         if (sentOTP) {
-            if (formData.password != confirmPassword) {
+            if (formData.password != formData.confirmPassword) {
                 return snackNotify("error")("Mật khẩu phải giống Mật khẩu xác thực");
+            }
+            setLoading(true);
+            const { result, error } = await tryCatchWrapper(forgotPasswordConfirmOTPApi, { ...data, ...formData, OTP: otpInput });
+            setLoading(false);
+            if (result) {
+                snackNotify("success")("Mật khẩu của bạn đã được thay đổi");
+                setSentOTP(true);
+                reset();
+            } else {
+                snackNotify("error")("Lỗi, Mã OTP không đúng");
             }
         } else {
             setLoading(true);
-            const response = await forgotPasswordApi(data);
+            const { result, error } = await tryCatchWrapper(forgotPasswordApi, data);
             setLoading(false);
-            console.log(response);
-            if (response.success) {
+            console.log(result, error);
+            if (result) {
                 snackNotify("success")("Gửi OTP thành công");
                 setSentOTP(true);
             } else {
-                snackNotify("error")("Gửi OTP thất bại, vui lòng kiểm tra lại email");
+                snackNotify("error")("Email của bạn chưa được đăng ký");
             }
         }
     };
