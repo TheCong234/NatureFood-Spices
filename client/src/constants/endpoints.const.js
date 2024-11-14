@@ -10,6 +10,7 @@ export const UserV1 = {
     GET_DELIVERY: "/user/delivery/all",
     CHANGE_PASSWORD: "/user/change-password",
     FORGOT_PASSWORD: "/user/forgot-password",
+    FORGOT_PASSWORD_CONFIRM: "/user/confirm-otp-fp",
 };
 
 export const StoreV1 = {
@@ -113,4 +114,8 @@ export const NotificationV1 = {
     GET_ALL: "/notification/all",
     GET_UNREAD_TOTAL: "/notification/unread",
     UPDATE: "/notification/",
+};
+
+export const PaymentV1 = {
+    CREATE_LINK_MOMO: "/payment",
 };

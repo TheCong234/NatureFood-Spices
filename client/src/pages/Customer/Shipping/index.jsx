@@ -77,57 +77,15 @@ export default function CheckoutForm() {
                             </Grid>
 
                             <Grid item xs={12} sm={4}>
-                                <TextField
-                                    {...register("city")}
-                                    fullWidth
-                                    select
-                                    label="Thành phố/Tỉnh"
-                                    variant="outlined"
-                                    defaultValue="Hồ Chí Minh"
-                                    size="small"
-                                >
-                                    {cities.map((city) => (
-                                        <MenuItem key={city} value={city}>
-                                            {city}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                                <TextField {...register("city")} fullWidth label="Thành phố/Tỉnh" variant="outlined" size="small" />
                             </Grid>
 
                             <Grid item xs={12} sm={4}>
-                                <TextField
-                                    {...register("district")}
-                                    fullWidth
-                                    select
-                                    label="Quận/Huyện"
-                                    variant="outlined"
-                                    defaultValue="California"
-                                    size="small"
-                                >
-                                    {states.map((state) => (
-                                        <MenuItem key={state} value={state}>
-                                            {state}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                                <TextField {...register("district")} fullWidth label="Quận/Huyện" variant="outlined" size="small" />
                             </Grid>
 
                             <Grid item xs={12} sm={4}>
-                                <TextField
-                                    {...register("ward")}
-                                    fullWidth
-                                    select
-                                    label="Phường/Xã"
-                                    variant="outlined"
-                                    defaultValue="California"
-                                    size="small"
-                                >
-                                    {states.map((state) => (
-                                        <MenuItem key={state} value={state}>
-                                            {state}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                                <TextField {...register("ward")} fullWidth label="Phường/Xã" variant="outlined" size="small" />
                             </Grid>
 
                             <Grid item xs={12}>

@@ -90,3 +90,7 @@ export const forgotPasswordApi = async (data) => {
     const response = await apiClient.patch(UserV1.FORGOT_PASSWORD, data);
     return response.data;
 };
+export const forgotPasswordConfirmOTPApi = async (data) => {
+    const response = await apiClient.patch(UserV1.FORGOT_PASSWORD_CONFIRM, data);
+    return response.data;
+};

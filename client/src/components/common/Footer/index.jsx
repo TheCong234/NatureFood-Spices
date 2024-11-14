@@ -8,7 +8,7 @@ import NoteIcon from "@mui/icons-material/Note";
 const Index = () => {
     return (
         <footer className="footer">
-            <Container className="flex">
+            <Container className="flex py-6" maxWidth="xl">
                 <div className="w-1/3">
                     <div className="flex">
                         <div className="">
@@ -39,7 +39,7 @@ const Index = () => {
                                 <h3>Giữ Liên Lạc</h3>
                                 <a href="#">
                                     <NoteIcon />
-                                    Blog
+                                    &nbsp;Blog
                                 </a>
                                 <a href="#">
                                     <FacebookIcon /> Facebook

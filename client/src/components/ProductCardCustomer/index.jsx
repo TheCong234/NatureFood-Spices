@@ -84,7 +84,7 @@ export default function ProductCardCustomer({ product }) {
                 <p className="text-base line-clamp-2 leading-5 min-h-[40px] font-semibold">{product?.productId?.name}</p>
                 <div className="flex text-[#d26426] justify-between items-center">
                     <div className="min-h-[56px]">
-                        <div className="text-2xl font-bold">
+                        <div className="text-xl font-bold">
                             {formatPrice(product?.productId.salePrice * (1 - product?.discountPrice))}
                             <sup>đ</sup>
                         </div>
@@ -105,7 +105,7 @@ export default function ProductCardCustomer({ product }) {
                 </div>
             </Box>
             <Box className="px-4 pb-4 flex justify-between mt-2">
-                <Rating name="read-only" value={product?.rating} readOnly />
+                <Rating name="read-only" value={product?.rating} readOnly size="small" />
                 <Stack direction={"row"} spacing={1}>
                     {favoriteData?.products?.some((f) => f?.storeProduct._id == product?._id) ? (
                         <Tooltip title="Bỏ yêu thích" placement="top">

@@ -28,7 +28,8 @@ export function countCartTotal(itemsCart) {
         const price = item.storeProduct.productId.salePrice * (1 - item.storeProduct.discountPrice);
         sum += quantity * price;
     }
-    return sum;
+
+    return Math.floor(sum);
 }
 
 export function convertTimeDuration(date) {

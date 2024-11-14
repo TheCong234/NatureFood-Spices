@@ -18,8 +18,8 @@ const Index = () => {
     return (
         <div className="relative">
             <Header />
-            <div className="bg-[#f5f5f5]">
-                <Container className="py-6">
+            <div className="bg-primary">
+                <Container className="py-6" maxWidth="xl">
                     <Outlet />
                 </Container>
             </div>
