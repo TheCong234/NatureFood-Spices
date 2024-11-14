@@ -3,6 +3,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import "../../../assets/styles/main.css";
 import { Container, Grid, Typography } from "@mui/material";
+import NoteIcon from "@mui/icons-material/Note";
 
 const Index = () => {
     return (
@@ -36,7 +37,10 @@ const Index = () => {
                         <Grid item xs={6} md={3}>
                             <div className="footer-column">
                                 <h3>Giữ Liên Lạc</h3>
-                                <a href="#">Blog</a>
+                                <a href="#">
+                                    <NoteIcon />
+                                    &nbsp;Blog
+                                </a>
                                 <a href="#">
                                     <FacebookIcon /> Facebook
                                 </a>
