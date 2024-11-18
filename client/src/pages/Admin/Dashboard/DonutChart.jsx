@@ -11,6 +11,7 @@ const DonutChart = () => {
         dataLabels: {
             enabled: false,
         },
+        labels: ["Đang chuẩn bị hàng", "Đang giao hàng", "Đang xác minh", "Bị hủy"],
         responsive: [
             {
                 breakpoint: 480,
@@ -56,12 +57,12 @@ const DonutChart = () => {
                     </div>
                 </div>
 
-                <div className="actions flex justify-between">
+                {/* <div className="actions flex justify-between">
                     <button onClick={appendData}>+ Thêm </button>
                     <button onClick={removeData}>- Xóa bớt</button>
                     <button onClick={randomize}>Ngẫu nhiên </button>
                     <button onClick={reset}>Quay lại</button>
-                </div>
+                </div> */}
             </div>
             <div id="html-dist"></div>
         </div>

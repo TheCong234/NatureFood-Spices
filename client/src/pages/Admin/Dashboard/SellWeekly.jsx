@@ -4,7 +4,7 @@ import ReactApexChart from "react-apexcharts";
 const ApexChart = () => {
     const [series] = useState([
         {
-            name: "Inflation",
+            name: "Tăng lên",
             data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2],
         },
     ]);

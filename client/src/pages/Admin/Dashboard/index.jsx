@@ -34,8 +34,8 @@ export default function Dashboard() {
                 </Grid>
 
                 <Grid item md={4}>
-                    <div className="bg-white rounded-lg shadow p-6">
-                        <h2 className="text-lg font-semibold">Thị phần</h2>
+                    <div className="bg-white rounded-lg shadow p-6 h-full">
+                        <h2 className="text-lg font-semibold">Tỉ lệ đơn hàng</h2>
                         <div className="mx-auto rounded-full flex items-center justify-center mt-4">
                             <DonutChart />
                         </div>
@@ -50,7 +50,7 @@ export default function Dashboard() {
                 {/* Market Share */}
 
                 {/* Weather */}
-                <div className="bg-white rounded-lg shadow p-6 col-span-1 lg:col-span-3">
+                {/* <div className="bg-white rounded-lg shadow p-6 col-span-1 lg:col-span-3">
                     <h2 className="text-lg font-semibold">Thời tiết</h2>
                     <div className="flex items-center mt-4">
                         <div className="text-5xl mr-6">☀️</div>
@@ -61,7 +61,7 @@ export default function Dashboard() {
                             <p className="text-3xl font-bold">31°C</p>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Project Progress */}
                 <div className="bg-white rounded-lg shadow p-6 lg:col-span-2">
@@ -89,14 +89,14 @@ export default function Dashboard() {
 
                 {/* Sales Overview */}
                 <div className="bg-white rounded-lg shadow p-6">
-                    <h2 className="text-lg font-semibold">Đang chạy dự án</h2>
+                    <h2 className="text-lg font-semibold">Sản phẩm bán chạy</h2>
                     <div className="mt-4 space-y-4">
                         {[
-                            { name: "Chim ưng", progress: 38 },
-                            { name: "Triều đại", progress: 79 },
-                            { name: "Giày bốt4", progress: 90 },
-                            { name: "Quạ", progress: 40 },
-                            { name: "Trơn tru", progress: 70 },
+                            { name: "Sate cay", progress: 100 },
+                            { name: "Giấm táo", progress: 79 },
+                            { name: "Nước cốt dừa", progress: 90 },
+                            { name: "Muối tây ninh", progress: 40 },
+                            { name: "Nước lẩu", progress: 70 },
                         ].map((project, index) => (
                             <div key={index} className="flex items-center">
                                 <div className="h-8 w-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-700">
@@ -105,7 +105,7 @@ export default function Dashboard() {
                                 <div className="flex-1 ml-4">
                                     <div className="flex justify-between text-sm">
                                         <span>{project.name}</span>
-                                        <span>{project.progress}%</span>
+                                        <span>{project.progress} %</span>
                                     </div>
                                     <div className="h-2 bg-gray-200 rounded-full mt-1">
                                         <div className="h-full bg-blue-500 rounded-full" style={{ width: `${project.progress}%` }}></div>
@@ -116,8 +116,7 @@ export default function Dashboard() {
                     </div>
                 </div>
 
-                {/* Top Selling Products */}
-                <div className="bg-white rounded-lg shadow p-6 col-span-1 lg:col-span-2">
+                {/* <div className="bg-white rounded-lg shadow p-6 col-span-1 lg:col-span-2">
                     <h2 className="text-lg font-semibold mb-4">Sản phẩm bán chạy nhất</h2>
                     <div className="space-y-3">
                         {[
@@ -148,10 +147,9 @@ export default function Dashboard() {
                             <option>6 tháng qua</option>
                         </select>
                     </div>
-                </div>
+                </div> */}
 
-                {/* Shared Files */}
-                <div className="bg-white rounded-lg shadow p-6">
+                {/* <div className="bg-white rounded-lg shadow p-6">
                     <h2 className="text-lg font-semibold mb-4">Các tập tin được chia sẻ</h2>
                     <ul className="space-y-2">
                         {[
@@ -171,7 +169,7 @@ export default function Dashboard() {
                             </li>
                         ))}
                     </ul>
-                </div>
+                </div> */}
 
                 {/* Container */}
 
@@ -182,24 +180,22 @@ export default function Dashboard() {
                         <button className="text-blue-500 hover:underline">Xem chi tiết</button>
                     </div>
                     {/* Place your chart here */}
-                    <div className="   rounded-lg flex items-center justify-center">
-                        <p className="">
-                            <TopProductChart />
-                        </p>
+                    <div className="rounded-lg flex items-center justify-center">
+                        <TopProductChart />
                     </div>
                 </div>
 
                 {/* Placeholder for Chart */}
                 <div className="bg-white shadow-md rounded-lg p-4 lg:col-span-1">
-                    <h2 className="text-xl font-semibold text-gray-700 mb-4">Người dùng đang hoạt động</h2>
+                    <h2 className="text-xl font-semibold text-gray-700 mb-4">Người dùng mới </h2>
                     <ul className="space-y-3">
                         {/* User List */}
                         {[
-                            { name: "Emma Watson", role: "Quản trị viên", status: "online" },
-                            { name: "Antony Hopkins", role: "Người điều hành", status: "online" },
-                            { name: "Anna Karinnia", role: "Biên tập viên", status: "offline" },
-                            { name: "John Lý", role: "Quản trị viên", status: "offline" },
-                            { name: "Rowen Atkinson", role: "Biên tập viên", status: "offline" },
+                            { name: "Trần Thế Công", role: "Quản trị viên", status: "online" },
+                            { name: "Trùng Dương", role: "Người bán", status: "online" },
+                            { name: "Mỹ Tâm", role: "Người bán", status: "offline" },
+                            { name: "Test", role: "Người dùng", status: "offline" },
+                            { name: "Người dùng 1", role: "Người dùng", status: "offline" },
                         ].map((user, index) => (
                             <li key={index} className="flex items-center">
                                 <div className={`h-3 w-3 rounded-full ${user.status === "online" ? "bg-green-500" : "bg-gray-400"}`}></div>
