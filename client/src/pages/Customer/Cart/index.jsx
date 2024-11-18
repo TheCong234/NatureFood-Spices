@@ -159,7 +159,7 @@ export default function Cart() {
                                         <TableCell align="right">
                                             <div className="na-fs-16 flex  font-bold text-red-600 underline">
                                                 <small>₫</small>
-                                                {formatPrice(countCartTotal(cartData?.products))}
+                                                {cartData?.products && formatPrice(countCartTotal(cartData?.products))}
                                             </div>
                                         </TableCell>
                                     </TableRow>

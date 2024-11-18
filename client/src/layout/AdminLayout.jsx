@@ -12,14 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import {
-    Collapse,
-    InputAdornment,
-    InputBase,
-    Stack,
-    styled,
-    useTheme,
-} from "@mui/material";
+import { Collapse, InputAdornment, InputBase, Stack, styled, useTheme } from "@mui/material";
 import PeopleIcon from "@mui/icons-material/People";
 import ProductIcon from "@mui/icons-material/ShoppingCart";
 import EventIcon from "@mui/icons-material/Event";
@@ -275,10 +268,7 @@ export default function AdminLayout() {
 
     return (
         <Box sx={{ bgcolor: rootColor.bg_blue, display: "flex" }}>
-            <AppBar
-                position="fixed"
-                sx={{ bgcolor: rootColor.bg_blue, color: rootColor.text }}
-            >
+            <AppBar position="fixed" sx={{ bgcolor: rootColor.bg_blue, color: rootColor.text }}>
                 <Toolbar
                     sx={{
                         display: "flex",
@@ -299,13 +289,8 @@ export default function AdminLayout() {
                         >
                             {open ? <MenuIcon /> : <MenuOpenIcon />}
                         </IconButton>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            sx={{ flexGrow: 1 }}
-                        >
-                            Nature Food test
+                        <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+                            Nature Food
                         </Typography>
                         {/* Search Bar */}
                         <div
@@ -355,10 +340,7 @@ export default function AdminLayout() {
                             <SettingsIcon />
                         </IconButton>
                         <Stack>
-                            <Avatar
-                                alt="Remy Sharp"
-                                src="/static/images/avatar/1.jpg"
-                            />
+                            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                         </Stack>
                     </div>
                 </Toolbar>
@@ -373,44 +355,25 @@ export default function AdminLayout() {
                                 key={index}
                                 to={item.to}
                                 className={({ isActive }) =>
-                                    isActive
-                                        ? "group text-green-700 font-semibold"
-                                        : "group text-inherit  hover:font-semibold font-normal"
+                                    isActive ? "group text-green-700 font-semibold" : "group text-inherit  hover:font-semibold font-normal"
                                 }
                             >
                                 <ListItemButton>
-                                    <ListItemIcon className="group-hover:text-green-700 ">
-                                        {item.icon}
-                                    </ListItemIcon>
-                                    <p className="group-hover:text-green-700">
-                                        {item.text}
-                                    </p>
+                                    <ListItemIcon className="group-hover:text-green-700 ">{item.icon}</ListItemIcon>
+                                    <p className="group-hover:text-green-700">{item.text}</p>
                                 </ListItemButton>
                             </NavLink>
                         ) : (
                             <Box key={index}>
-                                <ListItemButton
-                                    onClick={() => handleClick(item.fieldName)}
-                                >
+                                <ListItemButton onClick={() => handleClick(item.fieldName)}>
                                     <ListItemIcon>{item.icon}</ListItemIcon>
                                     <ListItemText primary={item.text} />
-                                    {open[item.fieldName] ? (
-                                        <ExpandLess />
-                                    ) : (
-                                        <ExpandMore />
-                                    )}
+                                    {open[item.fieldName] ? <ExpandLess /> : <ExpandMore />}
                                 </ListItemButton>
-                                <Collapse
-                                    in={open[item.fieldName]}
-                                    timeout="auto"
-                                    unmountOnExit
-                                >
+                                <Collapse in={open[item.fieldName]} timeout="auto" unmountOnExit>
                                     <List component="div" disablePadding>
                                         {item.listItems.map((i, ind) => (
-                                            <ListItemButton
-                                                key={`collaspse-${ind}`}
-                                                sx={{ pl: 9 }}
-                                            >
+                                            <ListItemButton key={`collaspse-${ind}`} sx={{ pl: 9 }}>
                                                 <NavLink
                                                     to={i.to}
                                                     className={({ isActive }) =>
