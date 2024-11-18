@@ -5,7 +5,7 @@ import { getStoreProductsAction } from "../../../hooks/Redux/StoreProduct/storeP
 import { useLocation, useNavigate } from "react-router-dom";
 import { ProductCardCustomer } from "../../../components";
 
-const productsEachPage = 10;
+const productsEachPage = 12;
 const useQuery = () => {
     return new URLSearchParams(useLocation().search);
 };

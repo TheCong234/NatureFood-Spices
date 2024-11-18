@@ -40,6 +40,16 @@ const StoreProductController = {
         );
     },
 
+    async getBestSeller(req, res) {
+        const products = await StoreProductModel.find({ status: true })
+            .populate("productId")
+            .populate({ path: "storeId", populate: "address" })
+            .sort({ sold: -1 })
+            .skip(parseInt(0))
+            .limit(parseInt(20));
+        return res.status(statusCode.OK).json(BaseResponse.success("Lấy sản phẩm bán chạy thành công", products));
+    },
+
     async getStoreProductsByStore(req, res) {
         const { skip, take, type } = req.query;
         const products = await StoreProductModel.find({ storeId: req.user.store }).populate("productId").skip(skip).limit(take);

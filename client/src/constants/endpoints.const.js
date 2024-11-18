@@ -47,6 +47,7 @@ export const StoreProductV1 = {
     GET_STORE_PRODUCT_BY_PRODUCT: "/store-product/group-by-product/",
     SEARCH: "/store-product/search",
     UPDATE: "/store-product/",
+    GET_BEST_SELLER: "/store-product/bestseller",
 };
 
 export const BannerV1 = {

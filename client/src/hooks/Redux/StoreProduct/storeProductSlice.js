@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
     createStoreProductsAction,
+    getBestSellerAction,
     getStoreProductsAction,
     getStoreProductsByStoreAction,
     searchCustomerAction,
@@ -12,6 +13,7 @@ const storeProductSlice = createSlice({
     initialState: {
         data: { products: [], total: 0 },
         search: { product: { products: [], total: 0 } },
+        bestSeller: [],
         loading: false,
         error: null,
     },
@@ -29,6 +31,20 @@ const storeProductSlice = createSlice({
                 state.data = action.payload;
             })
             .addCase(getStoreProductsAction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+            //get best seller
+            .addCase(getBestSellerAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getBestSellerAction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.bestSeller = action.payload;
+            })
+            .addCase(getBestSellerAction.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             })

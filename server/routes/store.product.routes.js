@@ -11,6 +11,7 @@ router.get("/details/:storeProductId", asyncHandler(StoreProductController.getSt
 router.get("/all", asyncHandler(StoreProductController.getStoreProducts));
 router.get("/store", authJwt, asyncHandler(StoreProductController.getStoreProductsByStore));
 router.get("/search", asyncHandler(StoreProductController.searchCustomer));
+router.get("/bestseller", asyncHandler(StoreProductController.getBestSeller));
 
 router.post("/create", authJwt, asyncHandler(StoreProductController.createStoreProducts));
 

@@ -96,7 +96,7 @@ export default function Cart() {
                                                     <img
                                                         src={product?.storeProduct?.productId?.images?.[0]?.url}
                                                         alt="product image"
-                                                        className="h-[64px] w-full object-cover"
+                                                        className="h-[64px] w-full object-contain"
                                                     />
                                                 </div>
                                                 <Typography variant="body1" className="text-truncate-3">

@@ -108,7 +108,7 @@ export default function Search() {
                     {searchData?.product?.total != 0 ? (
                         <Grid container spacing={2}>
                             {searchData?.product?.products?.map((product) => (
-                                <Grid item xs={6} md={3} key={product?._id}>
+                                <Grid item xs={6} md={2} key={product?._id}>
                                     <ProductCardCustomer product={product} />
                                 </Grid>
                             ))}
@@ -118,14 +118,14 @@ export default function Search() {
                     )}
                 </Paper>
             </section>
-            {searchData?.categoies?.length > 0 && (
+            {searchData?.categories?.length > 0 && (
                 <section className="mt-4">
                     <Paper className=" p-4">
                         <div className="text-xl font-bold mb-3  flex">
                             <div className=" border-b-2 border-green-600 pr-6">Danh mục</div>
                         </div>
                         <Swiper
-                            slidesPerView={5}
+                            slidesPerView={6}
                             spaceBetween={30}
                             pagination={{
                                 clickable: true,
@@ -161,7 +161,7 @@ export default function Search() {
                             <div className=" border-b-2 border-green-600 pr-6">Cửa hàng</div>
                         </div>
                         <Swiper
-                            slidesPerView={5}
+                            slidesPerView={6}
                             spaceBetween={30}
                             pagination={{
                                 clickable: true,
