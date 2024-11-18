@@ -16,7 +16,7 @@ export const UserV1 = {
 export const StoreV1 = {
     GET_CURRENT: "/store/current",
     STORE_CREATE: "/store/new",
-    STORE_GET_STORE_BY_ID: "/store",
+    STORE_GET_STORE_BY_ID: "/store/",
 };
 
 export const CategoryV1 = {

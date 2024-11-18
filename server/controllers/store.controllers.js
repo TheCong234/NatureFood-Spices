@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { BaseResponse } from "../config/BaseResponse.config.js";
 import { statusCode } from "../config/statusCode.config.js";
 import AddressModel from "../models/address.model.js";
@@ -35,11 +36,19 @@ const StoreControllers = {
     },
 
     async getStoreById(req, res) {
-        const store = await StoreModel.findById(req.params.id).populate("products");
+        const { skip, take } = req.query;
+        const { storeId } = req.params;
+        const store = await StoreModel.findById(storeId).populate("address");
         if (store === null) {
             throw new Error("Không tìm thấy cửa hàng");
         }
-        return res.status(statusCode.OK).json(BaseResponse.success("Lấy thông tin cửa hàng thành công", store));
+        const products = await StoreProductModel.find({ storeId: new mongoose.Types.ObjectId(storeId) })
+            .populate("productId")
+            .populate("storeId")
+            .skip(skip)
+            .limit(take);
+        const total = await StoreProductModel.countDocuments({ storeId: new mongoose.Types.ObjectId(storeId) });
+        return res.status(statusCode.OK).json(BaseResponse.success("Lấy thông tin cửa hàng thành công", { store, product: { products, total } }));
     },
 
     async updateStoreStatus(req, res) {

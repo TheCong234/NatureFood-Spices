@@ -85,13 +85,13 @@ export default function ProductCardCustomer({ product }) {
                 <div className="flex text-[#d26426] justify-between items-center">
                     <div className="min-h-[56px]">
                         <div className="text-xl font-bold">
-                            {formatPrice(product?.productId.salePrice * (1 - product?.discountPrice))}
+                            {formatPrice(product?.productId?.salePrice * (1 - product?.discountPrice))}
                             <sup>đ</sup>
                         </div>
                         {product?.discountPrice > 0 && (
                             <del className="flex items-centerfont-semibold text-gray-500">
                                 <small>₫</small>
-                                {formatPrice(product?.productId.salePrice)}
+                                {formatPrice(product?.productId?.salePrice)}
                             </del>
                         )}
                     </div>
@@ -101,11 +101,11 @@ export default function ProductCardCustomer({ product }) {
                     <p className="">
                         Sẵn có: <span className="text-green-500 font-semibold">{product?.stock}</span>
                     </p>
-                    <p>{product?.storeId.address.city}</p>
+                    <p>{product?.storeId?.address?.city}</p>
                 </div>
             </Box>
             <Box className="px-4 pb-4 flex justify-between mt-2">
-                <Rating name="read-only" value={product?.rating} readOnly size="small" />
+                <Rating name="read-only" value={product?.rating || 5} readOnly size="small" />
                 <Stack direction={"row"} spacing={1}>
                     {favoriteData?.products?.some((f) => f?.storeProduct._id == product?._id) ? (
                         <Tooltip title="Bỏ yêu thích" placement="top">

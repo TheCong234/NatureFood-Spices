@@ -194,7 +194,7 @@ const ProductDetail = () => {
                     <Avatar src={product?.storeId.image.url} sx={{ height: "62px", width: "62px" }} />
                     <div className="ml-4">
                         <p className="text-lg font-semibold">{product?.storeId?.name}</p>
-                        <p className="text-sm text-gray-500">HCM</p>
+                        <p className="text-sm text-gray-500">Hồ Chí Minh</p>
                         <div className="flex space-x-3 mt-2 mr-6">
                             <Button
                                 variant="outlined"
@@ -211,14 +211,15 @@ const ProductDetail = () => {
                                 size="small"
                                 startIcon={<StorefrontOutlinedIcon />}
                                 className="na-text-transform-none"
+                                onClick={() => navigate(`/store/${product?.storeId?._id}?skip=0&take=10`)}
                             >
-                                Xem store
+                                Xem cửa hàng
                             </Button>
                         </div>
                     </div>
                     <Divider orientation="vertical" variant="middle" flexItem />
                     <div className="ml-6 flex-1">
-                        <Grid container spacing={3}>
+                        <Grid container spacing={5}>
                             <Grid item md={4}>
                                 <div>
                                     <div className="flex justify-between ">
@@ -234,23 +235,23 @@ const ProductDetail = () => {
                             <Grid item md={4}>
                                 <div>
                                     <div className="flex justify-between ">
-                                        <p className="text-gray-400">Đánh giá</p>
-                                        <p className="text-green-600">3 004</p>
+                                        <p className="text-gray-400">Tỉ lệ phản hồi</p>
+                                        <p className="text-green-600">98%</p>
                                     </div>
                                     <div className="flex justify-between mt-2">
-                                        <p className="text-gray-400">Sản phẩm</p>
-                                        <p className="text-green-600">106</p>
+                                        <p className="text-gray-400">Thời gian phản hồi</p>
+                                        <p className="text-green-600">trong vài giờ</p>
                                     </div>
                                 </div>
                             </Grid>
                             <Grid item md={4}>
                                 <div>
                                     <div className="flex justify-between ">
-                                        <p className="text-gray-400">Đánh giá</p>
-                                        <p className="text-green-600">3 004</p>
+                                        <p className="text-gray-400">Tham gia</p>
+                                        <p className="text-green-600">2 tháng trước</p>
                                     </div>
                                     <div className="flex justify-between mt-2">
-                                        <p className="text-gray-400">Sản phẩm</p>
+                                        <p className="text-gray-400">Người theo dõi</p>
                                         <p className="text-green-600">106</p>
                                     </div>
                                 </div>

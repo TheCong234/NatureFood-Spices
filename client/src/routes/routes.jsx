@@ -178,7 +178,7 @@ const routes = [
                                 element: <Logout />,
                             },
                             {
-                                path: "/store/:id",
+                                path: "/store/:storeId",
                                 element: <Store />,
                             },
                             {
