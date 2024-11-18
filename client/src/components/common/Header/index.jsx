@@ -36,7 +36,7 @@ const items = [
         text: "Trang chủ",
     },
     {
-        to: "/product/list?skip=0&take=10&date=-1&price=-1&discount=0",
+        to: "/product/list?skip=0&take=12&date=-1&price=-1&discount=0",
         text: " Sản phẩm",
     },
     {

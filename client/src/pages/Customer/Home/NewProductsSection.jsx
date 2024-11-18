@@ -17,7 +17,7 @@ const NewProductSection = () => {
     return (
         <div>
             <Swiper
-                slidesPerView={2}
+                slidesPerView={3}
                 grid={{
                     rows: 2,
                     fill: "row",

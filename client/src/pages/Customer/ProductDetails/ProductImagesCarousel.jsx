@@ -29,9 +29,7 @@ export default function ProductImagesCarousel({ product }) {
                         </div> */}
                     </SwiperSlide>
                 ))}
-                <SwiperSlide>
-                    <img src="https://spicesinc.com/sites/default/files/y/whitebowls.jpg" />
-                </SwiperSlide>
+
                 <SwiperSlide>
                     <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
                 </SwiperSlide>
@@ -43,11 +41,11 @@ export default function ProductImagesCarousel({ product }) {
                 onSwiper={setThumbsSwiper}
                 loop={true}
                 spaceBetween={10}
-                slidesPerView={4}
+                slidesPerView={5}
                 freeMode={true}
                 watchSlidesProgress={true}
                 modules={[FreeMode, Navigation, Thumbs]}
-                className="productIamgesThumbnail bg-[#f3f4f6]"
+                className="productIamgesThumbnail bg-[#f3f4f6] mt-4"
             >
                 {product?.productId?.images?.map((item) => (
                     <SwiperSlide key={item?._id}>
@@ -56,9 +54,6 @@ export default function ProductImagesCarousel({ product }) {
                         </div>
                     </SwiperSlide>
                 ))}
-                <SwiperSlide>
-                    <img src="https://spicesinc.com/sites/default/files/y/whitebowls.jpg" />
-                </SwiperSlide>
                 <SwiperSlide>
                     <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
                 </SwiperSlide>

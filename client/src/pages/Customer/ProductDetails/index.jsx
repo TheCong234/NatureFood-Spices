@@ -114,8 +114,8 @@ const ProductDetail = () => {
                         {product?.productId?.name}
                     </Typography>
                     <Stack direction={"row"} sx={{ mt: 1 }}>
-                        <Rating name="size-small" value={3} readOnly size="small" className="flex items-center mr-2 " />
-                        <span>(3.0)</span>
+                        <Rating name="size-small" value={5} readOnly size="small" className="flex items-center mr-2 " />
+                        <span>(5.0)</span>
                     </Stack>
                     <div className="flex text-[#d26426] items-center">
                         <div>
@@ -136,7 +136,7 @@ const ProductDetail = () => {
                     <hr className="my-4" />
                     <Stack direction={"row"}>
                         <Box sx={{ flex: 1 }}>
-                            <Typography variant="body1">Kiểu đóng gói</Typography>
+                            {/* <Typography variant="body1">Kiểu đóng gói</Typography>
                             <Stack direction={"row"} spacing={1} sx={{ mt: 1 }}>
                                 <Button size="small" sx={{ textTransform: "none" }} variant="contained" color="warning">
                                     Chai
@@ -147,12 +147,20 @@ const ProductDetail = () => {
                                 <Button size="small" sx={{ textTransform: "none" }} variant="contained" color="warning">
                                     Gói
                                 </Button>
-                            </Stack>
+                            </Stack> */}
+                            <Typography variant="body1" gutterBottom>
+                                Đã bán
+                            </Typography>
+                            <Typography variant="h6" component="h4" sx={{ fontWeight: "bold" }}>
+                                {product?.sold}
+                            </Typography>
                         </Box>
 
                         <Box sx={{ flex: 1 }}>
-                            <Typography variant="body1">Trọng lượng</Typography>
-                            <Typography variant="h6" component="h4" sx={{ fontWeight: "bold", mt: 1 }}>
+                            <Typography variant="body1" gutterBottom>
+                                Trọng lượng
+                            </Typography>
+                            <Typography variant="h6" component="h4" sx={{ fontWeight: "bold" }}>
                                 500g / chai
                             </Typography>
                         </Box>

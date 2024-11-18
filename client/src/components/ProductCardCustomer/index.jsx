@@ -69,7 +69,7 @@ export default function ProductCardCustomer({ product }) {
     };
     return (
         <Box className="hover:shadow-custom transition-shadow duration-200  relative rounded-xl overflow-hidden">
-            <Box className="cursor-pointer" onClick={() => navigate(`/product/details/${product?._id}`)}>
+            <Box className="cursor-pointer relative" onClick={() => navigate(`/product/details/${product?._id}`)}>
                 <Swiper className="product_card-primary_swiper " pagination={true} modules={[PaginationSwipper]}>
                     {product?.productId?.images?.map((image) => (
                         <SwiperSlide key={image?._id} className="swiper-slide_styled bg-inherit">
@@ -79,6 +79,11 @@ export default function ProductCardCustomer({ product }) {
                         </SwiperSlide>
                     ))}
                 </Swiper>
+                {product?.discountPrice > 0 && (
+                    <div className="absolute right-1 bottom-1 z-10">
+                        <ChipStyled label={`Giảm ${product?.discountPrice * 100}%`} color="error" />
+                    </div>
+                )}
             </Box>
             <Box className="px-5 cursor-pointer" onClick={() => navigate(`/product/details/${product?._id}`)}>
                 <p className="text-base line-clamp-2 leading-5 min-h-[40px] font-semibold">{product?.productId?.name}</p>
@@ -95,7 +100,7 @@ export default function ProductCardCustomer({ product }) {
                             </del>
                         )}
                     </div>
-                    {product?.discountPrice > 0 && <ChipStyled label={`Giảm ${product?.discountPrice * 100}%`} color="error" />}
+                    {product?.sold > 0 && <p className="text-gray-400">{product.sold} đã bán</p>}
                 </div>
                 <div className="flex justify-between text-sm text-gray-400">
                     <p className="">

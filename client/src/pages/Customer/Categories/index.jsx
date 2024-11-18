@@ -46,8 +46,8 @@ export default function Categories() {
                         <Divider />
                         <div className="p-4">
                             <Swiper
-                                slidesPerView={5}
-                                spaceBetween={30}
+                                slidesPerView={6}
+                                spaceBetween={20}
                                 pagination={{
                                     clickable: true,
                                 }}
