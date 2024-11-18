@@ -37,11 +37,11 @@ const Index = () => {
                         <Grid item xs={6} md={3}>
                             <div className="footer-column">
                                 <h3>Giữ Liên Lạc</h3>
-                                <a href="#">
+                                <a href="http://localhost:5173/blog/list?skip=0&take=10&date=-1">
                                     <NoteIcon />
                                     &nbsp;Blog
                                 </a>
-                                <a href="#">
+                                <a href="https://www.facebook.com/the.cong.790">
                                     <FacebookIcon /> Facebook
                                 </a>
                                 <a href="#">
@@ -53,19 +53,18 @@ const Index = () => {
                         <Grid item xs={6} md={3}>
                             <div className="footer-column">
                                 <h3>Dịch Vụ Khách Hàng</h3>
-                                <a href="#">Trung Tâm Giúp Đỡ</a>
-                                <a href="#">Hỗ Trợ 24/7</a>
-                                <a href="#">Cộng Đồng Phoenix</a>
+                                <a href="https://www.facebook.com/profile.php?id=61568904243860&mibextid=LQQJ4d">Trung Tâm Giúp Đỡ</a>
+                                <a href="https://www.facebook.com/profile.php?id=61568904243860&mibextid=LQQJ4d">Hỗ Trợ 24/7</a>
+                                <a href="https://www.facebook.com/profile.php?id=61568904243860&mibextid=LQQJ4d">Cộng Đồng NatureFood</a>
                             </div>
                         </Grid>
 
                         <Grid item xs={6} md={3}>
                             <div className="footer-column">
                                 <h3>Phương Thức Thanh Toán</h3>
-                                <a href="#">Thanh Toán Khi Nhận Hàng</a>
-                                <a href="#">Thanh Toán Trực Tuyến</a>
-                                <a href="#">PayPal</a>
-                                <a href="#">Trả Góp</a>
+                                <a href="http://localhost:5173/checkout">Thanh Toán Khi Nhận Hàng</a>
+                                <a href="http://localhost:5173/checkout">Thanh Toán Trực Tuyến</a>
+                                <a href="http://localhost:5173/checkout">PayPal</a>
                             </div>
                         </Grid>
                     </Grid>
