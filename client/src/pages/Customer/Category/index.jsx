@@ -18,11 +18,14 @@ export default function Cartegory() {
     const query = useQuery();
     const snackNotify = useSnackNotify();
     const navigate = useNavigate();
-
     const { categoryId } = useParams();
+    const params = {
+        skip: query.get("skip"),
+        take: query.get("take"),
+    };
 
     const handlePaginationChange = (event, value) => {
-        navigate(`/product/category/${categoryId}?skip=${(value - 1) * productsEachPage}&take=${productsEachPage}`);
+        navigate(`/product/category/${categoryId}?skip=${(value - 1) * params.take}&take=${params.take}`);
     };
 
     const handleGetData = async () => {
@@ -72,9 +75,12 @@ export default function Cartegory() {
                 <Box>
                     <Grid container spacing={2}>
                         {productData?.products?.map((product) => (
-                            <Grid item xs={6} md={3} key={product?._id}>
-                                <Card key={product?._id} className=" relative">
-                                    <Box className="cursor-pointer" onClick={() => navigate(`/product/details/${product?._id}`)}>
+                            <Grid item xs={6} md={2} key={product?._id}>
+                                <Box
+                                    key={product?._id}
+                                    className=" hover:shadow-custom transition-shadow duration-200  relative rounded-xl overflow-hidden"
+                                >
+                                    <Box className="cursor-pointer border rounded-xl" onClick={() => navigate(`/product/details/${product?._id}`)}>
                                         <Swiper className="product_card-primary_swiper " pagination={true} modules={[PaginationSwipper]}>
                                             {product?.rootProduct?.images?.map((image) => (
                                                 <SwiperSlide key={image?._id} className="swiper-slide_styled">
@@ -86,16 +92,24 @@ export default function Cartegory() {
                                         </Swiper>
                                     </Box>
                                     <Box className="px-5 cursor-pointer" onClick={() => navigate(`/product/details/${product?._id}`)}>
-                                        <p className="font-semibold text-truncate-2 text-lg leading-5">{product?.rootProduct?.name}</p>
-                                        <div className="flex text-[#d26426]">
-                                            <div className="text-2xl font-semibold">
-                                                <small>₫</small>
-                                                {formatPrice(product?.rootProduct?.salePrice)}
+                                        <p className="text-base line-clamp-2 leading-5 min-h-[40px] font-semibold">{product?.rootProduct?.name}</p>
+
+                                        <div className="flex text-[#d26426] justify-between items-center">
+                                            <div className="min-h-[56px]">
+                                                <div className="text-xl font-bold">
+                                                    {formatPrice(product?.rootProduct?.salePrice * (1 - product?.discountPrice))}
+                                                    <sup>đ</sup>
+                                                </div>
+                                                {product?.discountPrice > 0 && (
+                                                    <del className="flex items-centerfont-semibold text-gray-500">
+                                                        <small>₫</small>
+                                                        {formatPrice(product?.rootProduct?.salePrice)}
+                                                    </del>
+                                                )}
                                             </div>
-                                            <del className="flex items-center ml-3 font-semibold text-gray-500">
-                                                <small>₫</small>
-                                                {formatPrice(product?.rootProduct?.salePrice + product?.rootProduct?.salePrice * 0.1)}
-                                            </del>
+                                            {product?.discountPrice > 0 && (
+                                                <ChipStyled label={`Giảm ${product?.discountPrice * 100}%`} color="error" />
+                                            )}
                                         </div>
                                         <Typography variant="body2" sx={{ color: "text.secondary", my: 1 }}>
                                             Stock: <span className="text-green-500 font-semibold">{product?.stock}</span>
@@ -107,14 +121,14 @@ export default function Cartegory() {
                                     <div className="absolute top-3 -left-2 z-10">
                                         <ChipStyled label={product?.store?.name} color="success" />
                                     </div>
-                                </Card>
+                                </Box>
                             </Grid>
                         ))}
                     </Grid>
                     <Pagination
                         className="pt-6 flex justify-center"
-                        count={Math.floor(productData?.total / productsEachPage + 1)}
-                        page={Math.floor(query.get("skip") / productsEachPage + 1) || 1}
+                        count={Math.floor(productData?.total / parseInt(params.take) + 1)}
+                        page={Math.floor(params.skip / parseInt(params.take) + 1)}
                         onChange={handlePaginationChange}
                         color="success"
                     />

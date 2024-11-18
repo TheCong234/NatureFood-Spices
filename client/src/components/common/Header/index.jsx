@@ -290,7 +290,7 @@ const Header = () => {
                                         <ListItemIcon>
                                             <StoreMallDirectoryOutlinedIcon fontSize="small" />
                                         </ListItemIcon>
-                                        {currentUser.store.name}
+                                        {currentUser?.store?.name}
                                     </Box>
                                 </MenuItem>
                             ) : (

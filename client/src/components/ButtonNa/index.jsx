@@ -7,6 +7,7 @@ const ButtonNa = styled(Button)(({ theme }) => ({
     transition: "all 0.2s ease",
     boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)",
     fontSize: "12px",
+    backgroundColor: "white",
     "&:hover": {
         boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
     },

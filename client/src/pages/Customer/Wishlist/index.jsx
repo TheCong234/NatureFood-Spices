@@ -59,7 +59,7 @@ const Favorite = () => {
             </Paper>
             <Grid container spacing={1}>
                 {favoriteData?.products.map((product) => (
-                    <Grid item xs={6} md={3} key={product?._id}>
+                    <Grid item xs={6} md={2} key={product?._id}>
                         <div className="hover:shadow-custom transition-shadow duration-200 rounded-xl relative overflow-hidden">
                             <div className="p-2 h-[210px] flex justify-center">
                                 <img

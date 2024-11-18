@@ -72,7 +72,7 @@ export default function GroupByProduct() {
                         >
                             Mới nhất
                         </Button>
-                        <Button
+                        {/* <Button
                             variant={params.discount == "1" ? "contained" : "outlined"}
                             size="small"
                             color="success"
@@ -101,14 +101,14 @@ export default function GroupByProduct() {
                         >
                             <MenuItem value={-1}>Giá giảm dần</MenuItem>
                             <MenuItem value={1}>Giá tăng dần</MenuItem>
-                        </Select>
+                        </Select> */}
                     </div>
                 </div>
             </Paper>
             <section className="mt-4">
                 <Grid container spacing={2}>
                     {productData?.products?.map((product) => (
-                        <Grid item xs={6} md={3} key={product?._id}>
+                        <Grid item xs={6} md={2} key={product?._id}>
                             <ProductCardCustomer product={product} />
                         </Grid>
                     ))}

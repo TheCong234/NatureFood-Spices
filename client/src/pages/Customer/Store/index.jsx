@@ -1,5 +1,5 @@
-import React from "react";
-import { Typography, Button, IconButton, TextField, Grid } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Typography, Button, IconButton, TextField, Grid, Avatar, Rating, Paper, Pagination } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import EmailIcon from "@mui/icons-material/Email";
@@ -16,13 +16,27 @@ import FormControl from "@mui/material/FormControl";
 import Menu from "@mui/material/Menu";
 
 import Fade from "@mui/material/Fade";
-import { Link } from "react-router-dom";
-import { ButtonNa } from "../../../components";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { ButtonNa, ProductCardCustomer } from "../../../components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { tryCatchWrapper } from "../../../utils/asyncHelper";
+import { getStoreById } from "../../../apis/store.api";
+import useSnackNotify from "../../../components/SnackNotify";
+import { useQuery } from "../../../services/functions";
 
 export default function ShopHeader() {
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [storeData, setStoreData] = useState();
     const open = Boolean(anchorEl);
+    const { storeId } = useParams();
+    const snackNotify = useSnackNotify();
+    const navigate = useNavigate();
+    const query = useQuery();
+    const params = {
+        skip: query.get("skip"),
+        take: query.get("take"),
+    };
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -81,28 +95,39 @@ export default function ShopHeader() {
         },
     ];
 
+    const handlePaginationChange = (event, value) => {
+        navigate(`/store/${storeId}?skip=${(value - 1) * params.take}&take=${params.take}`);
+    };
+
+    useEffect(() => {
+        (async () => {
+            const { result, error } = await tryCatchWrapper(getStoreById, { storeId, params });
+            if (error) {
+                snackNotify("error")("Lấy thông tin cửa hàng thất bại");
+            } else {
+                console.log("Storeeee: ", result);
+                setStoreData(result.data);
+            }
+        })();
+    }, [storeId, params.skip, params.take]);
     return (
         <div className="p-6 bg-gray-100 border-b">
-            <div className="flex items-center justify-between relative">
-                <div className="flex items-center space-x-4">
-                    <img src="/assets/images/logo.png" alt="LiztonDesignCo Logo" className="w-20 h-20 rounded-full border" />
+            <Paper className="flex items-center justify-between relative space-x-4 px-4">
+                <div className="flex items-center  py-10">
+                    <Avatar src={storeData?.store?.image.url} sx={{ width: "70px", height: "70px" }} />
                     <div>
                         <Typography variant="h5" component="h1" sx={{ fontWeight: "bold" }}>
-                            NatureFood
+                            {storeData?.store?.name}
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
-                            VietNam, Ho Chi Minh
+                            {`Việt Name, ${storeData?.store?.address?.city}`}
                         </Typography>
                         <div className="flex items-center space-x-1">
                             <Typography variant="body2" sx={{ fontWeight: "bold", color: "purple" }}>
                                 Đánh giá người bán
                             </Typography>
                             <Typography variant="body2">• 2,889 lượt bán</Typography>
-                            <div className="flex items-center text-black">
-                                {[...Array(5)].map((_, i) => (
-                                    <StarIcon key={i} fontSize="small" />
-                                ))}
-                            </div>
+                            <Rating value={5} readOnly />
                         </div>
                     </div>
                 </div>
@@ -135,7 +160,7 @@ export default function ShopHeader() {
                             </Typography>
                         </div>
                     ))}
-                    <div className="flex flex-col items-center text-center">
+                    {/* <div className="flex flex-col items-center text-center">
                         <img src="/assets/images/logo.png" alt="Contact Icon" className="w-8 h-8 rounded-full" />
                         <Typography variant="body2" sx={{ fontWeight: "bold" }}>
                             NatureFood
@@ -143,22 +168,22 @@ export default function ShopHeader() {
                         <Typography variant="caption" color="textSecondary">
                             Liên hệ
                         </Typography>
-                    </div>
+                    </div> */}
                 </div>
-                <div className="absolute -bottom-12 left-24 ">
+                <div className="absolute -bottom-5 left-24 ">
                     <ButtonNa color="black" variant="outlined" sx={{ textTransform: "none" }}>
                         Theo dõi cửa hàng
                         <FavoriteIcon />
                     </ButtonNa>
                 </div>
-            </div>
+            </Paper>
 
-            <div className="pt-24 bg-gray-100">
+            <div className="pt-10 bg-gray-100">
                 <div className="flex w-full space-x-6">
                     {/* Sidebar */}
                     <div className="w-1/4">
-                        <div className="space-y-4">
-                            <div className="flex ">
+                        <Paper className="space-y-4 p-4">
+                            <div className="flex justify-between ">
                                 <Typography component={Link} to={"/"} sx={{ color: "black" }}>
                                     Mặt hàng
                                 </Typography>
@@ -187,7 +212,7 @@ export default function ShopHeader() {
                                 Liên hệ với chủ của hàng
                             </Button>
                             <Typography variant="body2" color="textSecondary">
-                                2889 mặc hàng
+                                2889 mặt hàng
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
                                 1002 lượt thích
@@ -195,14 +220,14 @@ export default function ShopHeader() {
                             <Typography variant="body2" color="textSecondary">
                                 Báo cáo của hàng cho NatureFood
                             </Typography>
-                        </div>
+                        </Paper>
                     </div>
 
                     {/* Main Content */}
-                    <div className="w-3/4">
-                        <div className="flex items-center justify-between mb-4">
+                    <Paper className="w-3/4 px-4 pb-4">
+                        <div className="flex items-center justify-between mb-4 border-b py-4">
                             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                                Mặc hàng nổi bật
+                                Các sản phẩm của cửa hàng
                             </Typography>
                             <div className="flex items-center space-x-2">
                                 <TextField
@@ -256,29 +281,22 @@ export default function ShopHeader() {
 
                         <div className="w-full">
                             <Grid container spacing={2}>
-                                {items.map((item, index) => (
-                                    <Grid item xs={6} md={4} key={index}>
-                                        <div className="hover:shadow-custom transition-shadow border rounded-lg w-full p-4">
-                                            <img src={item.imgSrc} alt={item.title} className="w-full h-64 object-cover mb-2 rounded-md" />
-                                            <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                                                {item.title}
-                                            </Typography>
-                                            <Typography variant="body2" sx={{ fontWeight: "bold", color: "textPrimary" }}>
-                                                {item.price}
-                                            </Typography>
-                                            <Typography variant="body2" color="textSecondary" sx={{ textDecoration: "line-through" }}>
-                                                {item.originalPrice}
-                                            </Typography>
-                                            <Typography variant="body2" color="textSecondary">
-                                                {item.discount}
-                                            </Typography>
-                                        </div>
+                                {storeData?.product?.products?.map((product, index) => (
+                                    <Grid item xs={6} md={3} key={index}>
+                                        <ProductCardCustomer product={product} />
                                     </Grid>
                                 ))}
                             </Grid>
                         </div>
-                    </div>
+                    </Paper>
                 </div>
+                <Pagination
+                    className="pt-6 flex justify-center"
+                    count={Math.floor(storeData?.product?.total / parseInt(params.take) + 1)}
+                    page={Math.floor(parseInt(params.skip) / parseInt(params.take) + 1) || 1}
+                    onChange={handlePaginationChange}
+                    color="success"
+                />
             </div>
         </div>
     );
