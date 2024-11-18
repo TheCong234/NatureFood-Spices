@@ -35,7 +35,9 @@ const Index = () => {
                                 <Swiper className="product_card-primary_swiper " pagination={true} modules={[Pagination]}>
                                     {product?.images?.map((image, index) => (
                                         <SwiperSlide key={index} className="swiper-slide_styled">
-                                            <img src={image?.url} alt="product image" />
+                                            <div className="h-full flex justify-center">
+                                                <img src={image?.url} alt="product image" className="h-full" />
+                                            </div>
                                         </SwiperSlide>
                                     ))}
                                 </Swiper>
