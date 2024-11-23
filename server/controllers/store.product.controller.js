@@ -46,7 +46,7 @@ const StoreProductController = {
             .populate({ path: "storeId", populate: "address" })
             .sort({ sold: -1 })
             .skip(parseInt(0))
-            .limit(parseInt(20));
+            .limit(parseInt(15));
         return res.status(statusCode.OK).json(BaseResponse.success("Lấy sản phẩm bán chạy thành công", products));
     },
 

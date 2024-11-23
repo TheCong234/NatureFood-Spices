@@ -53,12 +53,12 @@ export default function Categories() {
                                 }}
                                 navigation={true}
                                 modules={[Pagination, Navigation]}
-                                className="mySwiper w-full h-auto bg-primary na-px-4"
+                                className="mySwiper w-full h-auto  na-px-4"
                                 initialSlide={2}
                             >
                                 {item?.products?.map((product) => (
                                     <SwiperSlide key={product?._id} className="border-none my-2 shadow-lg shadow-black-500/50">
-                                        <Card className="product_card-primary" key={product?._id}>
+                                        <Card className="product_card-primary " key={product?._id} sx={{ height: "100%" }}>
                                             <Box className="cursor-pointer">
                                                 <Swiper className="product_card-primary_swiper " pagination={true} modules={[PaginationSwipper]}>
                                                     {product?.images?.map((image) => (

@@ -64,6 +64,7 @@ import {
     OrderDetails,
     Search,
     Store,
+    Block,
 } from "../pages/Customer";
 import { lazy, Suspense } from "react";
 
@@ -180,6 +181,10 @@ const routes = [
                             {
                                 path: "/store/:storeId",
                                 element: <Store />,
+                            },
+                            {
+                                path: "/block",
+                                element: <Block />,
                             },
                             {
                                 path: "/my",

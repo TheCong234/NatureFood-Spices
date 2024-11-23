@@ -29,6 +29,7 @@ import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import StoreMallDirectoryOutlinedIcon from "@mui/icons-material/StoreMallDirectoryOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import useSnackNotify from "../../../components/SnackNotify";
+import ButtonNa from "../../ButtonNa";
 
 const items = [
     {
@@ -90,7 +91,9 @@ const Header = () => {
                 <Container maxWidth="xl">
                     <div className="header-top flex items-center justify-between p-4">
                         <div className="">
-                            <img src="/assets/images/logo.png" alt="Logo" className="w-[80px]" />
+                            <NavLink to={"/"}>
+                                <img src="/assets/images/logo.png" alt="Logo" className="w-[80px]" />
+                            </NavLink>
                         </div>
                         <div className="relative flex-[0.8]">
                             <InputBase
@@ -134,7 +137,13 @@ const Header = () => {
                                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                             />
                         </div>
+
                         <Stack direction="row" spacing={0}>
+                            {currentUser?.role == "admin" && (
+                                <ButtonNa variant="contained" color="success" size="small" sx={{ color: "black" }}>
+                                    <NavLink to={"/admin/dashboard"}>Admin</NavLink>
+                                </ButtonNa>
+                            )}
                             <Tooltip title="Yêu thích">
                                 <IconButton
                                     color="inherit"
