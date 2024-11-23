@@ -29,7 +29,7 @@ const Index = () => {
         <Box sx={{ width: "100%" }}>
             <Grid container spacing={2}>
                 {productData?.products?.map((product) => (
-                    <Grid item md={3} key={product?._id}>
+                    <Grid item md={2} key={product?._id}>
                         <Card className="product_card-primary">
                             <Box>
                                 <Swiper className="product_card-primary_swiper " pagination={true} modules={[Pagination]}>

@@ -22,9 +22,9 @@ const UserController = {
     },
 
     async getAll(req, res) {
-        const users = await UserModel.find({ role: req.query.role || "user" });
+        const users = await UserModel.find({ role: { $ne: "admin" } });
         const total = await UserModel.countDocuments({
-            role: req.query.role || "user",
+            role: { $ne: "admin" },
         });
         return res.status(statusCode.OK).json(BaseResponse.success("Thành công", { users, total }));
     },

@@ -133,7 +133,7 @@ const Index = () => {
     const { data: productData, loading: productLoading } = useSelector((state) => state.product);
 
     const handlePaginationChange = (event, value) => {
-        navigate(`/seller/store-product/list?skip=${(value - 1) * params.take}&take=${params.take}&type=all`);
+        navigate(`/seller/product/list?skip=${(value - 1) * params.take}&take=${params.take}&type=all`);
     };
 
     const handleSortbyChange = (event) => {

@@ -115,7 +115,7 @@ export default function ShopHeader() {
             <Paper className="flex items-center justify-between relative space-x-4 px-4">
                 <div className="flex items-center  py-10">
                     <Avatar src={storeData?.store?.image.url} sx={{ width: "70px", height: "70px" }} />
-                    <div>
+                    <div className="ml-3">
                         <Typography variant="h5" component="h1" sx={{ fontWeight: "bold" }}>
                             {storeData?.store?.name}
                         </Typography>
