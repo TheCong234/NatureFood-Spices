@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CreateProductYup } from "../../../validations/yup.validations";
-
+import "./style.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCards } from "swiper/modules";
 
@@ -150,7 +150,7 @@ const Index = () => {
                                 className="mt-1 w-full"
                                 id="name"
                                 size="small"
-                                placeholder="Tên cửa hàng"
+                                placeholder="Số lượng tại kho"
                                 variant="outlined"
                                 error={!!errors.name}
                                 helperText={errors.name?.message}
@@ -182,12 +182,14 @@ const Index = () => {
                         <Swiper effect={"cards"} grabCursor={true} modules={[EffectCards]} className="swiper-create-product mt-1 px-5">
                             {images.map((image, index) => (
                                 <SwiperSlide key={`iamge-${index}`} className="swiper-slide_styled">
-                                    <img src={image} alt={`upload-${index}`} />
+                                    <div className="w-full h-full">
+                                        <img src={image} alt={`upload-${index}`} className="object-cover h-full" />
+                                    </div>
                                 </SwiperSlide>
                             ))}
 
                             {images.length < 1 ? (
-                                <SwiperSlide className="swiper-slide-styled">
+                                <SwiperSlide className="swiper-slide_styled">
                                     <p className="text-center text-black">Chọn ảnh cho sản phẩm</p>
                                 </SwiperSlide>
                             ) : null}

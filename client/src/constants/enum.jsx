@@ -17,6 +17,7 @@ export const ORDER_STATUS = {
     2: "Đã giao cho đơn vị vận chuyển",
     3: "Đã giao thành công",
     4: "Đã hủy bỏ",
+    5: "Đang tiến hành hoàn trả",
 };
 
 export const ORDER_STATUS_COLOR = {

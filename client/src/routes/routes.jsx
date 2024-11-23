@@ -11,6 +11,7 @@ import {
     ProductCartSeller,
     StoreProductSeller,
     Orders,
+    EditProduct,
 } from "../pages/Seller";
 
 import {
@@ -63,8 +64,8 @@ import {
     OrderDetails,
     Search,
     Store,
+    Block,
 } from "../pages/Customer";
-import TestSecket from "../pages/testSocket";
 import { lazy, Suspense } from "react";
 
 /* ---------------- Lazy loads various components ------------------------- */
@@ -99,10 +100,6 @@ const routes = [
                     {
                         path: "/register-seller",
                         element: <RegisterSeller />,
-                    },
-                    {
-                        path: "/test",
-                        element: <TestSecket />,
                     },
 
                     {
@@ -182,8 +179,12 @@ const routes = [
                                 element: <Logout />,
                             },
                             {
-                                path: "/store/:id",
+                                path: "/store/:storeId",
                                 element: <Store />,
+                            },
+                            {
+                                path: "/block",
+                                element: <Block />,
                             },
                             {
                                 path: "/my",
@@ -222,7 +223,7 @@ const routes = [
                         element: <SellerLayout />,
                         children: [
                             {
-                                path: "dashboard",
+                                path: "",
                                 element: <DashboardSeller />,
                             },
                             {
@@ -248,6 +249,14 @@ const routes = [
                             {
                                 path: "orders",
                                 element: <Orders />,
+                            },
+                            {
+                                path: "notification",
+                                element: <Notification />,
+                            },
+                            {
+                                path: "product/:productId/edit",
+                                element: <EditProduct />,
                             },
                         ],
                     },

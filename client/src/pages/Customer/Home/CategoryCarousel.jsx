@@ -17,7 +17,7 @@ const CategoryCarousel = () => {
     return (
         <div>
             <Swiper
-                slidesPerView={5}
+                slidesPerView={6}
                 spaceBetween={30}
                 pagination={{
                     clickable: true,

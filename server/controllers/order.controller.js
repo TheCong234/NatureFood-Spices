@@ -6,6 +6,7 @@ import UserModel from "../models/user.model.js";
 import { io, userSockets } from "../config/socket.js";
 import NotificationModel from "../models/notifycation.model.js";
 import StoreModel from "../models/store.models.js";
+import mongoose from "mongoose";
 
 const OrderController = {
     async getCustomerOrder(req, res) {
@@ -35,10 +36,16 @@ const OrderController = {
     },
 
     async getCustomerOrdersByStore(req, res) {
-        const { skip, take, status } = req.query;
-        const filter = { store: req.user.store, ...(status !== "all" && { status: parseInt(status) }) };
+        const { skip, take, status, date = -1 } = req.query;
+        const filter = { store: req.user.store, ...(status !== "-1" && { status: parseInt(status) }) };
+        const sorts = { createdAt: parseInt(date) };
         const [orders, total] = await Promise.all([
-            OrderModel.find(filter).populate("user").populate({ path: "products.storeProduct", populate: "productId" }).skip(skip).limit(take),
+            OrderModel.find(filter)
+                .populate("user")
+                .populate({ path: "products.storeProduct", populate: "productId" })
+                .sort(sorts)
+                .skip(skip)
+                .limit(take),
             OrderModel.countDocuments({ store: req.user.store }),
         ]);
         return res.status(statusCode.OK).json(BaseResponse.success("Lấy các đơn hàng thành công", { orders, total }));
@@ -138,6 +145,9 @@ const OrderController = {
             case 4:
                 message = "Đơn hàng của bạn đã bị hủy";
                 break;
+            case 5:
+                message = "Yêu cầu hủy đơn hàng";
+                break;
         }
         const notifyData = {
             user: updatedOrder.user._id,
@@ -154,6 +164,62 @@ const OrderController = {
             io.to(userSocketId).emit("receiveNotification", notifyData);
         }
         return res.status(statusCode.OK).json(BaseResponse.success("Cập nhật đơn hàng thành công", updatedOrder));
+    },
+
+    async getOrdersCountByDay(req, res) {
+        const storeId = req.user.store;
+        const today = new Date();
+        const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay())); // Tính ngày đầu tuần hiện tại
+        const startOfLastWeek = new Date(startOfWeek);
+        startOfLastWeek.setDate(startOfLastWeek.getDate() - 7); // Tính ngày đầu tuần trước
+
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(endOfWeek.getDate() + 7); // Tính ngày cuối tuần hiện tại
+
+        const currentWeekStart = startOfWeek.toISOString();
+        const currentWeekEnd = endOfWeek.toISOString();
+        const lastWeekStart = startOfLastWeek.toISOString();
+        const lastWeekEnd = startOfWeek.toISOString();
+
+        const currentWeekOrders = await OrderModel.aggregate([
+            {
+                $match: {
+                    createdAt: {
+                        $gte: new Date(currentWeekStart),
+                        $lt: new Date(currentWeekEnd),
+                    },
+                    store: new mongoose.Types.ObjectId(storeId),
+                },
+            },
+            {
+                $group: {
+                    _id: { $dayOfWeek: "$createdAt" }, // Nhóm theo ngày trong tuần (1: Chủ nhật, 7: Thứ bảy)
+                    count: { $sum: 1 },
+                },
+            },
+        ]);
+
+        const lastWeekOrders = await OrderModel.aggregate([
+            {
+                $match: {
+                    createdAt: {
+                        $gte: new Date(lastWeekStart),
+                        $lt: new Date(lastWeekEnd),
+                    },
+                    store: new mongoose.Types.ObjectId(storeId),
+                },
+            },
+            {
+                $group: {
+                    _id: { $dayOfWeek: "$createdAt" },
+                    count: { $sum: 1 },
+                },
+            },
+        ]);
+        lastWeekOrders.sort((a, b) => a._id - b._id);
+        currentWeekOrders.sort((a, b) => a._id - b._id);
+
+        return res.status(statusCode.OK).json(BaseResponse.success("Thành công", { currentWeekOrders, lastWeekOrders }));
     },
 };
 

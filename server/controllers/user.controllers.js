@@ -5,6 +5,7 @@ import CartModel from "../models/cart.model.js";
 import { otpTemplate } from "../config/otp.template.config.js";
 import { sendMail } from "../utils/mailer.utils.js";
 import AddressModel from "../models/address.model.js";
+import crypto from "crypto";
 
 const UserController = {
     async register(req, res) {
@@ -21,9 +22,9 @@ const UserController = {
     },
 
     async getAll(req, res) {
-        const users = await UserModel.find({ role: req.query.role || "user" });
+        const users = await UserModel.find({ role: { $ne: "admin" } });
         const total = await UserModel.countDocuments({
-            role: req.query.role || "user",
+            role: { $ne: "admin" },
         });
         return res.status(statusCode.OK).json(BaseResponse.success("Thành công", { users, total }));
     },
@@ -128,6 +129,40 @@ const UserController = {
         };
         const updatedUser = await UserModel.findByIdAndUpdate(req.user._id, { $push: { delivery } }, { new: true, useFindAndModify: false });
         return res.status(statusCode.OK).json(BaseResponse.success("Thêm địa chỉ nhận hàng thành công", updatedUser.delivery));
+    },
+
+    async forgotPasswordSendOTP(req, res) {
+        const { email } = req.body;
+        console.log(email);
+
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            throw new Error("Không tìm thấy tài khoản");
+        }
+        const OTP = crypto.randomInt(100000, 999999).toString();
+        const template = otpTemplate(email, OTP);
+        const response = await sendMail(email, "Xác thực thay đổi mật khẩu", template);
+
+        if (response.success) {
+            user.OTP = OTP;
+            await user.save();
+            return res.status(statusCode.OK).json(BaseResponse.success("Gửi OTP thành công", response.response));
+        } else {
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).json(BaseResponse.error("Gửi OTP thất bại", response.error));
+        }
+    },
+
+    async forgotPasswordConfirmOTP(req, res) {
+        const { email, OTP, password } = req.body;
+        console.log(req.body);
+
+        const user = await UserModel.findOne({ email, OTP });
+        if (!user) {
+            throw new Error("Mã OTP không đúng, vui lòng kiểm tra lại");
+        }
+        user.password = password;
+        await user.save();
+        return res.status(statusCode.OK).json(BaseResponse.success("Thay đổi mật khẩu thành công", null));
     },
 };
 

@@ -9,12 +9,14 @@ export const UserV1 = {
     CREATE_DELIVERY: "/user/delivery/create",
     GET_DELIVERY: "/user/delivery/all",
     CHANGE_PASSWORD: "/user/change-password",
+    FORGOT_PASSWORD: "/user/forgot-password",
+    FORGOT_PASSWORD_CONFIRM: "/user/confirm-otp-fp",
 };
 
 export const StoreV1 = {
     GET_CURRENT: "/store/current",
     STORE_CREATE: "/store/new",
-    STORE_GET_STORE_BY_ID: "/store",
+    STORE_GET_STORE_BY_ID: "/store/",
 };
 
 export const CategoryV1 = {
@@ -30,6 +32,7 @@ export const TagV1 = {
 
 export const ProductV1 = {
     GET_PRODUCTS: "/product/all",
+    GET_PRODUCT: "/product/",
     PRODUCT_CREATE: "/product/create",
     PRODUCT_NEWEST: "/product/newest",
     PRODUCT_DETAILS: "/product/",
@@ -44,6 +47,7 @@ export const StoreProductV1 = {
     GET_STORE_PRODUCT_BY_PRODUCT: "/store-product/group-by-product/",
     SEARCH: "/store-product/search",
     UPDATE: "/store-product/",
+    GET_BEST_SELLER: "/store-product/bestseller",
 };
 
 export const BannerV1 = {
@@ -65,6 +69,7 @@ export const ReviewV1 = {
     GET_ALL: "/review/",
     UPDATE: "/review/",
     DELETE: "/review/",
+    GET_REVIEWS_BY_STORE: "/review/store",
 };
 
 export const FavoriteV1 = {
@@ -103,10 +108,15 @@ export const OrderV1 = {
     GET_CUSTOMER_ORDER: "/order/customer/",
     GET_CUSTOMER_ORDERS_MY_STORE: "/order/my-store",
     UPDATE: "/order/",
+    GET_COUNT_ORDER_BY_DAY: "/order/my-store/total-sells",
 };
 
 export const NotificationV1 = {
     GET_ALL: "/notification/all",
     GET_UNREAD_TOTAL: "/notification/unread",
     UPDATE: "/notification/",
+};
+
+export const PaymentV1 = {
+    CREATE_LINK_MOMO: "/payment",
 };

@@ -35,7 +35,6 @@ export default function OrderDetails({ order, openDetails, setOpenDetails }) {
     const updateCustomerOrder = async () => {
         const data = { orderId: order?._id, data: { status } };
         const response = await dispatch(updateCustomerOrderAction(data));
-        console.log(response);
         if (response.error) {
             snackNotify("error")("Cập nhật đơn hàng lỗi");
         } else {

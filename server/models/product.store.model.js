@@ -36,6 +36,11 @@ const StoreProductSchema = mongoose.Schema(
             type: Boolean,
             default: true,
         },
+        sold: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
     },
     {
         timestamps: true,

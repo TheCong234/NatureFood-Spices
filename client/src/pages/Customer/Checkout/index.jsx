@@ -41,6 +41,7 @@ import useSnackNotify from "../../../components/SnackNotify";
 import { countCartTotal } from "../../../services/functions";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { resetCart } from "../../../hooks/Redux/Cart/cartSlice";
+import { createLinkMoMoPaymentApi } from "../../../apis/payment.api";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -71,14 +72,26 @@ export default function CheckoutForm() {
     const onSubmit = async (data) => {
         data.carts = cartData.products;
         data.totalAmount = countCartTotal(cartData?.products);
-        const response = await dispatch(createCustomerOrderAction(data));
-        if (response?.error) {
-            snackNotify("error")("Đặt hàng thất bại");
+        if (data.paymentMethod == 3) {
+            const response = await createLinkMoMoPaymentApi({ amount: countCartTotal(cartData?.products) });
+            console.log(response);
+
+            if (!response.success) {
+                snackNotify("error")("Lỗi, vui lòng chọn phương thức khác");
+            } else {
+                window.open(response.data.payUrl, "_blank");
+                snackNotify("success")("Tạo link thanh toán MOMO thành công, vui lòng thanh toán để tiếp tục");
+            }
         } else {
-            dispatch(resetCart());
-            snackNotify("success")("Đặt hàng thành công");
-            reset();
-            setOpenDialog(true);
+            const response = await dispatch(createCustomerOrderAction(data));
+            if (response?.error) {
+                snackNotify("error")("Đặt hàng thất bại");
+            } else {
+                dispatch(resetCart());
+                snackNotify("success")("Đặt hàng thành công");
+                reset();
+                setOpenDialog(true);
+            }
         }
     };
 
@@ -120,7 +133,7 @@ export default function CheckoutForm() {
                                                                 <FormControlLabel
                                                                     value={item?._id}
                                                                     control={<Radio color="success" size="small" />}
-                                                                    label="Chưa đặt tên"
+                                                                    label=""
                                                                 />
                                                                 <div className="ml-6 rounded-md border-solid border-[1px] border-green-400 p-3 relative">
                                                                     <Box className="flex mb-2">
@@ -312,17 +325,17 @@ export default function CheckoutForm() {
                                                             >
                                                                 Thẻ ngân hàng
                                                                 <img
-                                                                    src="src/assets/images/visa4.png"
+                                                                    src="/assets/images/visa4.png"
                                                                     alt="credit cards"
                                                                     className="w-9 ml-2 rounded-sm"
                                                                 />
                                                                 <img
-                                                                    src="src/assets/images/visa3.png"
+                                                                    src="/assets/images/visa3.png"
                                                                     alt="credit cards"
                                                                     className="w-9 ml-2 rounded-sm"
                                                                 />
                                                                 <img
-                                                                    src="src/assets/images/visa2.jpg"
+                                                                    src="/assets/images/visa2.jpg"
                                                                     alt="credit cards"
                                                                     className="w-9 ml-2 rounded-sm"
                                                                 />
@@ -330,6 +343,7 @@ export default function CheckoutForm() {
                                                         }
                                                     />
                                                     <FormControlLabel value={1} control={<Radio color="success" size="small" />} label="Tiền mặt" />
+                                                    <FormControlLabel value={3} control={<Radio color="success" size="small" />} label="Momo" />
                                                     {/* <FormControlLabel value="Coupon" control={<Radio color="success" />} label="Phiếu giảm giá" /> */}
                                                 </div>
                                                 {errors?.paymentMethod && <p className="text-red-600 mt-3">{errors.paymentMethod.message}</p>}

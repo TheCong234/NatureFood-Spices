@@ -9,7 +9,9 @@ import { getBannersAction } from "../../../hooks/Redux/Banner/bannerAction";
 import CategoryCarousel from "./CategoryCarousel";
 import NewProductSection from "./NewProductsSection";
 import BlogCarousel from "./BlogCarousel";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import BestSeller from "./BestSeller";
+import { ButtonNa } from "../../../components";
 
 const Index = () => {
     const dispatch = useDispatch();
@@ -35,7 +37,7 @@ const Index = () => {
                     }}
                     navigation={true}
                     modules={[Autoplay, Pagination, Navigation]}
-                    className="mySwiper  rounded-md"
+                    className="mySwiper rounded-md"
                 >
                     {bannerData?.banners?.map((banner, index) => (
                         <SwiperSlide key={`swipperSlide-${index}`} className="text-black bg-white">
@@ -45,6 +47,39 @@ const Index = () => {
                         </SwiperSlide>
                     ))}
                 </Swiper>
+                <div className="flex space-x-4 h-[300px] mt-4">
+                    <div className="w-1/2 h-full bg-[url('/assets/images/bg-register-seller.jpg')] rounded-lg bg-center bg-cover bg-no-repeat flex flex-col  justify-center pl-14">
+                        <p className="text-white text-2xl font-bold leading-normal">
+                            <span className="text-green-600">Giảm 10%</span> với tất cả <br /> các đơn hàng trên{" "}
+                            <span className="text-orange-600">100.000 vnđ</span>
+                        </p>
+                        <div className="mt-2">
+                            <ButtonNa disabled className="na-text-transform-none">
+                                Xem ngay
+                            </ButtonNa>
+                        </div>
+                    </div>
+                    <div className="w-1/2 h-full bg-[url('/assets/images/free-ship.png')] rounded-lg bg-center bg-cover bg-no-repeat flex flex-col items-end  justify-end pr-14">
+                        <p className="text-inherit text-2xl font-bold leading-normal">
+                            <span className="text-orange-600">Miễn phí vận chuyển</span> <br /> các đơn hàng
+                            <span className="text-green-600">&nbsp;dưới 2km</span>
+                        </p>
+                        <div className="mt-2 opacity-70">
+                            <ButtonNa className="na-text-transform-none">
+                                <NavLink to={"/cart?skip=0&take=10"}>Mua sắm ngay</NavLink>
+                            </ButtonNa>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section className="py-6 mt-6">
+                <div className="flex flex-col items-center mb-3">
+                    <p className="text-3xl font-bold mr-2">Sản phẩm mới nhất</p>
+                    <p className="w-1/2 text-slate-500 text-md text-center test-bg">
+                        Hãy khám phá bộ sưu tập gia vị mới nhất của chúng tôi để nâng tầm bữa ăn của bạn!
+                    </p>
+                </div>
+                <BestSeller />
             </section>
             <section className="py-6 px-3  bg-[#FFF7ED] rounded-md mt-6">
                 <div className="flex  flex-col items-center mb-3">

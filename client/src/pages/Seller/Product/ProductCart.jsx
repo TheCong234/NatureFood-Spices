@@ -151,13 +151,13 @@ export default function ProductCart() {
                                         <TableCell align="right">
                                             <div className="na-fs-16 flex justify-center font-semibold ">
                                                 <small>₫</small>
-                                                {formatPrice(product?.product?.price)}
+                                                {product?.product?.price && formatPrice(product?.product?.price)}
                                             </div>
                                         </TableCell>
                                         <TableCell align="right">
                                             <div className="na-fs-16 flex justify-center font-semibold text-orange">
                                                 <small>₫</small>
-                                                {formatPrice(product?.product?.price * product?.quantity)}
+                                                {product?.product?.price && formatPrice(product?.product?.price * product?.quantity)}
                                             </div>
                                         </TableCell>
                                         <TableCell align="right">

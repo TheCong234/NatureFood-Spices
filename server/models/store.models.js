@@ -35,12 +35,6 @@ const StoreSchema = Schema(
             required: true,
         },
         image: ImageSchema,
-        products: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "StoreProduct",
-            },
-        ],
         favorite: [
             {
                 type: Schema.Types.ObjectId,
@@ -55,10 +49,6 @@ const StoreSchema = Schema(
             type: Number,
             enum: [0, 1, 2],
             default: 0,
-        },
-        cart: {
-            type: Schema.Types.ObjectId,
-            ref: "Cart",
         },
     },
     {

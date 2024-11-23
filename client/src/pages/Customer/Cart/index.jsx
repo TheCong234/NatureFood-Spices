@@ -96,7 +96,7 @@ export default function Cart() {
                                                     <img
                                                         src={product?.storeProduct?.productId?.images?.[0]?.url}
                                                         alt="product image"
-                                                        className="h-[64px] w-full object-cover"
+                                                        className="h-[64px] w-full object-contain"
                                                     />
                                                 </div>
                                                 <Typography variant="body1" className="text-truncate-3">
@@ -159,7 +159,7 @@ export default function Cart() {
                                         <TableCell align="right">
                                             <div className="na-fs-16 flex  font-bold text-red-600 underline">
                                                 <small>₫</small>
-                                                {formatPrice(countCartTotal(cartData?.products))}
+                                                {cartData?.products && formatPrice(countCartTotal(cartData?.products))}
                                             </div>
                                         </TableCell>
                                     </TableRow>

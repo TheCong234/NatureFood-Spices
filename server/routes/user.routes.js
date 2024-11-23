@@ -25,6 +25,8 @@ router.put("/me", authJwt, upload.single("image"), asyncHandler(UserController.u
 router.put("/image", authJwt, upload.single("image"), UserController.updateUserImage);
 
 router.patch("/change-password", authJwt, asyncHandler(UserController.changePassword));
+router.patch("/forgot-password", asyncHandler(UserController.forgotPasswordSendOTP));
+router.patch("/confirm-otp-fp", asyncHandler(UserController.forgotPasswordConfirmOTP));
 router.patch("/:id", asyncHandler(UserController.updateUserById));
 
 export default router;

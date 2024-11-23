@@ -29,13 +29,15 @@ const Index = () => {
         <Box sx={{ width: "100%" }}>
             <Grid container spacing={2}>
                 {productData?.products?.map((product) => (
-                    <Grid item md={3} key={product?._id}>
+                    <Grid item md={2} key={product?._id}>
                         <Card className="product_card-primary">
                             <Box>
                                 <Swiper className="product_card-primary_swiper " pagination={true} modules={[Pagination]}>
                                     {product?.images?.map((image, index) => (
                                         <SwiperSlide key={index} className="swiper-slide_styled">
-                                            <img src={image?.url} alt="product image" />
+                                            <div className="h-full flex justify-center">
+                                                <img src={image?.url} alt="product image" className="h-full" />
+                                            </div>
                                         </SwiperSlide>
                                     ))}
                                 </Swiper>

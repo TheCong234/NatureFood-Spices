@@ -114,8 +114,8 @@ const ProductDetail = () => {
                         {product?.productId?.name}
                     </Typography>
                     <Stack direction={"row"} sx={{ mt: 1 }}>
-                        <Rating name="size-small" value={3} readOnly size="small" className="flex items-center mr-2 " />
-                        <span>(3.0)</span>
+                        <Rating name="size-small" value={5} readOnly size="small" className="flex items-center mr-2 " />
+                        <span>(5.0)</span>
                     </Stack>
                     <div className="flex text-[#d26426] items-center">
                         <div>
@@ -136,7 +136,7 @@ const ProductDetail = () => {
                     <hr className="my-4" />
                     <Stack direction={"row"}>
                         <Box sx={{ flex: 1 }}>
-                            <Typography variant="body1">Kiểu đóng gói</Typography>
+                            {/* <Typography variant="body1">Kiểu đóng gói</Typography>
                             <Stack direction={"row"} spacing={1} sx={{ mt: 1 }}>
                                 <Button size="small" sx={{ textTransform: "none" }} variant="contained" color="warning">
                                     Chai
@@ -147,12 +147,20 @@ const ProductDetail = () => {
                                 <Button size="small" sx={{ textTransform: "none" }} variant="contained" color="warning">
                                     Gói
                                 </Button>
-                            </Stack>
+                            </Stack> */}
+                            <Typography variant="body1" gutterBottom>
+                                Đã bán
+                            </Typography>
+                            <Typography variant="h6" component="h4" sx={{ fontWeight: "bold" }}>
+                                {product?.sold}
+                            </Typography>
                         </Box>
 
                         <Box sx={{ flex: 1 }}>
-                            <Typography variant="body1">Trọng lượng</Typography>
-                            <Typography variant="h6" component="h4" sx={{ fontWeight: "bold", mt: 1 }}>
+                            <Typography variant="body1" gutterBottom>
+                                Trọng lượng
+                            </Typography>
+                            <Typography variant="h6" component="h4" sx={{ fontWeight: "bold" }}>
                                 500g / chai
                             </Typography>
                         </Box>
@@ -194,7 +202,7 @@ const ProductDetail = () => {
                     <Avatar src={product?.storeId.image.url} sx={{ height: "62px", width: "62px" }} />
                     <div className="ml-4">
                         <p className="text-lg font-semibold">{product?.storeId?.name}</p>
-                        <p className="text-sm text-gray-500">HCM</p>
+                        <p className="text-sm text-gray-500">Hồ Chí Minh</p>
                         <div className="flex space-x-3 mt-2 mr-6">
                             <Button
                                 variant="outlined"
@@ -211,14 +219,15 @@ const ProductDetail = () => {
                                 size="small"
                                 startIcon={<StorefrontOutlinedIcon />}
                                 className="na-text-transform-none"
+                                onClick={() => navigate(`/store/${product?.storeId?._id}?skip=0&take=10`)}
                             >
-                                Xem store
+                                Xem cửa hàng
                             </Button>
                         </div>
                     </div>
                     <Divider orientation="vertical" variant="middle" flexItem />
                     <div className="ml-6 flex-1">
-                        <Grid container spacing={3}>
+                        <Grid container spacing={5}>
                             <Grid item md={4}>
                                 <div>
                                     <div className="flex justify-between ">
@@ -234,23 +243,23 @@ const ProductDetail = () => {
                             <Grid item md={4}>
                                 <div>
                                     <div className="flex justify-between ">
-                                        <p className="text-gray-400">Đánh giá</p>
-                                        <p className="text-green-600">3 004</p>
+                                        <p className="text-gray-400">Tỉ lệ phản hồi</p>
+                                        <p className="text-green-600">98%</p>
                                     </div>
                                     <div className="flex justify-between mt-2">
-                                        <p className="text-gray-400">Sản phẩm</p>
-                                        <p className="text-green-600">106</p>
+                                        <p className="text-gray-400">Thời gian phản hồi</p>
+                                        <p className="text-green-600">trong vài giờ</p>
                                     </div>
                                 </div>
                             </Grid>
                             <Grid item md={4}>
                                 <div>
                                     <div className="flex justify-between ">
-                                        <p className="text-gray-400">Đánh giá</p>
-                                        <p className="text-green-600">3 004</p>
+                                        <p className="text-gray-400">Tham gia</p>
+                                        <p className="text-green-600">2 tháng trước</p>
                                     </div>
                                     <div className="flex justify-between mt-2">
-                                        <p className="text-gray-400">Sản phẩm</p>
+                                        <p className="text-gray-400">Người theo dõi</p>
                                         <p className="text-green-600">106</p>
                                     </div>
                                 </div>

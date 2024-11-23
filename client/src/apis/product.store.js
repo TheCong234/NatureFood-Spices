@@ -8,6 +8,11 @@ export const getStoreProductsApi = async (params) => {
     return response.data;
 };
 
+export const getBestSellerApi = async () => {
+    const response = await apiClient.get(StoreProductV1.GET_BEST_SELLER);
+    return response.data;
+};
+
 export const getStoreProductsByStoreApi = async (params) => {
     const response = await apiClient.get(StoreProductV1.GET_STORE_PRODUCTS_BY_STORE, {
         params,

@@ -22,3 +22,8 @@ export const deleteReviewApi = async (reviewId) => {
     const response = await apiClient.delete(ReviewV1.DELETE + reviewId);
     return response.data;
 };
+
+export const getReviewsByStoreApi = async (params) => {
+    const response = await apiClient.get(ReviewV1.GET_REVIEWS_BY_STORE, { params });
+    return response.data;
+};

@@ -44,21 +44,21 @@ export default function Categories() {
                             </div>
                         </div>
                         <Divider />
-                        <div className="mx-4">
+                        <div className="p-4">
                             <Swiper
-                                slidesPerView={5}
-                                spaceBetween={30}
+                                slidesPerView={6}
+                                spaceBetween={20}
                                 pagination={{
                                     clickable: true,
                                 }}
                                 navigation={true}
                                 modules={[Pagination, Navigation]}
-                                className="mySwiper w-full h-auto"
+                                className="mySwiper w-full h-auto  na-px-4"
                                 initialSlide={2}
                             >
                                 {item?.products?.map((product) => (
                                     <SwiperSlide key={product?._id} className="border-none my-2 shadow-lg shadow-black-500/50">
-                                        <Card className="product_card-primary" key={product?._id}>
+                                        <Card className="product_card-primary " key={product?._id} sx={{ height: "100%" }}>
                                             <Box className="cursor-pointer">
                                                 <Swiper className="product_card-primary_swiper " pagination={true} modules={[PaginationSwipper]}>
                                                     {product?.images?.map((image) => (

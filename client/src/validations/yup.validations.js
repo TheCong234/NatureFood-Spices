@@ -203,3 +203,7 @@ export const ProfileYup = yup.object().shape({
 
     birthday: yup.date().required("Birthday is required").max(new Date(), "Birthday cannot be in the future"), // Ngày sinh không được lớn hơn ngày hiện tại
 });
+
+export const ForgotYup = yup.object().shape({
+    email: yup.string().email("Email không hợp lệ").required("Vui lòng nhập email đăng ký của bạn"),
+});

@@ -12,14 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import {
-    Collapse,
-    InputAdornment,
-    InputBase,
-    Stack,
-    styled,
-    useTheme,
-} from "@mui/material";
+import { Collapse, InputAdornment, InputBase, Stack, styled, useTheme } from "@mui/material";
 import PeopleIcon from "@mui/icons-material/People";
 import ProductIcon from "@mui/icons-material/ShoppingCart";
 import EventIcon from "@mui/icons-material/Event";
@@ -61,11 +54,11 @@ const items = [
         icon: <PeopleIcon />,
         text: "Người dùng",
     },
-    {
-        to: "/admin/store",
-        icon: <SupervisedUserCircleIcon />,
-        text: "Cửa hàng",
-    },
+    // {
+    //     to: "/admin/store",
+    //     icon: <SupervisedUserCircleIcon />,
+    //     text: "Cửa hàng",
+    // },
     {
         to: "/admin/category",
         icon: <CategoryIcon />,
@@ -85,10 +78,10 @@ const items = [
                 to: "/admin/product/list?skip=0&take=10&type=all",
                 text: "Danh sách",
             },
-            {
-                to: "/admin/product/:id",
-                text: "Chi tiết",
-            },
+            // {
+            //     to: "/admin/product/:id",
+            //     text: "Chi tiết",
+            // },
             {
                 to: "/admin/product/create",
                 text: "Thêm mới",
@@ -110,66 +103,66 @@ const items = [
             },
         ],
     },
-    {
-        icon: <EventIcon />,
-        text: "Sự kiện",
-        fieldName: "event",
-        listItems: [
-            {
-                to: "/admin/event",
-                text: "Danh sách",
-            },
-            {
-                to: "/admin/event/:id",
-                text: "Chi tiết",
-            },
-            {
-                to: "/admin/product/create",
-                text: "Thêm mới",
-            },
-        ],
-    },
-    {
-        to: "/admin/order",
-        icon: <GradingIcon />,
-        text: "Đơn hàng",
-    },
-    {
-        to: "/admin/message",
-        icon: <MessageIcon />,
-        text: "Tin nhắn",
-    },
-    {
-        icon: <EmailIcon />,
-        text: "Email",
-        fieldName: "email",
-        listItems: [
-            {
-                to: "/admin/email/inbox",
-                text: "Hộp thư đến",
-            },
-            {
-                to: "/admin/email/create",
-                text: "Soạn email",
-            },
-        ],
-    },
+    // {
+    //     icon: <EventIcon />,
+    //     text: "Sự kiện",
+    //     fieldName: "event",
+    //     listItems: [
+    //         {
+    //             to: "/admin/event",
+    //             text: "Danh sách",
+    //         },
+    //         {
+    //             to: "/admin/event/:id",
+    //             text: "Chi tiết",
+    //         },
+    //         {
+    //             to: "/admin/product/create",
+    //             text: "Thêm mới",
+    //         },
+    //     ],
+    // },
+    // {
+    //     to: "/admin/order",
+    //     icon: <GradingIcon />,
+    //     text: "Đơn hàng",
+    // },
+    // {
+    //     to: "/admin/message",
+    //     icon: <MessageIcon />,
+    //     text: "Tin nhắn",
+    // },
+    // {
+    //     icon: <EmailIcon />,
+    //     text: "Email",
+    //     fieldName: "email",
+    //     listItems: [
+    //         {
+    //             to: "/admin/email/inbox",
+    //             text: "Hộp thư đến",
+    //         },
+    //         {
+    //             to: "/admin/email/create",
+    //             text: "Soạn email",
+    //         },
+    //     ],
+    // },
 
-    {
-        to: "/admin/notify",
-        icon: <NotificationsActiveIcon />,
-        text: "Thông báo ",
-    },
-    {
-        to: "/admin/bill",
-        icon: <PaymentsIcon />,
-        text: "Hóa đơn",
-    },
-    {
-        to: "/admin/report",
-        icon: <PriorityHighIcon />,
-        text: "Báo cáo",
-    },
+    // {
+    //     to: "/admin/notify",
+    //     icon: <NotificationsActiveIcon />,
+    //     text: "Thông báo ",
+    // },
+    // {
+    //     to: "/admin/bill",
+    //     icon: <PaymentsIcon />,
+    //     text: "Hóa đơn",
+    // },
+    // {
+    //     to: "/admin/report",
+    //     icon: <PriorityHighIcon />,
+    //     text: "Báo cáo",
+    // },
     {
         to: "/admin/profile",
         icon: <AccountCircleIcon />,
@@ -275,10 +268,7 @@ export default function AdminLayout() {
 
     return (
         <Box sx={{ bgcolor: rootColor.bg_blue, display: "flex" }}>
-            <AppBar
-                position="fixed"
-                sx={{ bgcolor: rootColor.bg_blue, color: rootColor.text }}
-            >
+            <AppBar position="fixed" sx={{ bgcolor: rootColor.bg_blue, color: rootColor.text }}>
                 <Toolbar
                     sx={{
                         display: "flex",
@@ -299,16 +289,13 @@ export default function AdminLayout() {
                         >
                             {open ? <MenuIcon /> : <MenuOpenIcon />}
                         </IconButton>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            sx={{ flexGrow: 1 }}
-                        >
-                            Nature Food test
-                        </Typography>
+                        <div className="">
+                            <NavLink to={"/"}>
+                                <img src="/assets/images/logo.png" alt="Logo" className="w-[70px]" />
+                            </NavLink>
+                        </div>
                         {/* Search Bar */}
-                        <div
+                        {/* <div
                             style={{
                                 position: "relative",
                                 marginRight: 16,
@@ -337,7 +324,7 @@ export default function AdminLayout() {
                                 }}
                                 inputProps={{ "aria-label": "search" }}
                             />
-                        </div>
+                        </div> */}
                     </Box>
                     {/* Icons */}
                     <div style={{ display: "flex" }}>
@@ -355,62 +342,40 @@ export default function AdminLayout() {
                             <SettingsIcon />
                         </IconButton>
                         <Stack>
-                            <Avatar
-                                alt="Remy Sharp"
-                                src="/static/images/avatar/1.jpg"
-                            />
+                            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                         </Stack>
                     </div>
                 </Toolbar>
             </AppBar>
 
-            <Drawer variant="permanent" open={open}>
+            <Drawer variant="permanent" open={open} sx={{}}>
                 <Box sx={{ py: "32px" }}></Box>
-                <List sx={{ bgcolor: rootColor.bg_blue }}>
+                <List sx={{ bgcolor: rootColor.bg_blue, height: "100%" }}>
                     {items.map((item, index) =>
                         item?.to ? (
                             <NavLink
                                 key={index}
                                 to={item.to}
                                 className={({ isActive }) =>
-                                    isActive
-                                        ? "group text-green-700 font-semibold"
-                                        : "group text-inherit  hover:font-semibold font-normal"
+                                    isActive ? "group text-green-700 font-semibold" : "group text-inherit  hover:font-semibold font-normal"
                                 }
                             >
                                 <ListItemButton>
-                                    <ListItemIcon className="group-hover:text-green-700 ">
-                                        {item.icon}
-                                    </ListItemIcon>
-                                    <p className="group-hover:text-green-700">
-                                        {item.text}
-                                    </p>
+                                    <ListItemIcon className="group-hover:text-green-700 ">{item.icon}</ListItemIcon>
+                                    <p className="group-hover:text-green-700">{item.text}</p>
                                 </ListItemButton>
                             </NavLink>
                         ) : (
                             <Box key={index}>
-                                <ListItemButton
-                                    onClick={() => handleClick(item.fieldName)}
-                                >
+                                <ListItemButton onClick={() => handleClick(item.fieldName)}>
                                     <ListItemIcon>{item.icon}</ListItemIcon>
                                     <ListItemText primary={item.text} />
-                                    {open[item.fieldName] ? (
-                                        <ExpandLess />
-                                    ) : (
-                                        <ExpandMore />
-                                    )}
+                                    {open[item.fieldName] ? <ExpandLess /> : <ExpandMore />}
                                 </ListItemButton>
-                                <Collapse
-                                    in={open[item.fieldName]}
-                                    timeout="auto"
-                                    unmountOnExit
-                                >
+                                <Collapse in={open[item.fieldName]} timeout="auto" unmountOnExit>
                                     <List component="div" disablePadding>
                                         {item.listItems.map((i, ind) => (
-                                            <ListItemButton
-                                                key={`collaspse-${ind}`}
-                                                sx={{ pl: 9 }}
-                                            >
+                                            <ListItemButton key={`collaspse-${ind}`} sx={{ pl: 9 }}>
                                                 <NavLink
                                                     to={i.to}
                                                     className={({ isActive }) =>

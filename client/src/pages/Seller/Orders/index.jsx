@@ -3,7 +3,7 @@ import useSnackNotify from "../../../components/SnackNotify";
 import { useEffect, useState } from "react";
 import { getCustomerOrdersMyStoreAction } from "../../../hooks/Redux/Order/orderAction";
 import { formatDate, formatPrice, splitDeliveryString, useQuery } from "../../../services/functions";
-import { Box, Button, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Box, Button, MenuItem, Pagination, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import { ChipStyled, Nodata } from "../../../components";
@@ -24,34 +24,58 @@ export default function Index() {
         skip: query.get("skip"),
         take: query.get("take"),
         status: query.get("status"),
+        date: query.get("date"),
     };
 
     const handlePaginationChange = (event, value) => {
-        navigate(`/seller/orders?skip=${(value - 1) * productsEachPage}&take=${productsEachPage}&status=${query.get("status")}`);
+        navigate(`/seller/orders?skip=${(value - 1) * params.take}&take=${params.take}&date=${params.date}&status=${query.get("status")}`);
     };
 
-    const handleGetData = async () => {
-        const response = await dispatch(getCustomerOrdersMyStoreAction(params));
-        console.log(response);
-    };
     useEffect(() => {
-        handleGetData();
-    }, [params.skip, query.take, query.type]);
+        (async () => {
+            await dispatch(getCustomerOrdersMyStoreAction(params));
+        })();
+    }, [params.skip, params.take, params.status, params.date]);
     return (
-        <Box>
+        <Box className="p-6">
             <Paper>
                 <div className=" p-[20px] flex justify-between items-center">
                     <p className="text-xl font-bold">Đơn hàng</p>
-                    <div className="flex items-center">
+                    <div className="flex space-x-2 items-center">
+                        <p className=" text-gray-600">Sắp xếp theo:</p>
                         <Button
-                            variant="outlined"
-                            startIcon={<NavigateBeforeIcon />}
+                            variant={params.date == "-1" ? "contained" : "outlined"}
                             size="small"
-                            sx={{ textTransform: "none", mr: 1 }}
-                            onClick={() => navigate("/product/list?skip=0&take=10&date=-1&price=-1&discount=0")}
+                            color="success"
+                            onClick={() =>
+                                navigate(
+                                    `/seller/orders?skip=${params.skip}&take=${params.take}&date=${params.date == "-1" ? 1 : -1}&status=${
+                                        params.status
+                                    }`
+                                )
+                            }
                         >
-                            Tiếp tục mua sắm
+                            Mới nhất
                         </Button>
+                        <Select
+                            variant="standard"
+                            labelId="demo-select-small-label"
+                            id="demo-select-small"
+                            value={params.status}
+                            size="small"
+                            onChange={(e) =>
+                                navigate(`/seller/orders?skip=${params.skip}&take=${params.take}&date=${params.date}&status=${e.target.value}`)
+                            }
+                            sx={{ minWidth: "140px" }}
+                        >
+                            <MenuItem value={-1}>Tất cả trạng thái</MenuItem>
+                            <MenuItem value={0}>Đang xác minh</MenuItem>
+                            <MenuItem value={1}>Đã xác minh</MenuItem>
+                            <MenuItem value={2}>Đang vận chuyện</MenuItem>
+                            <MenuItem value={3}>Đã nhận được hàng</MenuItem>
+                            <MenuItem value={4}>Đã hủy</MenuItem>
+                            <MenuItem value={5}>Đang hoàn trả</MenuItem>
+                        </Select>
                     </div>
                 </div>
                 <Box>
@@ -133,8 +157,8 @@ export default function Index() {
             <OrderDetails order={selectedOrder} openDetails={openDetails} setOpenDetails={setOpenDetails} />
             <Pagination
                 className="pt-6 flex justify-center"
-                count={Math.floor(orderData?.total / productsEachPage + 1)}
-                page={Math.floor(query.get("skip") / productsEachPage + 1) || 1}
+                count={Math.floor(orderData?.total / params.take + 1)}
+                page={Math.floor(query.get("skip") / params.take + 1) || 1}
                 onChange={handlePaginationChange}
                 color="success"
             />

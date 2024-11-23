@@ -5,7 +5,7 @@ import { Google as GoogleIcon, Facebook as FacebookIcon } from "@mui/icons-mater
 import { blue } from "../../../theme/colors";
 import { white } from "../../../theme/colors";
 import { useDispatch, useSelector } from "react-redux";
-import { loginAction } from "../../../hooks/Redux/User/userAction";
+import { getcurrentUserAction, loginAction } from "../../../hooks/Redux/User/userAction";
 import useSnackNotify from "../../../components/SnackNotify";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -16,7 +16,7 @@ const LoginPage = () => {
     const dispatch = useDispatch();
     const snackNotify = useSnackNotify();
     const navigate = useNavigate();
-    const { currentUser } = useSelector((state) => state.user);
+    const { currentUser, token } = useSelector((state) => state.user);
     const {
         register,
         handleSubmit,
@@ -29,20 +29,27 @@ const LoginPage = () => {
     const onSubmit = async (data) => {
         const response = await dispatch(loginAction(data));
         if (response?.payload?.token) {
-            snackNotify("success")("Đăng nhập thành công!");
+            const res = await dispatch(getcurrentUserAction(response?.payload?.token));
 
+            if (res?.payload?.role == "seller") {
+                window.location.href = "/seller";
+            } else if (res?.payload?.role == "admin") {
+                window.location.href = "/admin";
+            } else {
+                window.location.href = "/";
+            }
+            snackNotify("success")("Đăng nhập thành công!");
             reset();
-            window.location.href = "/";
         } else {
             snackNotify("error")(`Lỗi, tài khoản hoạc mật khẩu không chính xác`);
         }
     };
 
-    useEffect(() => {
-        if (currentUser) {
-            dispatch(logout());
-        }
-    }, [currentUser]);
+    // useEffect(() => {
+    //     if (currentUser) {
+    //         dispatch(logout());
+    //     }
+    // }, [currentUser]);
 
     return (
         <Box className="bg-[url('/assets/images/bg-login.jpg')] min-h-[100vh]  grid place-items-center">
@@ -143,7 +150,7 @@ const LoginPage = () => {
                                 Đăng nhập
                             </Button>
                         </form>
-                        <Link href="#" underline="hover">
+                        <Link href="/forgot" underline="hover">
                             Quên mật khẩu ?
                         </Link>
 
